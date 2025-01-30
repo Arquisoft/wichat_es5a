@@ -23,9 +23,9 @@ In the Grafana dashboard we can see how the number of petitions increases dramat
 A good reference with good explanations about monitoring in nodejs can be found [here](https://github.com/coder-society/nodejs-application-monitoring-with-prometheus-and-grafana).
 
 ### Participantes
-UO288104 - Miguel Morís Gómez
-UO287694 - Pablo López Tamargo
-UO295432 - Óscar Cervero Luiña
-UO285412 - Néstor Fernández García
-UO295662 - Gael Horta Calzada
-UO295029 - Marcos Argüelles Rivera
+UO288104@uniovi.es - Miguel Morís Gómez
+UO287694@uniovi.es - Pablo López Tamargo
+UO295432@uniovi.es - Óscar Cervero Luiña
+UO285412@uniovi.es - Néstor Fernández García
+gaelhorta04@gmail.com - Gael Horta Calzada
+UO295029@uniovi.es - Marcos Argüelles Rivera
