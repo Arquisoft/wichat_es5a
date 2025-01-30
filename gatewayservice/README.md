@@ -21,3 +21,11 @@ ab -m GET -n 10000 -c 100 http://localhost:8000/health
 In the Grafana dashboard we can see how the number of petitions increases dramatically after the call.
 
 A good reference with good explanations about monitoring in nodejs can be found [here](https://github.com/coder-society/nodejs-application-monitoring-with-prometheus-and-grafana).
+
+### Participantes
+UO288104@uniovi.es - Miguel Morís Gómez
+UO287694@uniovi.es - Pablo López Tamargo
+UO295432@uniovi.es - Óscar Cervero Luiña
+UO285412@uniovi.es - Néstor Fernández García
+gaelhorta04@gmail.com - Gael Horta Calzada
+UO295029@uniovi.es - Marcos Argüelles Rivera
