@@ -11,10 +11,15 @@
 
 ### Participantes
 UO288104@uniovi.es - Miguel Morís Gómez
+
 UO287694@uniovi.es - Pablo López Tamargo
+
 UO295432@uniovi.es - Óscar Cervero Luiña
+
 UO285412@uniovi.es - Néstor Fernández García
+
 gaelhorta04@gmail.com - Gael Horta Calzada
+
 UO295029@uniovi.es - Marcos Argüelles Rivera
 
 This is a base project for the Software Architecture course in 2024/2025. It is a basic application composed of several components.
