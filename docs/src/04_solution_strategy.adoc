@@ -1,7 +1,22 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-solution-strategy]]
-== Solution Strategy
+== Estrategia de solución
+
+=== Decisiones tecnológicas
+
+Las siguientes tecnologías han sido usadas a lo largo del desarrollo de nuestra aplicación:
+
+* **TypeScript:** Hemos elegido usar TypeScript como el lenguaje de la aplicación debido a su gran similitud con JavaScript y su agregado de tipado estático y sus características como detección de errores en tiempo de compilación. Además de que soporta interfaces y tipos personalizados y el editor VSCode proporciona autocompletado inteligente gracias a los tipos. También si en algún punto del desarrollo quisieramos convertir el código a JavaScript nos sería mucho más cómodo.
+* **MongoDB:** Hemos elegido usar MongoDB para la base de datos de la aplicación debido a que tiene un modelo de datos flexible ya que no requiere esquema fijo, es fácil de modificar y además usa BSON (Binary JSON), lo que permite que no se requiera un alto conocimiento por ejemplo en SQL y se almacenen los datos de manera eficiente.
+* **Gemini:** Usamos Gemini como LLM de la aplicación ya que disponemos de una ApiKey de este, lo que nos permite poder procesar texto, imágenes, audios o vídeos con él. También puede analizar imágenes y responder preguntas sobre ellas en tiempo real, lo cual es bastante conveniente para el tipo de aplicación que deseamos hacer.
+* **Wikidata:** Nos sirve para usar los distintos datos que nos proporciona de manera totalmente gratuita. Cuenta con una traducción automática de datos y soporta más de 400 idiomas. Ofrece una API pública para consultar datos desde aplicaciones web o móviles y es compatible con tecnologías como TypeScript y JavaScript.
+* **GitHub:** Para subir el proyecto y sus respectivos cambios y poder tener un lugar de trabajo conjunto nos hemos decantado por GitHub porque nos permite un historial completo de los cambios que va a realizar cada miembro a lo largo del tiempo, así como la facilidad de trabajar en paralelo mediante el uso de ramas y que los distintos commits del proyecto se guardarán en la nube por si hubiera algún problema en el desarrollo. También cabe destacar el uso de issues y el de pull requests que nos sirven para revisar distitos cambios antes de fusionarlos con la rama principal del proyecto.
+
+=== Herramientas de apoyo
+
+* **Visual Studio Code:** Es el IDE que hemos usado los miembros del equipo por defecto ya que es un entorno con el que estamos familiarizados y que además contiene todos los mecanismos que necesitamos para trabajar con el proyecto y entre nosotros en el repositorio remoto.
+* **Draw.io:** A la hora de crear diagramas como los de bloques nos hemos decantado por esta herramienta online, debido a su facilidad de uso y varios tipos de plantillas para crear diagramas así como que es totalmente gratuita.
 
 
 ifdef::arc42help[]
