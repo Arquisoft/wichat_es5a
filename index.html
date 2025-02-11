@@ -459,7 +459,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_technical_context">3.2. Technical Context</a></li>
 </ul>
 </li>
-<li><a href="#section-solution-strategy">4. Solution Strategy</a></li>
+<li><a href="#section-solution-strategy">4. Estrategia de solución</a>
+<ul class="sectlevel2">
+<li><a href="#_decisiones_tecnológicas">4.1. Decisiones tecnológicas</a></li>
+<li><a href="#_herramientas_de_apoyo">4.2. Herramientas de apoyo</a></li>
+</ul>
+</li>
 <li><a href="#section-building-block-view">5. Building Block View</a>
 <ul class="sectlevel2">
 <li><a href="#_whitebox_overall_system">5.1. Whitebox Overall System</a></li>
@@ -839,8 +844,45 @@ together with a mapping table showing the relationships between channels and inp
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-solution-strategy">4. Solution Strategy</h2>
+<h2 id="section-solution-strategy">4. Estrategia de solución</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_decisiones_tecnológicas">4.1. Decisiones tecnológicas</h3>
+<div class="paragraph">
+<p>Las siguientes tecnologías han sido usadas a lo largo del desarrollo de nuestra aplicación:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>TypeScript:</strong> Hemos elegido usar TypeScript como el lenguaje de la aplicación debido a su gran similitud con JavaScript y su agregado de tipado estático y sus características como detección de errores en tiempo de compilación. Además de que soporta interfaces y tipos personalizados y el editor VSCode proporciona autocompletado inteligente gracias a los tipos. También si en algún punto del desarrollo quisieramos convertir el código a JavaScript nos sería mucho más cómodo.</p>
+</li>
+<li>
+<p><strong>MongoDB:</strong> Hemos elegido usar MongoDB para la base de datos de la aplicación debido a que tiene un modelo de datos flexible ya que no requiere esquema fijo, es fácil de modificar y además usa BSON (Binary JSON), lo que permite que no se requiera un alto conocimiento por ejemplo en SQL y se almacenen los datos de manera eficiente.</p>
+</li>
+<li>
+<p><strong>Gemini:</strong> Usamos Gemini como LLM de la aplicación ya que disponemos de una ApiKey de este, lo que nos permite poder procesar texto, imágenes, audios o vídeos con él. También puede analizar imágenes y responder preguntas sobre ellas en tiempo real, lo cual es bastante conveniente para el tipo de aplicación que deseamos hacer.</p>
+</li>
+<li>
+<p><strong>Wikidata:</strong> Nos sirve para usar los distintos datos que nos proporciona de manera totalmente gratuita. Cuenta con una traducción automática de datos y soporta más de 400 idiomas. Ofrece una API pública para consultar datos desde aplicaciones web o móviles y es compatible con tecnologías como TypeScript y JavaScript.</p>
+</li>
+<li>
+<p><strong>GitHub:</strong> Para subir el proyecto y sus respectivos cambios y poder tener un lugar de trabajo conjunto nos hemos decantado por GitHub porque nos permite un historial completo de los cambios que va a realizar cada miembro a lo largo del tiempo, así como la facilidad de trabajar en paralelo mediante el uso de ramas y que los distintos commits del proyecto se guardarán en la nube por si hubiera algún problema en el desarrollo. También cabe destacar el uso de issues y el de pull requests que nos sirven para revisar distitos cambios antes de fusionarlos con la rama principal del proyecto.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_herramientas_de_apoyo">4.2. Herramientas de apoyo</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Visual Studio Code:</strong> Es el IDE que hemos usado los miembros del equipo por defecto ya que es un entorno con el que estamos familiarizados y que además contiene todos los mecanismos que necesitamos para trabajar con el proyecto y entre nosotros en el repositorio remoto.</p>
+</li>
+<li>
+<p><strong>Draw.io:</strong> A la hora de crear diagramas como los de bloques nos hemos decantado por esta herramienta online, debido a su facilidad de uso y varios tipos de plantillas para crear diagramas así como que es totalmente gratuita.</p>
+</li>
+</ul>
+</div>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -883,6 +925,7 @@ Refer to details in the following sections.</p>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 <div class="sect1">
