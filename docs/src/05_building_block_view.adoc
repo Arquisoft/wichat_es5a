@@ -69,13 +69,27 @@ endif::arc42help[]
 
 _**<Overview Diagram>**_
 
+image::BuildingBlock.png[width=600,align="center"]
+
 Motivation::
 
-_<text explanation>_
+_Esta es la visión general en la cual el usuario usa WIQ, que es la estructura general del proyecto y a su vez interactua con Wikidata para obtener los datos para poder desarrollar la aplicación_
 
 
 Contained Building Blocks::
-_<Description of contained building block (black boxes)>_
+[options="header",cols="1,2"]
+|===
+| Nombre    | Responsabilidad
+
+| Usuario
+| Usuario que interactuará con la aplicación.
+
+| WIQ
+| Responsable de la gestión del juego.
+
+| WikiData
+| Permite generar preguntas y respuestas, proporcionando la información.
+|===
 
 Important Interfaces::
 _<Description of important interfaces>_
@@ -102,7 +116,7 @@ Its headline is the name of the black box.
 ****
 endif::arc42help[]
 
-==== <Name black box 1>
+==== Level 1.1
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -154,6 +168,8 @@ _<black box template>_
 
 === Level 2
 
+image::WhiteBlockWiq.png[width=600,align="center"]
+
 ifdef::arc42help[]
 [role="arc42help"]
 ****
@@ -165,7 +181,33 @@ Leave out normal, simple, boring or standardized parts of your system
 ****
 endif::arc42help[]
 
-==== White Box _<building block 1>_
+==== White Box WIQ
+
+[options="header",cols="1,2"]
+|===
+| Nombre    | Responsabilidad
+
+| Usuario
+| Usuario que interactuará con la aplicación.
+
+| Webapp
+| Interfaz de la aplicación, que permite proporciona al usuario lo necesario para moverse por la aplicación: registrarse, iniciar sesión o jugar.
+
+| GatewayService
+| Sirve como punto de entrada para la aplicación, además de realizar las distintas llamadas a los diferentes servicios según el usuario lo requiera.
+
+| AuthService
+| Servicio de autenticación responsable de verificar los datos del usuario al iniciar sesión
+
+| UserService
+| Servicio que se encarga de la gestión del usuario.
+
+| WikiService
+| Servicio responsable de lanzar las querys a Wikidata para obtener la información
+
+| Database
+| Guarda información sobre los usuarios, partidas, preguntas e historial.
+|===
 
 ifdef::arc42help[]
 [role="arc42help"]
