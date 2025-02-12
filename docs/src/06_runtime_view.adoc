@@ -49,7 +49,7 @@ endif::arc42help[]
 
 It is possible to use a sequence diagram:
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"User registration diagram",png]
 ----
 
 actor User
@@ -73,7 +73,7 @@ GS -> User: Display user registration success
 * _A user logs in to play_
 * _The user must enter an existing username, with the correct password
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Log in diagram",png]
 ----
 
 actor User
@@ -102,7 +102,7 @@ end
 
 * _The questions required for the game so that the user can play are taken from wikidata
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Play diagram",png]
 ----
 
 actor User
