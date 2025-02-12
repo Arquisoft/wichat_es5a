@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-introduction-and-goals]]
-== Introduction and Goals
+== Introducción y Metas
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -25,7 +25,7 @@ El objetivo de este proyecto es añadir funcionalidad y modernizar la aplicació
 * Promover la interacción del usuario con la IA para asistirle.
 * Replicar al máximo posible el formato de un concurso de preguntas en WIChat.
 
-=== Requirements Overview
+=== Vista general de los requisitos
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -78,7 +78,7 @@ Los usuarios pueden interactuar con un LLM que le brinde pistas y ayude al usuar
 
 La aplicación, debido a su enfoque para todos los públicos, debe tener un especial enfoque en la usabilidad. Debe ser fácil de usar y tener una curva de aprendizaje poco inclinada.
 
-=== Quality Goals
+=== Metas de calidad
 
 ifdef::arc42help[]
 [role="arc42help"]
