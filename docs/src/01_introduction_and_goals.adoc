@@ -17,6 +17,14 @@ These include
 ****
 endif::arc42help[]
 
+WIChat es una aplicación basada en el popular concurso "Saber y Ganar" y una versión actualizada de la aplicación WIQ creada por HappySw.
+El objetivo de este proyecto es añadir funcionalidad y modernizar la aplicación WIQ para mejor la experiencia de usuario cumpliendo con varios objetivos:
+
+* El aprendizaje por parte de los usuarios de los temas incluidos en las preguntas.
+* Mejorar la interfaz de la aplicación y adaptarla a las nuevas funciones introducidas.
+* Promover la interacción del usuario con la IA para asistirle.
+* Replicar al máximo posible el formato de un concurso de preguntas en WIChat.
+
 === Requirements Overview
 
 ifdef::arc42help[]
@@ -45,6 +53,31 @@ See https://docs.arc42.org/section-1/[Introduction and Goals] in the arc42 docum
 ****
 endif::arc42help[]
 
+La función principal de WIChat es presentar a los usuarios una serie de preguntas que tienen que tratar de responder correctamente, similar al concurso de preguntas "Saber y Ganar".
+
+Las preguntas tendrán un enunciado adjuntado a una imagen y una serie de respuestas posibles. A más preguntas respondidas correctamente, más puntuación.
+
+Los usuarios pueden interactuar con un LLM que le brinde pistas y ayude al usuario.
+
+**Requisitos de alto nivel:**
+
+. El sistema permitirá a los usuarios no registrados registrarse en la aplicación.
+. El sistema permitirá a los usuarios registrados autentificarse en la aplicación.
+. Los usuarios registrados podrán jugar "concursos" en los que responderán preguntas.
+.. Los "concursos" tiene un límite de tiempo indicado por un temporizador.
+.. Las preguntas y respuestas se deben generar automáticamente con informnación conseguida de WikiData.
+... Las preguntas deben incluir una imagen, un enunciado y varias respuestas incorrectas.
+.. Los usuarios registrados pueden interactuar con un LLM para conseguir pistas sobre la pregunta actual.
+. Los usuarios registrados podrán consultar un histórico de su participación en el sistema con la siguiente información:
+.. Número de juegos.
+.. Preguntas acertadas y falladas.
+.. Tiempos.
+. El sistema ofrecerá una API que permita obtener información sobre:
+.. Los usuarios registrados en la aplicación.
+.. Las preguntas generadas por la aplicación.
+
+La aplicación, debido a su enfoque para todos los públicos, debe tener un especial enfoque en la usabilidad. Debe ser fácil de usar y tener una curva de aprendizaje poco inclinada.
+
 === Quality Goals
 
 ifdef::arc42help[]
@@ -68,6 +101,16 @@ If you as an architect do not know how the quality of your work will be judged..
 A table with quality goals and concrete scenarios, ordered by priorities
 ****
 endif::arc42help[]
+
+[options="header",cols="1,2"]
+|===
+|Atributo de calidad|Motivación
+|Usabilidad|La aplicación, debido a su enfoque para todos los públicos, debe tener un especial enfoque en la usabilidad. Debe ser fácil de usar y tener una curva de aprendizaje poco inclinada.
+|Disponibilidad|La aplicación debe estar disponible una gran mayoría del tiempo.
+|Rendimiento|El tiempo de respuesta de la aplicación debe ser corto para ofrecer una experiencia de juego fluida y disfrutable
+|Interoperabilidad|WIChat tendrá una API con la que se puede obtener información relevante a los usuarios y las preguntas generadas. El sistema obtendrá información de WikiData y se comunicará con un LLM.
+|Modificabilidad|El sistema debe ser fácil de cambiar y de añadir nuevas funcionalidades para facilitar futuras actualizaciones.
+|===
 
 === Stakeholders
 
@@ -93,9 +136,12 @@ Table with role names, person names, and their expectations with respect to the 
 ****
 endif::arc42help[]
 
-[options="header",cols="1,2,2"]
+[options="header",cols="1,2"]
 |===
-|Role/Name|Contact|Expectations
-| _<Role-1>_ | _<Contact-1>_ | _<Expectation-1>_
-| _<Role-2>_ | _<Contact-2>_ | _<Expectation-2>_
+|Nombre|Metas
+|Equipo de desarrollo|Desarrolladores que quieren crear una aplicación robusta. Se usan varias tecnologías nuevas que incitan al aprendizaje por parte del equipo.
+|ChattySw|Empresa responsable de WIChat. Quieren un producto satisfactorio que sea a gusto del cliente y que el desarrollo de la misma sea lo más ágil y lo menos costoso posible.
+|RTVE|El cliente que pidió el producto. Quiere el mejor producto posible y se beneficia directamente de el.
+|Usuarios|Los usuarios de la aplicación. Buscan la mejor experiencia de usuario posible y el aprendizaje derivado de las preguntas respondidas.
+|HappySw|Responsables de la version experimental anterior de WIChat. Competidora de ChattySw.
 |===
