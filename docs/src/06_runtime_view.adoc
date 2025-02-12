@@ -39,29 +39,92 @@ See https://docs.arc42.org/section-6/[Runtime View] in the arc42 documentation.
 ****
 endif::arc42help[]
 
-=== <Runtime Scenario 1>
+=== User registration
 
 
-* _<insert runtime diagram or textual description of the scenario>_
-* _<insert description of the notable aspects of the interactions between the
-building block instances depicted in this diagram.>_
+
+* _A user is registered to be able to play_
+* _After being registered, the user can sign in whenever it wants_
+* _A username and a password will be needed to be registered_
 
 It is possible to use a sequence diagram:
 
 [plantuml,"Sequence diagram",png]
 ----
-actor Alice
-actor Bob
-database Pod as "Bob's Pod"
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
-Alice  --> Pod: Store route
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+
+actor User
+participant "GatewayService" as GS
+participant "UserService" as US
+database "DataBase" as DB
+
+User -> GS: Enter username and password
+GS -> US: POST /adduser with username and password
+US -> US: Validate required fields
+US -> US: Encrypt password
+US -> DB: Save user in the database
+DB -> US: Storage confirmation
+US -> GS: User created confirmation
+GS -> User: Display user registration success
+
 ----
 
-=== <Runtime Scenario 2>
+=== Log in
 
-=== ...
+* _A user logs in to play_
+* _The user must enter an existing username, with the correct password
 
-=== <Runtime Scenario n>
+[plantuml,"Sequence diagram",png]
+----
+
+actor User
+participant "GatewayService" as GS
+participant "AuthService" as AS
+database "Database" as DB
+
+User -> GS: Enters username and password
+GS -> AS: POST /login with username and password
+AS -> AS: Validate required fields
+AS -> AS: Validate input format
+AS -> DB: Find user by username
+DB -> AS: Return user data
+AS -> AS: Compare password using bcrypt
+alt Valid password
+    AS -> GS: Return user data
+    GS -> User: Display authentication success
+else Invalid password
+    AS -> GS: Return error (Invalid credentials)
+    GS -> User: Display authentication error
+end
+
+----
+
+=== Question generation for a game
+
+* _The questions required for the game so that the user can play are taken from wikidata
+
+[plantuml,"Sequence diagram",png]
+----
+
+actor User
+participant "GatewayService" as GS
+participant "GameService" as Game
+participant "WikiData" as WD
+database "DataBase" as DB
+
+User -> GS: Start a game
+loop Question generation
+    GS -> Game: Asks for a question
+    Game -> WD: Asks for a question
+    WD -> Game: Question info
+    Game -> GS: Question options and photo
+    GS -> User: Question options and photo
+    User -> GS: Answer to the question
+    GS -> Game: Corroborate the answer
+    Game -> GS: Answer result
+    GS -> User: Display result
+end
+Game -> DB: Store final results
+Game -> GS: Final results
+GS -> User: Display final results
+
+----
