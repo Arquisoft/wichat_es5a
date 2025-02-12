@@ -1019,16 +1019,48 @@ In the best case you will get away with examples or simple signatures.</p>
 <div class="paragraph">
 <p><em><strong>&lt;Overview Diagram&gt;</strong></em></p>
 </div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./images/BuildingBlock.png" alt="BuildingBlock" width="600">
+</div>
+</div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Motivation</dt>
 <dd>
-<p><em>&lt;text explanation&gt;</em></p>
+<p><em>Esta es la visión general en la cual el usuario usa WIQ, que es la estructura general del proyecto y a su vez interactua con Wikidata para obtener los datos para poder desarrollar la aplicación</em></p>
 </dd>
 <dt class="hdlist1">Contained Building Blocks</dt>
-<dd>
-<p><em>&lt;Description of contained building block (black boxes)&gt;</em></p>
-</dd>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Nombre</th>
+<th class="tableblock halign-left valign-top">Responsabilidad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Usuario</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Usuario que interactuará con la aplicación.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WIQ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Responsable de la gestión del juego.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WikiData</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Permite generar preguntas y respuestas, proporcionando la información.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="dlist">
+<dl>
 <dt class="hdlist1">Important Interfaces</dt>
 <dd>
 <p><em>&lt;Description of important interfaces&gt;</em></p>
@@ -1073,7 +1105,7 @@ Its headline is the name of the black box.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_name_black_box_1">5.1.1. &lt;Name black box 1&gt;</h4>
+<h4 id="_level_1_1">5.1.1. Level 1.1</h4>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -1148,6 +1180,11 @@ according the the following black box template:</p>
 </div>
 <div class="sect2">
 <h3 id="_level_2">5.2. Level 2</h3>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./images/WhiteBlockWiq.png" alt="WhiteBlockWiq" width="600">
+</div>
+</div>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -1161,7 +1198,49 @@ Leave out normal, simple, boring or standardized parts of your system</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_white_box_building_block_1">5.2.1. White Box <em>&lt;building block 1&gt;</em></h4>
+<h4 id="_white_box_wiq">5.2.1. White Box WIQ</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Nombre</th>
+<th class="tableblock halign-left valign-top">Responsabilidad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Usuario</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Usuario que interactuará con la aplicación.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Webapp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interfaz de la aplicación, que permite proporciona al usuario lo necesario para moverse por la aplicación: registrarse, iniciar sesión o jugar.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GatewayService</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sirve como punto de entrada para la aplicación, además de realizar las distintas llamadas a los diferentes servicios según el usuario lo requiera.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AuthService</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servicio de autenticación responsable de verificar los datos del usuario al iniciar sesión</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UserService</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servicio que se encarga de la gestión del usuario.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WikiService</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servicio responsable de lanzar las querys a Wikidata para obtener la información</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Guarda información sobre los usuarios, partidas, preguntas e historial.</p></td>
+</tr>
+</tbody>
+</table>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
