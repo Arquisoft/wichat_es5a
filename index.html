@@ -443,20 +443,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <br><span id="revremark">(based upon AsciiDoc version)</span>
 </div>
 <div id="toc" class="toc">
-<div id="toctitle">Table of Contents</div>
+<div id="toctitle">Tabla de contenidos</div>
 <ul class="sectlevel1">
-<li><a href="#section-introduction-and-goals">1. Introduction and Goals</a>
+<li><a href="#section-introduction-and-goals">1. Introducción y Metas</a>
 <ul class="sectlevel2">
-<li><a href="#_requirements_overview">1.1. Requirements Overview</a></li>
-<li><a href="#_quality_goals">1.2. Quality Goals</a></li>
+<li><a href="#_vista_general_de_los_requisitos">1.1. Vista general de los requisitos</a></li>
+<li><a href="#_metas_de_calidad">1.2. Metas de calidad</a></li>
 <li><a href="#_stakeholders">1.3. Stakeholders</a></li>
 </ul>
 </li>
 <li><a href="#section-architecture-constraints">2. Architecture Constraints</a></li>
-<li><a href="#section-context-and-scope">3. Context and Scope</a>
+<li><a href="#section-context-and-scope">3. Contexto y alcance</a>
 <ul class="sectlevel2">
-<li><a href="#_business_context">3.1. Business Context</a></li>
-<li><a href="#_technical_context">3.2. Technical Context</a></li>
+<li><a href="#_contexto_de_negocio">3.1. Contexto de negocio</a></li>
+<li><a href="#_contexto_técnico">3.2. Contexto técnico</a></li>
 </ul>
 </li>
 <li><a href="#section-solution-strategy">4. Estrategia de solución</a>
@@ -474,10 +474,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#section-runtime-view">6. Runtime View</a>
 <ul class="sectlevel2">
-<li><a href="#_runtime_scenario_1">6.1. &lt;Runtime Scenario 1&gt;</a></li>
-<li><a href="#_runtime_scenario_2">6.2. &lt;Runtime Scenario 2&gt;</a></li>
-<li><a href="#">6.3. &#8230;&#8203;</a></li>
-<li><a href="#_runtime_scenario_n">6.4. &lt;Runtime Scenario n&gt;</a></li>
+<li><a href="#_user_registration">6.1. User registration</a></li>
+<li><a href="#_log_in">6.2. Log in</a></li>
+<li><a href="#_question_generation_for_a_game">6.3. Question generation for a game</a></li>
 </ul>
 </li>
 <li><a href="#section-deployment-view">7. Deployment View</a>
@@ -555,7 +554,7 @@ For documentation of your own system you use better the <em>plain</em> version.<
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-introduction-and-goals">1. Introduction and Goals</h2>
+<h2 id="section-introduction-and-goals">1. Introducción y Metas</h2>
 <div class="sectionbody">
 <div class="sidebarblock arc42help">
 <div class="content">
@@ -584,8 +583,28 @@ These include</p>
 </div>
 </div>
 </div>
+<div class="paragraph">
+<p>WIChat es una aplicación basada en el popular concurso "Saber y Ganar" y una versión actualizada de la aplicación WIQ creada por HappySw.
+El objetivo de este proyecto es añadir funcionalidad y modernizar la aplicación WIQ para mejor la experiencia de usuario cumpliendo con varios objetivos:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>El aprendizaje por parte de los usuarios de los temas incluidos en las preguntas.</p>
+</li>
+<li>
+<p>Mejorar la interfaz de la aplicación y adaptarla a las nuevas funciones introducidas.</p>
+</li>
+<li>
+<p>Promover la interacción del usuario con la IA para asistirle.</p>
+</li>
+<li>
+<p>Replicar al máximo posible el formato de un concurso de preguntas en WIChat.</p>
+</li>
+</ul>
+</div>
 <div class="sect2">
-<h3 id="_requirements_overview">1.1. Requirements Overview</h3>
+<h3 id="_vista_general_de_los_requisitos">1.1. Vista general de los requisitos</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -613,9 +632,86 @@ If requirements documents exist this overview should refer to these documents.</
 </div>
 </div>
 </div>
+<div class="paragraph">
+<p>La función principal de WIChat es presentar a los usuarios una serie de preguntas que tienen que tratar de responder correctamente, similar al concurso de preguntas "Saber y Ganar".</p>
+</div>
+<div class="paragraph">
+<p>Las preguntas tendrán un enunciado adjuntado a una imagen y una serie de respuestas posibles. A más preguntas respondidas correctamente, más puntuación.</p>
+</div>
+<div class="paragraph">
+<p>Los usuarios pueden interactuar con un LLM que le brinde pistas y ayude al usuario.</p>
+</div>
+<div class="paragraph">
+<p><strong>Requisitos de alto nivel:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>El sistema permitirá a los usuarios no registrados registrarse en la aplicación.</p>
+</li>
+<li>
+<p>El sistema permitirá a los usuarios registrados autentificarse en la aplicación.</p>
+</li>
+<li>
+<p>Los usuarios registrados podrán jugar "concursos" en los que responderán preguntas.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Los "concursos" tiene un límite de tiempo indicado por un temporizador.</p>
+</li>
+<li>
+<p>Las preguntas y respuestas se deben generar automáticamente con informnación conseguida de WikiData.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Las preguntas deben incluir una imagen, un enunciado y varias respuestas incorrectas.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Los usuarios registrados pueden interactuar con un LLM para conseguir pistas sobre la pregunta actual.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Los usuarios registrados podrán consultar un histórico de su participación en el sistema con la siguiente información:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Número de juegos.</p>
+</li>
+<li>
+<p>Preguntas acertadas y falladas.</p>
+</li>
+<li>
+<p>Tiempos.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>El sistema ofrecerá una API que permita obtener información sobre:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Los usuarios registrados en la aplicación.</p>
+</li>
+<li>
+<p>Las preguntas generadas por la aplicación.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>La aplicación, debido a su enfoque para todos los públicos, debe tener un especial enfoque en la usabilidad. Debe ser fácil de usar y tener una curva de aprendizaje poco inclinada.</p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_quality_goals">1.2. Quality Goals</h3>
+<h3 id="_metas_de_calidad">1.2. Metas de calidad</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -644,6 +740,40 @@ If you as an architect do not know how the quality of your work will be judged&#
 </div>
 </div>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Atributo de calidad</th>
+<th class="tableblock halign-left valign-top">Motivación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Usabilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación, debido a su enfoque para todos los públicos, debe tener un especial enfoque en la usabilidad. Debe ser fácil de usar y tener una curva de aprendizaje poco inclinada.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disponibilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación debe estar disponible una gran mayoría del tiempo.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rendimiento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El tiempo de respuesta de la aplicación debe ser corto para ofrecer una experiencia de juego fluida y disfrutable</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interoperabilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WIChat tendrá una API con la que se puede obtener información relevante a los usuarios y las preguntas generadas. El sistema obtendrá información de WikiData y se comunicará con un LLM.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Modificabilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El sistema debe ser fácil de cambiar y de añadir nuevas funcionalidades para facilitar futuras actualizaciones.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
 <h3 id="_stakeholders">1.3. Stakeholders</h3>
@@ -686,27 +816,35 @@ These stakeholders determine the extent and the level of detail of your work and
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 20%;">
-<col style="width: 40%;">
-<col style="width: 40%;">
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Role/Name</th>
-<th class="tableblock halign-left valign-top">Contact</th>
-<th class="tableblock halign-left valign-top">Expectations</th>
+<th class="tableblock halign-left valign-top">Nombre</th>
+<th class="tableblock halign-left valign-top">Metas</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Role-1&gt;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Contact-1&gt;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Expectation-1&gt;</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Equipo de desarrollo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Desarrolladores que quieren crear una aplicación robusta. Se usan varias tecnologías nuevas que incitan al aprendizaje por parte del equipo.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Role-2&gt;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Contact-2&gt;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Expectation-2&gt;</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ChattySw</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empresa responsable de WIChat. Quieren un producto satisfactorio que sea a gusto del cliente y que el desarrollo de la misma sea lo más ágil y lo menos costoso posible.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RTVE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El cliente que pidió el producto. Quiere el mejor producto posible y se beneficia directamente de el.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Usuarios</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Los usuarios de la aplicación. Buscan la mejor experiencia de usuario posible y el aprendizaje derivado de las preguntas respondidas.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HappySw</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Responsables de la version experimental anterior de WIChat. Competidora de ChattySw.</p></td>
 </tr>
 </tbody>
 </table>
@@ -745,7 +883,7 @@ conventions (e.g. programming or versioning guidelines, documentation or naming 
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-context-and-scope">3. Context and Scope</h2>
+<h2 id="section-context-and-scope">3. Contexto y alcance</h2>
 <div class="sectionbody">
 <div class="sidebarblock arc42help">
 <div class="content">
@@ -781,8 +919,12 @@ conventions (e.g. programming or versioning guidelines, documentation or naming 
 </div>
 </div>
 </div>
+<div class="paragraph">
+<p>En este capítulo se describe el ámbito de WIChat.
+Se ven los sistemas de los que depende la aplicación y los usuarios que la usan.</p>
+</div>
 <div class="sect2">
-<h3 id="_business_context">3.1. Business Context</h3>
+<h3 id="_contexto_de_negocio">3.1. Contexto de negocio</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -804,15 +946,34 @@ The title of the table is the name of your system, the three columns contain the
 </div>
 </div>
 </div>
-<div class="paragraph">
-<p><strong>&lt;Diagram or Table&gt;</strong></p>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Contexto%20de%20negocio%20WIChat.png" alt="Contexto de negocio WIChat" width="1022" height="593">
+</div>
 </div>
 <div class="paragraph">
-<p><strong>&lt;optionally: Explanation of external domain interfaces&gt;</strong></p>
+<div class="title">Usuario</div>
+<p>Cualquier usuario que se disponga a usar la aplicación.
+Los usuarios deben de registrarse antes de acceder al juego.
+En el juego los usuarios responderán preguntas y aprenderán de ellas.
+También pueden consultar sus datos históricos en la aplicación.</p>
+</div>
+<div class="paragraph">
+<div class="title">MongoDB</div>
+<p>Todos los datos relevantes a la aplicación se guardarán en una base de datos MongoDB.</p>
+</div>
+<div class="paragraph">
+<div class="title">Gemini</div>
+<p>Los usuarios pueden interactuar con el LLM "Gemini" a través de WIChat para pedir pistas y asistencia para responder preguntas.</p>
+</div>
+<div class="paragraph">
+<div class="title">WikiData</div>
+<p>La información necesaria para que la aplicación genere las preguntas automáticamente es obtenida de la API de WikiData.
+De esta se sacan los enunciados de las preguntas, las respuestas correctas e incorrectas y las imágenes que se adjuntan a las preguntas.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_technical_context">3.2. Technical Context</h3>
+<h3 id="_contexto_técnico">3.2. Contexto técnico</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -830,14 +991,31 @@ together with a mapping table showing the relationships between channels and inp
 </div>
 </div>
 </div>
-<div class="paragraph">
-<p><strong>&lt;Diagram or Table&gt;</strong></p>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="1039" height="593">
+</div>
 </div>
 <div class="paragraph">
-<p><strong>&lt;optionally: Explanation of technical interfaces&gt;</strong></p>
+<p>La arquitectura de WIChat es una estructura basada en microservicios:</p>
 </div>
 <div class="paragraph">
-<p><strong>&lt;Mapping Input/Output to Channels&gt;</strong></p>
+<div class="title">Users</div>
+<p>El paquete users se divide en dos paquetes, "Auth service" que se encarga de la autenficación de los usuarios ya registrados
+y "Users service", que se encarga del registro de nuevos usuarios. Ambos se comunican con la base de datos para guardar o obetener información.</p>
+</div>
+<div class="paragraph">
+<div class="title">Question service</div>
+<p>Es el servicio encargado de comunicarse con la API de WikiData para generar las preguntas y respuestas mostradas a los usuarios.
+Las preguntas generadas son guardadas en base de datos para el historial de los usuarios.</p>
+</div>
+<div class="paragraph">
+<div class="title">Gateway service</div>
+<p>El gateway se encarga de recibir las peticiones y redirigirlas al servicio correspondiente.</p>
+</div>
+<div class="paragraph">
+<div class="title">WIChat API</div>
+<p>Ofrece datos sobre los usuarios de la aplicación y las preguntas generadas.</p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -1323,15 +1501,17 @@ You will mainly capture scenarios in your documentation to communicate your arch
 </div>
 </div>
 <div class="sect2">
-<h3 id="_runtime_scenario_1">6.1. &lt;Runtime Scenario 1&gt;</h3>
+<h3 id="_user_registration">6.1. User registration</h3>
 <div class="ulist">
 <ul>
 <li>
-<p><em>&lt;insert runtime diagram or textual description of the scenario&gt;</em></p>
+<p><em>A user is registered to be able to play</em></p>
 </li>
 <li>
-<p><em>&lt;insert description of the notable aspects of the interactions between the
-building block instances depicted in this diagram.&gt;</em></p>
+<p><em>After being registered, the user can sign in whenever it wants</em></p>
+</li>
+<li>
+<p><em>A username and a password will be needed to be registered</em></p>
 </li>
 </ul>
 </div>
@@ -1340,20 +1520,42 @@ building block instances depicted in this diagram.&gt;</em></p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="332" height="335">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="732" height="452">
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_runtime_scenario_2">6.2. &lt;Runtime Scenario 2&gt;</h3>
-
+<h3 id="_log_in">6.2. Log in</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>A user logs in to play</em></p>
+</li>
+<li>
+<p>_The user must enter an existing username, with the correct password</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="746" height="604">
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="">6.3. &#8230;&#8203;</h3>
-
+<h3 id="_question_generation_for_a_game">6.3. Question generation for a game</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>_The questions required for the game so that the user can play are taken from wikidata</p>
+</li>
+</ul>
 </div>
-<div class="sect2">
-<h3 id="_runtime_scenario_n">6.4. &lt;Runtime Scenario n&gt;</h3>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="651" height="610">
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -1873,7 +2075,7 @@ more precisely down to a level of scenarios that can be discussed and evaluated.
 <div id="footer">
 <div id="footer-text">
 Version 8.2 EN<br>
-Last updated 2025-02-11 17:27:12 +0100
+Last updated 2025-02-12 18:11:26 +0100
 </div>
 </div>
 </body>
