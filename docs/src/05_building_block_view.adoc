@@ -3,7 +3,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 [[section-building-block-view]]
 
 
-== Building Block View
+== Vista de Bloques de Construcción
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -42,7 +42,7 @@ See https://docs.arc42.org/section-5/[Building Block View] in the arc42 document
 ****
 endif::arc42help[]
 
-=== Whitebox Overall System
+=== Sistema General de Caja Blanca
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -67,16 +67,16 @@ In the best case you will get away with examples or simple signatures.
 ****
 endif::arc42help[]
 
-_**<Overview Diagram>**_
+_**<Diagrama General>**_
 
 image::BuildingBlock.png[width=600,align="center"]
 
-Motivation::
+Motivación::
 
 _Esta es la visión general en la cual el usuario usa WIQ, que es la estructura general del proyecto y a su vez interactua con Wikidata para obtener los datos para poder desarrollar la aplicación_
 
 
-Contained Building Blocks::
+Descripciones de caja negra::
 [options="header",cols="1,2"]
 |===
 | Nombre    | Responsabilidad
@@ -90,9 +90,6 @@ Contained Building Blocks::
 | WikiData
 | Permite generar preguntas y respuestas, proporcionando la información.
 |===
-
-Important Interfaces::
-_<Description of important interfaces>_
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -116,8 +113,6 @@ Its headline is the name of the black box.
 ****
 endif::arc42help[]
 
-==== Level 1.1
-
 ifdef::arc42help[]
 [role="arc42help"]
 ****
@@ -134,39 +129,7 @@ according the the following black box template:
 ****
 endif::arc42help[]
 
-_<Purpose/Responsibility>_
-
-_<Interface(s)>_
-
-_<(Optional) Quality/Performance Characteristics>_
-
-_<(Optional) Directory/File Location>_
-
-_<(Optional) Fulfilled Requirements>_
-
-_<(optional) Open Issues/Problems/Risks>_
-
-
-
-
-==== <Name black box 2>
-
-_<black box template>_
-
-==== <Name black box n>
-
-_<black box template>_
-
-
-==== <Name interface 1>
-
-...
-
-==== <Name interface m>
-
-
-
-=== Level 2
+=== Caja Blanca de WIQ
 
 image::WhiteBlockWiq.png[width=600,align="center"]
 
@@ -181,7 +144,7 @@ Leave out normal, simple, boring or standardized parts of your system
 ****
 endif::arc42help[]
 
-==== White Box WIQ
+==== Diagramas de Caja Negra de WIQ
 
 [options="header",cols="1,2"]
 |===
@@ -216,23 +179,9 @@ ifdef::arc42help[]
 ****
 endif::arc42help[]
 
-_<white box template>_
+=== Caja Blanca del Servicio de Usuario
 
-==== White Box _<building block 2>_
-
-
-_<white box template>_
-
-...
-
-==== White Box _<building block m>_
-
-
-_<white box template>_
-
-
-
-=== Level 3
+image::BuildingBlockuserservice.png[width=600,align="center"]
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -244,7 +193,21 @@ part of arc42 for additional levels.
 ****
 endif::arc42help[]
 
-==== White Box <_building block x.1_>
+==== Diagramas de Caja Negra del Servicio de Usuario
+
+[options="header",cols="1,2"]
+|===
+| Nombre    | Responsabilidad
+
+|AuthService
+|Solicitará a la base de datos un usuario para poder autentificarlo, verificará que el usuario suministrado por la base de datos nos proporcione la contraseña correcta para poder acceder al juego.
+
+|UserService
+|Se encargará de todo lo relacionado con añadir usuarios a la base de datos. Se encargará de verificar el formato de los datos proporcioandos por el usuario para crearse una nueva cuenta, así como que la contraseña coincida con la validación de esta misma.
+
+|UserDb
+|La base de datos que se encargará de almacenar a los usuarios de la aplicación con su respectiva información como nombre, correo y la contraseña encriptada para más seguridad.
+|===
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -252,16 +215,3 @@ ifdef::arc42help[]
 Specifies the internal structure of _building block x.1_.
 ****
 endif::arc42help[]
-
-_<white box template>_
-
-
-==== White Box <_building block x.2_>
-
-_<white box template>_
-
-
-
-==== White Box <_building block y.1_>
-
-_<white box template>_
