@@ -11,7 +11,7 @@ include::src/config.adoc[]
 :revdate: January 2023
 :revremark: (based upon AsciiDoc version)
 // toc-title definition MUST follow document title without blank line!
-:toc-title: Table of Contents
+:toc-title: Tabla de contenidos
 
 //additional style for arc42 help callouts
 ifdef::backend-html5[]
