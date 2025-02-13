@@ -1,4 +1,4 @@
-ifndef::imagesdir[:imagesdir: ../images]
+ifndef::imagesdir[:imagesdir: images]
 
 [[section-deployment-view]]
 
@@ -22,6 +22,7 @@ Especially document a deployment view if your software is executed as distribute
 From a software perspective it is sufficient to capture only those elements of an infrastructure that are needed to show a deployment of your building blocks. Hardware architects can go beyond that and describe an infrastructure to any level of detail they need to capture.
 
 .Motivation
+
 Software does not run without hardware.
 This underlying infrastructure can and will influence a system and/or some
 cross-cutting concepts. Therefore, there is a need to know the infrastructure.
@@ -44,7 +45,7 @@ See https://docs.arc42.org/section-7/[Deployment View] in the arc42 documentatio
 ****
 endif::arc42help[]
 
-=== Infrastructure Level 1
+
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -56,45 +57,67 @@ Describe (usually in a combination of diagrams, tables, and text):
 * quality and/or performance features of this infrastructure
 * mapping of software artifacts to elements of this infrastructure
 
+
+
 For multiple environments or alternative deployments please copy and adapt this section of arc42 for all relevant environments.
 ****
 endif::arc42help[]
 
-_**<Overview Diagram>**_
-
-Motivation::
-
-_<explanation in text form>_
-
-Quality and/or Performance Features::
-
-_<explanation in text form>_
-
-Mapping of Building Blocks to Infrastructure::
-_<description of the mapping>_
 
 
-=== Infrastructure Level 2
+image::07-diagramaDespliegue.png["Diagrama de despliegue"]
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-Here you can include the internal structure of (some) infrastructure elements from level 1.
+Motivación::
+En esta aplicación los usuarios interactúan a través de una interfaz web basada en React. 
+Esta aplicación se comunica con un backend desplegado en un servidor en Azure,
+donde cada componente funciona dentro de contenedores Docker. El Gateway Service actúa como el
+ núcleo del sistema, distribuyendo las solicitudes entre los servicios internos, como el de 
+autenticación y el de usuarios, y los servicios externos, como un modelo de lenguaje (LLM) 
+y Wikidata. Los datos importantes, como la información de los usuarios y credenciales,
+se almacenan en MongoDB Atlas, una base de datos en la nube. Todo el sistema está diseñado
+para garantizar la seguridad mediante conexiones HTTPS y autenticación con API Keys,
+mientras que la arquitectura basada en contenedores asegura la escalabilidad y
+el aislamiento de los servicios.
 
-Please copy the structure from level 1 for each selected element.
-****
-endif::arc42help[]
+Características de Calidad y/o Rendimiento::
 
-==== _<Infrastructure Element 1>_
+* **Escalabilidad:** Cada servicio está encapsulado en un contenedor Docker, lo que permite escalar horizontalmente según sea necesario.
+* **Seguridad:** Todas las comunicaciones se realizan mediante HTTPS. Se utilizan API Keys para autenticar las solicitudes a servicios externos.
+* **Modularidad:** La separación de servicios facilita el mantenimiento y la extensibilidad del sistema.
 
-_<diagram + explanation>_
+Mapeo de Componentes a la Infraestructura::
+[options="header"]
+|===
+| Servicio         | Descripción
 
-==== _<Infrastructure Element 2>_
+| WebApp
+| Es la interfaz de usuario, permite a los usuarios interactuar con el sistema mediante un navegador
 
-_<diagram + explanation>_
+| Gateway Service
+| Es el componente central que actúa como un proxy para las solicitudes realizadas por la WebApp.
 
-...
+| Auth Service
+| Gestiona la autenticación de los usuarios
 
-==== _<Infrastructure Element n>_
+| User Service
+| Es la parte encargada de manejar las operaciones relacionadas con los usuarios
 
-_<diagram + explanation>_
+| LLM Service
+| Modelo de lenguaje con el que interectuamos para obtener pistas sobre las preguntas.
+
+| MongoDB 
+| Base de datos utilizada para almacenar:
+Información de usuarios (datos personales, perfiles).
+Credenciales y tokens de autenticación.
+Historial de participación y otros datos del sistema.
+
+| API LLM
+| API con la que podremos acceder al modelo de lenguaje.
+
+| Wikidata
+| Es un servicio externo que actúa como fuente de datos para generar preguntas y pistas.
+|===
+
+
+
+
