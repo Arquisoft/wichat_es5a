@@ -479,12 +479,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_question_generation_for_a_game">6.3. Question generation for a game</a></li>
 </ul>
 </li>
-<li><a href="#section-deployment-view">7. Deployment View</a>
-<ul class="sectlevel2">
-<li><a href="#_infrastructure_level_1">7.1. Infrastructure Level 1</a></li>
-<li><a href="#_infrastructure_level_2">7.2. Infrastructure Level 2</a></li>
-</ul>
-</li>
+<li><a href="#section-deployment-view">7. Deployment View</a></li>
 <li><a href="#section-concepts">8. Cross-cutting Concepts</a>
 <ul class="sectlevel2">
 <li><a href="#_concept_1">8.1. <em>&lt;Concept 1&gt;</em></a></li>
@@ -1614,8 +1609,6 @@ when your infrastructure is more complex.</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_infrastructure_level_1">7.1. Infrastructure Level 1</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -1642,61 +1635,95 @@ when your infrastructure is more complex.</p>
 </div>
 </div>
 </div>
-<div class="paragraph">
-<p><em><strong>&lt;Overview Diagram&gt;</strong></em></p>
+<div class="imageblock">
+<div class="content">
+<img src="./images/07-diagramaDespliegue.png" alt="Diagrama de despliegue">
+</div>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Motivation</dt>
+<dt class="hdlist1">Motivación</dt>
 <dd>
-<p><em>&lt;explanation in text form&gt;</em></p>
+<p>En esta aplicación los usuarios interactúan a través de una interfaz web basada en React.
+Esta aplicación se comunica con un backend desplegado en un servidor en Azure,
+donde cada componente funciona dentro de contenedores Docker. El Gateway Service actúa como el
+ núcleo del sistema, distribuyendo las solicitudes entre los servicios internos, como el de
+autenticación y el de usuarios, y los servicios externos, como un modelo de lenguaje (LLM)
+y Wikidata. Los datos importantes, como la información de los usuarios y credenciales,
+se almacenan en MongoDB Atlas, una base de datos en la nube. Todo el sistema está diseñado
+para garantizar la seguridad mediante conexiones HTTPS y autenticación con API Keys,
+mientras que la arquitectura basada en contenedores asegura la escalabilidad y
+el aislamiento de los servicios.</p>
 </dd>
-<dt class="hdlist1">Quality and/or Performance Features</dt>
+<dt class="hdlist1">Características de Calidad y/o Rendimiento</dt>
 <dd>
-<p><em>&lt;explanation in text form&gt;</em></p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Escalabilidad:</strong> Cada servicio está encapsulado en un contenedor Docker, lo que permite escalar horizontalmente según sea necesario.</p>
+</li>
+<li>
+<p><strong>Seguridad:</strong> Todas las comunicaciones se realizan mediante HTTPS. Se utilizan API Keys para autenticar las solicitudes a servicios externos.</p>
+</li>
+<li>
+<p><strong>Modularidad:</strong> La separación de servicios facilita el mantenimiento y la extensibilidad del sistema.</p>
+</li>
+</ul>
+</div>
 </dd>
-<dt class="hdlist1">Mapping of Building Blocks to Infrastructure</dt>
-<dd>
-<p><em>&lt;description of the mapping&gt;</em></p>
-</dd>
+<dt class="hdlist1">Mapeo de Componentes a la Infraestructura</dt>
 </dl>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_infrastructure_level_2">7.2. Infrastructure Level 2</h3>
-<div class="sidebarblock arc42help">
-<div class="content">
-<div class="paragraph">
-<p>Here you can include the internal structure of (some) infrastructure elements from level 1.</p>
-</div>
-<div class="paragraph">
-<p>Please copy the structure from level 1 for each selected element.</p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_infrastructure_element_1">7.2.1. <em>&lt;Infrastructure Element 1&gt;</em></h4>
-<div class="paragraph">
-<p><em>&lt;diagram + explanation&gt;</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_infrastructure_element_2">7.2.2. <em>&lt;Infrastructure Element 2&gt;</em></h4>
-<div class="paragraph">
-<p><em>&lt;diagram + explanation&gt;</em></p>
-</div>
-<div class="paragraph">
-<p>&#8230;&#8203;</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_infrastructure_element_n">7.2.3. <em>&lt;Infrastructure Element n&gt;</em></h4>
-<div class="paragraph">
-<p><em>&lt;diagram + explanation&gt;</em></p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Servicio</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WebApp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Es la interfaz de usuario, permite a los usuarios interactuar con el sistema mediante un navegador</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gateway Service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Es el componente central que actúa como un proxy para las solicitudes realizadas por la WebApp.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Auth Service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gestiona la autenticación de los usuarios</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User Service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Es la parte encargada de manejar las operaciones relacionadas con los usuarios</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LLM Service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Modelo de lenguaje con el que interectuamos para obtener pistas sobre las preguntas.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MongoDB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Base de datos utilizada para almacenar:
+Información de usuarios (datos personales, perfiles).
+Credenciales y tokens de autenticación.
+Historial de participación y otros datos del sistema.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">API LLM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">API con la que podremos acceder al modelo de lenguaje.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Wikidata</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Es un servicio externo que actúa como fuente de datos para generar preguntas y pistas.</p></td>
+</tr>
+</tbody>
+</table>
 <div style="page-break-after: always;"></div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
