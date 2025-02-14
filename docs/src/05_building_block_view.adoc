@@ -160,16 +160,22 @@ endif::arc42help[]
 | Sirve como punto de entrada para la aplicación, además de realizar las distintas llamadas a los diferentes servicios según el usuario lo requiera.
 
 | AuthService
-| Servicio de autenticación responsable de verificar los datos del usuario al iniciar sesión
+| Servicio de autenticación responsable de verificar los datos del usuario al iniciar sesión.
 
 | UserService
-| Servicio que se encarga de la gestión del usuario.
+| Servicio que se encarga de la gestión de los usuarios, añadir a la base de datos y validar los datos introducidos.
+
+| LlmService
+| Servicio responsable de realizar las llamadas a la api de llm y gestionar sus respuestas y comportamientos.
+
+| HistoryService
+| Servicio encargado de trabajar junto con la database para gestionar el historial de partidas del usuario.
 
 | WikiService
-| Servicio responsable de lanzar las querys a Wikidata para obtener la información
+| Servicio responsable de lanzar las querys a Wikidata para obtener la información.
 
 | Database
-| Guarda información sobre los usuarios, partidas, preguntas e historial.
+| Base de datos mongodb cuya función es guardar información sobre los usuarios, partidas, preguntas e historial.
 |===
 
 ifdef::arc42help[]
