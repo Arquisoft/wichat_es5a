@@ -63,12 +63,13 @@ _<explanation>_
 
 
 
-=== _<Concept 2>_
+=== Arquitectura
 
-_<explanation>_
+Para la aquitectura inicial contamos con una aplicación divida en microservicios que engloban y encapsulan las distintas funcionalidades de la aplicación, esta es una buena manera de simplificar la creación y la gestión de una aplicación complej, ya que cada funcionalidad es realizada por sistemas independientes. Algunos ejemplos de estos microservicios puede ser el de Gestión de Usuarios que se encarga del registro, el inicio de sesión y todo lo relacionado con el usuario en la aplicación.
+ 
 
-...
+=== Procesos de Desarrollo
 
-=== _<Concept n>_
-
-_<explanation>_
+* **Testing:** Se realizan pruebas unitarias relacionadas con cada funcionalidad del proyecto para asegurar su correcto funcionamiento.
+* **Deployment:** Es el proceso de poner en funcionamiento la aplicación para que se pueda ejecutar y acceder a ella. Para realizar el deplyment utilizamos docker para construir las imagenes de los servicios y subirlas al repositorio.
+ 
