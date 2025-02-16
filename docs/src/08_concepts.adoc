@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-concepts]]
-== Cross-cutting Concepts
+== Conceptos transversales
 
 
 ifdef::arc42help[]
@@ -57,11 +57,41 @@ See https://docs.arc42.org/section-8/[Concepts] in the arc42 documentation.
 ****
 endif::arc42help[]
 
-=== _<Concept 1>_
+=== Modelo de Dominio
 
-_<explanation>_
+image::DiagramaDeClases.png[width=600,align="center"]
+
+[options="header",cols="1,2"]
+|===
+| Nombre    | Descripción
+
+|Usuario
+|El usuario de la aplicación podrá acceder a un historial donde se guarden los datos de sus partidas anteriores así como poder jugar la cantidad de juegos que el usuario vea necesario.
+
+|Historial
+|Contendrá tanto las preguntas falladas y acertadas de su usuario, como el número de juegos que ha jugado y los distintos tiempos que ha tardado en completar cada juego en segundos.
+
+|Juego
+|Será la clase encargada de toda la lógica de negocio, el usuario interactuará con el juego y el juego irá dándole preguntas al usuario para que este responda. A raíz de las respuestas del usuario el juego, al finalizarse, guardará los datos en el historial del usuario en concreto.
+
+|Pregunta
+|Las preguntas serán las que vea el usuario en pantalla, dependen enteramente de juego. Las preguntas tendrán una descripción y una lista de opciones de las cuales solo una será la correcta.
+|===
 
 
+=== Seguridad
+
+La aplicación contará con un sistema de registro e inicio de sesión con contraseña que se almacenará encriptada en la base de datos para mayor privacidad del usuario. En el sistema de logueo se requerirá la doble autentificación de la contraseña y comprobar que ambos campos coincidan.
+
+...
+
+=== Interfaz de Usuario
+
+**Uso de ayuda:** Nuestra interfaz de usuario contará con menús de ayuda para que los usuarios puedan acceder a ellos si se sienten perdidos o no entienden algo del funcionamiento de la aplicación. Estos menús estarán disponibles en todo momento y en la parte superior de la pantalla.
+
+**Usabilidad:** El juego tendrá un formato parecido al de saber y ganar, ya que es el formato más cómodo para los usuarios y el más fidedigno a la vida real. Esto lo hacemos así debido a que es mucho mejor que el usuario sepa ya de antemano al ver l ainterfaz de usuario que es un juego de tipo "concurso de la tele" que experimentar con cosas raras y que el usuario se vea abrumado por la novedad.
+
+**Interacción en tiempo real: El usuario podrá ver si ha acertado o no la pregunta al momento de su respuesta, ya que esto es lo más amigable para el usuario y así puede llevar un conteo de las preguntas que ha respondido correctamente.**
 
 === Arquitectura
 
