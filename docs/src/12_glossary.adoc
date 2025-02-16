@@ -36,9 +36,12 @@ endif::arc42help[]
 |===
 |Term |Definition
 
-|<Term-1>
-|<definition-1>
+|Base de Datos
+|Sistema para almacenar, gestionar y recuperar datos de manera eficiente. Es un conjunto de datos conectados entre sí, que están estructurados de tal forma que se pueden consultar, actualizar y manipular fácilmente.
 
-|<Term-2>
-|<definition-2>
+|LLM
+|Modelo de Lenguaje Grande. Es un tipo de modelo de inteligencia artificial entrenado con una gran cantidad de datos textuales. Estos modelos están diseñados para entender, generar y manipular texto en lenguaje natural como si estuvieran conversando de manera coherente en respuesta a diferentes entradas.
+
+|Usabilidad
+|Facilidad con la que los usuarios pueden interactuar con una aplicación o sistema para lograr sus objetivos de manera eficiente, efectiva y satisfactoria.
 |===
