@@ -12,11 +12,14 @@ Las siguientes tecnologías han sido usadas a lo largo del desarrollo de nuestra
 * **Gemini:** Usamos Gemini como LLM de la aplicación ya que disponemos de una ApiKey de este, lo que nos permite poder procesar texto, imágenes, audios o vídeos con él. También puede analizar imágenes y responder preguntas sobre ellas en tiempo real, lo cual es bastante conveniente para el tipo de aplicación que deseamos hacer.
 * **Wikidata:** Nos sirve para usar los distintos datos que nos proporciona de manera totalmente gratuita. Cuenta con una traducción automática de datos y soporta más de 400 idiomas. Ofrece una API pública para consultar datos desde aplicaciones web o móviles y es compatible con tecnologías como TypeScript y JavaScript.
 * **GitHub:** Para subir el proyecto y sus respectivos cambios y poder tener un lugar de trabajo conjunto nos hemos decantado por GitHub porque nos permite un historial completo de los cambios que va a realizar cada miembro a lo largo del tiempo, así como la facilidad de trabajar en paralelo mediante el uso de ramas y que los distintos commits del proyecto se guardarán en la nube por si hubiera algún problema en el desarrollo. También cabe destacar el uso de issues y el de pull requests que nos sirven para revisar distitos cambios antes de fusionarlos con la rama principal del proyecto.
+* **React:** Hemos elegido React para construir nuestras interfaces de usuario debido a que aunque sea una biblioteca de JavaScript es perfectamente utilizable en conjunto a TypeScript. React divide la interfaz de usuario en pqueños componentes reutilizables que facilitan el mantenimiento y escalabilidad del código. Además que al haber trabajado ya con JavaScript y HTML React es fácil de aprender y de usar.
+* **Docker:** Tecnología usada para desplegar el proyecto y todos sus distintos módulos en la web. Usamos docker ya que es el que se nos ha enseñado a utilizar en el laboratorio y además es un sistema portable que lo único que necesitamos es tener docker instalado para que funcione. Además de la eficiencia que nos permite empaquetar los contenedores en un período de tiempo razonable.
 
 === Herramientas de apoyo
 
 * **Visual Studio Code:** Es el IDE que hemos usado los miembros del equipo por defecto ya que es un entorno con el que estamos familiarizados y que además contiene todos los mecanismos que necesitamos para trabajar con el proyecto y entre nosotros en el repositorio remoto.
 * **Draw.io:** A la hora de crear diagramas como los de bloques nos hemos decantado por esta herramienta online, debido a su facilidad de uso y varios tipos de plantillas para crear diagramas así como que es totalmente gratuita.
+* **PlantUML:** También para los diagramas hemos usado esta herramienta. Es totalmente gratuita y funciona escribiendo el diagrama UML en formato de texto y generándolo después en formato gráfico.
 
 
 ifdef::arc42help[]
