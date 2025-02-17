@@ -66,7 +66,7 @@ image::DiagramaDeClases.png[width=600,align="center"]
 | Nombre    | Descripción
 
 |Usuario
-|El usuario de la aplicación podrá acceder a un historial donde se guarden los datos de sus partidas anteriores así como poder jugar la cantidad de juegos que el usuario vea necesario.
+|El usuario de la aplicación podrá acceder a un historial donde se guarden los datos de sus partidas anteriores, así como poder jugar la cantidad de juegos que el usuario vea necesario.
 
 |Historial
 |Contendrá tanto las preguntas falladas y acertadas de su usuario, como el número de juegos que ha jugado y los distintos tiempos que ha tardado en completar cada juego en segundos.
@@ -83,23 +83,21 @@ image::DiagramaDeClases.png[width=600,align="center"]
 
 La aplicación contará con un sistema de registro e inicio de sesión con contraseña que se almacenará encriptada en la base de datos para mayor privacidad del usuario. En el sistema de logueo se requerirá la doble autentificación de la contraseña y comprobar que ambos campos coincidan.
 
-...
-
 === Interfaz de Usuario
 
 **Uso de ayuda:** Nuestra interfaz de usuario contará con menús de ayuda para que los usuarios puedan acceder a ellos si se sienten perdidos o no entienden algo del funcionamiento de la aplicación. Estos menús estarán disponibles en todo momento y en la parte superior de la pantalla.
 
-**Usabilidad:** El juego tendrá un formato parecido al de saber y ganar, ya que es el formato más cómodo para los usuarios y el más fidedigno a la vida real. Esto lo hacemos así debido a que es mucho mejor que el usuario sepa ya de antemano al ver l ainterfaz de usuario que es un juego de tipo "concurso de la tele" que experimentar con cosas raras y que el usuario se vea abrumado por la novedad.
+**Usabilidad:** El juego tendrá un formato parecido al de saber y ganar, ya que es el formato más cómodo para los usuarios y el más fidedigno a la vida real. Esto lo hacemos así debido a que es mucho mejor que el usuario sepa ya de antemano al ver la interfaz de usuario que es un juego de tipo "concurso de la tele" que experimentar con cosas raras y que el usuario se vea abrumado por la novedad.
 
 **Interacción en tiempo real: El usuario podrá ver si ha acertado o no la pregunta al momento de su respuesta, ya que esto es lo más amigable para el usuario y así puede llevar un conteo de las preguntas que ha respondido correctamente.**
 
 === Arquitectura
 
-Para la aquitectura inicial contamos con una aplicación divida en microservicios que engloban y encapsulan las distintas funcionalidades de la aplicación, esta es una buena manera de simplificar la creación y la gestión de una aplicación complej, ya que cada funcionalidad es realizada por sistemas independientes. Algunos ejemplos de estos microservicios puede ser el de Gestión de Usuarios que se encarga del registro, el inicio de sesión y todo lo relacionado con el usuario en la aplicación.
+Para la arquitectura inicial contamos con una aplicación divida en microservicios que engloban y encapsulan las distintas funcionalidades de la aplicación, esta es una buena manera de simplificar la creación y la gestión de una aplicación compleja, ya que cada funcionalidad es realizada por sistemas independientes. Algunos ejemplos de estos microservicios pueden ser el de Gestión de Usuarios que se encarga del registro, el inicio de sesión y todo lo relacionado con el usuario en la aplicación.
  
 
 === Procesos de Desarrollo
 
 * **Testing:** Se realizan pruebas unitarias relacionadas con cada funcionalidad del proyecto para asegurar su correcto funcionamiento.
-* **Deployment:** Es el proceso de poner en funcionamiento la aplicación para que se pueda ejecutar y acceder a ella. Para realizar el deplyment utilizamos docker para construir las imagenes de los servicios y subirlas al repositorio.
+* **Deployment:** Es el proceso de poner en funcionamiento la aplicación para que se pueda ejecutar y acceder a ella. Para realizar el deployment utilizamos Docker para construir las imágenes de los servicios y subirlas al repositorio.
  
