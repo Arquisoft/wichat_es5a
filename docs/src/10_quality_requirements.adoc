@@ -1,6 +1,6 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
-[[section-quality-scenarios]]
+[[Escenarios]]
 == Quality Requirements
 
 
@@ -27,7 +27,15 @@ See https://docs.arc42.org/section-10/[Quality Requirements] in the arc42 docume
 ****
 endif::arc42help[]
 
-=== Quality Tree
+=== Arbol de atributos de calidad
+
+image::DiagramaAtributosCalidad.png["Diagrama de despliegue"]
+
+
+El siguiente Quality Tree representa visualmente los objetivos de calidad de la aplicación,
+refinados en distintas categorías. Este árbol facilita la organización y priorización de los
+atributos más relevantes para la arquitectura del sistema.
+Este tiene como raiz el atributo "Calidad" mientras que el resto de atributos son ramas.
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -36,8 +44,10 @@ ifdef::arc42help[]
 The quality tree (as defined in ATAM – Architecture Tradeoff Analysis Method) with quality/evaluation scenarios as leafs.
 
 .Motivation
-The tree structure with priorities provides an overview for a sometimes large number of quality requirements.
-
+Dado que los requisitos de calidad influyen en muchas de las decisiones arquitectónicas,
+ es fundamental identificar qué aspectos son prioritarios para cada uno de los stakeholders del sistema. 
+ En esta sección se detallan los requisitos de calidad más relevantes, incluyendo aquellos que,
+  aunque de menor prioridad, pueden impactar en el rendimiento o escalabilidad del sistema.
 .Form
 The quality tree is a high-level overview of the quality goals and requirements:
 
@@ -50,7 +60,17 @@ In any case the tree should include links to the scenarios of the following sect
 ****
 endif::arc42help[]
 
-=== Quality Scenarios
+=== Escenarios
+[options="header", cols="1,2,1"]
+|===
+| Atributo de Calidad | Escenario | Prioridad
+| **Portabilidad** | La aplicación debe poder ejecutarse en diferentes navegadores y dispositivos sin pérdida de funcionalidad. | Media
+| **Disponibilidad** | El sistema debe estar disponible y accesible el 99% del tiempo. | Alta
+| **Mantenibilidad** | El código debe ser modular y seguir buenas prácticas para facilitar futuras modificaciones y correcciones de errores. | Alta
+| **Rendimiento** | El sistema debe procesar las solicitudes de los usuarios en el menor tiempo posible. | Alta,Media
+| **Seguridad** | Los datos de los usuarios deben estar resguardados y el acceso debe estar restringido mediante autenticación segura. | Alta
+| **Usabilidad** | La interfaz debe ser intuitiva y fácil de usar,permitiendo a los usarios hacer acciones como loguearse,registrarse... en el menor tiempo posible. | Media
+|===
 
 ifdef::arc42help[]
 [role="arc42help"]
