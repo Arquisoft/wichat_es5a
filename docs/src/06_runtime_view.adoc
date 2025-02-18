@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-runtime-view]]
-== Runtime View
+== Vista de ejecución
 
 
 ifdef::arc42help[]
@@ -39,90 +39,89 @@ See https://docs.arc42.org/section-6/[Runtime View] in the arc42 documentation.
 ****
 endif::arc42help[]
 
-=== User registration
+=== Registrar usuario
 
 
 
-* _A user is registered to be able to play_
-* _After being registered, the user can sign in whenever it wants_
-* _A username and a password will be needed to be registered_
+* _Para poder jugar un usuario debe estar registrado_
+* _Para registrarse se necesita un nombre de usuario y una contraseña_
 
 [plantuml,"User registration diagram",png]
 ----
 
-actor User
+actor Usuario
 participant "GatewayService" as GS
 participant "UserService" as US
-database "DataBase" as DB
+database "Base de datos" as DB
 
-User -> GS: Enter username and password
-GS -> US: POST /adduser with username and password
-US -> US: Validate required fields
-US -> US: Encrypt password
-US -> DB: Save user in the database
-DB -> US: Storage confirmation
-US -> GS: User created confirmation
-GS -> User: Display user registration success
+Usuario -> GS: Introducir nombre y contraseña
+GS -> US: POST /adduser con el nombre y contraseña
+US -> US: Validar los datos requeridos
+US -> US: Encriptar contraseña
+US -> DB: Guardar usuario en la base de datos
+DB -> US: Confirmación de almacenamiento
+US -> GS: Confirmación de registro
+GS -> Usuario: Mostrar confirmación de registro exitoso
 
 ----
 
-=== Log in
+=== Inicio de sesión
 
-* _A user logs in to play_
-* _The user must enter an existing username, with the correct password_
+* _Un usuario ya registrado inicia sesión para poder jugar_
+* _El usuario debe introducr su nombre y contraseña correctos_
 
 [plantuml,"Log in diagram",png]
 ----
 
-actor User
+actor Usuario
 participant "GatewayService" as GS
 participant "AuthService" as AS
-database "Database" as DB
+database "Base de datos" as DB
 
-User -> GS: Enters username and password
-GS -> AS: POST /login with username and password
-AS -> AS: Validate required fields
-AS -> AS: Validate input format
-AS -> DB: Find user by username
-DB -> AS: Return user data
-AS -> AS: Compare password using bcrypt
-alt Valid password
-    AS -> GS: Return user data
-    GS -> User: Display authentication success
-else Invalid password
-    AS -> GS: Return error (Invalid credentials)
-    GS -> User: Display authentication error
+Usuario -> GS: Introducir nombre y contraseña
+GS -> AS: POST /login con el nombre y contraseña
+AS -> AS: Validar los datos requeridos
+AS -> AS: Validar formato de los datos
+AS -> DB: Buscar el usuario que trata de iniciar sesión
+DB -> AS: Datos del usuario
+AS -> AS: Comparar contraseña utilizando bcrypt
+alt Contraseña válida
+    AS -> GS: Datos del usuario
+    GS -> Usuario: Mostrar confirmación de inicio de sesión
+else Contraseña inválida
+    AS -> GS: Devolver el error(credenciales inválidas)
+    GS -> Usuario: Mostrar el error de autenticación
 end
 
 ----
 
-=== Question generation for a game
+=== Generación de preguntas en una partida
 
-* _The questions required for the game so that the user can play are taken from wikidata_
+* _Las preguntas necesarias para el juego son sacadas de WikiData_
 
 [plantuml,"Play diagram",png]
 ----
 
-actor User
+actor Usuario
 participant "GatewayService" as GS
-participant "GameService" as Game
+participant "WikiService" as WS
 participant "WikiData" as WD
-database "DataBase" as DB
+database "Base de datos" as DB
 
-User -> GS: Start a game
-loop Question generation
-    GS -> Game: Asks for a question
-    Game -> WD: Asks for a question
-    WD -> Game: Question info
-    Game -> GS: Question options and photo
-    GS -> User: Question options and photo
-    User -> GS: Answer to the question
-    GS -> Game: Corroborate the answer
-    Game -> GS: Answer result
-    GS -> User: Display result
+Usuario -> GS: Comenzar partida
+loop Generación de preguntas
+    GS -> WS: Pedir una pregunta
+    WS -> WD: Pedir una pregunta
+    WD -> WS: Devolver información de la pregunta
+    WS -> GS: Devolver opciones y foto de la pregunta
+    GS -> Usuario: Mostrar opciones y foto de la pregunta
+    Usuario -> GS: Responder a la pregunta
+    GS -> WS: Corroborar respuesta
+    WS -> GS: Devolver resultado de la pregunta
+    GS -> Usuario: Mostrar resultado de la pregunta
 end
-Game -> DB: Store final results
-Game -> GS: Final results
-GS -> User: Display final results
+WS -> DB: Almacenar los resultados finales
+WS -> GS: Devolver los resultados finales
+GS -> Usuario: Mostrar los resultados finales
 
 ----
