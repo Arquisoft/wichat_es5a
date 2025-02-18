@@ -128,11 +128,15 @@ frame "Azure_Cloud" {
 [Gemini_API]
 () "Usuario"
 () "Usuario_API"
-Usuario ..> WIChat : HTTPS
+Usuario ..> Gateway_service : HTTPS
+Gateway_service --> Question_service
+Gateway_service --> Auth_service
+Gateway_service --> User_service
+Gateway_service --> WIChat_API
 Question_service ..> WikiData_API : HTTP/REST
 Question_service ..> Gemini_API : Google Cloud
 Auth_service ..> User_data : Mongoose
-User_data ..> User_service : Mongoose
+User_service ..> User_data  : Mongoose
 Question_service ..> Question_data : Mongoose
 Usuario_API ..> WIChat_API : HTTPS
 ----
