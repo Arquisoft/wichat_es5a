@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-technical-risks]]
-== Risks and Technical Debts
+== Riesgos y Deuda Técnica
 
 
 ifdef::arc42help[]
@@ -25,3 +25,33 @@ See https://docs.arc42.org/section-11/[Risks and Technical Debt] in the arc42 do
 
 ****
 endif::arc42help[]
+
+=== Riesgos
+
+A continuación se expresan algunos riesgos encontrados que suponen un peligro al desarrollo del proyecto y pueden retrasarlo o mermar su calidad.
+
+[options="header",cols="1,2,2"]
+|===
+|Riesgo|Descripción|Mitigación
+
+|Poco o nulo conocimiento de las tecnologías usadas|Varias de las tecnologías usadas en el proyecto son nuevas para el equipo de desarrollo, lo que puede llevar a mal uso de estas y un código deficiente.|Tratar de informarse bien de estas tecnologías mediante documentación, tutoriales u otras herramientas externas.
+|Poca experiencia en gestión de proyectos|Al ser uno de los primeros proyectos a mayor escala hecho por los desarrolladores, la gestión, decisiones y desarrollo del proyecto puede no ser el mejor posible.|Identificar los riesgos de proyectos pasados y escuchar las experiencias de compañeros y los consejos de los profesores puede ayudar a evitar los errores más comunes y encaminar el proyecto.
+|Trabajo en equipo deficiente|La falta de experiencia en proyectos puede llevar a un trabajo en equipo no muy favorable, ya sea por falta de comunicación, falta de organización o reparto ineficiente de las tareas.|Promover la comunicació, ayuda y cooperación entre los miembros del equipo.
+|Uso ineficiente del control de versiones|Aunque GitHub no es una tecnología nueva, contiene muchas funciones complejas y nuevas que aunque resultan útiles, pueden causar confusión.|Informarse de las posibilidades que ofrece GitHub y promover un buen uso de este.
+|Fechas de entregas|Debido a las estrictas fechas de entrega, puede llevar a prisa en las entregas y atajos poco recomendables.|Llevar un registro constante del trabajo realizado y promover el trabajo constante semana a semana.
+|Abandono de miembros del equipo|Alguno de los miembros del grupo puede abandonar el proyecto, perjudicando el ritmo del desarrollo y dejando tareas desasignadas.|Minimizar el "factor del autobús", revisando el trabajo de otros compañeros y asignando el trabajo a varios compañeros.
+|===
+
+=== Deuda Técnica
+
+Atajos o compromisos que se han tomado para acortar el tiempo de desarrollo o bajar la complejidad de la implementación.
+
+Debido a la etapa temprana del proyecto, no se ha acumulado excesiva deuda técnica. Sin embargo, con las decisiones que se tomen a lo largo del proyecto, la deuda técnica aumentará y este apartado se actualizará.
+
+[options="header",cols="1,3"]
+|===
+|Deuda Técnica|Descripción
+
+|Comienzo del desarrollo desde la base creada por los profesores|Usamos una base para el proyecto con varios microservicios ya incorporados y con algunas tecnologías ya usadas. Al ser código no desarrollado por el equipo, puede resultar en confusión e implementación deficiente.
+|Uso de TypeScript|Decidimos utilizar TypeScript gracias a su implementación de tipos y detección de errores en tiempo de compilación, sin embargo el proyecto base está implementado en JavaScript y no sabemos el impacto que puede tener esta decisión en relación con otros componentes.
+|===
