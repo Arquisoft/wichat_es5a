@@ -98,6 +98,11 @@ Para la arquitectura inicial contamos con una aplicación divida en microservici
 
 === Procesos de Desarrollo
 
-* **Testing:** Se realizan pruebas unitarias relacionadas con cada funcionalidad del proyecto para asegurar su correcto funcionamiento.
-* **Deployment:** Es el proceso de poner en funcionamiento la aplicación para que se pueda ejecutar y acceder a ella. Para realizar el deployment utilizamos Docker para construir las imágenes de los servicios y subirlas al repositorio.
+**Testing:** Se realizan pruebas unitarias relacionadas con cada funcionalidad del proyecto para asegurar su correcto funcionamiento.
+
+**Deployment:** Es el proceso de poner en funcionamiento la aplicación para que se pueda ejecutar y acceder a ella. Para realizar el deployment utilizamos Docker para construir las imágenes de los servicios y subirlas al repositorio.
  
+=== "Under-the-hood"
+**Persistencia:** Los datos de los usarios y su historial de partidas quedarán almacenados en una base de datos para asegurar su integridad y disponibilidad.
+
+**Extensibilidad:** La aplicación está diseñada para facilitar añadir nuevos contenidos y funcionalidades, esto lo conseguimos en gran parte gracias a la arquitectura basada en microservicios que dividen las funcionalidades en módulos independiente
