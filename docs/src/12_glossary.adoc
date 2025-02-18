@@ -44,4 +44,19 @@ endif::arc42help[]
 
 |Usabilidad
 |Facilidad con la que los usuarios pueden interactuar con una aplicación o sistema para lograr sus objetivos de manera eficiente, efectiva y satisfactoria.
+
+|GitHub
+|GitHub es una plataforma de desarrollo colaborativo para alojar proyectos utilizando el sistema de control de versiones Git.
+
+|Microservicios
+|Enfoque arquitectónico y organizativo para el desarrollo de software donde el software está compuesto por pequeños servicios independientes que se comunican a través de API bien definidas.
+
+|API
+|Conjunto de reglas o protocolos que permite a las aplicaciones informáticas comunicarse entre sí para intercambiar datos, características y funcionalidades.
+
+|JavaScript
+|Lenguaje de programación que los desarrolladores utilizan para hacer páginas web interactivas.
+
+|TypeScript
+|Lenguaje de programación que añade funcionalidad adicional a JavaScript.
 |===
