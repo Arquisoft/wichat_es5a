@@ -487,16 +487,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_interfaz_de_usuario">8.3. Interfaz de Usuario</a></li>
 <li><a href="#_arquitectura">8.4. Arquitectura</a></li>
 <li><a href="#_procesos_de_desarrollo">8.5. Procesos de Desarrollo</a></li>
+<li><a href="#_under_the_hood">8.6. "Under-the-hood"</a></li>
 </ul>
 </li>
-<li><a href="#section-design-decisions">9. Architecture Decisions</a></li>
+<li><a href="#section-design-decisions">9. Decisiones Arquitectónicas</a>
+<ul class="sectlevel2">
+<li><a href="#_motivación">9.1. Motivación</a></li>
+<li><a href="#_decisiones_claves">9.2. Decisiones Claves</a></li>
+</ul>
+</li>
 <li><a href="#section-quality-scenarios">10. Quality Requirements</a>
 <ul class="sectlevel2">
 <li><a href="#_quality_tree">10.1. Quality Tree</a></li>
 <li><a href="#_quality_scenarios">10.2. Quality Scenarios</a></li>
 </ul>
 </li>
-<li><a href="#section-technical-risks">11. Risks and Technical Debts</a></li>
+<li><a href="#section-technical-risks">11. Riesgos y Deuda Técnica</a>
+<ul class="sectlevel2">
+<li><a href="#_riesgos">11.1. Riesgos</a></li>
+<li><a href="#_deuda_técnica">11.2. Deuda Técnica</a></li>
+</ul>
+</li>
 <li><a href="#section-glossary">12. Glossary</a></li>
 </ul>
 </div>
@@ -990,7 +1001,7 @@ together with a mapping table showing the relationships between channels and inp
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="1242" height="530">
+<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="1022" height="608">
 </div>
 </div>
 <div class="paragraph">
@@ -1908,68 +1919,115 @@ on this list.</p>
 </div>
 <div class="sect2">
 <h3 id="_procesos_de_desarrollo">8.5. Procesos de Desarrollo</h3>
-<div class="ulist">
-<ul>
-<li>
+<div class="paragraph">
 <p><strong>Testing:</strong> Se realizan pruebas unitarias relacionadas con cada funcionalidad del proyecto para asegurar su correcto funcionamiento.</p>
-</li>
-<li>
+</div>
+<div class="paragraph">
 <p><strong>Deployment:</strong> Es el proceso de poner en funcionamiento la aplicación para que se pueda ejecutar y acceder a ella. Para realizar el deployment utilizamos Docker para construir las imágenes de los servicios y subirlas al repositorio.</p>
-</li>
-</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_under_the_hood">8.6. "Under-the-hood"</h3>
+<div class="paragraph">
+<p><strong>Persistencia:</strong> Los datos de los usarios y su historial de partidas quedarán almacenados en una base de datos para asegurar su integridad y disponibilidad.</p>
+</div>
+<div class="paragraph">
+<p><strong>Extensibilidad:</strong> La aplicación está diseñada para facilitar añadir nuevos contenidos y funcionalidades, esto lo conseguimos en gran parte gracias a la arquitectura basada en microservicios que dividen las funcionalidades en módulos independiente</p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-design-decisions">9. Architecture Decisions</h2>
+<h2 id="section-design-decisions">9. Decisiones Arquitectónicas</h2>
 <div class="sectionbody">
-<div class="sidebarblock arc42help">
-<div class="content">
+<div class="sect2">
+<h3 id="_motivación">9.1. Motivación</h3>
 <div class="paragraph">
-<div class="title">Contents</div>
-<p>Important, expensive, large scale or risky architecture decisions including rationales.
-With "decisions" we mean selecting one alternative based on given criteria.</p>
+<p>Las decisiones arquitectónicas de WIChat han sido tomadas con el objetivo de garantizar que la aplicación sea escalable, modular, segura y fácil de mantener. Dado que WIChat es una aplicación web interactiva que integra varias tecnologías y servicios externos, es fundamental que su arquitectura facilite tanto el desarrollo como el despliegue y la futura evolución del sistema.</p>
 </div>
-<div class="paragraph">
-<p>Please use your judgement to decide whether an architectural decision should be documented
-here in this central section or whether you better document it locally
-(e.g. within the white box template of one building block).</p>
 </div>
+<div class="sect2">
+<h3 id="_decisiones_claves">9.2. Decisiones Claves</h3>
+<div class="sect3">
+<h4 id="_arquitectura_basada_en_microservicios">9.2.1. Arquitectura Basada en Microservicios</h4>
 <div class="paragraph">
-<p>Avoid redundancy.
-Refer to section 4, where you already captured the most important decisions of your architecture.</p>
+<p><strong>Motivación:</strong>
+Se ha optado por una arquitectura basada en microservicios para dividir la aplicación en módulos independientes que puedan gestionarse y escalarse de manera separada. Esta decisión se tomó considerando la complejidad de la aplicación y la necesidad de hacerla flexible ante futuras ampliaciones.</p>
 </div>
 <div class="paragraph">
-<div class="title">Motivation</div>
-<p>Stakeholders of your system should be able to comprehend and retrace your decisions.</p>
+<p><strong>Consecuencias:</strong>
+Cada funcionalidad clave del sistema (autenticación, gestión de usuarios, generación de preguntas, etc.) está encapsulada en un servicio independiente, lo que facilita su mantenimiento y evolución.
+Se puede escalar individualmente cada servicio según su demanda, optimizando el uso de recursos.
+Se introduce la necesidad de gestionar la comunicación entre servicios, lo que aumenta la complejidad del sistema en comparación con una arquitectura monolítica.
+Se requiere un Gateway Service para orquestar las llamadas entre servicios y gestionar aspectos como autenticación y seguridad.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_uso_de_react_para_la_interfaz_de_usuario">9.2.2. Uso de React para la Interfaz de Usuario</h4>
+<div class="paragraph">
+<p><strong>Motivación:</strong>
+Para la interfaz de usuario, se ha decidido utilizar React debido a su capacidad de construir aplicaciones web dinámicas y modulares. Al ser una biblioteca ampliamente utilizada en el desarrollo frontend, permite aprovechar su ecosistema y herramientas para mejorar la experiencia de usuario.</p>
 </div>
 <div class="paragraph">
-<div class="title">Form</div>
-<p>Various options:</p>
+<p><strong>Consecuencias:</strong>
+React permite dividir la interfaz en componentes reutilizables, lo que facilita el mantenimiento y la evolución del sistema.
+La aplicación puede ofrecer una experiencia fluida gracias a su modelo de renderizado eficiente.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>ADR (<a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">Documenting Architecture Decisions</a>) for every important decision</p>
-</li>
-<li>
-<p>List or table, ordered by importance and consequences or:</p>
-</li>
-<li>
-<p>more detailed in form of separate sections per decision</p>
-</li>
-</ul>
+</div>
+<div class="sect3">
+<h4 id="_base_de_datos_en_mongodb">9.2.3. Base de Datos en MongoDB</h4>
+<div class="paragraph">
+<p><strong>Motivación:</strong>
+Para el almacenamiento de datos, se ha elegido MongoDB por su flexibilidad y capacidad de manejar información semiestructurada sin necesidad de definir un esquema rígido. Esto resulta ideal para gestionar datos de usuarios, preguntas generadas dinámicamente y registros históricos de partidas.</p>
 </div>
 <div class="paragraph">
-<div class="title">Further Information</div>
-<p>See <a href="https://docs.arc42.org/section-9/">Architecture Decisions</a> in the arc42 documentation.
-There you will find links and examples about ADR.</p>
+<p><strong>Consecuencias:</strong>
+Se pueden almacenar datos en un formato flexible, lo que facilita cambios futuros en la estructura de la base de datos.
+Se simplifica la escalabilidad, ya que MongoDB permite distribuir datos en múltiples servidores.
+Al ser una base de datos NoSQL, es necesario adoptar estrategias para mantener la consistencia y optimizar consultas.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_uso_de_docker_para_contenerización">9.2.4. Uso de Docker para Contenerización</h4>
+<div class="paragraph">
+<p><strong>Motivación:</strong>
+Para asegurar un entorno de desarrollo y producción consistente, se ha optado por contenerizar los servicios utilizando Docker. Esto permite desplegar la aplicación en cualquier servidor sin preocuparse por configuraciones específicas del sistema operativo.</p>
+</div>
+<div class="paragraph">
+<p><strong>Consecuencias:</strong>
+Cada microservicio se ejecuta en su propio contenedor, lo que facilita el despliegue y mantenimiento.
+Se mejora la portabilidad de la aplicación, ya que puede ejecutarse en distintos entornos sin cambios significativos.
+Se requiere gestionar adecuadamente los contenedores y la orquestación de servicios, lo que puede agregar complejidad al desarrollo y despliegue.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_integración_con_wikidata_y_un_modelo_de_lenguaje_llm">9.2.5. Integración con Wikidata y un Modelo de Lenguaje (LLM)</h4>
+<div class="paragraph">
+<p><strong>Motivación:</strong>
+Uno de los pilares de WIChat es la generación automática de preguntas basadas en información de Wikidata. Además, se ha integrado un modelo de lenguaje (LLM) para proporcionar pistas y mejorar la interacción con los usuarios.</p>
+</div>
+<div class="paragraph">
+<p><strong>Consecuencias:</strong>
+Se reduce la necesidad de intervención manual en la creación de preguntas, automatizando el proceso y permitiendo una mayor variedad de contenidos.
+Se introduce una dependencia con servicios externos, lo que puede afectar la disponibilidad y latencia del sistema en caso de problemas en estas APIs.
+Es necesario implementar mecanismos para validar y filtrar la información generada, evitando errores o inconsistencias en las preguntas y respuestas.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_seguridad_mediante_https_y_doble_autenticación">9.2.6. Seguridad mediante HTTPS y doble autenticación</h4>
+<div class="paragraph">
+<p><strong>Motivación:</strong>
+Dado que WIChat maneja información de usuarios, es esencial garantizar su seguridad. Para ello, todas las comunicaciones se realizan a través de HTTPS y se emplea doble factor para loguearse.</p>
+</div>
+<div class="paragraph">
+<p><strong>Consecuencias:</strong>
+Se protege la información personal de los usuarios mediante el cifrado de datos en tránsito.
+Se previenen accesos no autorizados mediante un sistema de doble autenticación.</p>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2074,7 +2132,7 @@ more precisely down to a level of scenarios that can be discussed and evaluated.
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-technical-risks">11. Risks and Technical Debts</h2>
+<h2 id="section-technical-risks">11. Riesgos y Deuda Técnica</h2>
 <div class="sectionbody">
 <div class="sidebarblock arc42help">
 <div class="content">
@@ -2099,7 +2157,90 @@ more precisely down to a level of scenarios that can be discussed and evaluated.
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_riesgos">11.1. Riesgos</h3>
+<div class="paragraph">
+<p>A continuación se expresan algunos riesgos encontrados que suponen un peligro al desarrollo del proyecto y pueden retrasarlo o mermar su calidad.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Riesgo</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+<th class="tableblock halign-left valign-top">Mitigación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Poco o nulo conocimiento de las tecnologías usadas</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Varias de las tecnologías usadas en el proyecto son nuevas para el equipo de desarrollo, lo que puede llevar a mal uso de estas y un código deficiente.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tratar de informarse bien de estas tecnologías mediante documentación, tutoriales u otras herramientas externas.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Poca experiencia en gestión de proyectos</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Al ser uno de los primeros proyectos a mayor escala hecho por los desarrolladores, la gestión, decisiones y desarrollo del proyecto puede no ser el mejor posible.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Identificar los riesgos de proyectos pasados y escuchar las experiencias de compañeros y los consejos de los profesores puede ayudar a evitar los errores más comunes y encaminar el proyecto.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trabajo en equipo deficiente</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La falta de experiencia en proyectos puede llevar a un trabajo en equipo no muy favorable, ya sea por falta de comunicación, falta de organización o reparto ineficiente de las tareas.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Promover la comunicación, ayuda y cooperación entre los miembros del equipo.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uso ineficiente del control de versiones</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aunque GitHub no es una tecnología nueva, contiene muchas funciones complejas y nuevas que aunque resultan útiles, pueden causar confusión.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Informarse de las posibilidades que ofrece GitHub y promover un buen uso de este.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fechas de entregas</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Debido a las estrictas fechas de entrega, puede llevar a prisa en las entregas y atajos poco recomendables.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Llevar un registro constante del trabajo realizado y promover el trabajo constante semana a semana.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Abandono de miembros del equipo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alguno de los miembros del grupo puede abandonar el proyecto, perjudicando el ritmo del desarrollo y dejando tareas desasignadas.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minimizar el "factor del autobús", revisando el trabajo de otros compañeros y asignando el trabajo a varios compañeros.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_deuda_técnica">11.2. Deuda Técnica</h3>
+<div class="paragraph">
+<p>Atajos o compromisos que se han tomado para acortar el tiempo de desarrollo o bajar la complejidad de la implementación.</p>
+</div>
+<div class="paragraph">
+<p>Debido a la etapa temprana del proyecto, no se ha acumulado excesiva deuda técnica. Sin embargo, con las decisiones que se tomen a lo largo del proyecto, la deuda técnica aumentará y este apartado se actualizará.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Deuda Técnica</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Comienzo del desarrollo desde la base creada por los profesores</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Usamos una base para el proyecto con varios microservicios ya incorporados y con algunas tecnologías ya usadas. Al ser código no desarrollado por el equipo, puede resultar en confusión e implementación deficiente.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uso de TypeScript</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Decidimos utilizar TypeScript gracias a su implementación de tipos y detección de errores en tiempo de compilación, sin embargo el proyecto base está implementado en JavaScript y no sabemos el impacto que puede tener esta decisión en relación con otros componentes.</p></td>
+</tr>
+</tbody>
+</table>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2164,6 +2305,26 @@ more precisely down to a level of scenarios that can be discussed and evaluated.
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Usabilidad</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Facilidad con la que los usuarios pueden interactuar con una aplicación o sistema para lograr sus objetivos de manera eficiente, efectiva y satisfactoria.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>GitHub</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>GitHub es una plataforma de desarrollo colaborativo para alojar proyectos utilizando el sistema de control de versiones Git.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Microservicios</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Enfoque arquitectónico y organizativo para el desarrollo de software donde el software está compuesto por pequeños servicios independientes que se comunican a través de API bien definidas.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>API</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Conjunto de reglas o protocolos que permite a las aplicaciones informáticas comunicarse entre sí para intercambiar datos, características y funcionalidades.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>JavaScript</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Lenguaje de programación que los desarrolladores utilizan para hacer páginas web interactivas.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>TypeScript</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Lenguaje de programación que añade funcionalidad adicional a JavaScript.</em></p></td>
 </tr>
 </tbody>
 </table>
