@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-architecture-constraints]]
-== Architecture Constraints
+== Restricciones de la arquitectura
 
 
 ifdef::arc42help[]
@@ -41,9 +41,8 @@ Restricciones de negocio::
 
 Restricciones técnicas::
 
-* **Tecnologías:** El sistema deberá de contar con un frontend web accesible (mostrará las imágenes y respuestas, además del sistema de pistas que permitirá a los usuarios obtener pistas sobre las imágenes) y una API documentada (permitirá acceder a la información de las preguntas generadas).
+* **Estructura:** El sistema deberá de contar con un frontend web accesible (mostrará las imágenes y respuestas, además del sistema de pistas que permitirá a los usuarios obtener pistas sobre las imágenes) y una API documentada (permitirá acceder a la información de las preguntas generadas).
 * **Infraestructura:** La aplicación debe estar desplegada y accesible a través de la web.
-* **Rendimiento:** Las preguntas deberán responderse en un plazo de tiempo determinado.
 * **Generación de contenido:** Las preguntas, respuestas y pistas deben generarse automáticamente a partir de datos de Wikidata. Dichas preguntas deberán tener una respuesta correcta y varias distractoras, todas ellas generadas automáticamente por Wikidata.
 * **Integración con un LLM:** Se utilizará un modelo de lenguaje externo para generar pistas conversacionales (se debe mitigar la generación de respuestas incorrectas o alucinaciones).
 
