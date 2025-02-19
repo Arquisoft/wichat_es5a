@@ -452,7 +452,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_stakeholders">1.3. Stakeholders</a></li>
 </ul>
 </li>
-<li><a href="#section-architecture-constraints">2. Architecture Constraints</a></li>
+<li><a href="#section-architecture-constraints">2. Restricciones de la arquitectura</a>
+<ul class="sectlevel2">
+<li><a href="#_motivación">2.1. Motivación</a></li>
+</ul>
+</li>
 <li><a href="#section-context-and-scope">3. Contexto y alcance</a>
 <ul class="sectlevel2">
 <li><a href="#_contexto_de_negocio">3.1. Contexto de negocio</a></li>
@@ -492,11 +496,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#section-design-decisions">9. Decisiones Arquitectónicas</a>
 <ul class="sectlevel2">
-<li><a href="#_motivación">9.1. Motivación</a></li>
+<li><a href="#_motivación_2">9.1. Motivación</a></li>
 <li><a href="#_decisiones_claves">9.2. Decisiones Claves</a></li>
 </ul>
 </li>
-<li><a href="#section-quality-scenarios">10. Quality Requirements</a>
+<li><a href="#section-quality-scenarios">10. Requisitos de calidad</a>
 <ul class="sectlevel2">
 <li><a href="#_quality_tree">10.1. Quality Tree</a></li>
 <li><a href="#_quality_scenarios">10.2. Quality Scenarios</a></li>
@@ -861,7 +865,7 @@ These stakeholders determine the extent and the level of detail of your work and
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-architecture-constraints">2. Architecture Constraints</h2>
+<h2 id="section-architecture-constraints">2. Restricciones de la arquitectura</h2>
 <div class="sectionbody">
 <div class="sidebarblock arc42help">
 <div class="content">
@@ -887,7 +891,62 @@ conventions (e.g. programming or versioning guidelines, documentation or naming 
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_motivación">2.1. Motivación</h3>
+<div class="paragraph">
+<p>Es fundamental que los arquitectos de software sean capaces de distinguir dónde tienen libertad de decisión y dónde deben cumplir con ciertas restricciones.</p>
+</div>
+<div class="paragraph">
+<p>Por ello, en este punto de la documentación se recoge cualquier requisito que limiten la libertad de los arquitectos de software en sus decisiones de diseño, implementación o en el proceso de desarrollo.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Restricciones de negocio</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Plazos de entrega:</strong> El sistema debe estar operativo en un tiempo limitado para cumplir con el contrato con RTVE.</p>
+</li>
+<li>
+<p><strong>Presupuesto:</strong> Se debe trabajar dentro de un presupuesto fijo acordado con RTVE.</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">Restricciones técnicas</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Estructura:</strong> El sistema deberá de contar con un frontend web accesible (mostrará las imágenes y respuestas, además del sistema de pistas que permitirá a los usuarios obtener pistas sobre las imágenes) y una API documentada (permitirá acceder a la información de las preguntas generadas).</p>
+</li>
+<li>
+<p><strong>Infraestructura:</strong> La aplicación debe estar desplegada y accesible a través de la web.</p>
+</li>
+<li>
+<p><strong>Generación de contenido:</strong> Las preguntas, respuestas y pistas deben generarse automáticamente a partir de datos de Wikidata. Dichas preguntas deberán tener una respuesta correcta y varias distractoras, todas ellas generadas automáticamente por Wikidata.</p>
+</li>
+<li>
+<p><strong>Integración con un LLM:</strong> Se utilizará un modelo de lenguaje externo para generar pistas conversacionales (se debe mitigar la generación de respuestas incorrectas o alucinaciones).</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">Restricciones de dependencias</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Disponibilidad de APIs externas:</strong> Dependencia de Wikidata y del LLM, que pueden tener tiempos de respuesta o restricciones de uso.</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1942,7 +2001,7 @@ on this list.</p>
 <h2 id="section-design-decisions">9. Decisiones Arquitectónicas</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_motivación">9.1. Motivación</h3>
+<h3 id="_motivación_2">9.1. Motivación</h3>
 <div class="paragraph">
 <p>Las decisiones arquitectónicas de WIChat han sido tomadas con el objetivo de garantizar que la aplicación sea escalable, modular, segura y fácil de mantener. Dado que WIChat es una aplicación web interactiva que integra varias tecnologías y servicios externos, es fundamental que su arquitectura facilite tanto el desarrollo como el despliegue y la futura evolución del sistema.</p>
 </div>
@@ -2031,7 +2090,7 @@ Se previenen accesos no autorizados mediante un sistema de doble autenticación.
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-quality-scenarios">10. Quality Requirements</h2>
+<h2 id="section-quality-scenarios">10. Requisitos de calidad</h2>
 <div class="sectionbody">
 <div class="sidebarblock arc42help">
 <div class="content">
@@ -2086,6 +2145,11 @@ concrete and measurable.</p>
 </div>
 </div>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/arbol-calidad.png" alt="Árbol de atributos de calidad">
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_quality_scenarios">10.2. Quality Scenarios</h3>
@@ -2127,7 +2191,82 @@ more precisely down to a level of scenarios that can be discussed and evaluated.
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_usabilidad_y_experiencia_de_usuario">10.2.1. Usabilidad y experiencia de usuario</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Interactividad fluida:
+La aplicación debe ser intuitiva y fácil de usar, es decir, los usuarios deben poder navegar entre preguntas, acceder a pistas y responder sin dificultades. El tiempo de respuesta del sistema debe ser bajo para evitar frustración.</p>
+</li>
+<li>
+<p>Accesibilidad y diseño web:
+El sistema debe ser totalmente accesible desde la web.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rendimiento">10.2.2. Rendimiento</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Tiempo de respuesta:
+El tiempo para obtener pistas, preguntas y procesar las respuestas debe ser mínimo. Con esto nos referimos a las consultas a APIs externas para la obtención de información de Wikidata y la generación de respuestas o pistas por parte del LLM.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_seguridad_2">10.2.3. Seguridad</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Protección de la información del usuario:
+El sistema debe garantizar la seguridad de los datos personales de los usuarios relacionados con el histórico de su participación en el sistema.</p>
+</li>
+<li>
+<p>Autenticación y autorización:
+El acceso a funcionalidades de usuario como consultar el número de juegos, preguntas acertadas/falladas… debe estar protegido mediante autenticación segura.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_mantenibilidad">10.2.4. Mantenibilidad</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Código limpio y documentado:
+El código fuente debe ser legible, bien estructurado y documentado para facilitar su mantenimiento y extensión. La calidad del código será evaluada mediante revisiones periódicas y el uso de herramientas de análisis estático de código.</p>
+</li>
+<li>
+<p>Actualizaciones y despliegues continuos:
+La aplicación debe seguir un ciclo de vida de desarrollo ágil, con integración y despliegue continuos (CI/CD), permitiendo que las nuevas funcionalidades y correcciones sean implementadas de manera fluida y sin afectar a los usuarios finales.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pruebas_y_calidad_del_software">10.2.5. Pruebas y calidad del software</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Cobertura de pruebas:
+El sistema debe contar con un conjunto completo de pruebas unitarias e integración.</p>
+</li>
+<li>
+<p>Pruebas de aceptación:
+Se deben realizar pruebas de aceptación (end-to-end).</p>
+</li>
+<li>
+<p>Pruebas de carga:
+El sistema debe someterse a pruebas de carga.</p>
+</li>
+</ul>
+</div>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 </div>
