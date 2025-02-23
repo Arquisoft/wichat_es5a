@@ -136,6 +136,20 @@ endif::arc42help[]
 |Modificabilidad|El sistema debe ser fácil de cambiar y de añadir nuevas funcionalidades para facilitar futuras actualizaciones.
 |===
 
+Sabiendo los atributos de calidad más relevantes, podemos definir unos requisitos no funcionales adecuados.
+
+**Requisitos no funcionales:**
+
+. El tiempo de aprendizaje de un nuevo usuario debe ser menor a 1 hora.
+. El sistema será compatible con Windows, iOS y Linux.
+. La aplicación deberá funcionar en navegadores web estándar, asegurando la compatibilidad con versiones recientes de Chrome, Firefox, Safari y Edge.
+. El sistema debe ser capaz de operar adecuadamente con hasta 1000 usuarios con sesiones concurrentes.
+. El tiempo para iniciar o reiniciar el sistema no podrá ser mayor a 1 minuto.
+. El sistema debe emplear Wikidata para construir las preguntas.
+. El sistema debe emplear un LLM para formular pistas para el usuario.
+. El tiempo en generar las preguntas de un concurso no debe ser mayor a 20 segundos.
+
+
 === Stakeholders
 
 ifdef::arc42help[]
