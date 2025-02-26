@@ -1,16 +1,17 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
+import { Container, Typography, TextField, Button, Snackbar, Box, Fab } from '@mui/material';
 import { Typewriter } from "react-simple-typewriter";
+import AddIcon from '@mui/icons-material/Add'; // Importa un icono para el botón
+import { Octicons } from '@primer/octicons-react'; // Importa Octicons si es de @primer/octicons-react
+import { TouchableOpacity } from 'react-native';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loginSuccess, setLoginSuccess] = useState(false);
-  const [createdAt, setCreatedAt] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
@@ -20,20 +21,9 @@ const Login = () => {
     try {
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
 
-      const question = "Please, generate a greeting message for a student called " + username + " that is a student of the Software Architecture course in the University of Oviedo. Be nice and polite. Two to three sentences max.";
-      const model = "empathy"
-
-      if (apiKey==='None'){
-        setMessage("LLM API key is not set. Cannot contact the LLM.");
-      }
-      else{
-        const message = await axios.post(`${apiEndpoint}/askllm`, { question, model, apiKey })
-        setMessage(message.data.answer);
-      }
       // Extract data from the response
       const { createdAt: userCreatedAt } = response.data;
 
-      setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
 
       setOpenSnackbar(true);
@@ -50,15 +40,24 @@ const Login = () => {
     <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
       {loginSuccess ? (
         <div>
-          <Typewriter
-            words={[message]} // Pass your message as an array of strings
-            cursor
-            cursorStyle="|"
-            typeSpeed={50} // Typing speed in ms
-          />
-          <Typography component="p" variant="body1" sx={{ textAlign: 'center', marginTop: 2 }}>
-            Your account was created on {new Date(createdAt).toLocaleDateString()}.
+          <Typography component="h1" variant="h1" sx={{ textAlign: 'center', marginTop: 2 }}>
+            WICHAT
           </Typography>
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Button variant="contained" color="primary" >
+              Jugar
+            </Button>
+          </Box>
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Button variant="contained" color="primary" >
+              Perfil
+            </Button>
+          </Box>
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Button variant="contained" color="primary" >
+              Créditos
+            </Button>
+          </Box>
         </div>
       ) : (
         <div>
