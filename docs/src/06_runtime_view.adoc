@@ -88,6 +88,7 @@ AS -> AS: Comparar contraseña utilizando bcrypt
 alt Contraseña válida
     AS -> GS: Datos del usuario
     GS -> Usuario: Mostrar confirmación de inicio de sesión
+    GS -> Usuario: Pantalla principal del juego con datos del usuario
 else Contraseña inválida
     AS -> GS: Devolver el error(credenciales inválidas)
     GS -> Usuario: Mostrar el error de autenticación
