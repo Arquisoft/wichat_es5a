@@ -67,6 +67,16 @@ services:
       USER_SERVICE_URL: http://userservice:8001
       LLM_SERVICE_URL: http://llmservice:8003
 
+  wikiservice:
+    container_name: wikiservice-wichat_es5a
+    image: ghcr.io/arquisoft/wichat_es5a/wikiservice:latest
+    profiles: ["dev", "prod"]
+    build: ./wikiservice
+    ports:
+      - "8004:8004"
+    networks:
+      - mynetwork
+
   webapp:
     container_name: webapp-wichat_es5a
     image: ghcr.io/arquisoft/wichat_es5a/webapp:latest
