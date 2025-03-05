@@ -1,11 +1,9 @@
-// src/components/Login.js
+// filepath: /c:/Users/pablo/Desktop/UniOvi/2º Cuatri/ASW/Laboratorio/repo/wichat_es5a/webapp/src/components/login/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Button, Snackbar, Box, Fab } from '@mui/material';
-import { Typewriter } from "react-simple-typewriter";
-import AddIcon from '@mui/icons-material/Add'; // Importa un icono para el botón
-import { Octicons } from '@primer/octicons-react'; // Importa Octicons si es de @primer/octicons-react
-import { TouchableOpacity } from 'react-native';
+import { Container, Typography, TextField, Button, Snackbar, Box } from '@mui/material';
+import { useNavigate, Navigate, Link } from 'react-router-dom';
+import '../Components.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -13,20 +11,17 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const navigate = useNavigate();
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-  const apiKey = process.env.REACT_APP_LLM_API_KEY || 'None';
 
   const loginUser = async () => {
     try {
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
 
-      // Extract data from the response
-      const { createdAt: userCreatedAt } = response.data;
-
       setLoginSuccess(true);
-
       setOpenSnackbar(true);
+      navigate('/home'); // Redirige a la ruta /home después de un login exitoso
     } catch (error) {
       setError(error.response.data.error);
     }
@@ -37,56 +32,60 @@ const Login = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
+    <Container 
+      component="main" 
+      maxWidth={false} 
+      justifyContent="center">
       {loginSuccess ? (
-        <div>
-          <Typography component="h1" variant="h1" sx={{ textAlign: 'center', marginTop: 2 }}>
-            WICHAT
-          </Typography>
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Button variant="contained" color="primary" >
-              Jugar
-            </Button>
-          </Box>
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Button variant="contained" color="primary" >
-              Perfil
-            </Button>
-          </Box>
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Button variant="contained" color="primary" >
-              Créditos
-            </Button>
-          </Box>
-        </div>
+        <Navigate to="/home" replace />
       ) : (
-        <div>
-          <Typography component="h1" variant="h5">
-            Login
+        <Box sx={{ width: '100%', textAlign: 'center', marginTop: 4 }}>
+          <Typography component="h1" variant="h1" sx={{ color: "#167D7F", marginTop: 2 }}>
+            Inicia sesión
           </Typography>
           <TextField
             margin="normal"
-            fullWidth
-            label="Username"
+            label="Nombre de usuario"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            sx={{ width: '20%'}}
           />
+          <br></br>
           <TextField
             margin="normal"
-            fullWidth
-            label="Password"
+            label="Contraseña"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            sx={{ width: '20%'}}
           />
-          <Button variant="contained" color="primary" onClick={loginUser}>
+          <br></br>
+          <Button  
+            sx={{ 
+              backgroundColor: "#167D7F", 
+              color: "white", '&:hover': { backgroundColor: "#29A0B1" },
+              marginTop: 2,
+              width: '15%'
+            }}
+            onClick={loginUser}
+          >
             Login
           </Button>
+          <br></br>
+          <Link 
+            name="gotoaddUser"
+            component="button"
+            to={"/addUser"}
+            sx={{ color: "#167D7F", '&:hover': { color: "#29A0B1" }, marginTop: 2 }}
+          >
+            ¿No tienes una cuenta todavía? ¡Regístrate aquí!
+          </Link>
           <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Login successful" />
           {error && (
             <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
           )}
-        </div>
+        </Box>
+        
       )}
     </Container>
   );
