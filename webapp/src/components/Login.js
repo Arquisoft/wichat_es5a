@@ -12,6 +12,9 @@ const Login = () => {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [createdAt, setCreatedAt] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  
+  const [hint, setHint] = useState(0);
+  const [capital, setCapital] = useState('Paris');
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -19,7 +22,7 @@ const Login = () => {
     try {
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
 
-      const question = "Please, generate a greeting message for a student called " + username + " that is a student of the Software Architecture course in the University of Oviedo. Be nice and polite. Two to three sentences max.";
+      const question = "Porfavor, genera una pista breve para sin dar la respuesta para la siguiente pregunta: ¿Cuál es la ciudad mostrada en la imagen? (Siendo esta Paris).";
       const model = "empathy"
       const message = await axios.post(`${apiEndpoint}/askllm`, { question, model })
       setMessage(message.data.answer);
@@ -39,6 +42,22 @@ const Login = () => {
     setOpenSnackbar(false);
   };
 
+  const generateHint = () => {
+    if (hint === 0) {
+      setMessage("Porfavor, genera una pista breve sobre algún monumento que se encuentre en esta capital sin mencionar el país: " + capital);
+      setHint(hint + 1);
+    } else if (hint === 1) {
+      setMessage("Porfavor, genera una pista breve sobre alguna comida tradicional típica de esta capital: " + capital);
+      setHint(hint + 1);
+    } else if (hint === 2) {
+      setMessage("Porfavor, genera una pista breve sobre el lenguaje que se habla en esta capital: " + capital);
+      setHint(hint + 1);
+    } else if (hint === 3) {
+      setMessage("Porfavor, genera una pista breve sobre la primera letra de esta capital: " + capital);
+      setHint(0);
+    }
+  };
+
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
       {loginSuccess ? (
@@ -52,6 +71,9 @@ const Login = () => {
           <Typography component="p" variant="body1" sx={{ textAlign: 'center', marginTop: 2 }}>
             Your account was created on {new Date(createdAt).toLocaleDateString()}.
           </Typography>
+          <Button variant="contained" color="primary" onClick={generateHint}>
+            Generate Hint
+          </Button>
         </div>
       ) : (
         <div>
