@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const WikiQuery = require('./wikiQuery-query');
+const WikiQuery = require('./wiki-query');
 const mongoose = require('mongoose');
 
 const app = express();
