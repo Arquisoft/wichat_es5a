@@ -1,9 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const WikiQuery = require('./wikiQuery-query');
+const mongoose = require('mongoose');
 
 const app = express();
 const port = 8004;
+
+// Connect to MongoDB
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/userdb';
+mongoose.connect(mongoUri);
 
 const query = 'SELECT ?cityLabel ?image WHERE {' +
   '?city wdt:P31 wd:Q515. ?city wdt:P18 ?image.' +
