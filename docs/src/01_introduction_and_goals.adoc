@@ -62,19 +62,43 @@ Los usuarios pueden interactuar con un LLM que le brinde pistas y ayude al usuar
 **Requisitos de alto nivel:**
 
 . El sistema permitirá a los usuarios no registrados registrarse en la aplicación.
+.. El registro pedirá obligatoriamente a los usuarios:
+... Un nombre de usuario.
+... Una constraseña.
+.. Si el registro es exitoso, se guardará la información del usuario es base de datos.
+.. Si el registro NO es exitoso, notificará el fallo al usuario.
 . El sistema permitirá a los usuarios registrados autentificarse en la aplicación.
-. Los usuarios registrados podrán jugar "concursos" en los que responderán preguntas.
-.. Los "concursos" tiene un límite de tiempo indicado por un temporizador.
-.. Las preguntas y respuestas se deben generar automáticamente con informnación conseguida de WikiData.
+.. La autenticación pedirá obligatoriamente a los usuarios:
+... Un nombre de usuario.
+... Una contraseña.
+.. Si la autenticación es exitosa, se rederegirá al usuario registrado a la pantalla principal.
+.. Si la autenticación NO es exitosa, notificará el fallo al usuario.
+. Los usuarios registrados podrán jugar concursos en los que responderán preguntas.
+.. Los concursos tienen un total de 20 preguntas.
+.. Los concursos tiene un límite de tiempo indicado por un temporizador.
+... Si el usuario se queda sin tiempo, el concurso acaba inmediatamente.
+.. Las preguntas y respuestas se deben generar automáticamente con información conseguida de WikiData.
 ... Las preguntas deben incluir una imagen, un enunciado y varias respuestas incorrectas.
+... Los datos de la pregunta deben ser guardados en base de datos.
 .. Los usuarios registrados pueden interactuar con un LLM para conseguir pistas sobre la pregunta actual.
+.. Al acabar el concurso, se le mostrará al usuario información sobre el concurso.
+... Se mostrará cuantas preguntas han sido acertadas.
+... Se mostrará cuantas pistas se han usado.
+... Se mostrará cuanto tiempo se ha tardado en acabar el concurso.
 . Los usuarios registrados podrán consultar un histórico de su participación en el sistema con la siguiente información:
-.. Número de juegos.
-.. Preguntas acertadas y falladas.
-.. Tiempos.
+.. Número de concursos jugados.
+.. Preguntas acertadas y falladas en cada concurso.
+.. Tiempo de juego de cada concurso.
 . El sistema ofrecerá una API que permita obtener información sobre:
-.. Los usuarios registrados en la aplicación.
-.. Las preguntas generadas por la aplicación.
+.. Los usuarios registrados en la aplicación. Se puede obtener la siguiente información:
+... Su nombre de usuario.
+... Los concursos que han jugado.
+... Las preguntas acertadas y falladas en los concursos jugados.
+... Los tiempos de juego en los concursos jugados.
+.. Las preguntas generadas por la aplicación. Se puede obtener la siguiente información:
+... Enunciado de la pregunta.
+... Respuestas generadas, indicando cual es la correcta.
+... Imagen utilizada en la pregunta.
 
 La aplicación, debido a su enfoque para todos los públicos, debe tener un especial enfoque en la usabilidad. Debe ser fácil de usar y tener una curva de aprendizaje poco inclinada.
 
@@ -111,6 +135,20 @@ endif::arc42help[]
 |Interoperabilidad|WIChat tendrá una API con la que se puede obtener información relevante a los usuarios y las preguntas generadas. El sistema obtendrá información de WikiData y se comunicará con un LLM.
 |Modificabilidad|El sistema debe ser fácil de cambiar y de añadir nuevas funcionalidades para facilitar futuras actualizaciones.
 |===
+
+Sabiendo los atributos de calidad más relevantes, podemos definir unos requisitos no funcionales adecuados.
+
+**Requisitos no funcionales:**
+
+. El tiempo de aprendizaje de un nuevo usuario debe ser menor a 1 hora.
+. El sistema será compatible con Windows, iOS y Linux.
+. La aplicación deberá funcionar en navegadores web estándar, asegurando la compatibilidad con versiones recientes de Chrome, Firefox, Safari y Edge.
+. El sistema debe ser capaz de operar adecuadamente con hasta 1000 usuarios con sesiones concurrentes.
+. El tiempo para iniciar o reiniciar el sistema no podrá ser mayor a 1 minuto.
+. El sistema debe emplear Wikidata para construir las preguntas.
+. El sistema debe emplear un LLM para formular pistas para el usuario.
+. El tiempo en generar las preguntas de un concurso no debe ser mayor a 20 segundos.
+
 
 === Stakeholders
 

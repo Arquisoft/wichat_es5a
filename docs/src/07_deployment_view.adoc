@@ -2,122 +2,89 @@ ifndef::imagesdir[:imagesdir: images]
 
 [[section-deployment-view]]
 
-
-== Deployment View
+== Diagrama de Despliegue
 
 ifdef::arc42help[]
 [role="arc42help"]
 ****
 .Content
-The deployment view describes:
+Esta vista describe:
 
- 1. technical infrastructure used to execute your system, with infrastructure elements like geographical locations, environments, computers, processors, channels and net topologies as well as other infrastructure elements and
+1. La infraestructura técnica utilizada para ejecutar WIChat, con elementos como entornos, servidores, contenedores Docker, canales de comunicación y protocolos de red.
 
-2. mapping of (software) building blocks to that infrastructure elements.
+2. La asignación de los bloques de software a esta infraestructura.
 
-Often systems are executed in different environments, e.g. development environment, test environment, production environment. In such cases you should document all relevant environments.
+Dado que WIChat está compuesto por múltiples servicios y utiliza tecnologías externas, es crucial documentar su despliegue para garantizar su mantenimiento, escalabilidad y correcto funcionamiento.
 
-Especially document a deployment view if your software is executed as distributed system with more than one computer, processor, server or container or when you design and construct your own hardware processors and chips.
+.Motivación
 
-From a software perspective it is sufficient to capture only those elements of an infrastructure that are needed to show a deployment of your building blocks. Hardware architects can go beyond that and describe an infrastructure to any level of detail they need to capture.
+El software no puede ejecutarse sin infraestructura. Esta infraestructura subyacente afecta la arquitectura del sistema y conceptos transversales como seguridad y rendimiento. Es importante entender y documentar estos aspectos.
 
-.Motivation
+.Forma
 
-Software does not run without hardware.
-This underlying infrastructure can and will influence a system and/or some
-cross-cutting concepts. Therefore, there is a need to know the infrastructure.
-
-.Form
-
-Maybe a highest level deployment diagram is already contained in section 3.2. as
-technical context with your own infrastructure as ONE black box. In this section one can
-zoom into this black box using additional deployment diagrams:
-
-* UML offers deployment diagrams to express that view. Use it, probably with nested diagrams,
-when your infrastructure is more complex.
-* When your (hardware) stakeholders prefer other kinds of diagrams rather than a deployment diagram, let them use any kind that is able to show nodes and channels of the infrastructure.
-
+Se presenta un diagrama de despliegue que muestra los servicios dentro de contenedores Docker, las conexiones entre ellos y su interacción con bases de datos y servicios externos.
 
 .Further Information
 
-See https://docs.arc42.org/section-7/[Deployment View] in the arc42 documentation.
+Ver https://docs.arc42.org/section-7/[Deployment View] en la documentación de arc42.
 
 ****
 endif::arc42help[]
 
+image::07-diagramaDespliegue.png["Diagrama de Despliegue"]
 
+=== Motivación
+En WIChat, los usuarios interactúan a través de una interfaz web basada en React.  
+Esta aplicación se comunica con un backend desplegado en un servidor en **Azure**, donde cada componente funciona dentro de contenedores **Docker**.  
+El **Gateway Service** actúa como el núcleo del sistema, distribuyendo las solicitudes entre los servicios internos (**AuthService, UserService, QuestionService, HistoryService, WIChat_API,Wikidata API**) y servicios externos (**Gemini API y Wikidata**).  
+Los datos se almacenan en **MongoDB**, ejecutándose en un contenedor Docker en el mismo servidor.  
+El sistema garantiza la seguridad mediante conexiones **HTTPS** y autenticación con **API Keys**, mientras que la arquitectura basada en contenedores facilita la escalabilidad y modularidad.
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-Describe (usually in a combination of diagrams, tables, and text):
+=== Características de Calidad y Rendimiento
 
-* distribution of a system to multiple locations, environments, computers, processors, .., as well as physical connections between them
-* important justifications or motivations for this deployment structure
-* quality and/or performance features of this infrastructure
-* mapping of software artifacts to elements of this infrastructure
+* **Escalabilidad:** Cada servicio está encapsulado en un contenedor **Docker**, lo que permite escalar horizontalmente según la demanda.
+* **Seguridad:** Todas las comunicaciones se realizan mediante **HTTPS** y las interacciones con servicios externos requieren **API Keys**.
+* **Modularidad:** La separación de servicios en microservicios facilita el mantenimiento y la extensibilidad del sistema.
 
+=== Mapeo de Componentes a la Infraestructura
 
-
-For multiple environments or alternative deployments please copy and adapt this section of arc42 for all relevant environments.
-****
-endif::arc42help[]
-
-
-
-image::07-diagramaDespliegue.png["Diagrama de despliegue"]
-
-Motivación::
-En esta aplicación los usuarios interactúan a través de una interfaz web basada en React. 
-Esta aplicación se comunica con un backend desplegado en un servidor en Azure,
-donde cada componente funciona dentro de contenedores Docker. El Gateway Service actúa como el
- núcleo del sistema, distribuyendo las solicitudes entre los servicios internos, como el de 
-autenticación y el de usuarios, y los servicios externos, como un modelo de lenguaje (LLM) 
-y Wikidata. Los datos importantes, como la información de los usuarios y credenciales,
-se almacenan en MongoDB Atlas, una base de datos en la nube. Todo el sistema está diseñado
-para garantizar la seguridad mediante conexiones HTTPS y autenticación con API Keys,
-mientras que la arquitectura basada en contenedores asegura la escalabilidad y
-el aislamiento de los servicios.
-
-Características de Calidad y/o Rendimiento::
-
-* **Escalabilidad:** Cada servicio está encapsulado en un contenedor Docker, lo que permite escalar horizontalmente según sea necesario.
-* **Seguridad:** Todas las comunicaciones se realizan mediante HTTPS. Se utilizan API Keys para autenticar las solicitudes a servicios externos.
-* **Modularidad:** La separación de servicios facilita el mantenimiento y la extensibilidad del sistema.
-
-Mapeo de Componentes a la Infraestructura::
 [options="header"]
 |===
 | Servicio         | Descripción
 
-| WebApp
-| Es la interfaz de usuario, permite a los usuarios interactuar con el sistema mediante un navegador
+| **WebApp**
+| Aplicación frontend en React que permite la interacción del usuario con el sistema.
 
-| Gateway Service
-| Es el componente central que actúa como un proxy para las solicitudes realizadas por la WebApp.
+| **Gateway Service**
+| Punto de entrada de la aplicación. Orquesta las solicitudes entre los servicios internos y externos.
 
-| Auth Service
-| Gestiona la autenticación de los usuarios
+| **Auth Service**
+| Responsable de la autenticación de los usuarios.
 
-| User Service
-| Es la parte encargada de manejar las operaciones relacionadas con los usuarios
+| **User Service**
+| Maneja la gestión de usuarios, incluyendo registros y perfiles.
 
-| LLM Service
-| Modelo de lenguaje con el que interectuamos para obtener pistas sobre las preguntas.
+| **Question Service**
+| Obtiene preguntas desde Wikidata, las procesa y las almacena en la base de datos.
 
-| MongoDB 
+| **History Service**
+| Gestiona y almacena el historial de participación de los usuarios.
+
+| **WIChat API**
+| Proporciona información sobre los usuarios de la aplicación y las preguntas que se generan.
+
+| **Wikidata API**
+|  API para acceder a Wikidata.
+
+| **MongoDB**
 | Base de datos utilizada para almacenar:
-Información de usuarios (datos personales, perfiles).
-Credenciales y tokens de autenticación.
-Historial de participación y otros datos del sistema.
+  - Información de usuarios (perfiles, credenciales).
+  - Preguntas y respuestas generadas.
+  - Historial de participación y partidas.
 
-| API LLM
-| API con la que podremos acceder al modelo de lenguaje.
+| **Gemini API**
+| API de modelo de lenguaje utilizada para generar pistas en tiempo real.
 
-| Wikidata
-| Es un servicio externo que actúa como fuente de datos para generar preguntas y pistas.
+| **Wikidata**
+| Fuente externa de información utilizada para la generación automática de preguntas.
 |===
-
-
-
-
