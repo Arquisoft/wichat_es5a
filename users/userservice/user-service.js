@@ -44,7 +44,7 @@ async function findOne(username, email) {
 app.post('/adduser', async (req, res) => {
   try {
       // Check if required fields are present in the request body
-      validateRequiredFields(req, ['username', 'email','password']);
+      validateRequiredFields(req, ['username','password']);
       const { username,email, password } = req.body;
       const user_Username = await findOne(username, null);
       const user_Email = await findOne(null, email);
@@ -57,7 +57,7 @@ app.post('/adduser', async (req, res) => {
           const user_Email = await findOne(null, email);
           const newUser = new User({
               username: req.body.username,
-              email: req.body.email,
+              email: user_Email,
               password: hashedPassword,
           });
 
