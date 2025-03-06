@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = require('./user-model');
-require('dotenv').config();
+
 
 const app = express();
 const port = process.env.PORT || 8001;
@@ -70,10 +70,7 @@ app.post('/adduser', async (req, res) => {
     res.status(400).json({ error: error.message }); 
   }});
 
-// Route to check the health status of the service
-app.get('/health', (req, res) => {
-  res.json({ status: 'OK' });
-});
+
 
 const server = app.listen(port, () => {
   console.log(`User Service listening at http://localhost:${port}`);
