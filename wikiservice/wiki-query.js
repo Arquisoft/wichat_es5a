@@ -1,5 +1,5 @@
 class WikiQuery {
-	async SPARSQLQuery(query) {
+	async SPARQLQuery(query) {
 		try {
 		  const axios = require('axios');
 		  const endpointUrl = 'https://query.wikidata.org/sparql'; // Access point URL SPARQL of Wikidata
