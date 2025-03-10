@@ -73,9 +73,12 @@ services:
     profiles: ["dev", "prod"]
     build: ./wikiservice
     ports:
-      - "8004:8004"
+    - "8004:8004"
     networks:
-      - mynetwork
+    - mynetwork
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/userdb
+
 
   webapp:
     container_name: webapp-wichat_es5a

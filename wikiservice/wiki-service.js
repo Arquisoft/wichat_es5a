@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const WikiQuery = require('./wiki-query');
+const WikiQuery = require('./wikiQuery-query');
 const mongoose = require('mongoose');
-const Question = require('./question-model'); // Importar el modelo de preguntas
+
 const app = express();
 const port = 8004;
 
@@ -21,12 +21,9 @@ app.use(bodyParser.json());
 
 app.post("/questions", async (req, res) => {
   try {
-    const results = await wikiQuery.SPARQLQuery(query);
-   
-    if (!results || !results.results?.bindings?.length) {
-      throw new Error("La consulta SPARQL no devolvió resultados");
-    }
-
+    const results = await wikiQuery.SPARQLQuery(query).catch((error) => {
+        console.error('Error al ejecutar la consulta:', error);
+    });
       let size = results.results.bindings.length;
       let random = Math.floor(Math.random() * size);
 
@@ -52,15 +49,10 @@ app.post("/questions", async (req, res) => {
         wrongAnswers: wrongAnswers
       }
 
-    // Save questions in database
-    const newQuestion = new Question(queryResults);
-    await newQuestion.save();
-
-    return res.json(queryResults);
-
+      res.send(queryResults);
   } catch (error) {
-    console.error("Error al obtener/crear la pregunta:", error);
-    return res.status(500).json({ error: error.message });
+    console.error("Error:", error);
+    res.status(500).send(error); //Shows the error to the user
   }
 });
 
