@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-glossary]]
-== Glosario
+== Glossary
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -44,28 +44,4 @@ endif::arc42help[]
 
 |Usabilidad
 |Facilidad con la que los usuarios pueden interactuar con una aplicación o sistema para lograr sus objetivos de manera eficiente, efectiva y satisfactoria.
-
-|GitHub
-|GitHub es una plataforma de desarrollo colaborativo para alojar proyectos utilizando el sistema de control de versiones Git.
-
-|Microservicios
-|Enfoque arquitectónico y organizativo para el desarrollo de software donde el software está compuesto por pequeños servicios independientes que se comunican a través de API bien definidas.
-
-|API
-|Conjunto de reglas o protocolos que permite a las aplicaciones informáticas comunicarse entre sí para intercambiar datos, características y funcionalidades.
-
-|JavaScript
-|Lenguaje de programación que los desarrolladores utilizan para hacer páginas web interactivas.
-
-|TypeScript
-|Lenguaje de programación que añade funcionalidad adicional a JavaScript.
-
-|Docker
-|Plataforma de contenedorización que nos permite desarrollar y ejecutar la aplicación en contenedores. Facilita la gestión de dependencias y despliegues, asegurando una buena consistencia entre entornos de desarrollo, prueba y producción.
-
-|Arc42
-|Plantilla para la documentación y diseño arquitectónico del software de nuestra aplicación. Nos proporciona una estructura estandarizada que ayuda a describir la arquitectura de la aplicación de manera clara y fácil de comprender.
-
-|PlantUML
-|Herramienta utilizada para crear diagramas a partir de texto, que permite generar diagramas de secuencia, de clases... 
 |===

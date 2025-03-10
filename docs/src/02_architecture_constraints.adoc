@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-architecture-constraints]]
-== Restricciones de la arquitectura
+== Architecture Constraints
 
 
 ifdef::arc42help[]
@@ -27,25 +27,3 @@ See https://docs.arc42.org/section-2/[Architecture Constraints] in the arc42 doc
 
 ****
 endif::arc42help[]
-
-
-=== Motivación
-Es fundamental que los arquitectos de software sean capaces de distinguir dónde tienen libertad de decisión y dónde deben cumplir con ciertas restricciones.
-
-Por ello, en este punto de la documentación se recoge cualquier requisito que limiten la libertad de los arquitectos de software en sus decisiones de diseño, implementación o en el proceso de desarrollo.
-
-Restricciones de negocio::
-
-* **Plazos de entrega:** El sistema debe estar operativo en un tiempo limitado para cumplir con el contrato con RTVE.
-* **Presupuesto:** Se debe trabajar dentro de un presupuesto fijo acordado con RTVE.
-
-Restricciones técnicas::
-
-* **Estructura:** El sistema deberá de contar con un frontend web accesible (mostrará las imágenes y respuestas, además del sistema de pistas que permitirá a los usuarios obtener pistas sobre las imágenes) y una API documentada (permitirá acceder a la información de las preguntas generadas).
-* **Infraestructura:** La aplicación debe estar desplegada y accesible a través de la web.
-* **Generación de contenido:** Las preguntas, respuestas y pistas deben generarse automáticamente a partir de datos de Wikidata. Dichas preguntas deberán tener una respuesta correcta y varias distractoras, todas ellas generadas automáticamente por Wikidata.
-* **Integración con un LLM:** Se utilizará un modelo de lenguaje externo para generar pistas conversacionales (se debe mitigar la generación de respuestas incorrectas o alucinaciones).
-
-Restricciones de dependencias::
-
-* **Disponibilidad de APIs externas:** Dependencia de Wikidata y del LLM, que pueden tener tiempos de respuesta o restricciones de uso.
