@@ -42,7 +42,10 @@ services:
     container_name: llmservice-wichat_es5a
     image: ghcr.io/arquisoft/wichat_es5a/llmservice:latest
     profiles: ["dev", "prod"]
-    build: ./llmservice
+    env_file:
+      - .env
+    build: 
+      context: ./llmservice
     ports:
       - "8003:8003"
     networks:
@@ -73,6 +76,7 @@ services:
     profiles: ["dev", "prod"]
     build: ./wikiservice
     ports:
+
     - "8004:8004"
     networks:
     - mynetwork
@@ -80,14 +84,12 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/userdb
 
 
+
   webapp:
     container_name: webapp-wichat_es5a
     image: ghcr.io/arquisoft/wichat_es5a/webapp:latest
     profiles: ["dev", "prod"]
-    build: 
-      context: ./webapp
-      args:
-        LLM_API_KEY: ${LLM_API_KEY}
+    build: ./webapp
     depends_on:
       - gatewayservice
     ports:

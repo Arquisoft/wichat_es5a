@@ -42,7 +42,7 @@ See https://docs.arc42.org/section-5/[Building Block View] in the arc42 document
 ****
 endif::arc42help[]
 
-=== Sistema General de Caja Blanca
+=== Visión general
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -65,9 +65,7 @@ Since there are so many ways to specify interfaces why do not provide a specific
 In the best case you will get away with examples or simple signatures.
 
 ****
-endif::arc42help[]
-
-_**<Diagrama General>**_
+endif::arc42help[] 
 
 image::BuildingBlock.png[width=600,align="center"]
 
@@ -75,8 +73,8 @@ Motivación::
 
 _Esta es la visión general en la cual el usuario usa WIQ, que es la estructura general del proyecto y a su vez interactua con Wikidata para obtener los datos para poder desarrollar la aplicación_
 
+==== Componentes
 
-Descripciones de caja negra::
 [options="header",cols="1,2"]
 |===
 | Nombre    | Responsabilidad
@@ -84,7 +82,7 @@ Descripciones de caja negra::
 | Usuario
 | Usuario que interactuará con la aplicación.
 
-| WIQ
+| Wichat
 | Responsable de la gestión del juego.
 
 | WikiData
@@ -129,9 +127,9 @@ according the the following black box template:
 ****
 endif::arc42help[]
 
-=== Caja Blanca de WIQ
+=== Nivel 2
 
-image::WhiteBlockWiq.png[width=600,align="center"]
+image::BuildingBlock2.png[width=600,align="center"]
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -144,7 +142,7 @@ Leave out normal, simple, boring or standardized parts of your system
 ****
 endif::arc42help[]
 
-==== Diagramas de Caja Negra de WIQ
+==== Componentes
 
 [options="header",cols="1,2"]
 |===
@@ -174,8 +172,14 @@ endif::arc42help[]
 | WikiService
 | Servicio responsable de lanzar las querys a Wikidata para obtener la información.
 
-| Database
-| Base de datos mongodb cuya función es guardar información sobre los usuarios, partidas, preguntas e historial.
+| UserData
+| Base de datos mongodb cuya función es guardar información sobre los usuarios.
+
+| QuestionData
+| Base de datos mongodb cuya función es almacenar las preguntas devuletas por wikidata.
+
+| GeminiApi
+| Api proporcionada para interactuar con el modelo de lenguaje de Google Gemini.
 |===
 
 ifdef::arc42help[]
@@ -185,7 +189,7 @@ ifdef::arc42help[]
 ****
 endif::arc42help[]
 
-=== Caja Blanca del Servicio de Usuario
+=== Nivel 3-Servicio de Usuario
 
 image::BuildingBlockuserservice.png[width=600,align="center"]
 
@@ -199,7 +203,7 @@ part of arc42 for additional levels.
 ****
 endif::arc42help[]
 
-==== Diagramas de Caja Negra del Servicio de Usuario
+==== Componentes
 
 [options="header",cols="1,2"]
 |===
