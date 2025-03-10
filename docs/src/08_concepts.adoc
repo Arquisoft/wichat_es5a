@@ -89,7 +89,7 @@ La aplicación contará con un sistema de registro e inicio de sesión con contr
 
 **Usabilidad:** El juego tendrá un formato parecido al de saber y ganar, ya que es el formato más cómodo para los usuarios y el más fidedigno a la vida real. Esto lo hacemos así debido a que es mucho mejor que el usuario sepa ya de antemano al ver la interfaz de usuario que es un juego de tipo "concurso de la tele" que experimentar con cosas raras y que el usuario se vea abrumado por la novedad.
 
-**Interacción en tiempo real:** El usuario podrá ver si ha acertado o no la pregunta al momento de su respuesta, ya que esto es lo más amigable para el usuario y así puede llevar un conteo de las preguntas que ha respondido correctamente.
+**Interacción en tiempo real: El usuario podrá ver si ha acertado o no la pregunta al momento de su respuesta, ya que esto es lo más amigable para el usuario y así puede llevar un conteo de las preguntas que ha respondido correctamente.**
 
 === Arquitectura
 
@@ -98,11 +98,6 @@ Para la arquitectura inicial contamos con una aplicación divida en microservici
 
 === Procesos de Desarrollo
 
-**Testing:** Se realizan pruebas unitarias relacionadas con cada funcionalidad del proyecto para asegurar su correcto funcionamiento.
-
-**Deployment:** Es el proceso de poner en funcionamiento la aplicación para que se pueda ejecutar y acceder a ella. Para realizar el deployment utilizamos Docker para construir las imágenes de los servicios y subirlas al repositorio.
+* **Testing:** Se realizan pruebas unitarias relacionadas con cada funcionalidad del proyecto para asegurar su correcto funcionamiento.
+* **Deployment:** Es el proceso de poner en funcionamiento la aplicación para que se pueda ejecutar y acceder a ella. Para realizar el deployment utilizamos Docker para construir las imágenes de los servicios y subirlas al repositorio.
  
-=== "Under-the-hood"
-**Persistencia:** Los datos de los usarios y su historial de partidas quedarán almacenados en una base de datos para asegurar su integridad y disponibilidad.
-
-**Extensibilidad:** La aplicación está diseñada para facilitar añadir nuevos contenidos y funcionalidades, esto lo conseguimos en gran parte gracias a la arquitectura basada en microservicios que dividen las funcionalidades en módulos independiente
