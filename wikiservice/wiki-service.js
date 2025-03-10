@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const WikiQuery = require('./wikiQuery-query');
+const WikiQuery = require('./wiki-query');
 const mongoose = require('mongoose');
-
+const Question = require('./question-model'); // Importar el modelo de preguntas
 const app = express();
 const port = 8004;
 
@@ -49,6 +49,10 @@ app.post("/questions", async (req, res) => {
         wrongAnswers: wrongAnswers
       }
 
+
+        // Guardar la pregunta en la base de datos
+    const newQuestion = new Question(queryResults);
+    await newQuestion.save();
       res.send(queryResults);
   } catch (error) {
     console.error("Error:", error);
