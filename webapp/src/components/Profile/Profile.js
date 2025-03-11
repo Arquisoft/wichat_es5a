@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Typography, Box, Button } from '@mui/material';
+import { Typography } from '@mui/material';
 
 const Profile = () => {
   return (

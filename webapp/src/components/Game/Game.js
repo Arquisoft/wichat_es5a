@@ -45,7 +45,7 @@ const Juego = () => {
         setFirstRender(true);
         crearPreguntas(2);
       }
-    },[])
+    },[firstRender, crearPreguntas]);
   
     //Función que genera un numero de preguntas determinado
     async function crearPreguntas(numPreguntas){

@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const Points = () => {
 
-  const [score, setScore] = useState(0); //Puntuación
   const navigate = useNavigate();
   const location = useLocation();
   const { numRespuestasCorrectas, numPreguntas } = location.state || { numRespuestasCorrectas: 0, numPreguntas: 0 };
