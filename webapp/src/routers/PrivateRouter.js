@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-import { isValidToken } from "../services/user.service";
-
 /* 
 Este router sirve para asegurarse de que solo los usuarios autenticados puedan acceder a ciertas rutas.
 Esta copiado y pegado de otro repo asi que puede no funcionar, pero la idea es la misma.
@@ -28,9 +26,13 @@ export const PrivateRoute = ({ children }) =>
             }
             
             try {
-                const valid = await isValidToken(token);
+                // Hay que añadir una función para verificar que el token sea correcto
+                // De momento, siempre se devuelve que el token es valido
+
+                //const valid = await isValidToken(token);
                 
-                setIsAuthenticated(valid);
+                // Al implementar la función, cambiar true por valid
+                setIsAuthenticated(true);
 
             } catch (error) {
                 setIsAuthenticated(false);

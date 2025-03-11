@@ -1,5 +1,8 @@
 import { Navigate, createBrowserRouter } from "react-router";
 
+import { AuthRoute } from "./AuthRouter";
+import { PrivateRoute } from "./PrivateRouter";
+
 import Login from "../components/Login/Login";
 import AddUser from "../components/AddUser/AddUser";
 import Home from "../components/Home/Home";
@@ -27,31 +30,54 @@ const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <Login /> 
+        element:
+            <AuthRoute>
+                <Login />
+            </AuthRoute>
     },
     {
         path: "/addUser",
-        element: <AddUser />
+        element:
+            <AuthRoute>
+                <AddUser />
+            </AuthRoute>
+
     },
     {
         path: "/home",
-        element: <Home />  
+        element:
+            <PrivateRoute>
+                <Home />
+            </PrivateRoute>
     },
     {
         path: "/game",
-        element: <Game />  
+        element:
+            <PrivateRoute>
+                <Game />
+            </PrivateRoute>
     },
     {
         path: "/points",
-        element: <Points />  
+        element:
+            <PrivateRoute>
+                <Points />
+            </PrivateRoute>
     },
     {
         path: "/profile",
-        element: <Profile />  
+        element:
+            <PrivateRoute>
+                <Profile />
+            </PrivateRoute>
+
     },
     {
         path: "/credits",
-        element: <Credits />  
+        element:
+            <PrivateRoute>
+                <Credits />
+            </PrivateRoute>
     },
     {
         path: "*",

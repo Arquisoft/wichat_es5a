@@ -42,12 +42,6 @@ app.post('/login',  [
     // Find the user by username in the database
     const user = await User.findOne({ username });
 
-    const token = jwt.sign({ userId: user._id,
-      username: username }, 'your-secret-key', { expiresIn: '1h' });
-    
-    res.json({ token: token, username: username });
-    
-
     // Check if the user exists and verify the password
     if (user && await bcrypt.compare(password, user.password)) {
       // Generate a JWT token
