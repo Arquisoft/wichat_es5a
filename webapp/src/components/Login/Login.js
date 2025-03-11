@@ -16,7 +16,7 @@ const Login = () => {
 
   const loginUser = async () => {
     try {
-      const response = await axios.post(`${apiEndpoint}/login`, { username, password });
+      await axios.post(`${apiEndpoint}/login`, { username, password });
 
       setLoginSuccess(true);
       setOpenSnackbar(true);

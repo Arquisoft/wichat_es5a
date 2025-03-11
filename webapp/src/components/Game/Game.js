@@ -33,26 +33,27 @@ const Juego = () => {
   const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
   const [numPreguntas, setNumPreguntas] = useState(0)
 
-  // Estados para el LLM
-  const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
-
-  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-
-  // Primer render para un comportamiento diferente
-  useEffect(() => {
-    if (!firstRender) {
-      setFirstRender(true);
-      crearPreguntas(2);
-    }
-  }, []);
-
-  // Función que genera un número de preguntas determinado
-  async function crearPreguntas(numPreguntas) {
-    setPausarTemporizador(true);
-    setNumPreguntas(numPreguntas);
-    while (numPreguntas > 0) {
-      try {
-        const response = await axios.post(`${apiEndpoint}/questions`);
+    // Estados para el LLM
+    const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
+  
+    //Variables para la obtencion y modificacion de estadisticas del usuario y de preguntas
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+  
+    //Primer render para un comportamiento diferente
+    useEffect(() => {
+      if (!firstRender) {
+        setFirstRender(true);
+        crearPreguntas(2);
+      }
+    },[firstRender, crearPreguntas])
+  
+    //Función que genera un numero de preguntas determinado
+    async function crearPreguntas(numPreguntas){
+      setPausarTemporizador(true)
+      setNumPreguntas(numPreguntas)
+      while(numPreguntas>0){
+        try {
+          const response = await axios.post(`${apiEndpoint}/questions`);
 
         const respuestas = [...response.data.wrongAnswers, response.data.answer];
 
