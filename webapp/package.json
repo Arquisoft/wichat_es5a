@@ -56,6 +56,13 @@
     "start-server-and-test": "^2.0.9"
   },
   "jest": {
-  "transformIgnorePatterns": ["node_modules/(?!react-router-dom)"]
+    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy",
+      "^react-router-dom$": "<rootDir>/node_modules/react-router-dom"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!axios)/"
+    ]
   }
 }
