@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 import { Typography, Box, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Points = () => {
 
   const [score, setScore] = useState(0); //Puntuación
   const navigate = useNavigate();
+  const location = useLocation();
+  const { numRespuestasCorrectas, numPreguntas } = location.state || { numRespuestasCorrectas: 0, numPreguntas: 0 };
 
   useEffect(() => {
     // Generar un número aleatorio entre 0 y 20
@@ -27,7 +29,7 @@ const Points = () => {
   return (
     <div>
           <Typography component="h1" variant="h1" sx={{ color: "#167D7F", marginTop: 2, textAlign: 'center' }}>
-          {score}/20 Acertadas
+          {numRespuestasCorrectas}/{numPreguntas} Acertadas
           </Typography>
           <Typography component="h1" variant="h2" sx={{ color: "#167D7F", marginTop: 2, textAlign: 'center' }}>
             ¡Bien hecho!

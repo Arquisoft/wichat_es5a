@@ -14,20 +14,24 @@ import { useNavigate } from 'react-router-dom';
 const Juego = () => {
   const navigate = useNavigate();
 
-  // Estados para el juego
-  const [pregunta, setPregunta] = useState("");
-  const [resCorr, setResCorr] = useState("");
-  const [resFalse, setResFalse] = useState([]);
+  //La pregunta (string)
+  const [pregunta, setPregunta] = useState("")
+  //La Respuesta correcta (string)
+  const [resCorr, setResCorr] = useState("")
+  //Array de las cuatros respuestas
+  const [resFalse, setResFalse] = useState([])
+  //Constante que se usa para almacenar la URL de la imagen de la pregunta
   const [imagenPregunta, setImagenPregunta] = useState("");
-  const [pausarTemporizador, setPausarTemporizador] = useState(false);
-  const [restartTemporizador, setRestartTemporizador] = useState(false);
+  //Para saber si el temporizador se ha parado al haber respondido una respuesta
+  const [pausarTemporizador, setPausarTemporizador] = useState(false)
+  const [restartTemporizador, setRestartTemporizador] = useState(false)
   const [firstRender, setFirstRender] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [numPreguntaActual, setNumPreguntaActual] = useState(0);
-  const [arPreg] = useState([]);
-  const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0);
-  const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0);
-  const [numPreguntas, setNumPreguntas] = useState(0);
+  const[ready, setReady] = useState(false)
+  const [numPreguntaActual, setNumPreguntaActual] = useState(0)
+  const [arPreg] = useState([])
+  const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0)
+  const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
+  const [numPreguntas, setNumPreguntas] = useState(0)
 
   // Estados para el LLM
   const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
@@ -61,6 +65,7 @@ const Juego = () => {
         });
       } catch (error) {
         console.error('Error al crear las preguntas:', error);
+         // Manejar el error de acuerdo a tus necesidades
       }
       numPreguntas--;
     }
@@ -76,6 +81,7 @@ const Juego = () => {
     setResCorr(arPreg[numPreguntaActual].resCorr);
     setResFalse(arPreg[numPreguntaActual].resFalse);
     setImagenPregunta(arPreg[numPreguntaActual].imagen);
+    //Poner temporizador a 20 de nuevo
     setRestartTemporizador(true);
   }
 
@@ -97,93 +103,118 @@ const Juego = () => {
     }
   };
 
-  // Función que se llama al hacer clic en una respuesta
-  const botonRespuesta = (respuesta) => {
+  /**
+     * Funcion que se llamara al hacer click a una de las respuestas
+     */
+  const botonRespuesta = (respuesta) => { 
+    //Comprueba si la respuesta es correcta o no y pone la variable victoria a true o false
+    //por ahora esta variable no se utiliza para nada
     setPausarTemporizador(true);
-    if (respuesta === resCorr) {
-      setNumRespuestasCorrectas(numRespuestasCorrectas + 1);
-    } else {
+    if(respuesta === resCorr){
+      //Aumenta en 1 en las estadisticas de juegos ganado
+      setNumRespuestasCorrectas(numRespuestasCorrectas+1);
+    }
+    else{
       setNumRespuestasIncorrectas(numRespuestasIncorrectas + 1);
     }
     cambiarColorBotones(respuesta, true);
   };
 
-  // Función para cambiar el color de los botones
-  const cambiarColorBotones = (respuesta, bool) => {
+  /*
+    * Para cambiar el color de los botones al hacer click en uno de ellos
+    * True para modo pulsar uno de ellos (acertar/fallar)
+    * False si se quiere mostrar color de todos (acabar el tiempo)
+    */
+  const cambiarColorBotones = (respuesta, bool) => { 
+    //Obtenemos el contenedor de botones
     const buttonContainer = document.querySelector('.button-container');
+    //Obtenemos los botones dentro del dicho contenedor
     const buttons = buttonContainer.querySelectorAll('.button');
+    //Recorremos cada boton
     buttons.forEach((button) => {
-      button.disabled = true;
-      if (button.textContent.trim() === resCorr) {
+      //Desactivamos TODOS los botones
+      button.disabled=true; 
+      //Ponemos el boton de la respuesta correcta en verde
+      if(button.textContent.trim() === resCorr) {
         button.style.backgroundColor = "#05B92B";
         button.style.border = "6px solid #05B92B";
       }
-      if (bool) {
+      if(bool){
+      //Ponemos el boton de la marcada en rojo si era incorrecta
         cambiarColorUno(respuesta, button);
-      } else {
+      }else {
         setNumRespuestasIncorrectas(numRespuestasIncorrectas + 1);
         cambiarColorTodos(button);
-      }
+      }return button; //esta linea evita un warning de sonar cloud, sin uso
     });
-  };
 
-  // Función que cambia el color de un solo botón (acierto)
-  function cambiarColorUno(respuesta, button) {
-    if (button.textContent.trim() !== respuesta.trim()) {
-      if ((button.textContent.trim() !== resCorr)) {
-        button.style.backgroundColor = "#E14E4E";
-        button.style.border = "6px solid #E14E4E";
-      }
-    }
-  }
+}
 
-  // Función que cambia el color de todos los botones (fallo)
-  function cambiarColorTodos(button) {
-    if (button.textContent.trim() === resCorr) {
-      button.style.backgroundColor = "#05B92B";
-      button.style.border = "6px solid #05B92B";
-    } else {
+//Función que cambia el color de un solo boton (acierto)
+function cambiarColorUno(respuesta, button){
+  if(button.textContent.trim()!==respuesta.trim()){
+    if((button.textContent.trim() !== resCorr)) {
       button.style.backgroundColor = "#E14E4E";
       button.style.border = "6px solid #E14E4E";
     }
   }
+}
 
-  // Función que devuelve el color original a los botones (siguiente)
-  async function descolorearTodos() {
-    const buttonContainer = document.querySelector('.button-container');
-    const buttons = buttonContainer.querySelectorAll('.button');
-    buttons.forEach((button) => {
-      button.disabled = false;
-      button.style.backgroundColor = "#FFFFFF";
-    });
-    buttonContainer.querySelector('#boton1').style.border = "6px solid #E14E4E";
-    buttonContainer.querySelector('#boton2').style.border = "6px solid #CBBA2A";
-    buttonContainer.querySelector('#boton3').style.border = "6px solid #05B92B";
-    buttonContainer.querySelector('#boton4').style.border = "6px solid #1948D9";
+//Funcion que cambia el color de todos los botones (fallo)
+function cambiarColorTodos(button){
+  if(button.textContent.trim() === resCorr) {
+    button.style.backgroundColor = "#05B92B";
+    button.style.border = "6px solid #05B92B";
+  } else{
+    button.style.backgroundColor = "#E14E4E";
+        button.style.border = "6px solid #E14E4E";
   }
+} 
 
-  // Función que se llama al hacer clic en el botón Siguiente
-  const clickSiguiente = () => {
-    if (numPreguntaActual === numPreguntas) {
-      navigate('/points', {
-        state: {
-          numRespuestasCorrectas: numRespuestasCorrectas,
-          numPreguntas: numPreguntas
-        }
-      });
-      return;
-    }
-    descolorearTodos();
-    setNumPreguntaActual(numPreguntaActual + 1);
-    updateGame();
-    setRestartTemporizador(true);
-    setPausarTemporizador(false);
-  };
+//Función que devuelve el color original a los botones (siguiente)
+async function descolorearTodos(){
+  const buttonContainer = document.querySelector('.button-container');
+  const buttons = buttonContainer.querySelectorAll('.button');
+  buttons.forEach((button) => {
+    //Desactivamos TODOS los botones
+    button.disabled=false; 
+    //Ponemos el boton de la respuesta correcta en verde
+      button.style.backgroundColor = "#FFFFFF";
+    })
+  buttonContainer.querySelector('#boton1').style.border = "6px solid #E14E4E";
+  buttonContainer.querySelector('#boton2').style.border = "6px solid #CBBA2A";
+  buttonContainer.querySelector('#boton3').style.border = "6px solid #05B92B";
+  buttonContainer.querySelector('#boton4').style.border = "6px solid #1948D9";
+} 
 
-  const handleRestart = () => {
-    setRestartTemporizador(false); // Cambia el estado de restart a false
-  };
+// //Primer render para un comportamiento diferente
+// useEffect(() => {
+//   
+// }, [finishGame])
 
+//Funcion que se llama al hacer click en el boton Siguiente
+const clickSiguiente = () => {
+  if(numPreguntaActual===numPreguntas){
+    navigate('/points', {
+      state: { 
+        numRespuestasCorrectas: numRespuestasCorrectas,
+        numPreguntas: numPreguntas
+      }
+    });
+    
+    return
+  }
+  descolorearTodos()
+  setNumPreguntaActual(numPreguntaActual+1)
+  updateGame();
+  //Recargar a 20 el temporizador
+  setRestartTemporizador(true);
+  setPausarTemporizador(false);
+}
+
+const handleRestart = () => {
+  setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
+};
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
       {ready ? <>
