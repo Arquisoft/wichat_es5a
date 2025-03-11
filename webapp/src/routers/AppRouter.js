@@ -1,4 +1,4 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router";
 
 import Login from "../components/Login/Login";
 import AddUser from "../components/AddUser/AddUser";
@@ -7,7 +7,7 @@ import Error from "../components/Error/Error";
 import Points from "../components/Points/Points";
 import Profile from "../components/Profile/Profile";
 import Credits from "../components/Credits/Credits";
-import Juego from "../components/Game/Game";
+import Game from "../components/Game/Game";
 
 
 /*
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/game",
-        element: <Juego />  
+        element: <Game />  
     },
     {
         path: "/points",
