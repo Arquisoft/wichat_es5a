@@ -15,7 +15,12 @@ const AddUser = () => {
 
   const addUser = async () => {
     try {
-      await axios.post(`${apiEndpoint}/adduser`, { username, password });
+      const response = await axios.post(`${apiEndpoint}/adduser`, { username, password });
+
+      const { token } = response.data;
+
+      localStorage.setItem('token', token);
+
       setOpenSnackbar(true);
       navigate('/home');
     } catch (error) {

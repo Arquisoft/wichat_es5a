@@ -41,6 +41,11 @@ app.post('/login',  [
     let password =req.body.password.toString();
     // Find the user by username in the database
     const user = await User.findOne({ username });
+
+    const token = jwt.sign({ userId: user._id,
+      username: username }, 'your-secret-key', { expiresIn: '1h' });
+    
+    res.json({ token: token, username: username });
     
 
     // Check if the user exists and verify the password

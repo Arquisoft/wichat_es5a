@@ -18,6 +18,10 @@ const Login = () => {
     try {
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
 
+      const { token } = response.data;
+
+      localStorage.setItem('token', token);
+
       setLoginSuccess(true);
       setOpenSnackbar(true);
       navigate('/home'); // Redirige a la ruta /home después de un login exitoso
