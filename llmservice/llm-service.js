@@ -1,10 +1,11 @@
 const axios = require('axios');
 const express = require('express');
-
+const cors = require('cors');
 const app = express();
 const port = 8003;
 
 // Middleware to parse JSON in request body
+app.use(cors());
 app.use(express.json());
 // Load enviroment variables
 require('dotenv').config();
@@ -55,6 +56,9 @@ async function sendQuestionToLLM(question, apiKey, model = 'gemini') {
     const url = config.url(apiKey);
     const requestData = config.transformRequest(question);
 
+    console.log('URL:', url);
+    console.log('Request Data:', JSON.stringify(requestData, null, 2));
+
     const headers = {
       'Content-Type': 'application/json',
       ...(config.headers ? config.headers(apiKey) : {})
@@ -62,10 +66,13 @@ async function sendQuestionToLLM(question, apiKey, model = 'gemini') {
 
     const response = await axios.post(url, requestData, { headers });
 
+    console.log('Response:', response.data);
+
     return config.transformResponse(response);
 
   } catch (error) {
     console.error(`Error sending question to ${model}:`, error.message || error);
+    console.error('Error Response:', error.response?.data);
     return null;
   }
 }
@@ -78,6 +85,7 @@ app.post('/ask', async (req, res) => {
     const { question, model } = req.body;
     //load the api key from an enviroment variable
     const apiKey = process.env.LLM_API_KEY;
+    console.log('API Key in /ask route:', apiKey); // Agrega este log para verificar la API key
     if(!apiKey) return res.status(400).json({error: 'API key is missing'});
     const answer = await sendQuestionToLLM(question, apiKey, model);
     res.json({ answer });

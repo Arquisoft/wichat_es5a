@@ -1,5 +1,5 @@
 node_modules
 coverage
 docs/build
-llmservice/.env
-webapp/.env
+**/.env
+.env
