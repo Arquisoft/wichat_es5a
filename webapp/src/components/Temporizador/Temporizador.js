@@ -20,7 +20,9 @@ const Temporizador = ({ restart, tiempoInicial, tiempoAcabado, pausa, handleRest
             handleRestart();
         }
 
-        if (tiempoSegundos > 0 && !pausa) {
+        pausaRef.current = pausa;
+
+        if (tiempoSegundos > 0 && !pausaRef.current) {
             intervalID = setInterval(() => {
                 setTiempoSegundos((prevTiempo) => prevTiempo - 1);
             }, 1000);
@@ -30,7 +32,7 @@ const Temporizador = ({ restart, tiempoInicial, tiempoAcabado, pausa, handleRest
             tiempoAcabado();
 
         return () => clearInterval(intervalID);
-    }, [tiempoSegundos, restart, tiempoInicial, tiempoAcabado, handleRestart]);
+    }, [tiempoSegundos, restart, tiempoInicial, tiempoAcabado, handleRestart, pausa]);
 
     return (
         <div className="temporizador"> <p> {tiempoSegundos} </p> </div>
