@@ -9,18 +9,18 @@ import axios from 'axios';
 import { Container } from '@mui/material';
 import PropTypes from 'prop-types'
 import Temporizador from '../Temporizador/Temporizador';
+import { useNavigate } from 'react-router-dom';
 
-const Juego = ({isLogged, username, numPreguntas}) => {
+const Juego = () => {
+
+    const navigate = useNavigate();
+
     //La pregunta (string)
     const [pregunta, setPregunta] = useState("")
     //La Respuesta correcta (string)
     const [resCorr, setResCorr] = useState("")
     //Array de las cuatros respuestas
     const [resFalse, setResFalse] = useState([])
-    //constante booleana para saber si se ha respondido ya o no (si se ha pulsado un boton se pone a true)
-    const [respondido, setRespodido] = useState(false)
-    //constante para saber si ha ganado, booleana
-    const [victoria, setVictoria] = useState(false)
     //Constante que se usa para almacenar la URL de la imagen de la pregunta
     const [imagenPregunta, setImagenPregunta] = useState("");
     //Para saber si el temporizador se ha parado al haber respondido una respuesta
@@ -29,12 +29,11 @@ const Juego = ({isLogged, username, numPreguntas}) => {
     const [firstRender, setFirstRender] = useState(false);
     const[ready, setReady] = useState(false)
     const [numPreguntaActual, setNumPreguntaActual] = useState(0)
-    const [arPreg, setArPreg] = useState([])
-    const [finishGame, setFinishGame] = useState(false)
+    const [arPreg] = useState([])
     const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0)
     const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
-    const [disableFinish, setDisableFinish] = useState(false)
-  
+    const [numPreguntas, setNumPreguntas] = useState(0)
+
     //const navigate= useNavigate()
   
     //Variables para la obtencion y modificacion de estadisticas del usuario y de preguntas
@@ -43,30 +42,26 @@ const Juego = ({isLogged, username, numPreguntas}) => {
     //Primer render para un comportamiento diferente
     useEffect(() => {
       if (!firstRender) {
-        crearPreguntas(10);
         setFirstRender(true);
+        crearPreguntas(2);
       }
-    }, [firstRender])
+    },[])
   
     //Función que genera un numero de preguntas determinado
     async function crearPreguntas(numPreguntas){
       setPausarTemporizador(true)
-      let tempArray=[];
+      setNumPreguntas(numPreguntas)
       while(numPreguntas>0){
         try {
-          const response = await axios.get(`${apiEndpoint}/pregunta`);
-          tempArray.push(
-            { id: numPreguntas, 
-                pregunta: response.data.question, 
-                resCorr: response.data.answerGood, 
-                resFalse: response.data.answers,
-                imagen: response.data.image}
-          )
+          const response = await axios.post(`${apiEndpoint}/questions`);
+
+          const respuestas = [...response.data.wrongAnswers, response.data.answer];
+
           arPreg.push(
             { id: numPreguntas, 
                 pregunta: response.data.question,
-                resCorr: response.data.answerGood,
-                resFalse: response.data.answers,
+                resCorr: response.data.answer,
+                resFalse: respuestas,
                 imagen: response.data.image}
           )
         }
@@ -92,36 +87,21 @@ const Juego = ({isLogged, username, numPreguntas}) => {
       setRestartTemporizador(true);
     }
   
-    
-    //Control de las estadísticas
-    const updateStats = async () => {
-      try {
-          const response = await axios.get(`${apiEndpoint}/updateStats?username=${username}&numRespuestasCorrectas=${numRespuestasCorrectas}&numRespuestasIncorrectas=${numRespuestasIncorrectas}`);
-          console.log('Estadisticas actualizadas con éxito:', response.data);
-      } catch (error) {
-          console.error('Error al actualizar las estadisticas:', error);
-      }
-    };
-  
     /**
      * Funcion que se llamara al hacer click a una de las respuestas
      */
     const botonRespuesta = (respuesta) => { 
       //Comprueba si la respuesta es correcta o no y pone la variable victoria a true o false
       //por ahora esta variable no se utiliza para nada
-      setRespodido(true)
       setPausarTemporizador(true);
-      if(respuesta == resCorr){
+      if(respuesta === resCorr){
         //Aumenta en 1 en las estadisticas de juegos ganado
         setNumRespuestasCorrectas(numRespuestasCorrectas+1);
-        setVictoria(true)
       }
       else{
         setNumRespuestasIncorrectas(numRespuestasIncorrectas + 1);
-        setVictoria(false)
       }
       cambiarColorBotones(respuesta, true);
-  
     };
   
     /*
@@ -139,7 +119,7 @@ const Juego = ({isLogged, username, numPreguntas}) => {
           //Desactivamos TODOS los botones
           button.disabled=true; 
           //Ponemos el boton de la respuesta correcta en verde
-          if(button.textContent.trim() == resCorr) {
+          if(button.textContent.trim() === resCorr) {
             button.style.backgroundColor = "#05B92B";
             button.style.border = "6px solid #05B92B";
           }
@@ -156,8 +136,8 @@ const Juego = ({isLogged, username, numPreguntas}) => {
   
     //Función que cambia el color de un solo boton (acierto)
     function cambiarColorUno(respuesta, button){
-      if(button.textContent.trim()==respuesta.trim()){
-        if((button.textContent.trim() != resCorr)) {
+      if(button.textContent.trim()!==respuesta.trim()){
+        if((button.textContent.trim() !== resCorr)) {
           button.style.backgroundColor = "#E14E4E";
           button.style.border = "6px solid #E14E4E";
         }
@@ -166,7 +146,7 @@ const Juego = ({isLogged, username, numPreguntas}) => {
   
     //Funcion que cambia el color de todos los botones (fallo)
     function cambiarColorTodos(button){
-      if(button.textContent.trim() == resCorr) {
+      if(button.textContent.trim() === resCorr) {
         button.style.backgroundColor = "#05B92B";
         button.style.border = "6px solid #05B92B";
       } else{
@@ -198,10 +178,14 @@ const Juego = ({isLogged, username, numPreguntas}) => {
    
     //Funcion que se llama al hacer click en el boton Siguiente
     const clickSiguiente = () => {
-      if(numPreguntaActual==numPreguntas){
-        setFinishGame(true)
-        setReady(false)
-        //finishGame()
+      if(numPreguntaActual===numPreguntas){
+        navigate('/points', {
+          state: { 
+            numRespuestasCorrectas: numRespuestasCorrectas,
+            numPreguntas: numPreguntas
+          }
+        });
+        
         return
       }
       descolorearTodos()
@@ -212,21 +196,12 @@ const Juego = ({isLogged, username, numPreguntas}) => {
       setPausarTemporizador(false);
     }
   
-    //Funcion que se llama al hacer click en el boton Siguiente
-    const clickFinalizar = () => {
-      updateStats();
-      setDisableFinish(true)
-    }
-  
     const handleRestart = () => {
       setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
     };
     
     return (
         <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
-          <div>
-          `Usuario: ${username}`
-          </div>
           {ready ? <>
             <div className="numPregunta"> <p> {numPreguntaActual} / {numPreguntas} </p> </div>
             <Temporizador id="temp" restart={restartTemporizador} tiempoInicial={20} tiempoAcabado={cambiarColorBotones} pausa={pausarTemporizador} handleRestart={handleRestart}/>
@@ -243,20 +218,12 @@ const Juego = ({isLogged, username, numPreguntas}) => {
             </button>
             <div className="button-container">
                 {resFalse.map((respuesta, index) => (
-                    <button key={index} className="button" onClick={() => botonRespuesta(respuesta)}>{respuesta}</button>
+                    <button key={index} id={`boton${index + 1}`} className="button" onClick={() => botonRespuesta(respuesta)}>{respuesta}</button>
                 ))}
             </div>
             <button id="botonSiguiente" className="button" onClick={() =>clickSiguiente()} > SIGUIENTE</button>
             </>
           : <h2> CARGANDO... </h2>}
-          {finishGame ? <>
-            <h2> PARTIDA FINALIZADA </h2>
-            <h2> ACERTADAS: {numRespuestasCorrectas}  FALLADAS: {numRespuestasIncorrectas} </h2>
-            <button id="botonFinal" className="button" disabled={disableFinish} onClick={() => {clickFinalizar()}} > FINALIZAR PARTIDA</button>
-            </> : <></>}
-  
-          { disableFinish ? ( <h2> Comience nueva partida o visite sus estadísticas!!</h2>) 
-            : <></> }  
         </Container>
     );
   };

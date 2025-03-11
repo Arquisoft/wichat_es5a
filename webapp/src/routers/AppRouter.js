@@ -7,6 +7,7 @@ import Error from "../components/Error/Error";
 import Points from "../components/Points/Points";
 import Profile from "../components/Profile/Profile";
 import Credits from "../components/Credits/Credits";
+import Game from "../components/Game/Game";
 
 
 /*
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
     {
         path: "/home",
         element: <Home />  
+    },
+    {
+        path: "/game",
+        element: <Game />  
     },
     {
         path: "/points",
