@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Typography, Box, Button } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router';
 
 const Points = () => {
 
