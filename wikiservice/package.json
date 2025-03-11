@@ -16,6 +16,16 @@
       "express": "^4.21.2",
       "mongoose": "^8.12.1"
     },
+    "jest": {
+    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy",
+      "^react-router-dom$": "<rootDir>/node_modules/react-router-dom"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!axios)/"
+    ]
+  },
     "devDependencies": {
       "jest": "^29.7.0",
       "supertest": "^7.0.0"
