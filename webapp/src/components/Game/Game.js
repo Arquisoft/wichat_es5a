@@ -43,38 +43,39 @@ const Juego = () => {
     useEffect(() => {
       if (!firstRender) {
         setFirstRender(true);
+        
+        //Función que genera un numero de preguntas determinado
+        async function crearPreguntas(numPreguntas) {
+          setPausarTemporizador(true)
+          setNumPreguntas(numPreguntas)
+          while(numPreguntas>0) {
+            try {
+              const response = await axios.post(`${apiEndpoint}/questions`);
+    
+              const respuestas = [...response.data.wrongAnswers, response.data.answer];
+      
+              arPreg.push({
+                id: numPreguntas,
+                pregunta: response.data.question,
+                resCorr: response.data.answer,
+                resFalse: respuestas,
+                imagen: response.data.image
+              });
+            } catch (error) {
+              console.error('Error al crear las preguntas:', error);
+              // Manejar el error de acuerdo a tus necesidades
+            }
+            numPreguntas--;
+          }
+          setReady(true);
+          setPausarTemporizador(false);
+          updateGame();
+          setNumPreguntaActual(numPreguntaActual + 1);
+        }
+
         crearPreguntas(2);
       }
-    },[firstRender, crearPreguntas])
-  
-    //Función que genera un numero de preguntas determinado
-    async function crearPreguntas(numPreguntas){
-      setPausarTemporizador(true)
-      setNumPreguntas(numPreguntas)
-      while(numPreguntas>0){
-        try {
-          const response = await axios.post(`${apiEndpoint}/questions`);
-
-        const respuestas = [...response.data.wrongAnswers, response.data.answer];
-
-        arPreg.push({
-          id: numPreguntas,
-          pregunta: response.data.question,
-          resCorr: response.data.answer,
-          resFalse: respuestas,
-          imagen: response.data.image
-        });
-      } catch (error) {
-        console.error('Error al crear las preguntas:', error);
-         // Manejar el error de acuerdo a tus necesidades
-      }
-      numPreguntas--;
-    }
-    setReady(true);
-    setPausarTemporizador(false);
-    updateGame();
-    setNumPreguntaActual(numPreguntaActual + 1);
-  }
+    },[firstRender, crearPreguntas]);    
 
   // Función que actualiza la pregunta que se muestra en pantalla
   async function updateGame() {

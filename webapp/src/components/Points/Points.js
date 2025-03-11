@@ -12,7 +12,7 @@ const Points = () => {
   useEffect(() => {
     // Generar un número aleatorio entre 0 y 20
     // Cuando se implemente el juego, cambiar por la puntuación conseguida por el usuario.
-    const randomScore = Math.floor(Math.random() * 21);
+    //const randomScore = Math.floor(Math.random() * 21);
   }, []);
 
   const playAgain = () => {
