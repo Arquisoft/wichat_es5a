@@ -17,7 +17,7 @@ const Login = () => {
 
   const loginUser = async () => {
     try {
-      await axios.post(`${apiEndpoint}/login`, { username, password });
+      const response = await axios.post(`${apiEndpoint}/login`, { username, password });
 
       const { token } = response.data;
 
