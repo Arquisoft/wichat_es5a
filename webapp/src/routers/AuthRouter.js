@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 
 /* 
 Este router sirve para asegurarse de que los usuarios autenticados no puedan acceder ni al login ni al addUser

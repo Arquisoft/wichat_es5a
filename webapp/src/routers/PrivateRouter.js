@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 
 /* 
 Este router sirve para asegurarse de que solo los usuarios autenticados puedan acceder a ciertas rutas.
