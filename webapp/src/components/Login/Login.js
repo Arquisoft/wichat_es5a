@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Button, Snackbar, Box } from '@mui/material';
+import { Container, Typography, TextField, Snackbar, Box } from '@mui/material';
 import { useNavigate, Navigate, Link } from 'react-router';
 import '../Components.css';
+import LargeButton from '../ReactComponents/LargeButton/LargeButton';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -59,17 +60,9 @@ const Login = () => {
             sx={{ width: '20%'}}
           />
           <br></br>
-          <Button  
-            sx={{ 
-              backgroundColor: "#167D7F", 
-              color: "white", '&:hover': { backgroundColor: "#29A0B1" },
-              marginTop: 2,
-              width: '15%'
-            }}
-            onClick={loginUser}
-          >
+          <LargeButton  onClick={loginUser}>
             Login
-          </Button>
+          </LargeButton>
           <br></br>
           <Link 
             name="gotoaddUser"

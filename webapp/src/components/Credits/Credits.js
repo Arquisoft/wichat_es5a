@@ -1,8 +1,17 @@
 import React from 'react';
 
 import { Typography} from '@mui/material';
+import LargeButton from '../ReactComponents/LargeButton/LargeButton';
+import { useNavigate } from 'react-router';
 
 const Credits = () => {
+
+  const navigate = useNavigate();
+  
+  const exitCredits = () => {
+    navigate('/home');
+  }
+
   return (
     <div>
           <Typography component="h1" variant="h1" sx={{ textAlign: 'center', marginTop: 2, color: "#167D7F" }}>
@@ -26,6 +35,9 @@ const Credits = () => {
           <Typography component="h1" variant="h5" sx={{ textAlign: 'center', marginTop: 2, color: "#167D7F" }}>
           UO295029@uniovi.es - Marcos Argüelles Rivera
           </Typography>
+          <LargeButton onClick={exitCredits}>
+            Salir 
+          </ LargeButton>
     </div>
   );
 };
