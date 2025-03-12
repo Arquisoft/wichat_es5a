@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
+import { Container, Typography, TextField, Snackbar } from '@mui/material';
 import { /*useNavigate,*/ Link } from 'react-router';
 
 import '../Components.css';
+import LargeButton from '../ReactComponents/LargeButton/LargeButton';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -57,16 +58,9 @@ const AddUser = () => {
         sx={{ width: '20%'}}
       />
       <br></br>
-      <Button 
-        sx={{ 
-          backgroundColor: "#167D7F", 
-          color: "white", '&:hover': { backgroundColor: "#29A0B1" },
-          marginTop: 2,
-          width: '15%'
-        }} 
-        onClick={addUser}>
+      <LargeButton onClick={addUser}>
         Registrarse
-      </Button>
+      </LargeButton>
       <br></br>
       {openSnackbar && <p>Usuario añadido con éxito</p>}
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Usuario añadido con éxito" />

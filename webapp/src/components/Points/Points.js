@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router';
+import LargeButton from '../ReactComponents/LargeButton/LargeButton';
 
 const Points = () => {
 
@@ -33,28 +34,14 @@ const Points = () => {
             ¡Bien hecho!
           </Typography>
           <Box display="flex" justifyContent="center" mt={2}>
-            <Button
-            onClick={playAgain} 
-            sx={{ 
-              backgroundColor: "#167D7F", 
-              color: "white", '&:hover': { backgroundColor: "#29A0B1" },
-              marginTop: 2,
-              width: '15%'
-              }} >
+            <LargeButton onClick={playAgain} >
               Jugar otra vez
-            </Button>
+            </LargeButton>
           </Box>
           <Box display="flex" justifyContent="center" mt={2}>
-            <Button 
-            onClick={exit} 
-            sx={{ 
-              backgroundColor: "#167D7F", 
-              color: "white", '&:hover': { backgroundColor: "#29A0B1" },
-              marginTop: 2,
-              width: '15%'
-            }} >
+            <LargeButton onClick={exit} >
               Salir
-            </Button>
+            </LargeButton>
           </Box>
     </div>
   );
