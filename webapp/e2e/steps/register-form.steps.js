@@ -31,6 +31,7 @@ defineFeature(feature, test => {
     given('An unregistered user', async () => {
       username = "pablo"
       password = "pabloasw"
+      // Hay que tener cuidao con este test. Si cambiamos el elemento link esto se va a la basura
       await expect(page).toClick("a", { text: "¿No tienes una cuenta todavía? ¡Regístrate aquí!" });
     });
 
