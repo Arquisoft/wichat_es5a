@@ -62,6 +62,7 @@ const AddUser = () => {
         Registrarse
       </Button>
       <br></br>
+      {openSnackbar && <p>Usuario añadido con éxito</p>}
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Usuario añadido con éxito" />
       {error && (
         <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
