@@ -10,6 +10,7 @@ import { Container } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
+import './Game.css';
 
 const Juego = () => {
   const navigate = useNavigate();
@@ -178,10 +179,6 @@ async function descolorearTodos(){
     //Ponemos el boton de la respuesta correcta en verde
       button.style.backgroundColor = "#FFFFFF";
     })
-  buttonContainer.querySelector('#boton1').style.border = "6px solid #E14E4E";
-  buttonContainer.querySelector('#boton2').style.border = "6px solid #CBBA2A";
-  buttonContainer.querySelector('#boton3').style.border = "6px solid #05B92B";
-  buttonContainer.querySelector('#boton4').style.border = "6px solid #1948D9";
 } 
 
 // //Primer render para un comportamiento diferente
@@ -215,11 +212,15 @@ const handleRestart = () => {
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
       {ready ? <>
-        <div className="numPregunta"> <p> {numPreguntaActual} / {numPreguntas} </p> </div>
-        <Temporizador id="temp" restart={restartTemporizador} tiempoInicial={20} tiempoAcabado={cambiarColorBotones} pausa={pausarTemporizador} handleRestart={handleRestart} />
-        <h2> {pregunta} </h2>
+        <div className="numPregunta"> <p>Pregunta: {numPreguntaActual} / {numPreguntas} </p> </div>
+        <div className="temporizador-container">
+          <p>Tiempo restante: <Temporizador id="temp" restart={restartTemporizador} tiempoInicial={20} tiempoAcabado={cambiarColorBotones} pausa={pausarTemporizador} handleRestart={handleRestart} /></p>
+        </div>
+        <h2 className="pregunta-texto"> {pregunta} </h2>
         {imagenPregunta && (
-          <img src={imagenPregunta} alt="Imagen de la pregunta" />
+          <div className="image-container">
+            <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
+          </div>
         )}
         <button
           onClick={enviarRespuestaALlm}
@@ -244,7 +245,7 @@ const handleRestart = () => {
             <button key={index} id={`boton${index + 1}`} className="button" onClick={() => botonRespuesta(respuesta)}>{respuesta}</button>
           ))}
         </div>
-        <button id="botonSiguiente" className="button" onClick={() => clickSiguiente()}> SIGUIENTE</button>
+        <button id="botonFinalizar" className="button" onClick={() => clickSiguiente()}> Finalizar</button>
       </>
         : <h2> CARGANDO... </h2>}
     </Container>
