@@ -1,0 +1,103 @@
+/* Estilo para centrar y hacer las imágenes responsivas */
+img {
+    display: block;
+    max-width: 90%;  /* Se ajusta al 90% del contenedor para evitar desbordamientos */
+    height: auto;    /* Mantiene la relación de aspecto */
+    margin: 0 auto;  /* Centra la imagen horizontalmente */
+  }
+  
+  /* Contenedor para la imagen para asegurar que se adapta bien */
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100vw; /* Evita que la imagen se salga del viewport */
+    overflow: hidden;
+    padding: 2vw;
+  }
+  
+  /* Media Queries para adaptar tamaños en diferentes dispositivos */
+  @media (max-width: 768px) {
+    img {
+      max-width: 95%; /* Más ancho en pantallas pequeñas */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    img {
+      max-width: 100%; /* Usa todo el ancho disponible en móviles */
+    }
+  }
+  
+  /* Estilo para los botones de respuesta */
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+    gap: 2vw; /* Espaciado entre botones */
+    justify-content: center;
+    align-items: center;
+    margin-top: 3vh;
+  }
+  
+  .button {
+    padding: 2vh 3vw; /* Espaciado relativo */
+    font-size: 2.2vh; /* Tamaño de fuente relativo */
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5vw; /* Bordes redondeados relativos */
+    border: 0.5vw solid #ccc; /* Borde relativo */
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .button:hover {
+    transform: scale(1.05);
+  }
+
+  #botonFinalizar {
+    position: fixed;
+    bottom: 2vh; /* Margen inferior */
+    right: 2vw; /* Margen derecho */
+    padding: 2vh 3vw;
+    font-size: 2.2vh;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5vw;
+    border: 0.5vw solid #ccc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #0056b3;
+    color: white;
+  }
+  
+  #botonFinalizar:hover {
+    transform: scale(1.05);
+    background-color: #004494;
+  }
+
+  /* Estilo para la numeración de la pregunta */
+.numPregunta {
+    font-size: 4vh; /* Tamaño grande */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1vh;
+    color: #0056b3; /* Azul oscuro */
+  }
+  
+  /* Estilo para el temporizador */
+  .temporizador-container {
+    font-size: 3vh; /* Tamaño más grande */
+    font-weight: bold;
+    text-align: center;
+    color: #D9534F; /* Rojo para destacar el tiempo */
+    margin-bottom: 2vh;
+  }
+  
+  /* Estilo para la pregunta */
+  .pregunta-texto {
+    font-size: 2.8vh;
+    font-weight: bold;
+    text-align: center;
+    color: black;
+    margin-bottom: 2vh;
+  }
