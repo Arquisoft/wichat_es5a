@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Typography, TextField, Snackbar } from '@mui/material';
-import { useNavigate, Link } from 'react-router';
+import { /*useNavigate,*/ Link } from 'react-router';
 import '../Components.css';
 import LargeButton from '../ReactComponents/LargeButton/LargeButton';
 
@@ -12,13 +12,13 @@ const AddUser = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const addUser = async () => {
     try {
       await axios.post(`${apiEndpoint}/adduser`, { username, password });
       setOpenSnackbar(true);
-      navigate('/home');
+      //navigate('/home');
     } catch (error) {
       setError(error.response.data.error);
     }
@@ -56,7 +56,8 @@ const AddUser = () => {
         Registrarse
       </LargeButton>
       <br></br>
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="User added successfully" />
+      {openSnackbar && <p>Usuario añadido con éxito</p>}
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Usuario añadido con éxito" />
       {error && (
         <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
       )}
