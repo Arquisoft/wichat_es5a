@@ -471,9 +471,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#section-building-block-view">5. Vista de Bloques de Construcción</a>
 <ul class="sectlevel2">
-<li><a href="#_sistema_general_de_caja_blanca">5.1. Sistema General de Caja Blanca</a></li>
-<li><a href="#_caja_blanca_de_wiq">5.2. Caja Blanca de WIQ</a></li>
-<li><a href="#_caja_blanca_del_servicio_de_usuario">5.3. Caja Blanca del Servicio de Usuario</a></li>
+<li><a href="#_visión_general">5.1. Visión general</a></li>
+<li><a href="#_nivel_2">5.2. Nivel 2</a></li>
+<li><a href="#_nivel_3_servicio_de_usuario">5.3. Nivel 3-Servicio de Usuario</a></li>
 </ul>
 </li>
 <li><a href="#section-runtime-view">6. Vista de ejecución</a>
@@ -483,7 +483,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_generación_de_preguntas_en_una_partida">6.3. Generación de preguntas en una partida</a></li>
 </ul>
 </li>
-<li><a href="#section-deployment-view">7. Deployment View</a></li>
+<li><a href="#section-deployment-view">7. Diagrama de Despliegue</a>
+<ul class="sectlevel2">
+<li><a href="#_motivación_2">7.1. Motivación</a></li>
+<li><a href="#_características_de_calidad_y_rendimiento">7.2. Características de Calidad y Rendimiento</a></li>
+<li><a href="#_mapeo_de_componentes_a_la_infraestructura">7.3. Mapeo de Componentes a la Infraestructura</a></li>
+</ul>
+</li>
 <li><a href="#section-concepts">8. Conceptos transversales</a>
 <ul class="sectlevel2">
 <li><a href="#_modelo_de_dominio">8.1. Modelo de Dominio</a></li>
@@ -496,7 +502,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#section-design-decisions">9. Decisiones Arquitectónicas</a>
 <ul class="sectlevel2">
-<li><a href="#_motivación_2">9.1. Motivación</a></li>
+<li><a href="#_motivación_3">9.1. Motivación</a></li>
 <li><a href="#_decisiones_claves">9.2. Decisiones Claves</a></li>
 </ul>
 </li>
@@ -512,7 +518,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_deuda_técnica">11.2. Deuda Técnica</a></li>
 </ul>
 </li>
-<li><a href="#section-glossary">12. Glossary</a></li>
+<li><a href="#section-glossary">12. Glosario</a></li>
 </ul>
 </div>
 </div>
@@ -660,29 +666,104 @@ If requirements documents exist this overview should refer to these documents.</
 <ol class="arabic">
 <li>
 <p>El sistema permitirá a los usuarios no registrados registrarse en la aplicación.</p>
-</li>
-<li>
-<p>El sistema permitirá a los usuarios registrados autentificarse en la aplicación.</p>
-</li>
-<li>
-<p>Los usuarios registrados podrán jugar "concursos" en los que responderán preguntas.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Los "concursos" tiene un límite de tiempo indicado por un temporizador.</p>
+<p>El registro pedirá obligatoriamente a los usuarios:</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Un nombre de usuario.</p>
 </li>
 <li>
-<p>Las preguntas y respuestas se deben generar automáticamente con informnación conseguida de WikiData.</p>
+<p>Una constraseña.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Si el registro es exitoso, se guardará la información del usuario es base de datos.</p>
+</li>
+<li>
+<p>Si el registro NO es exitoso, notificará el fallo al usuario.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>El sistema permitirá a los usuarios registrados autentificarse en la aplicación.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>La autenticación pedirá obligatoriamente a los usuarios:</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Un nombre de usuario.</p>
+</li>
+<li>
+<p>Una contraseña.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Si la autenticación es exitosa, se rederegirá al usuario registrado a la pantalla principal.</p>
+</li>
+<li>
+<p>Si la autenticación NO es exitosa, notificará el fallo al usuario.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Los usuarios registrados podrán jugar concursos en los que responderán preguntas.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Los concursos tienen un total de 20 preguntas.</p>
+</li>
+<li>
+<p>Los concursos tiene un límite de tiempo indicado por un temporizador.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Si el usuario se queda sin tiempo, el concurso acaba inmediatamente.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Las preguntas y respuestas se deben generar automáticamente con información conseguida de WikiData.</p>
 <div class="olist lowerroman">
 <ol class="lowerroman" type="i">
 <li>
 <p>Las preguntas deben incluir una imagen, un enunciado y varias respuestas incorrectas.</p>
+</li>
+<li>
+<p>Los datos de la pregunta deben ser guardados en base de datos.</p>
 </li>
 </ol>
 </div>
 </li>
 <li>
 <p>Los usuarios registrados pueden interactuar con un LLM para conseguir pistas sobre la pregunta actual.</p>
+</li>
+<li>
+<p>Al acabar el concurso, se le mostrará al usuario información sobre el concurso.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Se mostrará cuantas preguntas han sido acertadas.</p>
+</li>
+<li>
+<p>Se mostrará cuantas pistas se han usado.</p>
+</li>
+<li>
+<p>Se mostrará cuanto tiempo se ha tardado en acabar el concurso.</p>
+</li>
+</ol>
+</div>
 </li>
 </ol>
 </div>
@@ -692,13 +773,13 @@ If requirements documents exist this overview should refer to these documents.</
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Número de juegos.</p>
+<p>Número de concursos jugados.</p>
 </li>
 <li>
-<p>Preguntas acertadas y falladas.</p>
+<p>Preguntas acertadas y falladas en cada concurso.</p>
 </li>
 <li>
-<p>Tiempos.</p>
+<p>Tiempo de juego de cada concurso.</p>
 </li>
 </ol>
 </div>
@@ -708,10 +789,39 @@ If requirements documents exist this overview should refer to these documents.</
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Los usuarios registrados en la aplicación.</p>
+<p>Los usuarios registrados en la aplicación. Se puede obtener la siguiente información:</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Su nombre de usuario.</p>
 </li>
 <li>
-<p>Las preguntas generadas por la aplicación.</p>
+<p>Los concursos que han jugado.</p>
+</li>
+<li>
+<p>Las preguntas acertadas y falladas en los concursos jugados.</p>
+</li>
+<li>
+<p>Los tiempos de juego en los concursos jugados.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Las preguntas generadas por la aplicación. Se puede obtener la siguiente información:</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Enunciado de la pregunta.</p>
+</li>
+<li>
+<p>Respuestas generadas, indicando cual es la correcta.</p>
+</li>
+<li>
+<p>Imagen utilizada en la pregunta.</p>
+</li>
+</ol>
+</div>
 </li>
 </ol>
 </div>
@@ -786,6 +896,40 @@ If you as an architect do not know how the quality of your work will be judged&#
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p>Sabiendo los atributos de calidad más relevantes, podemos definir unos requisitos no funcionales adecuados.</p>
+</div>
+<div class="paragraph">
+<p><strong>Requisitos no funcionales:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>El tiempo de aprendizaje de un nuevo usuario debe ser menor a 1 hora.</p>
+</li>
+<li>
+<p>El sistema será compatible con Windows, iOS y Linux.</p>
+</li>
+<li>
+<p>La aplicación deberá funcionar en navegadores web estándar, asegurando la compatibilidad con versiones recientes de Chrome, Firefox, Safari y Edge.</p>
+</li>
+<li>
+<p>El sistema debe ser capaz de operar adecuadamente con hasta 1000 usuarios con sesiones concurrentes.</p>
+</li>
+<li>
+<p>El tiempo para iniciar o reiniciar el sistema no podrá ser mayor a 1 minuto.</p>
+</li>
+<li>
+<p>El sistema debe emplear Wikidata para construir las preguntas.</p>
+</li>
+<li>
+<p>El sistema debe emplear un LLM para formular pistas para el usuario.</p>
+</li>
+<li>
+<p>El tiempo en generar las preguntas de un concurso no debe ser mayor a 20 segundos.</p>
+</li>
+</ol>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_stakeholders">1.3. Stakeholders</h3>
@@ -1060,7 +1204,7 @@ together with a mapping table showing the relationships between channels and inp
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="1022" height="608">
+<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="992" height="608">
 </div>
 </div>
 <div class="paragraph">
@@ -1118,6 +1262,12 @@ Las preguntas generadas son guardadas en base de datos para el historial de los 
 </li>
 <li>
 <p><strong>Docker:</strong> Tecnología usada para desplegar el proyecto y todos sus distintos módulos en la web. Usamos docker ya que es el que se nos ha enseñado a utilizar en el laboratorio y además es un sistema portable que lo único que necesitamos es tener docker instalado para que funcione. Además de la eficiencia que nos permite empaquetar los contenedores en un período de tiempo razonable.</p>
+</li>
+<li>
+<p><strong>Node.js:</strong> Es una plataforma que nos permite ejecutar JavaScript en el servidor. Usamos Node.js debido a que viene incluido con NPM, es decir, con un gestor de paquetes que facilita la instalación y gestión de bibliotecas y módulos para nuestra aplicación ya que cuenta con una gran cantidad de módulos para cualquier cosa. También lo usamos debido a que nos permite crear servidores web rápidos que pueden manejar un gran número de conexiones simultáneas.</p>
+</li>
+<li>
+<p><strong>Express:</strong> Es un framework de JavaScript que se utiliza para desarrollar aplicaciones web y Apis en Node.js. Lo usamos debido a que es uno de los frameworks más populares para construir aplicaciones del lado del servidor debido a su simplicidad, flexibilidad y alto rendimiento.</p>
 </li>
 </ul>
 </div>
@@ -1231,7 +1381,7 @@ Thus it contains the white box description of selected building blocks of level 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sistema_general_de_caja_blanca">5.1. Sistema General de Caja Blanca</h3>
+<h3 id="_visión_general">5.1. Visión general</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -1270,9 +1420,6 @@ In the best case you will get away with examples or simple signatures.</p>
 </div>
 </div>
 </div>
-<div class="paragraph">
-<p><em><strong>&lt;Diagrama General&gt;</strong></em></p>
-</div>
 <div class="imageblock text-center">
 <div class="content">
 <img src="./images/BuildingBlock.png" alt="BuildingBlock" width="600">
@@ -1284,9 +1431,10 @@ In the best case you will get away with examples or simple signatures.</p>
 <dd>
 <p><em>Esta es la visión general en la cual el usuario usa WIQ, que es la estructura general del proyecto y a su vez interactua con Wikidata para obtener los datos para poder desarrollar la aplicación</em></p>
 </dd>
-<dt class="hdlist1">Descripciones de caja negra</dt>
 </dl>
 </div>
+<div class="sect3">
+<h4 id="_componentes">5.1.1. Componentes</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1304,7 +1452,7 @@ In the best case you will get away with examples or simple signatures.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Usuario que interactuará con la aplicación.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">WIQ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Wichat</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Responsable de la gestión del juego.</p></td>
 </tr>
 <tr>
@@ -1381,11 +1529,12 @@ according the the following black box template:</p>
 </div>
 </div>
 </div>
+</div>
 <div class="sect2">
-<h3 id="_caja_blanca_de_wiq">5.2. Caja Blanca de WIQ</h3>
+<h3 id="_nivel_2">5.2. Nivel 2</h3>
 <div class="imageblock text-center">
 <div class="content">
-<img src="./images/WhiteBlockWiq.png" alt="WhiteBlockWiq" width="600">
+<img src="./images/BuildingBlock2.png" alt="BuildingBlock2" width="600">
 </div>
 </div>
 <div class="sidebarblock arc42help">
@@ -1401,7 +1550,7 @@ Leave out normal, simple, boring or standardized parts of your system</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_diagramas_de_caja_negra_de_wiq">5.2.1. Diagramas de Caja Negra de WIQ</h4>
+<h4 id="_componentes_2">5.2.1. Componentes</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1447,8 +1596,16 @@ Leave out normal, simple, boring or standardized parts of your system</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Servicio responsable de lanzar las querys a Wikidata para obtener la información.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Base de datos mongodb cuya función es guardar información sobre los usuarios, partidas, preguntas e historial.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UserData</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Base de datos mongodb cuya función es guardar información sobre los usuarios.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QuestionData</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Base de datos mongodb cuya función es almacenar las preguntas devuletas por wikidata.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GeminiApi</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Api proporcionada para interactuar con el modelo de lenguaje de Google Gemini.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1462,7 +1619,7 @@ Leave out normal, simple, boring or standardized parts of your system</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_caja_blanca_del_servicio_de_usuario">5.3. Caja Blanca del Servicio de Usuario</h3>
+<h3 id="_nivel_3_servicio_de_usuario">5.3. Nivel 3-Servicio de Usuario</h3>
 <div class="imageblock text-center">
 <div class="content">
 <img src="./images/BuildingBlockuserservice.png" alt="BuildingBlockuserservice" width="600">
@@ -1480,7 +1637,7 @@ part of arc42 for additional levels.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_diagramas_de_caja_negra_del_servicio_de_usuario">5.3.1. Diagramas de Caja Negra del Servicio de Usuario</h4>
+<h4 id="_componentes_3">5.3.1. Componentes</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1639,127 +1796,74 @@ You will mainly capture scenarios in your documentation to communicate your arch
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-deployment-view">7. Deployment View</h2>
+<h2 id="section-deployment-view">7. Diagrama de Despliegue</h2>
 <div class="sectionbody">
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
 <div class="title">Content</div>
-<p>The deployment view describes:</p>
+<p>Esta vista describe:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>technical infrastructure used to execute your system, with infrastructure elements like geographical locations, environments, computers, processors, channels and net topologies as well as other infrastructure elements and</p>
+<p>La infraestructura técnica utilizada para ejecutar WIChat, con elementos como entornos, servidores, contenedores Docker, canales de comunicación y protocolos de red.</p>
 </li>
 <li>
-<p>mapping of (software) building blocks to that infrastructure elements.</p>
+<p>La asignación de los bloques de software a esta infraestructura.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>Often systems are executed in different environments, e.g. development environment, test environment, production environment. In such cases you should document all relevant environments.</p>
+<p>Dado que WIChat está compuesto por múltiples servicios y utiliza tecnologías externas, es crucial documentar su despliegue para garantizar su mantenimiento, escalabilidad y correcto funcionamiento.</p>
 </div>
 <div class="paragraph">
-<p>Especially document a deployment view if your software is executed as distributed system with more than one computer, processor, server or container or when you design and construct your own hardware processors and chips.</p>
+<div class="title">Motivación</div>
+<p>El software no puede ejecutarse sin infraestructura. Esta infraestructura subyacente afecta la arquitectura del sistema y conceptos transversales como seguridad y rendimiento. Es importante entender y documentar estos aspectos.</p>
 </div>
 <div class="paragraph">
-<p>From a software perspective it is sufficient to capture only those elements of an infrastructure that are needed to show a deployment of your building blocks. Hardware architects can go beyond that and describe an infrastructure to any level of detail they need to capture.</p>
-</div>
-<div class="paragraph">
-<div class="title">Motivation</div>
-<p>Software does not run without hardware.
-This underlying infrastructure can and will influence a system and/or some
-cross-cutting concepts. Therefore, there is a need to know the infrastructure.</p>
-</div>
-<div class="paragraph">
-<div class="title">Form</div>
-<p>Maybe a highest level deployment diagram is already contained in section 3.2. as
-technical context with your own infrastructure as ONE black box. In this section one can
-zoom into this black box using additional deployment diagrams:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>UML offers deployment diagrams to express that view. Use it, probably with nested diagrams,
-when your infrastructure is more complex.</p>
-</li>
-<li>
-<p>When your (hardware) stakeholders prefer other kinds of diagrams rather than a deployment diagram, let them use any kind that is able to show nodes and channels of the infrastructure.</p>
-</li>
-</ul>
+<div class="title">Forma</div>
+<p>Se presenta un diagrama de despliegue que muestra los servicios dentro de contenedores Docker, las conexiones entre ellos y su interacción con bases de datos y servicios externos.</p>
 </div>
 <div class="paragraph">
 <div class="title">Further Information</div>
-<p>See <a href="https://docs.arc42.org/section-7/">Deployment View</a> in the arc42 documentation.</p>
-</div>
-</div>
-</div>
-<div class="sidebarblock arc42help">
-<div class="content">
-<div class="paragraph">
-<p>Describe (usually in a combination of diagrams, tables, and text):</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>distribution of a system to multiple locations, environments, computers, processors, .., as well as physical connections between them</p>
-</li>
-<li>
-<p>important justifications or motivations for this deployment structure</p>
-</li>
-<li>
-<p>quality and/or performance features of this infrastructure</p>
-</li>
-<li>
-<p>mapping of software artifacts to elements of this infrastructure</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>For multiple environments or alternative deployments please copy and adapt this section of arc42 for all relevant environments.</p>
+<p>Ver <a href="https://docs.arc42.org/section-7/">Deployment View</a> en la documentación de arc42.</p>
 </div>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/07-diagramaDespliegue.png" alt="Diagrama de despliegue">
+<img src="./images/07-diagramaDespliegue.png" alt="Diagrama de Despliegue">
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Motivación</dt>
-<dd>
-<p>En esta aplicación los usuarios interactúan a través de una interfaz web basada en React.
-Esta aplicación se comunica con un backend desplegado en un servidor en Azure,
-donde cada componente funciona dentro de contenedores Docker. El Gateway Service actúa como el
- núcleo del sistema, distribuyendo las solicitudes entre los servicios internos, como el de
-autenticación y el de usuarios, y los servicios externos, como un modelo de lenguaje (LLM)
-y Wikidata. Los datos importantes, como la información de los usuarios y credenciales,
-se almacenan en MongoDB Atlas, una base de datos en la nube. Todo el sistema está diseñado
-para garantizar la seguridad mediante conexiones HTTPS y autenticación con API Keys,
-mientras que la arquitectura basada en contenedores asegura la escalabilidad y
-el aislamiento de los servicios.</p>
-</dd>
-<dt class="hdlist1">Características de Calidad y/o Rendimiento</dt>
-<dd>
+<div class="sect2">
+<h3 id="_motivación_2">7.1. Motivación</h3>
+<div class="paragraph">
+<p>En WIChat, los usuarios interactúan a través de una interfaz web basada en React.
+Esta aplicación se comunica con un backend desplegado en un servidor en <strong>Azure</strong>, donde cada componente funciona dentro de contenedores <strong>Docker</strong>.
+El <strong>Gateway Service</strong> actúa como el núcleo del sistema, distribuyendo las solicitudes entre los servicios internos (<strong>AuthService, UserService, QuestionService, HistoryService, WIChat_API,Wikidata API</strong>) y servicios externos (<strong>Gemini API y Wikidata</strong>).
+Los datos se almacenan en <strong>MongoDB</strong>, ejecutándose en un contenedor Docker en el mismo servidor.
+El sistema garantiza la seguridad mediante conexiones <strong>HTTPS</strong> y autenticación con <strong>API Keys</strong>, mientras que la arquitectura basada en contenedores facilita la escalabilidad y modularidad.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_características_de_calidad_y_rendimiento">7.2. Características de Calidad y Rendimiento</h3>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Escalabilidad:</strong> Cada servicio está encapsulado en un contenedor Docker, lo que permite escalar horizontalmente según sea necesario.</p>
+<p><strong>Escalabilidad:</strong> Cada servicio está encapsulado en un contenedor <strong>Docker</strong>, lo que permite escalar horizontalmente según la demanda.</p>
 </li>
 <li>
-<p><strong>Seguridad:</strong> Todas las comunicaciones se realizan mediante HTTPS. Se utilizan API Keys para autenticar las solicitudes a servicios externos.</p>
+<p><strong>Seguridad:</strong> Todas las comunicaciones se realizan mediante <strong>HTTPS</strong> y las interacciones con servicios externos requieren <strong>API Keys</strong>.</p>
 </li>
 <li>
-<p><strong>Modularidad:</strong> La separación de servicios facilita el mantenimiento y la extensibilidad del sistema.</p>
+<p><strong>Modularidad:</strong> La separación de servicios en microservicios facilita el mantenimiento y la extensibilidad del sistema.</p>
 </li>
 </ul>
 </div>
-</dd>
-<dt class="hdlist1">Mapeo de Componentes a la Infraestructura</dt>
-</dl>
 </div>
+<div class="sect2">
+<h3 id="_mapeo_de_componentes_a_la_infraestructura">7.3. Mapeo de Componentes a la Infraestructura</h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1773,43 +1877,56 @@ el aislamiento de los servicios.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">WebApp</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Es la interfaz de usuario, permite a los usuarios interactuar con el sistema mediante un navegador</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>WebApp</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aplicación frontend en React que permite la interacción del usuario con el sistema.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Gateway Service</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Es el componente central que actúa como un proxy para las solicitudes realizadas por la WebApp.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Gateway Service</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Punto de entrada de la aplicación. Orquesta las solicitudes entre los servicios internos y externos.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Auth Service</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Gestiona la autenticación de los usuarios</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Auth Service</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Responsable de la autenticación de los usuarios.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">User Service</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Es la parte encargada de manejar las operaciones relacionadas con los usuarios</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>User Service</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maneja la gestión de usuarios, incluyendo registros y perfiles.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">LLM Service</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Modelo de lenguaje con el que interectuamos para obtener pistas sobre las preguntas.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Question Service</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Obtiene preguntas desde Wikidata, las procesa y las almacena en la base de datos.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MongoDB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>History Service</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gestiona y almacena el historial de participación de los usuarios.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>WIChat API</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Proporciona información sobre los usuarios de la aplicación y las preguntas que se generan.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Wikidata API</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">API para acceder a Wikidata.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>MongoDB</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Base de datos utilizada para almacenar:
-Información de usuarios (datos personales, perfiles).
-Credenciales y tokens de autenticación.
-Historial de participación y otros datos del sistema.</p></td>
+  - Información de usuarios (perfiles, credenciales).
+  - Preguntas y respuestas generadas.
+  - Historial de participación y partidas.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">API LLM</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">API con la que podremos acceder al modelo de lenguaje.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Gemini API</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">API de modelo de lenguaje utilizada para generar pistas en tiempo real.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Wikidata</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Es un servicio externo que actúa como fuente de datos para generar preguntas y pistas.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Wikidata</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fuente externa de información utilizada para la generación automática de preguntas.</p></td>
 </tr>
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2001,7 +2118,7 @@ on this list.</p>
 <h2 id="section-design-decisions">9. Decisiones Arquitectónicas</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_motivación_2">9.1. Motivación</h3>
+<h3 id="_motivación_3">9.1. Motivación</h3>
 <div class="paragraph">
 <p>Las decisiones arquitectónicas de WIChat han sido tomadas con el objetivo de garantizar que la aplicación sea escalable, modular, segura y fácil de mantener. Dado que WIChat es una aplicación web interactiva que integra varias tecnologías y servicios externos, es fundamental que su arquitectura facilite tanto el desarrollo como el despliegue y la futura evolución del sistema.</p>
 </div>
@@ -2383,7 +2500,7 @@ El sistema debe someterse a pruebas de carga.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-glossary">12. Glossary</h2>
+<h2 id="section-glossary">12. Glosario</h2>
 <div class="sectionbody">
 <div class="sidebarblock arc42help">
 <div class="content">
@@ -2485,7 +2602,7 @@ El sistema debe someterse a pruebas de carga.</p>
 <div id="footer">
 <div id="footer-text">
 Version 8.2 EN<br>
-Last updated 2025-02-18 16:50:18 +0100
+Last updated 2025-03-09 15:27:48 +0100
 </div>
 </div>
 </body>
