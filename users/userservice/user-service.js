@@ -58,7 +58,7 @@ app.post('/adduser', async (req, res) => {
           const user_Email = await findOne(null, email);
           const newUser = new User({
               username: req.body.username,
-              email: user_Email,
+              email: email,
               password: hashedPassword,
           });
 
