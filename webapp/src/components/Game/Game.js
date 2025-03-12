@@ -4,7 +4,7 @@ CRÉDITOS AL EQUIPO DE DESARROLLO DE WIQ_ES05A
 SUS MIEMBROS SE PUEDEN ENCONTRAR EN EL SIGUIENTE ENLACE:
 https://github.com/Arquisoft/wiq_es05a/blob/master/README.md
 */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Container } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -33,57 +33,54 @@ const Juego = () => {
   const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
   const [numPreguntas, setNumPreguntas] = useState(0)
 
-  // Estados para el LLM
-  const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
+    // Estados para el LLM
+    const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
+  
+    //Variables para la obtencion y modificacion de estadisticas del usuario y de preguntas
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+  
+    // Función que actualiza la pregunta que se muestra en pantalla
+    const updateGame = useCallback(() => {
+      setPregunta(arPreg[numPreguntaActual].pregunta);
+      setResCorr(arPreg[numPreguntaActual].resCorr);
+      setResFalse(arPreg[numPreguntaActual].resFalse);
+      setImagenPregunta(arPreg[numPreguntaActual].imagen);
+      //Poner temporizador a 20 de nuevo
+      setRestartTemporizador(true);
+    }, [arPreg, numPreguntaActual]);
 
-  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-
-  // Primer render para un comportamiento diferente
-  useEffect(() => {
-    if (!firstRender) {
-      setFirstRender(true);
-      crearPreguntas(2);
-    }
-  }, []);
-
-  // Función que genera un número de preguntas determinado
-  async function crearPreguntas(numPreguntas) {
-    setPausarTemporizador(true);
-    setNumPreguntas(numPreguntas);
-    while (numPreguntas > 0) {
-      try {
-        const response = await axios.post(`${apiEndpoint}/questions`);
-
-        const respuestas = [...response.data.wrongAnswers, response.data.answer];
-
-        arPreg.push({
-          id: numPreguntas,
-          pregunta: response.data.question,
-          resCorr: response.data.answer,
-          resFalse: respuestas,
-          imagen: response.data.image
-        });
-      } catch (error) {
-        console.error('Error al crear las preguntas:', error);
-         // Manejar el error de acuerdo a tus necesidades
+    const crearPreguntas = useCallback(async (numPreguntas) => {
+      setPausarTemporizador(true);
+      setNumPreguntas(numPreguntas);
+      while (numPreguntas > 0) {
+        try {
+          const response = await axios.post(`${apiEndpoint}/questions`);
+          const respuestas = [...response.data.wrongAnswers, response.data.answer];
+          arPreg.push({
+            id: numPreguntas,
+            pregunta: response.data.question,
+            resCorr: response.data.answer,
+            resFalse: respuestas,
+            imagen: response.data.image,
+          });
+        } catch (error) {
+          console.error('Error al crear las preguntas:', error);
+        }
+        numPreguntas--;
       }
-      numPreguntas--;
-    }
-    setReady(true);
-    setPausarTemporizador(false);
-    updateGame();
-    setNumPreguntaActual(numPreguntaActual + 1);
-  }
-
-  // Función que actualiza la pregunta que se muestra en pantalla
-  async function updateGame() {
-    setPregunta(arPreg[numPreguntaActual].pregunta);
-    setResCorr(arPreg[numPreguntaActual].resCorr);
-    setResFalse(arPreg[numPreguntaActual].resFalse);
-    setImagenPregunta(arPreg[numPreguntaActual].imagen);
-    //Poner temporizador a 20 de nuevo
-    setRestartTemporizador(true);
-  }
+      setReady(true);
+      setPausarTemporizador(false);
+      updateGame();
+      setNumPreguntaActual((prev) => prev + 1);
+    }, [arPreg, apiEndpoint, updateGame]);
+    
+    //Primer render para un comportamiento diferente
+    useEffect(() => {
+      if (!firstRender) {
+        setFirstRender(true);
+        crearPreguntas(2);
+      }
+    }, [firstRender, crearPreguntas]);   
 
   // Función para enviar una solicitud al LLM y obtener una pista
   const enviarRespuestaALlm = async () => {

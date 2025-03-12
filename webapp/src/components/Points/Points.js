@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { Typography, Box, Button } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router';
 
 const Points = () => {
 
-  const [score, setScore] = useState(0); //Puntuación
   const navigate = useNavigate();
   const location = useLocation();
   const { numRespuestasCorrectas, numPreguntas } = location.state || { numRespuestasCorrectas: 0, numPreguntas: 0 };
@@ -13,8 +12,7 @@ const Points = () => {
   useEffect(() => {
     // Generar un número aleatorio entre 0 y 20
     // Cuando se implemente el juego, cambiar por la puntuación conseguida por el usuario.
-    const randomScore = Math.floor(Math.random() * 21);
-    setScore(randomScore);
+    //const randomScore = Math.floor(Math.random() * 21);
   }, []);
 
   const playAgain = () => {

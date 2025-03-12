@@ -2,8 +2,6 @@ import React from 'react';
 import { Container } from '@mui/material';
 import image from './404.png';
 
-const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-
 const AddUser = () => {
 
   return (

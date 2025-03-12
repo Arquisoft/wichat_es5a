@@ -46,19 +46,20 @@ app.post('/adduser', async (req, res) => {
   try {
       // Check if required fields are present in the request body
       validateRequiredFields(req, ['username','password']);
-      const { username,email, password } = req.body;
+      const { username/*, email, password */} = req.body;
       const user_Username = await findOne(username, null);
-      const user_Email = await findOne(null, email);
+      //const user_Email = await findOne(null, email);
+      const user_Email = false; // Ahora mismo los usuarios no tienen email, cuando lo tengan cambiar la linea por la de arriba
       if(user_Email || user_Username ){
           throw new Error("Ya se ha registrado un usuario con ese email o nombre de usuario");
       }else{
           // Encrypt the password before saving it
           const hashedPassword = await bcrypt.hash(req.body.password, 10);
-          const user_Username = await findOne(username, null);
-          const user_Email = await findOne(null, email);
+          //const user_Username = await findOne(username, null); // Creo que esta está mal???
+          //const user_Email = await findOne(null, email); // Creo que está mal???
           const newUser = new User({
               username: req.body.username,
-              email: email,
+              email: req.body.username, //Cuando estén implementados los correos, cambiar esta linea por el correo. Si se cambia ahora da un error al tener varios correos con null
               password: hashedPassword,
           });
 
