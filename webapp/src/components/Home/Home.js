@@ -20,7 +20,8 @@ const Home = () => {
   }
 
   const logOut = () => {
-    navigate('/login'); // Solo navega a la página de login, cuando se tenga el token de user hay que pasarlo a null
+    localStorage.removeItem('token');
+    navigate('/login');
   }
 
   return (

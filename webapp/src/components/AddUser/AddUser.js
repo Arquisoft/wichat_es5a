@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
 import { /*useNavigate,*/ Link } from 'react-router';
+
 import '../Components.css';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
@@ -15,7 +16,12 @@ const AddUser = () => {
 
   const addUser = async () => {
     try {
-      await axios.post(`${apiEndpoint}/adduser`, { username, password });
+      const response = await axios.post(`${apiEndpoint}/adduser`, { username, password });
+
+      const { token } = response.data;
+
+      localStorage.setItem('token', token);
+
       setOpenSnackbar(true);
       //navigate('/home');
     } catch (error) {

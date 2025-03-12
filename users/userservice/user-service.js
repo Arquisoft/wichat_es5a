@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('./user-model');
 
 
@@ -62,8 +63,11 @@ app.post('/adduser', async (req, res) => {
               password: hashedPassword,
           });
 
+          const token = jwt.sign({ userId: newUser._id,
+            username: user_Username }, 'your-secret-key', { expiresIn: '1h' });
+
           await newUser.save();
-          res.json(newUser);
+          res.json({token: token, user: newUser});
       }
 
   } catch (error) {
