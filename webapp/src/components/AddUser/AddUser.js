@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
-import { useNavigate, Link } from 'react-router';
+import { /*useNavigate,*/ Link } from 'react-router';
 import '../Components.css';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
@@ -11,13 +11,13 @@ const AddUser = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const addUser = async () => {
     try {
       await axios.post(`${apiEndpoint}/adduser`, { username, password });
       setOpenSnackbar(true);
-      navigate('/home');
+      //navigate('/home');
     } catch (error) {
       setError(error.response.data.error);
     }

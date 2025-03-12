@@ -42,6 +42,7 @@ defineFeature(feature, test => {
     });
 
     then('A confirmation message should be shown in the screen', async () => {
+      await page.waitForSelector("p", { text: "Usuario añadido con éxito" });
         await expect(page).toMatchElement("p", { text: "Usuario añadido con éxito" });
     });
   })
