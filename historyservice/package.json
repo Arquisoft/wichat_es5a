@@ -1,0 +1,23 @@
+{
+    "name": "historyservice",
+    "version": "1.0.0",
+    "description": "Service in charge of storing and giving information about the historic of the app",
+    "main": "history-service.js",
+    "scripts": {
+      "start": "node history-service.js",
+      "test": "jest"
+    },
+    "author": "",
+    "license": "ISC",
+    "homepage": "https://github.com/arquisoft/wichat_es5a#readme",
+    "dependencies": {
+      "axios": "^1.7.9",
+      "body-parser": "^1.20.3",
+      "express": "^4.21.2",
+      "mongoose": "^8.12.1"
+    },
+    "devDependencies": {
+      "jest": "^29.7.0",
+      "supertest": "^7.0.0"
+    }
+  }

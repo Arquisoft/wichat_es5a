@@ -51,6 +51,34 @@ services:
     networks:
       - mynetwork
 
+  wikiservice:
+    container_name: wikiservice-wichat_es5a
+    image: ghcr.io/arquisoft/wichat_es5a/wikiservice:latest
+    profiles: ["dev", "prod"]
+    build: ./wikiservice
+    depends_on:
+      - mongodb
+    ports:
+    - "8004:8004"
+    networks:
+    - mynetwork
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/userdb    
+
+  historyservice:
+    container_name: historyservice-wichat_es5a
+    image: ghcr.io/arquisoft/wichat_es5a/historyservice:latest
+    profiles: ["dev", "prod"]
+    build: ./historyservice
+    depends_on:
+      - mongodb
+    ports:
+    - "8005:8005"
+    networks:
+    - mynetwork
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/userdb 
+
   gatewayservice:
     container_name: gatewayservice-wichat_es5a
     image: ghcr.io/arquisoft/wichat_es5a/gatewayservice:latest
@@ -71,21 +99,6 @@ services:
       USER_SERVICE_URL: http://userservice:8001
       LLM_SERVICE_URL: http://llmservice:8003
       WIKI_SERVICE_URL: http://wikiservice:8004
-
-  wikiservice:
-    container_name: wikiservice-wichat_es5a
-    image: ghcr.io/arquisoft/wichat_es5a/wikiservice:latest
-    profiles: ["dev", "prod"]
-    build: ./wikiservice
-    ports:
-
-    - "8004:8004"
-    networks:
-    - mynetwork
-    environment:
-      MONGODB_URI: mongodb://mongodb:27017/userdb
-
-
 
   webapp:
     container_name: webapp-wichat_es5a
