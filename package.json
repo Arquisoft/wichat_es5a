@@ -2,7 +2,11 @@
   "dependencies": {
     "@mui/icons-material": "^6.4.6",
     "@primer/octicons-react": "^19.15.0",
+    "concurrently": "^9.1.2",
     "react-native": "^0.78.0",
     "react-router-dom": "^7.2.0"
+  },
+  "scripts": {
+    "start-all": "concurrently \"npm --prefix webapp start\" \"npm --prefix gatewayservice start\" \"npm --prefix users/authservice start\" \"npm --prefix users/userservice start\" \"npm --prefix llmservice start\" \"npm --prefix wikiservice start\""
   }
 }
