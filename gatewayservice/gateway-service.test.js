@@ -1,10 +1,10 @@
 const request = require('supertest');
 const axios = require('axios');
-const app = require('./gateway-service'); 
+const app = require('./gateway-service');
 
 afterAll(async () => {
-    app.close();
-  });
+  app.close();
+});
 
 jest.mock('axios');
 
@@ -17,6 +17,8 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { userId: 'mockedUserId' } });
     } else if (url.endsWith('/ask')) {
       return Promise.resolve({ data: { answer: 'llmanswer' } });
+    } else if (url.endsWith('/questions')) {
+      return Promise.resolve({ data: { answer: 'questions' } });
     }
   });
 
@@ -48,5 +50,23 @@ describe('Gateway Service', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.answer).toBe('llmanswer');
+  });
+
+  // Test /questions endpoint
+  it('should forward questions request to the wiki service', async () => {
+    const response = await request(app)
+      .post('/questions');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.answer).toBe('questions');
+  });
+
+  // Test /health endpoint
+  it('should return 200 and a health status message', async () => {
+    const response = await request(app)
+      .get('/health');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: 'OK' }); // Ajusta según la respuesta esperada del endpoint
   });
 });
