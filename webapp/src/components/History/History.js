@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
 
-const Profile = () => {
+const History = () => {
 
   const navigate = useNavigate();
   
-  const exitProfile = () => {
+  const exitHistory = () => {
     navigate('/home');
   }
 
@@ -17,11 +17,11 @@ const Profile = () => {
           <CustomH1>
            AAAAAAAAAAAA
           </CustomH1>
-          <LargeButton onClick={exitProfile}>
+          <LargeButton onClick={exitHistory}>
             Salir
           </LargeButton>
     </div>
   );
 };
 
-export default Profile;
+export default History;

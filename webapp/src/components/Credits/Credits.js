@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Typography} from '@mui/material';
-import LargeButton from '../ReactComponents/LargeButton/LargeButton';
+import LargeButton from '../ReactComponents/LargeButton';
 import { useNavigate } from 'react-router';
+import CustomH1 from '../ReactComponents/CustomH1';
 
 const Credits = () => {
 
@@ -14,27 +14,27 @@ const Credits = () => {
 
   return (
     <div>
-          <Typography component="h1" variant="h1" sx={{ textAlign: 'center', marginTop: 2, color: "#167D7F" }}>
+          <CustomH1>
           Participantes
-          </Typography>
-          <Typography component="h1" variant="h5" sx={{ textAlign: 'center', marginTop: 2, color: "#167D7F" }}>
+          </CustomH1>
+          <CustomH1 size="h5">
             UO288104@uniovi.es - Miguel Morís Gómez
-          </Typography>
-          <Typography component="h1" variant="h5" sx={{ textAlign: 'center', marginTop: 2, color: "#167D7F" }}>
+          </CustomH1>
+          <CustomH1 size="h5">
           UO287694@uniovi.es - Pablo López Tamargo
-          </Typography>
-          <Typography component="h1" variant="h5" sx={{ textAlign: 'center', marginTop: 2, color: "#167D7F" }}>
+          </CustomH1>
+          <CustomH1 size="h5">
           UO295432@uniovi.es - Óscar Cervero Luiña
-          </Typography>
-          <Typography component="h1" variant="h5" sx={{ textAlign: 'center', marginTop: 2, color: "#167D7F" }}>
+          </CustomH1>
+          <CustomH1 size="h5">
           UO285412@uniovi.es - Néstor Fernández García
-          </Typography>
-          <Typography component="h1" variant="h5" sx={{ textAlign: 'center', marginTop: 2, color: "#167D7F" }}>
+          </CustomH1>
+          <CustomH1 size="h5">
           gaelhorta04@gmail.com - Gael Horta Calzada
-          </Typography>
-          <Typography component="h1" variant="h5" sx={{ textAlign: 'center', marginTop: 2, color: "#167D7F" }}>
+          </CustomH1>
+          <CustomH1 size="h5">
           UO295029@uniovi.es - Marcos Argüelles Rivera
-          </Typography>
+          </CustomH1>
           <LargeButton onClick={exitCredits}>
             Salir 
           </ LargeButton>
