@@ -29,6 +29,7 @@ describe('LLM Service', () => {
   });
 
   // Test /ask endpoint with gemini model
+ 
   it('should reply with gemini model', async () => {
     const response = await request(app)
       .post('/ask')
@@ -37,6 +38,8 @@ describe('LLM Service', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.answer).toBe('llmanswer');
   });
+
+  
 
   // Test /ask endpoint with missing API key
   it('should return an error if API key is missing', async () => {
