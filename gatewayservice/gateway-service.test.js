@@ -17,7 +17,7 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { userId: 'mockedUserId' } });
     } else if (url.endsWith('/ask')) {
       return Promise.resolve({ data: { answer: 'llmanswer' } });
-    } else if (url.endsWith('/questions')) {
+    } else if (url.endsWith('/questions/city')) {
       return Promise.resolve({ data: { answer: 'questions' } });
     }
   });
@@ -58,7 +58,7 @@ describe('Gateway Service', () => {
       .post('/questions/city');
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty('question');
+    expect(response.body.answer).toBe('questions');
   });
 
   // Test /health endpoint
