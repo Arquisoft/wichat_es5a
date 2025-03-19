@@ -55,7 +55,7 @@ const Juego = () => {
       setNumPreguntas(numPreguntas);
       while (numPreguntas > 0) {
         try {
-          const response = await axios.post(`${apiEndpoint}/questions/city`);
+          const response = await axios.post(`${apiEndpoint}/questions/flag`); // A elegir entre city, flag, album o football
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
           const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
 
@@ -74,7 +74,7 @@ const Juego = () => {
       setReady(true);
       setPausarTemporizador(false);
       updateGame();
-      setNumPreguntaActual((prev) => prev + 1);
+      setNumPreguntaActual(1);
     }, [arPreg, apiEndpoint, updateGame]);
     
     //Primer render para un comportamiento diferente
@@ -176,9 +176,8 @@ async function descolorearTodos(){
   const buttonContainer = document.querySelector('.button-container');
   const buttons = buttonContainer.querySelectorAll('.button');
   buttons.forEach((button) => {
-    //Desactivamos TODOS los botones
-    button.disabled=false; 
-    //Ponemos el boton de la respuesta correcta en verde
+      //Activamos TODOS los botones
+      button.disabled=false; 
       button.style.backgroundColor = "#FFFFFF";
       button.style.border = '#FFFFFF';
     })

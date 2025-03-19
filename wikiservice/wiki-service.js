@@ -27,7 +27,22 @@ const queries = [{
       'OPTIONAL { ?answer wdt:P175 ?artist }' +
       'OPTIONAL { ?answer wdt:P166 ?award }' +
       ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 50'
-},];
+}, {
+  kind: "football",
+  question: "¿Qué equipo de fútbol es este?",
+  query: 'SELECT ?answerLabel ?image WHERE {' +
+      '?answer wdt:P31 wd:Q476028;' +
+      '     wdt:P154 ?image.' +
+      '?answer wdt:P118 ?league.' +
+      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+}, {
+  kind: "flag",
+  question: "¿De qué país es esta bandera?",
+  query: 'SELECT ?answerLabel ?image WHERE {' +
+      '?answer wdt:P31 wd:Q6256;' +
+      '         wdt:P41 ?image.' +
+      ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+}];
 
 function getQuery(kind) {
   return queries.find(q => q.kind.includes(kind)) || null;
@@ -45,7 +60,6 @@ app.post("/questions/:kind", async (req, res) => {
     let size = results.results.bindings.length;
     let random = Math.floor(Math.random() * size);
     
-    console.log("resultados: " + results.results.bindings[random]);
     let wrongAnswers = [];
     let image = results.results.bindings[random].image.value;
     let answer = results.results.bindings[random].answerLabel.value;
