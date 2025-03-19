@@ -10,7 +10,8 @@ const YAML = require('yaml')
 const app = express();
 const port = 8000;
 
-const wikiServiceUrl = process.env.WIKI_SERVICE_URL ||'http://localhost:8004';
+const historyServiceUrl = process.env.WIKI_SERVICE_URL || 'http://localhost:8005';
+const wikiServiceUrl = process.env.WIKI_SERVICE_URL || 'http://localhost:8004';
 const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
@@ -61,6 +62,15 @@ app.post('/questions', async (req, res) => {
   try {
     const wikiResponse = await axios.post(wikiServiceUrl + '/questions', req.body);
     res.json(wikiResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({error: error.response.data.error });
+  }
+});
+
+app.get('/getHistory', async (req, res) => {
+  try {
+    const historyResponse = await axios.get(historyServiceUrl + '/history');
+    res.json(historyResponse.data);
   } catch (error) {
     res.status(error.response.status).json({error: error.response.data.error });
   }
