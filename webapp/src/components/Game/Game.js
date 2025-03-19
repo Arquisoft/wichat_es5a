@@ -55,7 +55,7 @@ const Juego = () => {
       setNumPreguntas(numPreguntas);
       while (numPreguntas > 0) {
         try {
-          const response = await axios.post(`${apiEndpoint}/questions/album`);
+          const response = await axios.post(`${apiEndpoint}/questions/city`);
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
           const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
 
@@ -167,7 +167,7 @@ function cambiarColorTodos(button){
     button.style.border = "6px solid #05B92B";
   } else{
     button.style.backgroundColor = "#E14E4E";
-        button.style.border = "6px solid #E14E4E";
+    button.style.border = "6px solid #E14E4E";
   }
 } 
 
@@ -180,6 +180,7 @@ async function descolorearTodos(){
     button.disabled=false; 
     //Ponemos el boton de la respuesta correcta en verde
       button.style.backgroundColor = "#FFFFFF";
+      button.style.border = '#FFFFFF';
     })
 } 
 
