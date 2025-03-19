@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const app = express();
 const port = 8005;
 
 // Connect to MongoDB

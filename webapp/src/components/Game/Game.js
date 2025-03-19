@@ -55,7 +55,7 @@ const Juego = () => {
       setNumPreguntas(numPreguntas);
       while (numPreguntas > 0) {
         try {
-          const response = await axios.post(`${apiEndpoint}/questions`);
+          const response = await axios.post(`${apiEndpoint}/questions/album`);
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
           arPreg.push({
             id: numPreguntas,
@@ -64,10 +64,10 @@ const Juego = () => {
             resFalse: respuestas,
             imagen: response.data.image,
           });
+          numPreguntas--;
         } catch (error) {
           console.error('Error al crear las preguntas:', error);
         }
-        numPreguntas--;
       }
       setReady(true);
       setPausarTemporizador(false);
@@ -79,7 +79,7 @@ const Juego = () => {
     useEffect(() => {
       if (!firstRender) {
         setFirstRender(true);
-        crearPreguntas(2);
+        crearPreguntas(5);
       }
     }, [firstRender, crearPreguntas]);   
 
@@ -150,7 +150,7 @@ const Juego = () => {
 
 //Función que cambia el color de un solo boton (acierto)
 function cambiarColorUno(respuesta, button){
-  if(button.textContent.trim()!==respuesta.trim()){
+  if(button.textContent.trim() === respuesta.trim()){
     if((button.textContent.trim() !== resCorr)) {
       button.style.backgroundColor = "#E14E4E";
       button.style.border = "6px solid #E14E4E";
