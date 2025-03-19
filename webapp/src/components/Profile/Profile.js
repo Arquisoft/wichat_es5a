@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
-import LargeButton from '../ReactComponents/LargeButton/LargeButton';
+import LargeButton from '../ReactComponents/LargeButton';
+import CustomH1 from '../ReactComponents/CustomH1';
+import Container from '@mui/material/Container';
 
 const Profile = () => {
 
@@ -13,14 +14,23 @@ const Profile = () => {
   }
 
   return (
-    <div>
-          <Typography component="h1" variant="h1" sx={{ textAlign: 'center', marginTop: 2, color: "#167D7F" }}>
+    <Container
+      component="main"
+      sx={{
+        marginTop: 4,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+          <CustomH1>
            AAAAAAAAAAAA
-          </Typography>
+          </CustomH1>
           <LargeButton onClick={exitProfile}>
             Salir
           </LargeButton>
-    </div>
+    </Container>
   );
 };
 

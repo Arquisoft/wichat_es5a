@@ -22,6 +22,12 @@ describe('Gateway Service', () => {
     }
   });
 
+  axios.get.mockImplementation((url) => {
+    if (url.endsWith('/history')) {
+      return Promise.resolve({ data: { userCount: 10, questionCount: 5 } });
+    }
+  });
+
   // Test /login endpoint
   it('should forward login request to auth service', async () => {
     const response = await request(app)
@@ -61,12 +67,22 @@ describe('Gateway Service', () => {
     expect(response.body.answer).toBe('questions');
   });
 
+  // Test /history endpoint
+  it('should forward history request to the history service', async () => {
+    const response = await request(app)
+      .get('/getHistory');
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body.userCount).toBe(10);
+      expect(response.body.questionCount).toBe(5);
+  });
+
   // Test /health endpoint
   it('should return 200 and a health status message', async () => {
     const response = await request(app)
       .get('/health');
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({ status: 'OK' }); // Ajusta según la respuesta esperada del endpoint
+    expect(response.body).toEqual({ status: 'OK' });
   });
 });

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Snackbar } from '@mui/material';
+import { Container, TextField, Snackbar } from '@mui/material';
 import { /*useNavigate,*/ Link } from 'react-router';
 
 import '../Components.css';
-import LargeButton from '../ReactComponents/LargeButton/LargeButton';
+import LargeButton from '../ReactComponents/LargeButton';
+import CustomH1 from '../ReactComponents/CustomH1';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -36,9 +37,9 @@ const AddUser = () => {
 
   return (
     <Container component="main" maxWidth={false}  sx={{ marginTop: 4, textAlign: 'center' }} >
-      <Typography component="h1" variant="h1" sx={{ color: "#167D7F", marginTop: 2 }}>
+      <CustomH1>
         Crea una cuenta
-      </Typography>
+      </CustomH1>
       <TextField
         name="username"
         margin="normal"

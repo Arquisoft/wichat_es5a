@@ -11,6 +11,7 @@ import Points from "../components/Points/Points";
 import Profile from "../components/Profile/Profile";
 import Credits from "../components/Credits/Credits";
 import Game from "../components/Game/Game";
+import History from "../components/History/History";
 
 
 /*
@@ -69,6 +70,14 @@ const router = createBrowserRouter([
         element:
             <PrivateRoute>
                 <Profile />
+            </PrivateRoute>
+
+    },
+    {
+        path: "/history",
+        element:
+            <PrivateRoute>
+                <History />
             </PrivateRoute>
 
     },
