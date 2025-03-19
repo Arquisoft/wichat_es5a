@@ -55,10 +55,10 @@ describe('Gateway Service', () => {
   // Test /questions endpoint
   it('should forward questions request to the wiki service', async () => {
     const response = await request(app)
-      .post('/questions');
+      .post('/questions/city');
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.answer).toBe('questions');
+    expect(response.body).toHaveProperty('question');
   });
 
   // Test /health endpoint
