@@ -54,7 +54,7 @@ describe('LLM Service', () => {
   it('should return an error if required fields are missing', async () => {
     const response = await request(app)
       .post('/ask')
-      .send({ question: 'a question' }); // Missing 'model'
+      .send({ question: 'a question' }); 
 
     expect(response.statusCode).toBe(400);
     expect(response.body.error).toBe('Missing required field: model');
@@ -65,7 +65,7 @@ describe('LLM Service', () => {
   it('should return an error if the "question" field is missing', async () => {
     const response = await request(app)
       .post('/ask')
-      .send({ model: 'gemini' }); // Missing 'question'
+      .send({ model: 'gemini' }); 
 
     expect(response.statusCode).toBe(400);
     expect(response.body.error).toBe('Missing required field: question');
@@ -75,7 +75,7 @@ describe('LLM Service', () => {
   it('should return an error if the "model" field is missing', async () => {
     const response = await request(app)
       .post('/ask')
-      .send({ question: 'a question' }); // Missing 'model'
+      .send({ question: 'a question' }); 
 
     expect(response.statusCode).toBe(400);
     expect(response.body.error).toBe('Missing required field: model');
