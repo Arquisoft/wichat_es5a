@@ -58,9 +58,9 @@ app.post('/askllm', async (req, res) => {
   }
 });
 
-app.post('/questions', async (req, res) => {
+app.post('/questions/:kind', async (req, res) => {
   try {
-    const wikiResponse = await axios.post(wikiServiceUrl + '/questions', req.body);
+    const wikiResponse = await axios.post(wikiServiceUrl + '/questions/' + req.params.kind, req.body);
     res.json(wikiResponse.data);
   } catch (error) {
     res.status(error.response.status).json({error: error.response.data.error });

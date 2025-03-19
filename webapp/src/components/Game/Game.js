@@ -55,7 +55,7 @@ const Juego = () => {
       setNumPreguntas(numPreguntas);
       while (numPreguntas > 0) {
         try {
-          const response = await axios.post(`${apiEndpoint}/questions`);
+          const response = await axios.post(`${apiEndpoint}/questions/flag`); // A elegir entre city, flag, album o football
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
           const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
 
@@ -66,22 +66,22 @@ const Juego = () => {
             resFalse: respuestasAleatorias,
             imagen: response.data.image,
           });
+          numPreguntas--;
         } catch (error) {
           console.error('Error al crear las preguntas:', error);
         }
-        numPreguntas--;
       }
       setReady(true);
       setPausarTemporizador(false);
       updateGame();
-      setNumPreguntaActual((prev) => prev + 1);
+      setNumPreguntaActual(1);
     }, [arPreg, apiEndpoint, updateGame]);
     
     //Primer render para un comportamiento diferente
     useEffect(() => {
       if (!firstRender) {
         setFirstRender(true);
-        crearPreguntas(2);
+        crearPreguntas(5);
       }
     }, [firstRender, crearPreguntas]);   
 
@@ -152,7 +152,7 @@ const Juego = () => {
 
 //Función que cambia el color de un solo boton (acierto)
 function cambiarColorUno(respuesta, button){
-  if(button.textContent.trim()!==respuesta.trim()){
+  if(button.textContent.trim() === respuesta.trim()){
     if((button.textContent.trim() !== resCorr)) {
       button.style.backgroundColor = "#E14E4E";
       button.style.border = "6px solid #E14E4E";
@@ -167,7 +167,7 @@ function cambiarColorTodos(button){
     button.style.border = "6px solid #05B92B";
   } else{
     button.style.backgroundColor = "#E14E4E";
-        button.style.border = "6px solid #E14E4E";
+    button.style.border = "6px solid #E14E4E";
   }
 } 
 
@@ -176,10 +176,10 @@ async function descolorearTodos(){
   const buttonContainer = document.querySelector('.button-container');
   const buttons = buttonContainer.querySelectorAll('.button');
   buttons.forEach((button) => {
-    //Desactivamos TODOS los botones
-    button.disabled=false; 
-    //Ponemos el boton de la respuesta correcta en verde
+      //Activamos TODOS los botones
+      button.disabled=false; 
       button.style.backgroundColor = "#FFFFFF";
+      button.style.border = '#FFFFFF';
     })
 } 
 
