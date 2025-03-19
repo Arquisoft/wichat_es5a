@@ -57,11 +57,13 @@ const Juego = () => {
         try {
           const response = await axios.post(`${apiEndpoint}/questions/album`);
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
+          const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
+
           arPreg.push({
             id: numPreguntas,
             pregunta: response.data.question,
             resCorr: response.data.answer,
-            resFalse: respuestas,
+            resFalse: respuestasAleatorias,
             imagen: response.data.image,
           });
           numPreguntas--;
