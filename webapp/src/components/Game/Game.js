@@ -10,6 +10,7 @@ import { Container } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
+import ChatBot  from '../ChatBot/ChatBot';
 import './Game.css';
 
 const Juego = () => {
@@ -248,6 +249,9 @@ const handleRestart = () => {
           ))}
         </div>
         <button id="botonFinalizar" className="button" onClick={() => clickSiguiente()}> Finalizar</button>
+        <ChatBot 
+          respuestaCorrecta={resCorr}
+        />
       </>
         : <h2> CARGANDO... </h2>}
     </Container>
