@@ -237,26 +237,13 @@ const handleRestart = () => {
               </Box>
             )}
             <Grid container spacing={2} className="button-container">
-              <Grid item xs={6}>
-                <Button variant="contained" onClick={() => botonRespuesta(resFalse[0])}>
-                  {resFalse[0]}
-                </Button>
-              </Grid>
-              <Grid item xs={6}>
-                <Button variant="contained" onClick={() => botonRespuesta(resFalse[1])}>
-                  {resFalse[1]}
-                </Button>
-              </Grid>
-              <Grid item xs={6}>
-                <Button variant="contained" onClick={() => botonRespuesta(resFalse[2])}>
-                  {resFalse[2]}
-                </Button>
-              </Grid>
-              <Grid item xs={6}>
-                <Button variant="contained" onClick={() => botonRespuesta(resFalse[3])}>
-                  {resFalse[3]}
-                </Button>
-              </Grid>
+              {resFalse.map((respuesta, index) => (
+                <Grid item xs={6} key={index}>
+                  <Button variant="contained" onClick={() => botonRespuesta(respuesta)}>
+                    {respuesta}
+                  </Button>
+                </Grid>
+              ))}
             </Grid>
           </Stack>
         </Grid>
