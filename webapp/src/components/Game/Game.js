@@ -10,7 +10,7 @@ import { Container } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
-import ChatBot  from '../Chatbot/Chatbot';
+import ChatBot  from '../ChatBot/ChatBot';
 import './Game.css';
 
 const Juego = () => {
