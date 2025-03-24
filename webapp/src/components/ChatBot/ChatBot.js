@@ -1,37 +1,35 @@
 import React, { useState, useRef} from 'react';
 import axios from 'axios';
 
-const ChatBot = ({setShowChat,respuestaCorrecta }) => {
+const ChatBot = ({respuestaCorrecta }) => {
     const [messages, setMessages] = useState([
-        { text: '¡Hola! ¿Cómo puedo ayudarte?', sender: 'bot' },
+        { text: '¡Hola! Soy tu asistente. ¿En que puede asistirte?', sender: 'bot' },
     ]);
     const [input, setInput] = useState('');
     const chatEndRef = useRef(null);
 
     const handleSendMessage = async () => {
+        if (!input.trim()) return;
+    
         try {
-            let questionToSend = input; // Pregunta por defecto
-    
-            // Verificar si el usuario está preguntando por la respuesta correcta
-            if (input.toLowerCase().includes("respuesta correcta") || input.toLowerCase().includes("respuesta") || input.toLowerCase().includes("imagen")) {
-                questionToSend = `Contesta a la siguiente pregunta teniendo en cuenta que esta es la respuesta correcta: ${respuestaCorrecta}. Proporciona una explicación o pista sobre por qué esta es la respuesta correcta.`;
-            }
-    
-            // Enviar la pregunta al LLM
             const response = await axios.post('http://localhost:8003/ask', {
-                question: questionToSend,
-                model: 'gemini'
+                question: input,
+                model: 'gemini',
+                resCorr: respuestaCorrecta  
             });
     
             const llmResponse = { 
-                text: response.data.answer || "No se recibió una respuesta válida del LLM.", 
+                text: response.data.answer || "No pude obtener una respuesta válida.", 
                 sender: 'bot' 
             };
-            setMessages((prevMessages) => [...prevMessages, llmResponse]);
+            
+            setMessages(prev => [...prev, { text: input, sender: 'user' }, llmResponse]);
+            setInput('');
+            
         } catch (error) {
-            console.error("Error al conectarse con el LLM:", error.response?.data || error.message);
-            setMessages((prevMessages) => [...prevMessages, { 
-                text: "Error al obtener la respuesta del servidor.", 
+            console.error("Error:", error);
+            setMessages(prev => [...prev, { 
+                text: "Ocurrió un error al procesar tu pregunta.", 
                 sender: "bot" 
             }]);
         }
@@ -42,16 +40,16 @@ const ChatBot = ({setShowChat,respuestaCorrecta }) => {
         <div style={{
             display: 'flex', 
             flexDirection: 'column', 
-            height: '400px', // Altura reducida
-            width: '300px',  // Ancho reducido
+            height: '400px', 
+            width: '300px', 
             backgroundColor: '#f4f4f4', 
             padding: '16px', 
             borderRadius: '8px',
             boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', 
-            position: 'fixed', // Posición fija
-            bottom: '20px',   // Distancia desde la parte inferior
-            left: '20px',     // Distancia desde la izquierda
-            zIndex: 1000      // Asegura que el chat esté por encima de otros elementos
+            position: 'fixed', 
+            bottom: '20px',   
+            left: '20px',    
+            zIndex: 1000     
         }}>
             <div style={{ 
                 display: 'flex', 

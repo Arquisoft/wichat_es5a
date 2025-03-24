@@ -10,7 +10,7 @@ import { Container } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
-import ChatBot  from '../ChatBot/ChatBot';
+import ChatBot  from '../Chatbot/Chatbot';
 import './Game.css';
 
 const Juego = () => {
@@ -94,7 +94,8 @@ const Juego = () => {
                    Asegúrate de que la pista sea clara, creativa y relacionada con aspectos únicos de la ciudad, como su historia, cultura, geografía, monumentos famosos o eventos importantes.
                    Instrucciones: No menciones el nombre de la ciudad en la pista. Incluye aspectos culturales, históricos, geográficos o emblemáticos de la ciudad. Limita la pista a 3-5 frases.
                    Ahora, da una única pista corta para la siguiente ciudad: ${resCorr}`,
-        model: 'gemini'
+        model: 'gemini',
+        resCorr: resCorr
       });
       setRespuestaLLM(response.data.answer || "No se recibió una respuesta válida del LLM.");
       console.log("Respuesta del LLM:", response.data.answer || "No se recibió respuesta válida.");
