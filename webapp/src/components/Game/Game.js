@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
 import './Game.css';
+import { useLocation } from 'react-router-dom';
 
 const Juego = () => {
   const navigate = useNavigate();
@@ -34,6 +35,9 @@ const Juego = () => {
   const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
   const [numPreguntas, setNumPreguntas] = useState(0)
 
+  const location = useLocation();
+  const { mode, difficulty } = location.state || {};
+
     // Estados para el LLM
     const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
   
@@ -55,7 +59,7 @@ const Juego = () => {
       setNumPreguntas(numPreguntas);
       while (numPreguntas > 0) {
         try {
-          const response = await axios.post(`${apiEndpoint}/questions/flag`); // A elegir entre city, flag, album o football
+          const response = await axios.post(`${apiEndpoint}/questions/${mode}`); // A elegir entre city, flag, album o football
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
           const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
 
@@ -77,13 +81,15 @@ const Juego = () => {
       setNumPreguntaActual(1);
     }, [arPreg, apiEndpoint, updateGame]);
     
-    //Primer render para un comportamiento diferente
     useEffect(() => {
       if (!firstRender) {
         setFirstRender(true);
-        crearPreguntas(5);
+        let num = 5; // default (Fácil)
+        if (difficulty === 'Media') num = 10;
+        else if (difficulty === 'Difícil') num = 20;
+        crearPreguntas(num);
       }
-    }, [firstRender, crearPreguntas]);   
+    }, [firstRender, crearPreguntas, difficulty]);
 
   // Función para enviar una solicitud al LLM y obtener una pista
   const enviarRespuestaALlm = async () => {

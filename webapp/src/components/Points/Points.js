@@ -19,7 +19,7 @@ const Points = () => {
 
   const playAgain = () => {
     // Una vez implementado el servicio de preguntas, se podria inicializar desde aquí la llamada a el servicio
-    navigate('/game'); // Cambiar a la ventana de juego cuanto este hecha
+    navigate('/gamemode'); 
   }
 
   const exit = () => {
