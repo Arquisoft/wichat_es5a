@@ -6,7 +6,7 @@ https://github.com/Arquisoft/wiq_es05a/blob/master/README.md
 */
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Container } from '@mui/material';
+import { Container, Grid, Box, Stack, Button, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
@@ -126,10 +126,8 @@ const Juego = () => {
     * False si se quiere mostrar color de todos (acabar el tiempo)
     */
   const cambiarColorBotones = (respuesta, bool) => { 
-    //Obtenemos el contenedor de botones
-    const buttonContainer = document.querySelector('.button-container');
-    //Obtenemos los botones dentro del dicho contenedor
-    const buttons = buttonContainer.querySelectorAll('.button');
+    //Obtenemos los botones del contenedor de botones
+    const buttons = document.querySelectorAll('.button-container button');
     //Recorremos cada boton
     buttons.forEach((button) => {
       //Desactivamos TODOS los botones
@@ -173,13 +171,12 @@ function cambiarColorTodos(button){
 
 //Función que devuelve el color original a los botones (siguiente)
 async function descolorearTodos(){
-  const buttonContainer = document.querySelector('.button-container');
-  const buttons = buttonContainer.querySelectorAll('.button');
+  const buttons = document.querySelectorAll('.button-container button');
   buttons.forEach((button) => {
       //Activamos TODOS los botones
       button.disabled=false; 
-      button.style.backgroundColor = "#FFFFFF";
-      button.style.border = '#FFFFFF';
+      button.style.backgroundColor = '';
+      button.style.border = '';
     })
 } 
 
@@ -212,47 +209,75 @@ const handleRestart = () => {
   setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
 };
   return (
-    <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
-      {ready ? <>
-        <div className="numPregunta"> <p>Pregunta: {numPreguntaActual} / {numPreguntas} </p> </div>
-        <div className="temporizador-container">
-          <p>Tiempo restante: <Temporizador id="temp" restart={restartTemporizador} tiempoInicial={20} tiempoAcabado={cambiarColorBotones} pausa={pausarTemporizador} handleRestart={handleRestart} /></p>
-        </div>
-        <h2 className="pregunta-texto"> {pregunta} </h2>
-        {imagenPregunta && (
-          <div className="image-container">
-            <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
-          </div>
-        )}
-        <button
-          onClick={enviarRespuestaALlm}
-          className="button"
-          style={{ marginBottom: '10px', backgroundColor: '#FFD700', color: 'black' }}
-        >
-          PISTA
-        </button>
-        {respuestaLLM && (
-          <div style={{
-            marginTop: '10px',
-            padding: '10px',
-            backgroundColor: '#f0f0f0',
-            border: '1px solid #ccc',
-            borderRadius: '5px'
-          }}>
-            <strong>Respuesta del LLM:</strong> {respuestaLLM}
-          </div>
-        )}
-        <div className="button-container">
-          {resFalse.map((respuesta, index) => (
-            <button key={index} id={`boton${index + 1}`} className="button" onClick={() => botonRespuesta(respuesta)}>{respuesta}</button>
-          ))}
-        </div>
-        <button id="botonFinalizar" className="button" onClick={() => clickSiguiente()}> Finalizar</button>
-      </>
-        : <h2> CARGANDO... </h2>}
+    <Container component="main" maxWidth="xl" sx={{ marginTop: 4 }}>
+      <Grid container spacing={2}>
+        {/* Columna izquierda */}
+        <Grid item xs={12} md={3}>
+          <Stack spacing={2}>
+            <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm}>
+              ¿Necesitas una pista?
+            </Button>
+            {respuestaLLM && (
+              <Box className="respuesta-llm-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                <strong>Respuesta del LLM:</strong> {respuestaLLM}
+              </Box>
+            )}
+          </Stack>
+        </Grid>
+
+        {/* Columna central */}
+        <Grid item xs={12} md={6}>
+          <Stack spacing={2}>
+            <Box className="pregunta-texto-container" p={2} border="1px solid #ccc" borderRadius="5px">
+              <h2 className="pregunta-texto">{pregunta}</h2>
+            </Box>
+            {imagenPregunta && (
+              <Box className="image-container">
+                <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
+              </Box>
+            )}
+            <Grid container spacing={2} className="button-container">
+              {resFalse.map((respuesta, index) => (
+                <Grid item xs={6} key={index}>
+                  <Button variant="contained" onClick={() => botonRespuesta(respuesta)}>
+                    {respuesta}
+                  </Button>
+                </Grid>
+              ))}
+            </Grid>
+          </Stack>
+        </Grid>
+
+        {/* Columna derecha: Información del Juego */}
+        <Grid item xs={12} md={3}>
+          <Stack spacing={2}>
+            <Box className="pregunta-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
+              Pregunta: {numPreguntaActual} / {numPreguntas}
+            </Box>
+            <Box className="temporizador-info-container" display="flex" alignItems="center">
+              <p>Tiempo restante</p>
+              <Temporizador
+                id="temp"
+                restart={restartTemporizador}
+                tiempoInicial={20}
+                tiempoAcabado={cambiarColorBotones}
+                pausa={pausarTemporizador}
+                handleRestart={handleRestart}
+              />
+            </Box>
+            <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
+              Puntuación: {numRespuestasCorrectas * 100}
+            </Box>
+            <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente}>
+              Siguiente pregunta
+            </Button>
+          </Stack>
+        </Grid>
+      </Grid>
     </Container>
   );
 };
+
 
 Juego.propTypes = {
   isLogged: PropTypes.bool,
