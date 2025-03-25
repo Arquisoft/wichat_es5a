@@ -7,7 +7,7 @@ const CustomH1 = ({children, size}) => {
         <Typography
             component="h1"
             variant={size || "h1"}
-            sx={{ color: "#167D7F", marginTop: 2, textAlign: 'center' }}>
+            sx={{ color: "#00493A", marginTop: 2, textAlign: 'center' }}>
             {children}
         </Typography>
     );

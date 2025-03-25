@@ -32,11 +32,8 @@ const Home = () => {
   }
 
   return (
-    <div>
+    <div id="body-container">
       <NavBar/>
-      <CustomH1 size="h3">
-        Bienvenido a
-      </CustomH1>
       <CustomH1>
         WICHAT
       </CustomH1>

@@ -4,6 +4,7 @@ import {Box} from '@mui/material';
 import { useNavigate, useLocation } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
+import NavBar from "../NavBar/NavBar";
 
 const Points = () => {
 
@@ -28,6 +29,7 @@ const Points = () => {
 
   return (
     <div>
+          <NavBar/>
           <CustomH1>
           {numRespuestasCorrectas}/{numPreguntas} Acertadas
           </CustomH1>
