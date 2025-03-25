@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const ChatBot = ({respuestaCorrecta }) => {
     const [messages, setMessages] = useState([
-        { text: '¡Hola! Soy tu asistente. ¿En que puede asistirte?', sender: 'bot' },
+        { text: '¡Hola! Soy tu asistente. ¿En que puedo ayudarte?', sender: 'bot' },
     ]);
     const [input, setInput] = useState('');
     const chatEndRef = useRef(null);
