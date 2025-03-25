@@ -212,7 +212,6 @@ const handleRestart = () => {
   setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
 };
   return (
-return (
     <>
       <NavBar />
       <Container component="main" maxWidth="xl" sx={{ marginTop: 4 }}>
