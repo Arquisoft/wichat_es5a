@@ -10,6 +10,7 @@ import { Container, Grid, Box, Stack, Button, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
+import ChatBot  from '../ChatBot/ChatBot';
 import NavBar from "../NavBar/NavBar";
 import './Game.css';
 
@@ -94,7 +95,8 @@ const Juego = () => {
                    Asegúrate de que la pista sea clara, creativa y relacionada con aspectos únicos de la ciudad, como su historia, cultura, geografía, monumentos famosos o eventos importantes.
                    Instrucciones: No menciones el nombre de la ciudad en la pista. Incluye aspectos culturales, históricos, geográficos o emblemáticos de la ciudad. Limita la pista a 3-5 frases.
                    Ahora, da una única pista corta para la siguiente ciudad: ${resCorr}`,
-        model: 'gemini'
+        model: 'gemini',
+        resCorr: resCorr
       });
       setRespuestaLLM(response.data.answer || "No se recibió una respuesta válida del LLM.");
       console.log("Respuesta del LLM:", response.data.answer || "No se recibió respuesta válida.");
@@ -210,8 +212,8 @@ const handleRestart = () => {
   setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
 };
   return (
-    <div>
-      <NavBar/>
+    <>
+      <NavBar />
       <Container component="main" maxWidth="xl" sx={{ marginTop: 4 }}>
         <Grid container spacing={2}>
           {/* Columna izquierda */}
@@ -223,6 +225,7 @@ const handleRestart = () => {
               {respuestaLLM && (
                 <Box className="respuesta-llm-container" p={2} border="1px solid #ccc" borderRadius="5px">
                   <strong>Respuesta del LLM:</strong> {respuestaLLM}
+                  <ChatBot respuestaCorrecta={resCorr} />
                 </Box>
               )}
             </Stack>
@@ -278,10 +281,9 @@ const handleRestart = () => {
           </Grid>
         </Grid>
       </Container>
-    </div>
+    </>
   );
 };
-
 
 Juego.propTypes = {
   isLogged: PropTypes.bool,
