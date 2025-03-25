@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
 import './Game.css';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 const Juego = () => {
   const navigate = useNavigate();
