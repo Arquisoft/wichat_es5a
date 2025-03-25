@@ -34,6 +34,7 @@ const Juego = () => {
   const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0)
   const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
   const [numPreguntas, setNumPreguntas] = useState(0)
+  const [points] = useState(0)
 
     // Estados para el LLM
     const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
@@ -189,7 +190,7 @@ async function descolorearTodos(){
 //Funcion que se llama al hacer click en el boton Siguiente
 const clickSiguiente = () => {
   if(numPreguntaActual===numPreguntas){
-    const response = axios.post(`${apiEndpoint}/saveGame`); // Llama al history service para guardar el concurso y las preguntas en BBDD
+    const response = axios.post(`${apiEndpoint}/saveGame`, {arPreg, points, numRespuestasCorrectas}); // Llama al history service para guardar el concurso y las preguntas en BBDD
     navigate('/points', {
       state: { 
         numRespuestasCorrectas: numRespuestasCorrectas,
