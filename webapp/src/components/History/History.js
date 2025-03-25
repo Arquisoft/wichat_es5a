@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
+import NavBar from "../NavBar/NavBar";
 
 const History = () => {
   const navigate = useNavigate();
@@ -35,26 +36,29 @@ const History = () => {
   }, [apiEndpoint]); 
   
   return (
-    <Container
-      component="main"
-      sx={{
-        marginTop: 4,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <CustomH1 size="h5">
-        Jugadores totales: {userCount}
-      </CustomH1>
-      <CustomH1 size="h5">
-        Preguntas generadas: {questionCount}
-      </CustomH1>
-      <LargeButton onClick={exitHistory}>
-        Salir
-      </LargeButton>
-    </Container>
+    <div>
+      <NavBar/>
+      <Container
+        component="main"
+        sx={{
+          marginTop: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <CustomH1 size="h5">
+          Jugadores totales: {userCount}
+        </CustomH1>
+        <CustomH1 size="h5">
+          Preguntas generadas: {questionCount}
+        </CustomH1>
+        <LargeButton onClick={exitHistory}>
+          Salir
+        </LargeButton>
+      </Container>
+    </div>
   );
 };
 

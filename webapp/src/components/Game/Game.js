@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
 import ChatBot  from '../ChatBot/ChatBot';
+import NavBar from "../NavBar/NavBar";
 import './Game.css';
 
 const Juego = () => {
@@ -211,78 +212,79 @@ const handleRestart = () => {
   setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
 };
   return (
-    <Container component="main" maxWidth="xl" sx={{ marginTop: 4 }}>
-      <Grid container spacing={2}>
-        {/* Columna izquierda */}
-        <Grid item xs={12} md={3}>
-          <Stack spacing={2}>
-            <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm}>
-              ¿Necesitas una pista?
-            </Button>
-            {respuestaLLM && (
-              <Box className="respuesta-llm-container" p={2} border="1px solid #ccc" borderRadius="5px">
-                <strong>Respuesta del LLM:</strong> {respuestaLLM}
-              </Box>
-          <ChatBot 
-            respuestaCorrecta={resCorr}
-           />
-            )}
-          </Stack>
-        </Grid>
+return (
+    <>
+      <NavBar />
+      <Container component="main" maxWidth="xl" sx={{ marginTop: 4 }}>
+        <Grid container spacing={2}>
+          {/* Columna izquierda */}
+          <Grid item xs={12} md={3}>
+            <Stack spacing={2}>
+              <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm}>
+                ¿Necesitas una pista?
+              </Button>
+              {respuestaLLM && (
+                <Box className="respuesta-llm-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                  <strong>Respuesta del LLM:</strong> {respuestaLLM}
+                  <ChatBot respuestaCorrecta={resCorr} />
+                </Box>
+              )}
+            </Stack>
+          </Grid>
 
-        {/* Columna central */}
-        <Grid item xs={12} md={6}>
-          <Stack spacing={2}>
-            <Box className="pregunta-texto-container" p={2} border="1px solid #ccc" borderRadius="5px">
-              <h2 className="pregunta-texto">{pregunta}</h2>
-            </Box>
-            {imagenPregunta && (
-              <Box className="image-container">
-                <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
+          {/* Columna central */}
+          <Grid item xs={12} md={6}>
+            <Stack spacing={2}>
+              <Box className="pregunta-texto-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                <h2 className="pregunta-texto">{pregunta}</h2>
               </Box>
-            )}
-            <Grid container spacing={2} className="button-container">
-              {resFalse.map((respuesta, index) => (
-                <Grid item xs={6} key={index}>
-                  <Button variant="contained" onClick={() => botonRespuesta(respuesta)}>
-                    {respuesta}
-                  </Button>
-                </Grid>
-              ))}
-            </Grid>
-          </Stack>
-        </Grid>
+              {imagenPregunta && (
+                <Box className="image-container">
+                  <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
+                </Box>
+              )}
+              <Grid container spacing={2} className="button-container">
+                {resFalse.map((respuesta, index) => (
+                  <Grid item xs={6} key={index}>
+                    <Button variant="contained" onClick={() => botonRespuesta(respuesta)}>
+                      {respuesta}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+            </Stack>
+          </Grid>
 
-        {/* Columna derecha: Información del Juego */}
-        <Grid item xs={12} md={3}>
-          <Stack spacing={2}>
-            <Box className="pregunta-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
-              Pregunta: {numPreguntaActual} / {numPreguntas}
-            </Box>
-            <Box className="temporizador-info-container" display="flex" alignItems="center">
-              <p>Tiempo restante</p>
-              <Temporizador
-                id="temp"
-                restart={restartTemporizador}
-                tiempoInicial={20}
-                tiempoAcabado={cambiarColorBotones}
-                pausa={pausarTemporizador}
-                handleRestart={handleRestart}
-              />
-            </Box>
-            <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
-              Puntuación: {numRespuestasCorrectas * 100}
-            </Box>
-            <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente}>
-              Siguiente pregunta
-            </Button>
-          </Stack>
+          {/* Columna derecha: Información del Juego */}
+          <Grid item xs={12} md={3}>
+            <Stack spacing={2}>
+              <Box className="pregunta-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                Pregunta: {numPreguntaActual} / {numPreguntas}
+              </Box>
+              <Box className="temporizador-info-container" display="flex" alignItems="center">
+                <p>Tiempo restante</p>
+                <Temporizador
+                  id="temp"
+                  restart={restartTemporizador}
+                  tiempoInicial={20}
+                  tiempoAcabado={cambiarColorBotones}
+                  pausa={pausarTemporizador}
+                  handleRestart={handleRestart}
+                />
+              </Box>
+              <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                Puntuación: {numRespuestasCorrectas * 100}
+              </Box>
+              <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente}>
+                Siguiente pregunta
+              </Button>
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </>
   );
 };
-
 
 Juego.propTypes = {
   isLogged: PropTypes.bool,
