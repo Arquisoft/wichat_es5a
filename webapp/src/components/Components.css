@@ -1,5 +1,9 @@
 body {
-    background-color: #DDFFE7;
+    background: linear-gradient(to bottom, #ffe1e1, #fffacd);
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
 
