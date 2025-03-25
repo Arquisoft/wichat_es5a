@@ -189,6 +189,7 @@ async function descolorearTodos(){
 //Funcion que se llama al hacer click en el boton Siguiente
 const clickSiguiente = () => {
   if(numPreguntaActual===numPreguntas){
+    const response = axios.post(`${apiEndpoint}/saveGame`); // Llama al history service para guardar el concurso y las preguntas en BBDD
     navigate('/points', {
       state: { 
         numRespuestasCorrectas: numRespuestasCorrectas,
