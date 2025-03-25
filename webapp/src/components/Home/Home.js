@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import { useNavigate } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
+import NavBar from "../NavBar/NavBar";
 
 const Home = () => {
 
@@ -32,6 +33,7 @@ const Home = () => {
 
   return (
     <div>
+      <NavBar/>
       <CustomH1 size="h3">
         Bienvenido a
       </CustomH1>
