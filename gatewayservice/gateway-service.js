@@ -48,6 +48,17 @@ app.post('/adduser', async (req, res) => {
   }
 });
 
+app.get('/profile', async (req, res) => {
+  try {
+    const userResponse = await axios.get(userServiceUrl + '/profile', {
+      headers: req.headers, // Forward all headers, including Authorization
+    });
+    res.json(userResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+
 app.post('/askllm', async (req, res) => {
   try {
     // Forward the add user request to the user service
