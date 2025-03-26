@@ -10,77 +10,62 @@ describe('NavBar component', () => {
     });
 
     it('should render correctly the nav bar', () => {
-        render(
-            <BrowserRouter>
-                <NavBar/>
-            </BrowserRouter>
-        );
+        renderNavBar();
         expect(true).toBe(true);
     });
 
     it('should redirect to the home page when clicking on the app logo', async () => {
-        render(
-            <BrowserRouter>
-                <NavBar/>
-            </BrowserRouter>
-        );
-        
-        fireEvent.click(screen.getByTestId('logo-tab'));
+        renderNavBar();
+
+        clickOn('logo-tab');
         expect(window.location.pathname).toBe("/home");
     });
 
     it("should redirect to the home page when clicking on the app name", async () => {
-        render(
-            <BrowserRouter>
-                <NavBar/>
-            </BrowserRouter>
-        );
+        renderNavBar();
         
-        fireEvent.click(screen.getByTestId('wichat-tab'));
+        clickOn('wichat-tab');
         expect(window.location.pathname).toBe("/home");
     });
 
     it("should redirect to the profile page when clicking on the profile tab", async () => {
-        render(
-            <BrowserRouter>
-                <NavBar/>
-            </BrowserRouter>
-        );
-        
-        fireEvent.click(screen.getByTestId('profile-tab'));
+        renderNavBar();
+
+        clickOn('profile-tab');
         expect(window.location.pathname).toBe("/profile");
     });
 
     it("should redirect to the history page when clicking on the history tab", async () => {
-        render(
-            <BrowserRouter>
-                <NavBar/>
-            </BrowserRouter>
-        );
+        renderNavBar();
         
-        fireEvent.click(screen.getByTestId('history-tab'));
+        clickOn('history-tab');
         expect(window.location.pathname).toBe("/history");
     });
 
     it("should redirect to the credits page when clicking on the credits tab", async () => {
-        render(
-            <BrowserRouter>
-                <NavBar/>
-            </BrowserRouter>
-        );
+        renderNavBar();
         
-        fireEvent.click(screen.getByTestId('credits-tab'));
+        clickOn('credits-tab');
         expect(window.location.pathname).toBe("/credits");
     });
 
     it("should log out when clicking on the log out option", async () => {
-        render(
-            <BrowserRouter>
-                <NavBar/>
-            </BrowserRouter>
-        );
+        renderNavBar();
         
-        fireEvent.click(screen.getByTestId('logout-tab'));
+        clickOn('logout-tab');
         expect(window.location.pathname).toBe("/login");
     });
 });
+
+
+function renderNavBar() {
+    render(
+        <BrowserRouter>
+            <NavBar/>
+        </BrowserRouter>
+    );
+}
+
+function clickOn(id) {
+    fireEvent.click(screen.getByTestId(id));
+}
