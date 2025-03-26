@@ -76,9 +76,9 @@ app.get('/gethistory', async (req, res) => {
   }
 });
 
-app.get('/savegame', async (req, res) => {
+app.post('/savegame', async (req, res) => {
   try {
-    const historyResponse = await axios.get(historyServiceUrl + '/savegame', req.body);
+    const historyResponse = await axios.post(historyServiceUrl + '/savegame', req.body);
     res.json(historyResponse.data);
   } catch (error) {
     res.status(error.response.status).json({error: error.response.data.error });

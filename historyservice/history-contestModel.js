@@ -4,18 +4,19 @@ const { create } = require('./history-questionModel');
 const contestSchema = new mongoose.Schema({
     
     mode: {
-        String
+        type: String
     },
     typeOfQuestions: {
-        String
+        type: String
     },
     rightAnswers: {
-        Number
+        type: Number
     },
     points: {
-        Number
+        type: Number
     },
     date: {
+        type: Date,
         default: Date.now,
     },
     preguntas: [{type: mongoose.Schema.Types.ObjectId, ref: "Pregunta" }]

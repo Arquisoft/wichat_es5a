@@ -16,32 +16,32 @@ const queries = [{
   kind: "city",
   question: "¿Qué ciudad es esta?",
   query: 'SELECT ?answerLabel ?image WHERE {' +
-      '?answer wdt:P31 wd:Q515; wdt:P18 ?image; wdt:P1082 ?population. FILTER(?population > 1000000)' +
-      ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+    '?answer wdt:P31 wd:Q515; wdt:P18 ?image; wdt:P1082 ?population. FILTER(?population > 1000000)' +
+    ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
 }, {
   kind: "album",
   question: "¿Cuál es el nombre de este álbum?",
-  query: 'SELECT ?answerLabel ?image WHERE {' + 
-      '?answer wdt:P31 wd:Q482994;' +
-      '        wdt:P18 ?image.' +
-      'OPTIONAL { ?answer wdt:P175 ?artist }' +
-      'OPTIONAL { ?answer wdt:P166 ?award }' +
-      ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 50'
+  query: 'SELECT ?answerLabel ?image WHERE {' +
+    '?answer wdt:P31 wd:Q482994;' +
+    '        wdt:P18 ?image.' +
+    'OPTIONAL { ?answer wdt:P175 ?artist }' +
+    'OPTIONAL { ?answer wdt:P166 ?award }' +
+    ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 50'
 }, {
   kind: "football",
   question: "¿Qué equipo de fútbol es este?",
   query: 'SELECT ?answerLabel ?image WHERE {' +
-      '?answer wdt:P31 wd:Q476028;' +
-      '     wdt:P154 ?image.' +
-      '?answer wdt:P118 ?league.' +
-      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+    '?answer wdt:P31 wd:Q476028;' +
+    '     wdt:P154 ?image.' +
+    '?answer wdt:P118 ?league.' +
+    'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
 }, {
   kind: "flag",
   question: "¿De qué país es esta bandera?",
   query: 'SELECT ?answerLabel ?image WHERE {' +
-      '?answer wdt:P31 wd:Q6256;' +
-      '         wdt:P41 ?image.' +
-      ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+    '?answer wdt:P31 wd:Q6256;' +
+    '         wdt:P41 ?image.' +
+    ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
 }];
 
 function getQuery(kind) {
@@ -52,14 +52,14 @@ function getQuery(kind) {
 app.use(bodyParser.json());
 
 app.post("/questions/:kind", async (req, res) => {
-  let {question, query} = getQuery(req.params.kind);
+  let { question, query } = getQuery(req.params.kind);
   try {
     const results = await wikiQuery.SPARQLQuery(query).catch((error) => {
-        console.error('Error al ejecutar la consulta:', error);
+      console.error('Error al ejecutar la consulta:', error);
     });
     let size = results.results.bindings.length;
     let random = Math.floor(Math.random() * size);
-    
+
     let wrongAnswers = [];
     let image = results.results.bindings[random].image.value;
     let answer = results.results.bindings[random].answerLabel.value;
@@ -68,7 +68,7 @@ app.post("/questions/:kind", async (req, res) => {
     while (wrongAnswers.length < 3) {
       let randomIndex = Math.floor(Math.random() * size);
       let wrongAnswer = results.results.bindings[randomIndex].answerLabel.value;
-      
+
       //Adds the anwer if it was not added previously and is wrong
       if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer)) {
         wrongAnswers.push(wrongAnswer);
@@ -81,10 +81,8 @@ app.post("/questions/:kind", async (req, res) => {
       answer: answer,
       wrongAnswers: wrongAnswers
     }
-    // Guardar la pregunta en la base de datos
-    const newQuestion = new Question(queryResults);
-    await newQuestion.save();
-      res.send(queryResults);
+
+    res.send(queryResults);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send(error); //Shows the error to the user
