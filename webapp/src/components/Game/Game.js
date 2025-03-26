@@ -6,7 +6,7 @@ https://github.com/Arquisoft/wiq_es05a/blob/master/README.md
 */
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Container, Grid, Box, Stack, Button, Typography } from '@mui/material';
+import { Container, Grid, Box, Stack, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';

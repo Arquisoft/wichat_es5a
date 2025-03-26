@@ -28,6 +28,19 @@ app.get('/gethistory', async (req, res) => {
     }
 });
 
+app.get('/getquestions/:id', async (req, res) => {
+    console.log(req.params.id)
+    try {
+        const contest = await Contest.findById(req.params.id);
+        const questions = await Question.find({ _id: { $in: contest.preguntas } });
+        console.log(questions)
+        res.json({ questions: questions });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.post('/savegame', async (req, res) => {
     try {
         let idPreguntas = []

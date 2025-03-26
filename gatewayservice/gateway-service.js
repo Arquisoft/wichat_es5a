@@ -85,6 +85,15 @@ app.post('/savegame', async (req, res) => {
   }
 });
 
+app.get('/getquestions/:id', async (req, res) => {
+  try {
+    const historyResponse = await axios.get(historyServiceUrl + `/getquestions/${req.params.id}`);
+    res.json(historyResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({error: error.response.data.error });
+  }
+});
+
 // Read the OpenAPI YAML file synchronously
 openapiPath='./openapi.yaml'
 if (fs.existsSync(openapiPath)) {
