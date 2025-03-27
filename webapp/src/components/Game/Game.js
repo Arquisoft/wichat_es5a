@@ -36,7 +36,7 @@ const Juego = () => {
   const [numPreguntas, setNumPreguntas] = useState(0)
 
   const location = useLocation();
-  const { mode, difficulty } = location.state || {};
+  const { mode = 'flag', difficulty = 'Fácil' } = location.state || {};
 
     // Estados para el LLM
     const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
@@ -57,8 +57,12 @@ const Juego = () => {
     const crearPreguntas = useCallback(async (numPreguntas) => {
       setPausarTemporizador(true);
       setNumPreguntas(numPreguntas);
-      while (numPreguntas > 0) {
-        try {
+      if (!mode) {
+        console.error('El modo de juego no está definido, usando valor por defecto.');
+        setMode('flag'); // Establecer un valor por defecto
+      }
+      try{
+        while (numPreguntas > 0) {
           const response = await axios.post(`${apiEndpoint}/questions/${mode}`); // A elegir entre city, flag, album o football
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
           const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
@@ -71,10 +75,10 @@ const Juego = () => {
             imagen: response.data.image,
           });
           numPreguntas--;
-        } catch (error) {
+        }
+      }catch (error) {
           console.error('Error al crear las preguntas:', error);
         }
-      }
       setReady(true);
       setPausarTemporizador(false);
       updateGame();
