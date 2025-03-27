@@ -5,11 +5,30 @@ import Juego from './Game';
 import MockAdapter from 'axios-mock-adapter';
 import { BrowserRouter } from 'react-router'
 
-const mockAxios = new MockAdapter(axios);
-
-const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-
 describe('Juego component', () => {
+    let mock;
+    // Datos mockeados para la pregunta
+    const mockData = {
+      question: '¿De qué país es esta bandera?',
+      answer: 'España',
+      wrongAnswers: ['Francia', 'Italia', 'Alemania'],
+      image: null,
+    };
+
+    // Configuración del mock
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+
+    beforeEach(() => {
+      // Crear un nuevo mock de axios antes de cada prueba
+      mock = new MockAdapter(axios);
+      // Aquí mockeamos cualquier endpoint dinámico que pase `mode` en la URL
+      mock.onPost(new RegExp(`${apiEndpoint}/questions/.*`)).reply(200, mockData);
+    });
+
+    afterEach(() => {
+      // Restaurar el mock después de cada prueba
+      mock.restore();
+    });
     it('should always pass', () => {
         expect(true).toBe(true);
     });
@@ -50,13 +69,7 @@ describe('Juego component', () => {
     // });
 
     it('actualiza la puntuación al seleccionar la respuesta correcta', async () => {
-        // Simula la respuesta de la API para obtener una pregunta y sus respuestas.
-        mockAxios.onPost(`${apiEndpoint}/questions/flag`).reply(200, {
-            question: '¿De qué país es esta bandera?',
-            answer: 'España',
-            wrongAnswers: ['Francia', 'Italia', 'Alemania'],
-            image: null,
-        });
+        const mode = 'flag';
     
         // Renderiza el componente Juego dentro de BrowserRouter.
         render(
@@ -66,7 +79,7 @@ describe('Juego component', () => {
         );
     
         // Espera a que la pregunta y las respuestas se rendericen.
-        await waitFor(() => expect(screen.getByText('España')).toBeInTheDocument());
+        await waitFor(() => screen.getByText('¿De qué país es esta bandera?'));
     
         // Simula el clic en el botón de la respuesta correcta.
         fireEvent.click(screen.getByText('España'));
@@ -76,11 +89,16 @@ describe('Juego component', () => {
     
         // Verifica que el botón de la respuesta correcta se pone en verde.
         expect(screen.getByText('España')).toHaveStyle('background-color: #05B92B');
+
+        // Verifica que los demás botones están deshabilitados después de seleccionar la respuesta
+        expect(screen.getByText('Francia')).toBeDisabled();
+        expect(screen.getByText('Italia')).toBeDisabled();
+        expect(screen.getByText('Alemania')).toBeDisabled();
     });
 
     it('muestra la pista del LLM al hacer clic en el botón de pista', async () => {
         // Simula la respuesta del LLM.
-        mockAxios.onPost('http://localhost:8003/ask').reply(200, {
+        mock.onPost('http://localhost:8003/ask').reply(200, {
             answer: 'Una pista sobre la bandera.',
         });
     
