@@ -6,7 +6,7 @@ https://github.com/Arquisoft/wiq_es05a/blob/master/README.md
 */
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Container, Grid, Box, Stack, Button, Typography } from '@mui/material';
+import { Container, Grid, Box, Stack, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
@@ -29,7 +29,6 @@ const Juego = () => {
   const [pausarTemporizador, setPausarTemporizador] = useState(false)
   const [restartTemporizador, setRestartTemporizador] = useState(false)
   const [firstRender, setFirstRender] = useState(false);
-  const[ready, setReady] = useState(false)
   const [numPreguntaActual, setNumPreguntaActual] = useState(0)
   const [arPreg] = useState([])
   const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0)
@@ -73,7 +72,6 @@ const Juego = () => {
           console.error('Error al crear las preguntas:', error);
         }
       }
-      setReady(true);
       setPausarTemporizador(false);
       updateGame();
       setNumPreguntaActual(1);
@@ -83,7 +81,7 @@ const Juego = () => {
     useEffect(() => {
       if (!firstRender) {
         setFirstRender(true);
-        crearPreguntas(5);
+        crearPreguntas(20);
       }
     }, [firstRender, crearPreguntas]);   
 
@@ -190,23 +188,23 @@ async function descolorearTodos(){
 
 //Funcion que se llama al hacer click en el boton Siguiente
 const clickSiguiente = () => {
-  if(numPreguntaActual===numPreguntas){
+  if (numPreguntaActual === numPreguntas) {
     navigate('/points', {
-      state: { 
+      state: {
         numRespuestasCorrectas: numRespuestasCorrectas,
         numPreguntas: numPreguntas
       }
     });
-    
-    return
+    return;
   }
-  descolorearTodos()
-  setNumPreguntaActual(numPreguntaActual+1)
+
+  setTimeout(() => descolorearTodos(), 0);
+
+  setNumPreguntaActual(numPreguntaActual + 1);
   updateGame();
-  //Recargar a 20 el temporizador
   setRestartTemporizador(true);
   setPausarTemporizador(false);
-}
+};
 
 const handleRestart = () => {
   setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
