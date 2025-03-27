@@ -17,27 +17,6 @@ const server = app.listen(port, () => {
     console.log(`History Service listening at http://localhost:${port}`);
 });
 
-app.get('/gethistory', async (req, res) => {
-    try {
-        const userCount = await User.countDocuments();
-        const questionCount = await Question.countDocuments();
-        const contests = await Contest.find();
-        res.json({ userCount: userCount, questionCount: questionCount, contests: contests});
-    } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-app.get('/getquestions/:id', async (req, res) => {
-    try {
-        const contest = await Contest.findById(req.params.id);
-        const questions = await Question.find({ _id: { $in: contest.preguntas } });
-        res.json({ questions: questions, correctAnswers: contest.rightAnswers, times: contest.tiempos, clues: contest.pistas });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
 app.post('/savegame', async (req, res) => {
     try {
         let idPreguntas = []
@@ -64,6 +43,27 @@ app.post('/savegame', async (req, res) => {
         const newContest = new Contest(contestData)
         await newContest.save()
         res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/gethistory', async (req, res) => {
+    try {
+        const userCount = await User.countDocuments();
+        const questionCount = await Question.countDocuments();
+        const contests = await Contest.find();
+        res.json({ userCount: userCount, questionCount: questionCount, contests: contests});
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/getquestions/:id', async (req, res) => {
+    try {
+        const contest = await Contest.findById(req.params.id);
+        const questions = await Question.find({ _id: { $in: contest.preguntas } });
+        res.json({ questions: questions, correctAnswers: contest.rightAnswers, times: contest.tiempos, clues: contest.pistas });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }

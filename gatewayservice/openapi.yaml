@@ -92,6 +92,27 @@ paths:
             schema:
               type: object
               properties:
+                arCorrect:
+                  type: array
+                  description: Array which saves if the answear was answered correctly or not.
+                  items:
+                    type: boolean
+                  example: [1, 0, 1, 1, 0]
+                password:
+                  type: string
+                  description: User password.
+                  example: pass       
+  /savegame: 
+    post:
+      summary: Saves a game in the database.
+      operationId: saveGame
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 username:
                   type: string
                   description: User ID.
