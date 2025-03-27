@@ -41,6 +41,9 @@ async function findOne(username, email) {
   return await User.findOne(query);
 }
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK' });
+});
 
 app.post('/adduser', async (req, res) => {
   try {
