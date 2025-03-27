@@ -77,6 +77,10 @@ async function sendQuestionToLLM(question, apiKey, model = 'gemini') {
   }
 }
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK' });
+});
+
 app.post('/ask', async (req, res) => {
   try {
     validateRequiredFields(req, ['question', 'model']);
