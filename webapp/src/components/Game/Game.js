@@ -33,10 +33,13 @@ const Juego = () => {
   const [numPreguntaActual, setNumPreguntaActual] = useState(0)
   const [arPreg] = useState([])
   const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0)
-  const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
   const [numPreguntas, setNumPreguntas] = useState(0)
   const [points] = useState(0)
-
+  const [tiempoRestante, setTiempoRestante] = useState(20); // Tiempo inicial del temporizador
+  const [arTiempo] = useState([]); // Array para almacenar el tiempo restante
+  const [numPistas, setNumPistas] = useState(0); // Número de pistas solicitadas
+  const [arPistas] = useState([]); // Array para almacenar las pistas solicitadas
+  const [arCorrect] = useState([]); // Array para almacenar las respuestas correctas
 
     // Estados para el LLM
     const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
@@ -91,6 +94,7 @@ const Juego = () => {
 
   // Función para enviar una solicitud al LLM y obtener una pista
   const enviarRespuestaALlm = async () => {
+    setNumPistas(numPistas + 1);
     try {
       const response = await axios.post('http://localhost:8003/ask', {
         question: `Eres un asistente experto en geografía y cultura. Tu tarea es dar una pista sobre una ciudad específica sin mencionar su nombre directamente. 
@@ -117,10 +121,10 @@ const Juego = () => {
     setPausarTemporizador(true);
     if(respuesta === resCorr){
       //Aumenta en 1 en las estadisticas de juegos ganado
+      arCorrect.push(true);
       setNumRespuestasCorrectas(numRespuestasCorrectas+1);
-    }
-    else{
-      setNumRespuestasIncorrectas(numRespuestasIncorrectas + 1);
+    } else {
+      arCorrect.push(false);
     }
     cambiarColorBotones(respuesta, true);
   };
@@ -146,7 +150,6 @@ const Juego = () => {
       //Ponemos el boton de la marcada en rojo si era incorrecta
         cambiarColorUno(respuesta, button);
       }else {
-        setNumRespuestasIncorrectas(numRespuestasIncorrectas + 1);
         cambiarColorTodos(button);
       }return button; //esta linea evita un warning de sonar cloud, sin uso
     });
@@ -193,7 +196,9 @@ async function descolorearTodos(){
 //Funcion que se llama al hacer click en el boton Siguiente
 const clickSiguiente = () => {
   if(numPreguntaActual===numPreguntas){
-    axios.post(`${apiEndpoint}/savegame`, {numRespuestasCorrectas, points, arPreg}); // Llama al history service para guardar el concurso y las preguntas en BBDD
+    arTiempo.push(tiempoRestante);
+    arPistas.push(numPistas);
+    axios.post(`${apiEndpoint}/savegame`, {arCorrect, points, arPreg, arTiempo, arPistas}); // Llama al history service para guardar el concurso y las preguntas en BBDD
     navigate('/points', {
       state: { 
         numRespuestasCorrectas: numRespuestasCorrectas,
@@ -205,6 +210,10 @@ const clickSiguiente = () => {
   }
   descolorearTodos()
   setNumPreguntaActual(numPreguntaActual+1)
+  arTiempo.push(tiempoRestante);
+  arPistas.push(numPistas);
+  setTiempoRestante(20);
+  setNumPistas(0);
   updateGame();
   //Recargar a 20 el temporizador
   setRestartTemporizador(true);
@@ -272,6 +281,7 @@ const handleRestart = () => {
                   tiempoAcabado={cambiarColorBotones}
                   pausa={pausarTemporizador}
                   handleRestart={handleRestart}
+                  onTimeUpdate={(t) => setTiempoRestante(t)}
                 />
               </Box>
               <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">

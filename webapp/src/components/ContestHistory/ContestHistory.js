@@ -12,6 +12,9 @@ const ContestHistory = () => {
 
   const { id } = useParams();
   const [questions, setQuestions] = useState([]);
+  const [times, setTimes] = useState([]);
+  const [clues, setClues] = useState([]);
+  const [correctAnswers, setCorrectAnswers] = useState([]);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -23,8 +26,10 @@ const ContestHistory = () => {
     const getHistory = async () => {
       try {
         const response = await axios.get(`${apiEndpoint}/getquestions/${id}`);
-        console.log(response.data.questions);
         setQuestions(response.data.questions);
+        setTimes(response.data.times);
+        setClues(response.data.clues);
+        setCorrectAnswers(response.data.correctAnswers);
       } catch (error) {
         console.error('Error al obtener el número de usuarios:', error);
       }
@@ -63,7 +68,7 @@ const ContestHistory = () => {
           }}>
             <img src={question.image} alt="Imagen de la pregunta" className="responsive-img" />
             <CustomH1 size="h6">
-              {`Pregunta: ${question.question} - Answers: ${question.wrongAnswers[0]}, ${question.wrongAnswers[1]}, ${question.wrongAnswers[2]}, ${question.wrongAnswers[3]} - Right answer: ${question.answer} - Date: , ${question.createdAt}`}
+              {`Pregunta: ${question.question} - Answers: ${question.wrongAnswers[0]}, ${question.wrongAnswers[1]}, ${question.wrongAnswers[2]}, ${question.wrongAnswers[3]} - Right answer: ${question.answer} - Correct: ${correctAnswers[index]} - Times: ${times[index]} - Clues: ${clues[index]} - Date: , ${question.createdAt}`}
             </CustomH1>
           </Container>
         ))}

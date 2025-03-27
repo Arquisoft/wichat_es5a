@@ -15,6 +15,9 @@ const History = () => {
   const [questionCount, setQuestionCount] = useState(0)
   // Contests generados
   const [contests, setContests] = useState([])
+  const [totalTime, setTotalTime] = useState([])
+  const [totalClues, setTotalClues] = useState([])
+  const [numCorrect, setNumCorrect] = useState([])
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -34,6 +37,43 @@ const History = () => {
         setUserCount(response.data.userCount);
         setQuestionCount(response.data.questionCount);
         setContests(response.data.contests);
+        let auxArTimes = [];
+        let auxArClues = [];
+        let auxArCorrect = [];
+        response.data.contests.forEach(contest => {
+          let auxClues = 0;
+          let auxTimes = 0;
+          let auxCorrect = 0;
+          contest.pistas.forEach(clue => {
+            if (clue === undefined) {
+              clue = 0;
+            }
+            auxClues += clue;
+          });
+          auxArClues.push(auxClues);
+          auxClues = 0;
+
+          contest.tiempos.forEach(time => {
+            if (time === undefined) {
+              time = 0;
+            }
+            auxTimes += time;
+          });
+          auxArTimes.push(auxTimes);
+          auxTimes = 0;
+
+          contest.rightAnswers.forEach(answer => {
+            if (answer === 1) {
+              auxCorrect++;
+            }
+          });
+          auxArCorrect.push(auxCorrect);
+          auxCorrect = 0;
+
+        });
+        setTotalClues(auxArClues);
+        setTotalTime(auxArTimes);
+        setNumCorrect(auxArCorrect);
       } catch (error) {
         console.error('Error al obtener el número de usuarios:', error);
       }
@@ -65,18 +105,18 @@ const History = () => {
           Salir
         </LargeButton>
         {contests.map((contest, index) => (
-          <Container 
-          sx={{
-            backgroundColor: 'lightgray',
-            marginTop: 2,
-            padding: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+          <Container
+            sx={{
+              backgroundColor: 'lightgray',
+              marginTop: 2,
+              padding: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             <CustomH1 size="h6">
-              {`Mode: ${contest.mode} - Type of questions: ${contest.typeOfQuestions} - Right answers: ${contest.rightAnswers} - Points: ${contest.points}, Date: , ${contest.date}`}
+              {`Mode: ${contest.mode} - Type of questions: ${contest.typeOfQuestions} - Right answers: ${numCorrect[index]} - Points: ${contest.points} - Total Time: ${totalTime[index]} - Clues used: ${totalClues[index]} - Date: ${contest.date}`}
             </CustomH1>
             <LargeButton
               key={contest._id || index} // Usa el ID del contest como clave si está disponible

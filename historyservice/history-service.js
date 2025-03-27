@@ -22,21 +22,18 @@ app.get('/gethistory', async (req, res) => {
         const userCount = await User.countDocuments();
         const questionCount = await Question.countDocuments();
         const contests = await Contest.find();
-        res.json({ userCount: userCount, questionCount: questionCount, contests: contests });
+        res.json({ userCount: userCount, questionCount: questionCount, contests: contests});
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
 app.get('/getquestions/:id', async (req, res) => {
-    console.log(req.params.id)
     try {
         const contest = await Contest.findById(req.params.id);
         const questions = await Question.find({ _id: { $in: contest.preguntas } });
-        console.log(questions)
-        res.json({ questions: questions });
+        res.json({ questions: questions, correctAnswers: contest.rightAnswers, times: contest.tiempos, clues: contest.pistas });
     } catch (error) {
-        console.log(error)
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
@@ -55,13 +52,14 @@ app.post('/savegame', async (req, res) => {
             await newQuestion.save(); // Espera a que se guarde la pregunta
             idPreguntas.push(newQuestion._id); // Agrega el ID al array
         }
-        console.log(idPreguntas)
         let contestData = {
             mode: "mode",
             typeOfQuestions: "typeOfQuestions",
-            rightAnswers: req.body.numRespuestasCorrectas,
+            rightAnswers: req.body.arCorrect,
             points: req.body.points,
-            preguntas: idPreguntas
+            preguntas: idPreguntas,
+            tiempos: req.body.arTiempo,
+            pistas: req.body.arPistas
         }
         const newContest = new Contest(contestData)
         await newContest.save()

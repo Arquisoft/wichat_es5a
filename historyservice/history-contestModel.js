@@ -9,9 +9,7 @@ const contestSchema = new mongoose.Schema({
     typeOfQuestions: {
         type: String
     },
-    rightAnswers: {
-        type: Number
-    },
+    rightAnswers: [{type: Number}],
     points: {
         type: Number
     },
@@ -19,7 +17,9 @@ const contestSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    preguntas: [{type: mongoose.Schema.Types.ObjectId, ref: "Pregunta" }]
+    preguntas: [{type: mongoose.Schema.Types.ObjectId, ref: "Pregunta" }],
+    tiempos: [{type: Number}],
+    pistas: [{type: Number}]
 });
 
 const Contest = mongoose.model('Contest', contestSchema);
