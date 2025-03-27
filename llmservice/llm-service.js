@@ -79,15 +79,19 @@ async function sendQuestionToLLM(question, apiKey, model = 'gemini') {
 
 app.post('/ask', async (req, res) => {
   try {
-    // Check if required fields are present in the request body
     validateRequiredFields(req, ['question', 'model']);
-
-    const { question, model } = req.body;
-    //load the api key from an enviroment variable
+    const { question, model, resCorr } = req.body;
+    
+    const context = `Eres un asistente que da pistas sobre determinados temas. 
+    La respuesta correcta sobre la que debes dar pistas es: ${resCorr || 'no especificada'}. 
+    Cuando te pregunten sobre esta respuesta, ofrece pistas progresivas pero nunca la reveles directamente.
+    
+    Pregunta: ${question}`;
+    
     const apiKey = process.env.LLM_API_KEY;
-    console.log('API Key in /ask route:', apiKey); // Agrega este log para verificar la API key
     if(!apiKey) return res.status(400).json({error: 'API key is missing'});
-    const answer = await sendQuestionToLLM(question, apiKey, model);
+    
+    const answer = await sendQuestionToLLM(context, apiKey, model);
     res.json({ answer });
 
   } catch (error) {

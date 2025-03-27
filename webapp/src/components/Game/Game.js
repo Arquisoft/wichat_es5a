@@ -6,10 +6,12 @@ https://github.com/Arquisoft/wiq_es05a/blob/master/README.md
 */
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Container, Grid, Box, Stack, Button, Typography } from '@mui/material';
+import { Container, Grid, Box, Stack, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
+import ChatBot  from '../ChatBot/ChatBot';
+import NavBar from "../NavBar/NavBar";
 import './Game.css';
 import { useLocation } from 'react-router';
 
@@ -28,7 +30,6 @@ const Juego = () => {
   const [pausarTemporizador, setPausarTemporizador] = useState(false)
   const [restartTemporizador, setRestartTemporizador] = useState(false)
   const [firstRender, setFirstRender] = useState(false);
-  const[ready, setReady] = useState(false)
   const [numPreguntaActual, setNumPreguntaActual] = useState(0)
   const [arPreg] = useState([])
   const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0)
@@ -79,7 +80,6 @@ const Juego = () => {
       }catch (error) {
           console.error('Error al crear las preguntas:', error);
         }
-      setReady(true);
       setPausarTemporizador(false);
       updateGame();
       setNumPreguntaActual(1);
@@ -103,7 +103,8 @@ const Juego = () => {
                    Asegúrate de que la pista sea clara, creativa y relacionada con aspectos únicos de la ciudad, como su historia, cultura, geografía, monumentos famosos o eventos importantes.
                    Instrucciones: No menciones el nombre de la ciudad en la pista. Incluye aspectos culturales, históricos, geográficos o emblemáticos de la ciudad. Limita la pista a 3-5 frases.
                    Ahora, da una única pista corta para la siguiente ciudad: ${resCorr}`,
-        model: 'gemini'
+        model: 'gemini',
+        resCorr: resCorr
       });
       setRespuestaLLM(response.data.answer || "No se recibió una respuesta válida del LLM.");
       console.log("Respuesta del LLM:", response.data.answer || "No se recibió respuesta válida.");
@@ -197,97 +198,100 @@ async function descolorearTodos(){
 
 //Funcion que se llama al hacer click en el boton Siguiente
 const clickSiguiente = () => {
-  if(numPreguntaActual===numPreguntas){
+  if (numPreguntaActual === numPreguntas) {
     navigate('/points', {
-      state: { 
+      state: {
         numRespuestasCorrectas: numRespuestasCorrectas,
         numPreguntas: numPreguntas
       }
     });
-    
-    return
+    return;
   }
-  descolorearTodos()
-  setNumPreguntaActual(numPreguntaActual+1)
+
+  setTimeout(() => descolorearTodos(), 0);
+
+  setNumPreguntaActual(numPreguntaActual + 1);
   updateGame();
-  //Recargar a 20 el temporizador
   setRestartTemporizador(true);
   setPausarTemporizador(false);
-}
+};
 
 const handleRestart = () => {
   setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
 };
   return (
-    <Container component="main" maxWidth="xl" sx={{ marginTop: 4 }}>
-      <Grid container spacing={2}>
-        {/* Columna izquierda */}
-        <Grid item xs={12} md={3}>
-          <Stack spacing={2}>
-            <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm}>
-              ¿Necesitas una pista?
-            </Button>
-            {respuestaLLM && (
-              <Box className="respuesta-llm-container" p={2} border="1px solid #ccc" borderRadius="5px">
-                <strong>Respuesta del LLM:</strong> {respuestaLLM}
-              </Box>
-            )}
-          </Stack>
-        </Grid>
+    <>
+      <NavBar />
+      <Container component="main" maxWidth="xl" sx={{ marginTop: 4 }}>
+        <Grid container spacing={2}>
+          {/* Columna izquierda */}
+          <Grid item xs={12} md={3}>
+            <Stack spacing={2}>
+              <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm}>
+                ¿Necesitas una pista?
+              </Button>
+              {respuestaLLM && (
+                <Box className="respuesta-llm-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                  <strong>Respuesta del LLM:</strong> {respuestaLLM}
+                  <ChatBot respuestaCorrecta={resCorr} />
+                </Box>
+              )}
+            </Stack>
+          </Grid>
 
-        {/* Columna central */}
-        <Grid item xs={12} md={6}>
-          <Stack spacing={2}>
-            <Box className="pregunta-texto-container" p={2} border="1px solid #ccc" borderRadius="5px">
-              <h2 className="pregunta-texto">{pregunta}</h2>
-            </Box>
-            {imagenPregunta && (
-              <Box className="image-container">
-                <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
+          {/* Columna central */}
+          <Grid item xs={12} md={6}>
+            <Stack spacing={2}>
+              <Box className="pregunta-texto-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                <h2 className="pregunta-texto">{pregunta}</h2>
               </Box>
-            )}
-            <Grid container spacing={2} className="button-container">
-              {resFalse.map((respuesta, index) => (
-                <Grid item xs={6} key={index}>
-                  <Button variant="contained" onClick={() => botonRespuesta(respuesta)}>
-                    {respuesta}
-                  </Button>
-                </Grid>
-              ))}
-            </Grid>
-          </Stack>
-        </Grid>
+              {imagenPregunta && (
+                <Box className="image-container">
+                  <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
+                </Box>
+              )}
+              <Grid container spacing={2} className="button-container">
+                {resFalse.map((respuesta, index) => (
+                  <Grid item xs={6} key={index}>
+                    <Button variant="contained" onClick={() => botonRespuesta(respuesta)}>
+                      {respuesta}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+            </Stack>
+          </Grid>
 
-        {/* Columna derecha: Información del Juego */}
-        <Grid item xs={12} md={3}>
-          <Stack spacing={2}>
-            <Box className="pregunta-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
-              Pregunta: {numPreguntaActual} / {numPreguntas}
-            </Box>
-            <Box className="temporizador-info-container" display="flex" alignItems="center">
-              <p>Tiempo restante</p>
-              <Temporizador
-                id="temp"
-                restart={restartTemporizador}
-                tiempoInicial={20}
-                tiempoAcabado={cambiarColorBotones}
-                pausa={pausarTemporizador}
-                handleRestart={handleRestart}
-              />
-            </Box>
-            <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
-              Puntuación: {numRespuestasCorrectas * 100}
-            </Box>
-            <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente}>
-              Siguiente pregunta
-            </Button>
-          </Stack>
+          {/* Columna derecha: Información del Juego */}
+          <Grid item xs={12} md={3}>
+            <Stack spacing={2}>
+              <Box className="pregunta-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                Pregunta: {numPreguntaActual} / {numPreguntas}
+              </Box>
+              <Box className="temporizador-info-container" display="flex" alignItems="center">
+                <p>Tiempo restante</p>
+                <Temporizador
+                  id="temp"
+                  restart={restartTemporizador}
+                  tiempoInicial={20}
+                  tiempoAcabado={cambiarColorBotones}
+                  pausa={pausarTemporizador}
+                  handleRestart={handleRestart}
+                />
+              </Box>
+              <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                Puntuación: {numRespuestasCorrectas * 100}
+              </Box>
+              <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente}>
+                Siguiente pregunta
+              </Button>
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </>
   );
 };
-
 
 Juego.propTypes = {
   isLogged: PropTypes.bool,
