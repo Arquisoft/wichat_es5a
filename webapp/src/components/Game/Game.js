@@ -81,7 +81,7 @@ const Juego = () => {
     useEffect(() => {
       if (!firstRender) {
         setFirstRender(true);
-        crearPreguntas(5);
+        crearPreguntas(20);
       }
     }, [firstRender, crearPreguntas]);   
 
@@ -188,23 +188,23 @@ async function descolorearTodos(){
 
 //Funcion que se llama al hacer click en el boton Siguiente
 const clickSiguiente = () => {
-  if(numPreguntaActual===numPreguntas){
+  if (numPreguntaActual === numPreguntas) {
     navigate('/points', {
-      state: { 
+      state: {
         numRespuestasCorrectas: numRespuestasCorrectas,
         numPreguntas: numPreguntas
       }
     });
-    
-    return
+    return;
   }
-  descolorearTodos()
-  setNumPreguntaActual(numPreguntaActual+1)
+
+  setTimeout(() => descolorearTodos(), 0);
+
+  setNumPreguntaActual(numPreguntaActual + 1);
   updateGame();
-  //Recargar a 20 el temporizador
   setRestartTemporizador(true);
   setPausarTemporizador(false);
-}
+};
 
 const handleRestart = () => {
   setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
