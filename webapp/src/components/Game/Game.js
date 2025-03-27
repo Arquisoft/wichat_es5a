@@ -88,7 +88,7 @@ const Juego = () => {
     useEffect(() => {
       if (!firstRender) {
         setFirstRender(true);
-        crearPreguntas(5);
+        crearPreguntas(20);
       }
     }, [firstRender, crearPreguntas]);   
 
@@ -200,25 +200,24 @@ const clickSiguiente = () => {
     arPistas.push(numPistas);
     axios.post(`${apiEndpoint}/savegame`, {arCorrect, points, arPreg, arTiempo, arPistas}); // Llama al history service para guardar el concurso y las preguntas en BBDD
     navigate('/points', {
-      state: { 
+      state: {
         numRespuestasCorrectas: numRespuestasCorrectas,
         numPreguntas: numPreguntas
       }
     });
-    
-    return
+    return;
   }
-  descolorearTodos()
+
+  setTimeout(() => descolorearTodos(), 0);
   setNumPreguntaActual(numPreguntaActual+1)
   arTiempo.push(tiempoRestante);
   arPistas.push(numPistas);
   setTiempoRestante(20);
   setNumPistas(0);
   updateGame();
-  //Recargar a 20 el temporizador
   setRestartTemporizador(true);
   setPausarTemporizador(false);
-}
+};
 
 const handleRestart = () => {
   setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
