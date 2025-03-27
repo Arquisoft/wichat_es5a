@@ -100,6 +100,7 @@ paths:
                   type: string
                   description: User password.
                   example: pass
+            
       responses:
         '200':
           description: Login successful. Returns user token, username, and creation date.
@@ -131,6 +132,235 @@ paths:
                     type: string
                     description: Shows the error info..
                     example: Invalid credentials
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+
+  /savegame: 
+    post:
+      summary: Saves a game and its questions in the database.
+      operationId: saveGame
+      requestBody:
+        required: true
+        content:
+          application/json:
+          schema:
+              type: object
+              properties:
+                arCorrect:
+                  type: array
+                  description: Array which contains if the answer was answered correctly or not.
+                  items:
+                    type: boolean
+                  example: [1, 0, 1, 1, 0]
+                points:
+                  type: integer
+                  description: Points gained in the game.
+                  example: 500
+                arPreg:
+                  type: array
+                  description: Array which contains the information about the questions included in the game.
+                  items:
+                    type: string
+                    example: 
+                  example:
+                arTiempo:
+                  type: array
+                  description: Array which contains the time taken to answer each question.
+                  items:
+                    type: integer
+                  example: [2, 4, 7, 1, 3]
+                arPistas:
+                  type: array
+                  description: Array which contains the number of hints used in each question.
+                  items:
+                    type: integer
+                  example: [0, 1, 0, 2, 0]
+
+    responses:
+        '200':
+          description: Game saved succesfully. Returns true, stating that the operation was successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Success status.
+                    example: true
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+
+  /gethistory:
+    get:
+      summary: Retrieves all contests currently on the database.
+      operationId: getHistory
+      responses:
+        '200':
+          description: Login successful. Returns user token, username, and creation date.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userCount:
+                    type: integer
+                    description: Number of users registered all time in the database.
+                    example: 185
+                  questionCount:
+                    type: integer
+                    description: Number of questions generated and saved all time in the database.
+                    example: 1657
+                  contests:
+                    type: array
+                    description: List of contests saved all time in the database.
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: Contest ID.
+                          example: 65f756db3fa22d227a4b7c7d
+                        mode:
+                          type: string
+                          description: Mode of the game.
+                          example: 'Normal'
+                        typeOfQuestions:
+                          type: string
+                          description: Type of the questions
+                          example: 'Flags'
+                        rightAnswers:
+                          type: array
+                          description: Array which contains if the answer was answered correctly or not for every question included in the game.
+                          items:
+                            type: boolean
+                          example: [true, false, true, true, false]
+                        points:
+                          type: integer
+                          description: Points gained in the game.
+                          example: 500
+                        preguntas:
+                          type: array
+                          description: Array which contains the ids of the questions included in the game.
+                          items:
+                            type: string
+                          example: ['67e4a171206740a957c5988e','67e4a171206740a957c59890','67e4a171206740a957c59892']
+                        tiempos:
+                          type: array
+                          description: Array which contains the time taken to answer each question.
+                          items:
+                            type: integer
+                          example: [2, 4, 7, 1, 3]
+                        pistas:
+                          type: array
+                          description: Array which contains the number of hints used in each question.
+                          items:
+                            type: integer
+                          example: [0, 1, 0, 2, 0]
+                        date:
+                          type: string
+                          description: Date of the contest.
+                          example: '2025-03-27T00:53:05.578+00:00'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+
+  /getquestions/:id:
+    get:
+      summary: Retrieves all questions from a specific contest and the information related to them.
+      operationId: getQuestions
+      parameters:
+        - name: id
+          in: path
+          description: Contest ID.
+          required: true
+          schema:
+            type: string
+          example: 65f756db3fa22d227a4b7c7d
+      responses:
+        '200':
+          description: Questions retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questions:
+                    type: array
+                    description: List of questions included in the contest.
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: Question ID.
+                          example: 67e4a171206740a957c5988e
+                        question:
+                          type: string
+                          description: Question text.
+                          example: 'What is the capital of Spain?'
+                        image:
+                          type: string
+                          description: Image URL.
+                          example: 'http://commons.wikimedia.org/wiki/Special:FilePath/Flag%20of%20Mali.svg'
+                        answer:
+                          type: string
+                          description: Correct answer.
+                          example: 'Madrid'
+                        wrongAnswers:
+                          type: array
+                          description: Array which contains the possible answers for the question.
+                          items:
+                            type: string
+                          example: ['Madrid', 'Barcelona', 'Seville', 'Valencia']
+                        createdAt:
+                          type: string
+                          description: date of creation.
+                          example: 2025-03-26T23:17:52.776+00:00
+                  correctAnswers:
+                    type: array
+                    description: Array which contains if the answer was answered correctly or not for every question included in the game.
+                    items:
+                      type: boolean
+                    example: [true, false, true, true, false]
+                  times:
+                    type: array
+                    description: Array which contains the time taken to answer each question.
+                    items:
+                      type: integer
+                    example: [2, 4, 7, 1, 3]
+                  clues:
+                    type: array
+                    description: Array which contains the number of hints used in each question.
+                    items:
+                      type: integer
+                    example: [0, 1, 0, 2, 0]
         '500':
           description: Internal server error.
           content:

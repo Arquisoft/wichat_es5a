@@ -23,7 +23,7 @@ describe('Gateway Service', () => {
   });
 
   axios.get.mockImplementation((url) => {
-    if (url.endsWith('/history')) {
+    if (url.endsWith('/gethistory')) {
       return Promise.resolve({ data: { userCount: 10, questionCount: 5 } });
     }
   });
@@ -70,7 +70,7 @@ describe('Gateway Service', () => {
   // Test /history endpoint
   it('should forward history request to the history service', async () => {
     const response = await request(app)
-      .get('/getHistory');
+      .get('/gethistory');
 
       expect(response.statusCode).toBe(200);
       expect(response.body.userCount).toBe(10);

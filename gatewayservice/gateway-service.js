@@ -67,9 +67,27 @@ app.post('/questions/:kind', async (req, res) => {
   }
 });
 
-app.get('/getHistory', async (req, res) => {
+app.post('/savegame', async (req, res) => {
   try {
-    const historyResponse = await axios.get(historyServiceUrl + '/history');
+    const historyResponse = await axios.post(historyServiceUrl + '/savegame', req.body);
+    res.json(historyResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({error: error.response.data.error });
+  }
+});
+
+app.get('/gethistory', async (req, res) => {
+  try {
+    const historyResponse = await axios.get(historyServiceUrl + '/gethistory');
+    res.json(historyResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({error: error.response.data.error });
+  }
+});
+
+app.get('/getquestions/:id', async (req, res) => {
+  try {
+    const historyResponse = await axios.get(historyServiceUrl + `/getquestions/${req.params.id}`);
     res.json(historyResponse.data);
   } catch (error) {
     res.status(error.response.status).json({error: error.response.data.error });
