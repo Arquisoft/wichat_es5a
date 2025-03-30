@@ -53,6 +53,9 @@ const authenticateToken = (req, res, next) => {
     if (err) {
       return res.sendStatus(403);
     }
+    console.log("El token es " + token )
+    console.log("Token verificado correctamente")
+    console.log("El usuario es " + user)
     req.user = user;
     next();
   });
@@ -60,9 +63,9 @@ const authenticateToken = (req, res, next) => {
 
 // Route to get user profile using username from token
 app.get('/profile', authenticateToken, async (req, res) => {
-  console.log("ENTRO AQUÍ")
   try {
-    const username = req.user.username; // Extract username from token
+    const username = req.user.user.username; // Extract username from token
+    console.log("El username extraído es " + username)
     const user = await findOne(username, null); // Use findOne() to get user data
 
     if (!user) {
