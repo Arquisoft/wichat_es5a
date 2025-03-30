@@ -16,8 +16,6 @@ UO287694@uniovi.es - Pablo López Tamargo
 
 UO295432@uniovi.es - Óscar Cervero Luiña
 
-UO285412@uniovi.es - Néstor Fernández García
-
 gaelhorta04@gmail.com - Gael Horta Calzada
 
 UO295029@uniovi.es - Marcos Argüelles Rivera
@@ -27,6 +25,8 @@ This is a base project for the Software Architecture course in 2024/2025. It is 
 - **User service**. Express service that handles the insertion of new users in the system.
 - **Auth service**. Express service that handles the authentication of users.
 - **LLM service**. Express service that handles the communication with the LLM.
+- **Wiki service**. Express service that handles the questions generation.
+- **History service**. Express service that handles the history of the app.
 - **Gateway service**. Express service that is exposed to the public and serves as a proxy to the two previous ones.
 - **Webapp**. React web application that uses the gateway service to allow basic login and new user features.
 
