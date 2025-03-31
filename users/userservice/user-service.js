@@ -77,6 +77,7 @@ app.get('/profile', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
 });
