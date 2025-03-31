@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router';
 import ChatBot  from '../ChatBot/ChatBot';
 import NavBar from "../NavBar/NavBar";
 import './Game.css';
+import { useLocation } from 'react-router';
 
 const Juego = () => {
   const navigate = useNavigate();
@@ -35,6 +36,9 @@ const Juego = () => {
   const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
   const [numPreguntas, setNumPreguntas] = useState(0)
 
+  const location = useLocation();
+  const { mode = 'flag', difficulty = 'Fácil' } = location.state || {};
+
     // Estados para el LLM
     const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
   
@@ -54,9 +58,13 @@ const Juego = () => {
     const crearPreguntas = useCallback(async (numPreguntas) => {
       setPausarTemporizador(true);
       setNumPreguntas(numPreguntas);
-      while (numPreguntas > 0) {
-        try {
-          const response = await axios.post(`${apiEndpoint}/questions/flag`); // A elegir entre city, flag, album o football
+      if (!mode) {
+        console.error('El modo de juego no está definido, usando valor por defecto.');
+        setMode('flag'); // Establecer un valor por defecto
+      }
+      try{
+        while (numPreguntas > 0) {
+          const response = await axios.post(`${apiEndpoint}/questions/${mode}`); // A elegir entre city, flag, album o football
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
           const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
 
@@ -68,22 +76,24 @@ const Juego = () => {
             imagen: response.data.image,
           });
           numPreguntas--;
-        } catch (error) {
+        }
+      }catch (error) {
           console.error('Error al crear las preguntas:', error);
         }
-      }
       setPausarTemporizador(false);
       updateGame();
       setNumPreguntaActual(1);
     }, [arPreg, apiEndpoint, updateGame]);
     
-    //Primer render para un comportamiento diferente
     useEffect(() => {
       if (!firstRender) {
         setFirstRender(true);
-        crearPreguntas(20);
+        let num = 5; // default (Fácil)
+        if (difficulty === 'Media') num = 10;
+        else if (difficulty === 'Difícil') num = 20;
+        crearPreguntas(num);
       }
-    }, [firstRender, crearPreguntas]);   
+    }, [firstRender, crearPreguntas, difficulty]);
 
   // Función para enviar una solicitud al LLM y obtener una pista
   const enviarRespuestaALlm = async () => {
