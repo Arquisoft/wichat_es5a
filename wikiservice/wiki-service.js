@@ -51,6 +51,10 @@ function getQuery(kind) {
 // Middleware to parse JSON in request body
 app.use(bodyParser.json());
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK' });
+});
+
 app.post("/questions/:kind", async (req, res) => {
   let {question, query} = getQuery(req.params.kind);
   try {
