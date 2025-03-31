@@ -28,6 +28,20 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
 });
 
+// Health check endpoint
+app.get('/health/:port', async (req, res) => {
+  try {
+    if (req.params.port != 8000) {
+      const healthResponse = await axios.get('http://localhost:', + req.params.port + '/health');
+      res.json(healthResponse.data);
+    } else {
+      res.json({ status: 'OK' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.post('/login', async (req, res) => {
   try {
     // Forward the login request to the authentication service
