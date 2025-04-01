@@ -35,7 +35,7 @@ const Juego = () => {
   const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0)
   const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
   const [numPreguntas, setNumPreguntas] = useState(0)
-
+  
   const location = useLocation();
   const { mode = 'flag', difficulty = 'Fácil' } = location.state || {};
 
@@ -58,28 +58,27 @@ const Juego = () => {
     const crearPreguntas = useCallback(async (numPreguntas) => {
       setPausarTemporizador(true);
       setNumPreguntas(numPreguntas);
-      if (!mode) {
-        console.error('El modo de juego no está definido, usando valor por defecto.');
-        setMode('flag'); // Establecer un valor por defecto
-      }
-      try{
+      try {
+        var comprobacionRepetidas = [];
         while (numPreguntas > 0) {
           const response = await axios.post(`${apiEndpoint}/questions/${mode}`); // A elegir entre city, flag, album o football
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
           const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
-
-          arPreg.push({
-            id: numPreguntas,
-            pregunta: response.data.question,
-            resCorr: response.data.answer,
-            resFalse: respuestasAleatorias,
-            imagen: response.data.image,
-          });
-          numPreguntas--;
+          if(!comprobacionRepetidas.includes(response.data.answer)) {
+            comprobacionRepetidas.push(response.data.answer);
+            arPreg.push({
+              id: numPreguntas,
+              pregunta: response.data.question,
+              resCorr: response.data.answer,
+              resFalse: respuestasAleatorias,
+              imagen: response.data.image,
+            });
+            numPreguntas--;
+          }
         }
-      }catch (error) {
+      } catch (error) {
           console.error('Error al crear las preguntas:', error);
-        }
+      }
       setPausarTemporizador(false);
       updateGame();
       setNumPreguntaActual(1);
