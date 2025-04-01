@@ -83,22 +83,35 @@ app.get('/health', (req, res) => {
 
 app.post('/ask', async (req, res) => {
   try {
+    // Validar campos requeridos
     validateRequiredFields(req, ['question', 'model']);
     const { question, model, resCorr } = req.body;
-    
+
+    // Validar modelo soportado
+    const config = llmConfigs[model];
+    if (!config) {
+      return res.status(400).json({ error: `Model "${model}" is not supported.` });
+    }
+
+    // Validar API key
+    const apiKey = process.env.LLM_API_KEY;
+    if (!apiKey) {
+      return res.status(400).json({ error: 'API key is missing' });
+    }
+
+    // Crear contexto para la pregunta
     const context = `Eres un asistente que da pistas sobre determinados temas. 
     La respuesta correcta sobre la que debes dar pistas es: ${resCorr || 'no especificada'}. 
     Cuando te pregunten sobre esta respuesta, ofrece pistas progresivas pero nunca la reveles directamente.
     
     Pregunta: ${question}`;
-    
-    const apiKey = process.env.LLM_API_KEY;
-    if(!apiKey) return res.status(400).json({error: 'API key is missing'});
-    
+
+    // Enviar pregunta al modelo LLM
     const answer = await sendQuestionToLLM(context, apiKey, model);
     res.json({ answer });
 
   } catch (error) {
+    console.error(`Error: ${error.message}`);
     res.status(400).json({ error: error.message });
   }
 });
