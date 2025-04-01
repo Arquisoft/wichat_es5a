@@ -16,60 +16,27 @@ describe('Home Component', () => {
     jest.mocked(require('react-router').useNavigate).mockReturnValue(mockNavigate);
   });
 
-  it('should navigate to /gamemode when "Jugar" is clicked', () => {
-    render(
-      <MemoryRouter>
-        <Home />
-      </MemoryRouter>
-    );
+  const testCases = [
+    { buttonText: 'Jugar', expectedPath: '/gamemode' },
+    { buttonText: 'Perfil', expectedPath: '/profile' },
+    { buttonText: 'Histórico', expectedPath: '/history' },
+    { buttonText: 'Créditos', expectedPath: '/credits' },
+  ];
 
-    // Hacer clic en el botón "Jugar"
-    fireEvent.click(screen.getByText('Jugar'));
+  testCases.forEach(({ buttonText, expectedPath }) => {
+    it(`should navigate to ${expectedPath} when "${buttonText}" is clicked`, () => {
+      render(
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      );
 
-    // Verificar que se navega a /gamemode
-    expect(mockNavigate).toHaveBeenCalledWith('/gamemode');
-  });
+      // Hacer clic en el botón
+      fireEvent.click(screen.getByText(buttonText));
 
-  it('should navigate to /profile when "Perfil" is clicked', () => {
-    render(
-      <MemoryRouter>
-        <Home />
-      </MemoryRouter>
-    );
-
-    // Hacer clic en el botón "Perfil"
-    fireEvent.click(screen.getByText('Perfil'));
-
-    // Verificar que se navega a /profile
-    expect(mockNavigate).toHaveBeenCalledWith('/profile');
-  });
-
-  it('should navigate to /history when "Histórico" is clicked', () => {
-    render(
-      <MemoryRouter>
-        <Home />
-      </MemoryRouter>
-    );
-
-    // Hacer clic en el botón "Histórico"
-    fireEvent.click(screen.getByText('Histórico'));
-
-    // Verificar que se navega a /history
-    expect(mockNavigate).toHaveBeenCalledWith('/history');
-  });
-
-  it('should navigate to /credits when "Créditos" is clicked', () => {
-    render(
-      <MemoryRouter>
-        <Home />
-      </MemoryRouter>
-    );
-
-    // Hacer clic en el botón "Créditos"
-    fireEvent.click(screen.getByText('Créditos'));
-
-    // Verificar que se navega a /credits
-    expect(mockNavigate).toHaveBeenCalledWith('/credits');
+      // Verificar que se navega a la ruta esperada
+      expect(mockNavigate).toHaveBeenCalledWith(expectedPath);
+    });
   });
 
   it('should navigate to /login and remove token when "Salir de sesión" is clicked', () => {
