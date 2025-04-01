@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Button, Typography, Grid } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import { useNavigate } from 'react-router';
 import NavBar from "../NavBar/NavBar";
 import LargeButton from '../ReactComponents/LargeButton';
+import CustomH1 from '../ReactComponents/CustomH1';
 
 const GameMode = () => {
   const navigate = useNavigate();
@@ -33,7 +34,8 @@ const GameMode = () => {
     <div>
       <NavBar />
       <Box mt={4} textAlign="center">
-        <Typography variant="h4" gutterBottom>Selecciona el modo de juego</Typography>
+        <CustomH1 size="h4">Selecciona el modo de juego</CustomH1>
+        <br/>
         <Grid container spacing={2} justifyContent="center">
           {gameModes.map((mode) => (
             <Grid item key={mode.value}>
@@ -55,8 +57,10 @@ const GameMode = () => {
             </Grid>
           ))}
         </Grid>
+        <br/>
 
-        <Typography variant="h5" mt={4} gutterBottom>Selecciona la dificultad</Typography>
+        <CustomH1 size="h4">Selecciona la dificultad</CustomH1>
+        <br/>
         <Grid container spacing={2} justifyContent="center">
           {difficulties.map((level) => (
             <Grid item key={level}>
