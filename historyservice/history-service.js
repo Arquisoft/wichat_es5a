@@ -17,7 +17,11 @@ const server = app.listen(port, () => {
     console.log(`History Service listening at http://localhost:${port}`);
 });
 
-app.post('/savegame', async (req, res) => {
+app.get('/health', (req, res) => {
+    res.json({ status: 'OK' });
+  });
+
+  app.post('/savegame', async (req, res) => {
     try {
         let idPreguntas = []
         for (const preg of req.body.arPreg) {

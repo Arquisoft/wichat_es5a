@@ -28,6 +28,20 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
 });
 
+// Health check endpoint
+app.get('/health/:port', async (req, res) => {
+  try {
+    if (req.params.port != 8000) {
+      const healthResponse = await axios.get('http://localhost:', + req.params.port + '/health');
+      res.json(healthResponse.data);
+    } else {
+      res.json({ status: 'OK' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.post('/login', async (req, res) => {
   try {
     // Forward the login request to the authentication service
@@ -42,6 +56,17 @@ app.post('/adduser', async (req, res) => {
   try {
     // Forward the add user request to the user service
     const userResponse = await axios.post(userServiceUrl+'/adduser', req.body);
+    res.json(userResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+
+app.get('/profile', async (req, res) => {
+  try {
+    const userResponse = await axios.get(userServiceUrl + '/profile', {
+      headers: req.headers, // Forward all headers, including Authorization
+    });
     res.json(userResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });

@@ -23,6 +23,10 @@ function validateRequiredFields(req, requiredFields) {
     }
 }
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK' });
+});
+
 // Route for user login
 app.post('/login',  [
   check('username').isLength({ min: 3 }).trim().escape(),
@@ -45,7 +49,11 @@ app.post('/login',  [
     // Check if the user exists and verify the password
     if (user && await bcrypt.compare(password, user.password)) {
       // Generate a JWT token
-      const token = jwt.sign({ userId: user._id }, 'your-secret-key', { expiresIn: '1h' });
+      const token = jwt.sign(
+        { user: user }, 
+        'your-secret-key', 
+        { expiresIn: '1h' }
+      );
       // Respond with the token and user information
       res.json({ token: token, username: username, createdAt: user.createdAt });
     } else {

@@ -8,6 +8,7 @@ const port = 8004;
 
 // Connect to MongoDB
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/userdb';
+const preguntas=new Set();
 mongoose.connect(mongoUri);
 
 const wikiQuery = new WikiQuery();
@@ -51,6 +52,10 @@ function getQuery(kind) {
 // Middleware to parse JSON in request body
 app.use(bodyParser.json());
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK' });
+});
+
 app.post("/questions/:kind", async (req, res) => {
   let { question, query } = getQuery(req.params.kind);
   try {
@@ -81,11 +86,14 @@ app.post("/questions/:kind", async (req, res) => {
       answer: answer,
       wrongAnswers: wrongAnswers
     }
-
-    res.send(queryResults);
+    const uniqueKey = `${question}-${image}-${answer}`;
+    if (!preguntas.has(uniqueKey)) {
+      preguntas.add(uniqueKey); 
+      res.send(queryResults); 
+    } 
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).send(error); //Shows the error to the user
+    res.status(500).send(error); // Mostrar el error al usuario
   }
 });
 

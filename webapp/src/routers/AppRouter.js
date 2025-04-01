@@ -12,6 +12,7 @@ import Profile from "../components/Profile/Profile";
 import Credits from "../components/Credits/Credits";
 import Game from "../components/Game/Game";
 import History from "../components/History/History";
+import GameMode from "../components/GameMode/GameMode";
 import ContestHistory from "../components/ContestHistory/ContestHistory";
 
 /*
@@ -80,6 +81,13 @@ const router = createBrowserRouter([
                 <History />
             </PrivateRoute>
 
+    },
+    {
+        path: "/gamemode",
+        element:
+            <PrivateRoute>
+                <GameMode />
+            </PrivateRoute>
     },
     {
         path: "/contest/:id",
