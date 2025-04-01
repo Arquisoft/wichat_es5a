@@ -108,6 +108,10 @@ describe('Juego component', () => {
                 <Juego />
             </BrowserRouter>
         );
+
+        // Espera a que el botón de pista esté habilitado.
+        const pistaButton = await screen.findByRole('button', { name: /¿Necesitas una pista?/i });
+        await waitFor(() => expect(pistaButton).not.toBeDisabled());
     
         // Simula el clic en el botón de pista.
         fireEvent.click(screen.getByRole('button', { name: /¿Necesitas una pista?/i }));
