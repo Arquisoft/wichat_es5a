@@ -1,4 +1,4 @@
-/*LA MAYOR PARTE DE ESTE CÓDIGO SE HA SACADO DEL SIGUIENTE ENLACE:
+/*EL ESQUELETO DE ESTE CÓDIGO SE HA SACADO DEL SIGUIENTE ENLACE:
 https://github.com/Arquisoft/wiq_es05a/blob/master/webapp/src/components/Pages/Juego.js
 CRÉDITOS AL EQUIPO DE DESARROLLO DE WIQ_ES05A
 SUS MIEMBROS SE PUEDEN ENCONTRAR EN EL SIGUIENTE ENLACE:
@@ -14,6 +14,8 @@ import ChatBot  from '../ChatBot/ChatBot';
 import NavBar from "../NavBar/NavBar";
 import './Game.css';
 import { useLocation } from 'react-router';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
 
 const Juego = () => {
   const navigate = useNavigate();
@@ -35,6 +37,8 @@ const Juego = () => {
   const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0)
   const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
   const [numPreguntas, setNumPreguntas] = useState(0)
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingComplete, setLoadingComplete] = useState(false);
 
   const location = useLocation();
   const { mode = 'flag', difficulty = 'Fácil' } = location.state || {};
@@ -58,10 +62,15 @@ const Juego = () => {
     const crearPreguntas = useCallback(async (numPreguntas) => {
       setPausarTemporizador(true);
       setNumPreguntas(numPreguntas);
+      setLoadingProgress(0);
+      setLoadingComplete(false);
       if (!mode) {
         console.error('El modo de juego no está definido, usando valor por defecto.');
       }
       try{
+        const total = numPreguntas;
+        let current = 0;
+
         while (numPreguntas > 0) {
           const response = await axios.post(`${apiEndpoint}/questions/${mode}`); // A elegir entre city, flag, album o football
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
@@ -74,11 +83,15 @@ const Juego = () => {
             resFalse: respuestasAleatorias,
             imagen: response.data.image,
           });
+          current++;
+          const progress = Math.round(100 * Math.log10(1 + (current / total) * 9)); // escala logarítmica en base 10
+          setLoadingProgress(progress > loadingProgress ? progress : loadingProgress); // solo actualiza si es mayor
           numPreguntas--;
         }
       }catch (error) {
           console.error('Error al crear las preguntas:', error);
         }
+      setLoadingComplete(true);
       setPausarTemporizador(false);
       updateGame();
       setNumPreguntaActual(1);
@@ -221,12 +234,18 @@ const handleRestart = () => {
   return (
     <>
       <NavBar />
+      {!loadingComplete && (
+        <Box sx={{ width: '80%', margin: 'auto', marginTop: 4 }}>
+          <Typography variant="h6">Cargando preguntas...</Typography>
+          <LinearProgress variant="determinate" value={loadingProgress} />
+        </Box>
+      )}
       <Container component="main" maxWidth="xl" sx={{ marginTop: 4 }}>
         <Grid container spacing={2}>
           {/* Columna izquierda */}
           <Grid item xs={12} md={3}>
             <Stack spacing={2}>
-              <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm}>
+              <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm} disabled={!loadingComplete}>
                 ¿Necesitas una pista?
               </Button>
               {respuestaLLM && (
@@ -281,7 +300,7 @@ const handleRestart = () => {
               <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
                 Puntuación: {numRespuestasCorrectas * 100}
               </Box>
-              <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente}>
+              <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente} disabled={!loadingComplete}>
                 Siguiente pregunta
               </Button>
             </Stack>
