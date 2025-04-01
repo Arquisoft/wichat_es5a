@@ -60,7 +60,6 @@ const Juego = () => {
       setNumPreguntas(numPreguntas);
       if (!mode) {
         console.error('El modo de juego no está definido, usando valor por defecto.');
-        setMode('flag'); // Establecer un valor por defecto
       }
       try{
         while (numPreguntas > 0) {
@@ -93,7 +92,7 @@ const Juego = () => {
         else if (difficulty === 'Difícil') num = 20;
         crearPreguntas(num);
       }
-    }, [firstRender, crearPreguntas, difficulty]);
+    }, [firstRender, crearPreguntas, difficulty,mode]);
 
   // Función para enviar una solicitud al LLM y obtener una pista
   const enviarRespuestaALlm = async () => {
