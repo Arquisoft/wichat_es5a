@@ -35,6 +35,7 @@ const Juego = () => {
   const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0)
   const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
   const [numPreguntas, setNumPreguntas] = useState(0)
+  const [mostrarChat, setMostrarChat] = useState(false);
 
   const location = useLocation();
   const { mode = 'flag', difficulty = 'Fácil' } = location.state || {};
@@ -83,6 +84,7 @@ const Juego = () => {
       setPausarTemporizador(false);
       updateGame();
       setNumPreguntaActual(1);
+      setMostrarChat(false)
     }, [arPreg, apiEndpoint, updateGame]);
     
     useEffect(() => {
@@ -214,6 +216,8 @@ const clickSiguiente = () => {
   updateGame();
   setRestartTemporizador(true);
   setPausarTemporizador(false);
+  setMostrarChat(false);
+  setRespuestaLLM("");
 };
 
 const handleRestart = () => {
@@ -226,14 +230,21 @@ const handleRestart = () => {
         <Grid container spacing={2}>
           {/* Columna izquierda */}
           <Grid item xs={12} md={3}>
-            <Stack spacing={2}>
+          <Stack spacing={2}>
               <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm}>
                 ¿Necesitas una pista?
               </Button>
               {respuestaLLM && (
                 <Box className="respuesta-llm-container" p={2} border="1px solid #ccc" borderRadius="5px">
                   <strong>Respuesta del LLM:</strong> {respuestaLLM}
-                  <ChatBot respuestaCorrecta={resCorr} />
+                </Box>
+              )}
+             <Button id="botonChat" variant="contained" onClick={() => setMostrarChat(!mostrarChat)}>
+                {mostrarChat ? 'Cerrar Chat' : 'Hablar con el Chat'}
+              </Button>
+              {mostrarChat && (
+                <Box className="chatbot-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                  <ChatBot />
                 </Box>
               )}
             </Stack>
