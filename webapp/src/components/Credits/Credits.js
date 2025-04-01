@@ -40,9 +40,6 @@ const Credits = () => {
           UO295432@uniovi.es - Óscar Cervero Luiña
         </CustomH1>
         <CustomH1 size="h5">
-          UO285412@uniovi.es - Néstor Fernández García
-        </CustomH1>
-        <CustomH1 size="h5">
           gaelhorta04@gmail.com - Gael Horta Calzada
         </CustomH1>
         <CustomH1 size="h5">
