@@ -36,7 +36,7 @@ const Profile = () => {
     } else {
       setError('No se encontró el token.');
     }
-  }, [token, apiEndpoint]);
+  }, [token]);
 
   const exitProfile = () => {
     navigate('/home');
