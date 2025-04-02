@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Box, Button, Grid } from '@mui/material';
 import { useNavigate } from 'react-router';
 import NavBar from "../NavBar/NavBar";
-import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
+import "./GameMode.css";
 
 const GameMode = () => {
   const navigate = useNavigate();
@@ -85,13 +85,13 @@ const GameMode = () => {
         </Grid>
 
         <Box mt={4}>
-          <LargeButton
-            variant="contained"
-            disabled={!selectedMode || !selectedDifficulty}
-            onClick={startGame}
-          >
-            Empezar juego
-          </LargeButton>
+        <Button
+          variant="contained"
+          disabled={!selectedMode || !selectedDifficulty}
+          onClick={startGame} id="button-start"
+        >
+          Empezar juego
+        </Button>
         </Box>
       </Box>
     </div>

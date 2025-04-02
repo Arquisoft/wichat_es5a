@@ -1,0 +1,9 @@
+#button-start {
+    background-color: #00735C;
+    color: white;
+    width: 15%;
+}
+
+#button-start:disabled, #button-start:hover {
+    background-color: #29A0B1;
+}
