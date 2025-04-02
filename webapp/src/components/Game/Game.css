@@ -17,28 +17,32 @@ img {
   max-height: 50vh;
   overflow: hidden;
   padding: 1vw;
-  margin-bottom: 0.5vh; /* Reducido el margen inferior */
+  margin-bottom: 0.5vh;
 }
 
 @media (min-width: 1200px) {
   img {
-      max-width: 60%;
-      max-height: 30vh;
+    max-width: 60%;
+    max-height: 30vh;
   }
 }
 
 .button-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.3vw;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  margin-top: 0.5vh; /* Reducido el margen superior */
+  margin-top: 0.5vh;
+}
+
+.button-container > div {
+  flex-basis: 50%;
+  box-sizing: border-box;
+  padding: 0.3vw;
 }
 
 .button-container button {
-  background-color: #b0e0e6;
   width: 100%;
+  background-color: #b0e0e6;
   padding: 0.8vh 1.5vw;
   font-size: 1.8vh;
   font-weight: 500;
@@ -67,7 +71,8 @@ img {
   box-shadow: 0 0.15vw 0.4vw rgba(0, 0, 0, 0.1);
 }
 
-#botonSiguiente:hover, #botonPista:hover {
+#botonSiguiente:hover,
+#botonPista:hover {
   background-color: black;
   font-size: 2vh;
 }
@@ -83,7 +88,7 @@ img {
 }
 
 .pregunta-texto-container {
-  background-color: #00493A;
+  background-color: #00493a;
   padding: 0.5vh;
   border-radius: 0.8vw;
   margin-bottom: 0.5vh;
@@ -109,7 +114,7 @@ img {
 .puntuacion-info-container {
   font-size: 2.5vh;
   font-weight: 500;
-  background-color: #00735C;
+  background-color: #00735c;
   padding: 1.8vh;
   border-radius: 1vw;
   box-shadow: 0 0.3vw 0.8vw rgba(0, 0, 0, 0.15);
@@ -130,7 +135,7 @@ img {
   font-size: 1em;
   font-weight: bold;
   color: black;
-  border: 0.3vw solid #00493A;
+  border: 0.3vw solid #00493a;
   margin: 0 1.5em;
 }
 
@@ -140,6 +145,6 @@ img {
 
 @media (min-width: 1200px) {
   .pregunta-texto {
-      font-size: 1.3vw;
+    font-size: 1.3vw;
   }
 }
