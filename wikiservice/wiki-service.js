@@ -8,7 +8,6 @@ const port = 8004;
 
 // Connect to MongoDB
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/userdb';
-const preguntas=new Set();
 mongoose.connect(mongoUri);
 
 const wikiQuery = new WikiQuery();
@@ -43,6 +42,23 @@ const queries = [{
     '?answer wdt:P31 wd:Q6256;' +
     '         wdt:P41 ?image.' +
     ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+}, {
+  kind: "music",
+  question: "¿Qué grupo es?",
+  query: 'SELECT ?answerLabel ?image WHERE {' +
+      '?answer wdt:P31 wd:Q215380;' +
+      '         wdt:P18 ?image;' +
+      '         wdt:P166 ?award.' +
+      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+}, {
+  kind: "food",
+  question: "¿Qué plato de comida es?",
+  query: 'SELECT ?answerLabel ?image WHERE {' +
+      '?answer wdt:P31 wd:Q2095;' +
+      '       wdt:P18 ?image;' +
+      '       wdt:P495 ?country.' +
+      'FILTER(?country IN (wd:Q29, wd:Q38, wd:Q142))' +
+      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
 }];
 
 function getQuery(kind) {
