@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
       type: Date,
       default: Date.now, 
     },
+    contests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contest' }] // Array de IDs de concursos
 });
 
 const User = mongoose.model('User', userSchema);

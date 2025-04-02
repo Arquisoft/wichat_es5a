@@ -65,7 +65,6 @@ const Juego = () => {
       setNumPreguntas(numPreguntas);
       if (!mode) {
         console.error('El modo de juego no está definido, usando valor por defecto.');
-        setMode('flag'); // Establecer un valor por defecto
       }
       try{
         while (numPreguntas > 0) {

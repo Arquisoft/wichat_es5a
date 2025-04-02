@@ -78,6 +78,27 @@ app.get('/profile', authenticateToken, async (req, res) => {
   }
 });
 
+/*app.post('/savegame', async (req, res) => {
+  try {
+    const username = req.body.username // Extract username from token
+    const user = await findOne(username, null); // Use findOne() to get user data
+    const contestId = req.body.id; // Extract id from request body
+
+    console.log(contestId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    user.contests.push(contestId);
+
+    await user.save(); // Save the updated user data
+    
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});*/
+
 app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
 });

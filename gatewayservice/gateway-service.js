@@ -64,6 +64,7 @@ app.post('/adduser', async (req, res) => {
 
 app.get('/profile', async (req, res) => {
   try {
+    console.log(req.headers)
     const userResponse = await axios.get(userServiceUrl + '/profile', {
       headers: req.headers, // Forward all headers, including Authorization
     });
@@ -95,6 +96,16 @@ app.post('/questions/:kind', async (req, res) => {
 app.post('/savegame', async (req, res) => {
   try {
     const historyResponse = await axios.post(historyServiceUrl + '/savegame', req.body);
+
+    /*
+    const userResponse = await axios.get(userServiceUrl + '/profile', 
+    {
+      headers: req.headers, // Encabezados, incluyendo Authorization
+    });
+    console.log(userServiceUrl + '/savegame')
+    const userResponse2 = await axios.post(userServiceUrl + '/savegame', { id: historyResponse.data.id, username: userResponse.data.username });
+    */
+
     res.json(historyResponse.data);
   } catch (error) {
     res.status(error.response.status).json({error: error.response.data.error });
