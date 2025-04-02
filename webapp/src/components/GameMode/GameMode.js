@@ -10,8 +10,9 @@ const GameMode = () => {
   const gameModes = [
     { label: 'Ciudades', value: 'city' },
     { label: 'Banderas', value: 'flag' },
-    { label: 'Álbumes', value: 'album' },
     { label: 'Fútbol', value: 'football' },
+    { label: 'Música', value: 'music'},
+    { label: 'Comida', value: 'food'}
   ];
 
   const difficulties = ['Fácil', 'Media', 'Difícil'];
