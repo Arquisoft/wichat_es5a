@@ -53,7 +53,6 @@ const Juego = () => {
   
     //Variables para la obtencion y modificacion de estadisticas del usuario y de preguntas
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-  
     // Función que actualiza la pregunta que se muestra en pantalla
     const updateGame = useCallback(() => {
       setPregunta(arPreg[numPreguntaActual].pregunta);
@@ -116,7 +115,7 @@ const Juego = () => {
   const enviarRespuestaALlm = async () => {
     setNumPistas(numPistas + 1);
     try {
-      const response = await axios.post('http://localhost:8003/ask', {
+      const response = await axios.post(`${apiEndpoint}/askllm`, {
           question: "",
           model: 'gemini',
           mode: mode,

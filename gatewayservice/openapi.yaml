@@ -143,7 +143,6 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-
   /savegame: 
     post:
       summary: Saves a game and its questions in the database.
@@ -152,7 +151,7 @@ paths:
         required: true
         content:
           application/json:
-          schema:
+            schema:
               type: object
               properties:
                 arCorrect:
@@ -170,8 +169,7 @@ paths:
                   description: Array which contains the information about the questions included in the game.
                   items:
                     type: string
-                    example: 
-                  example:
+                  example: ["question1", "question2"]
                 arTiempo:
                   type: array
                   description: Array which contains the time taken to answer each question.
@@ -184,8 +182,7 @@ paths:
                   items:
                     type: integer
                   example: [0, 1, 0, 2, 0]
-
-    responses:
+      responses:
         '200':
           description: Game saved succesfully. Returns true, stating that the operation was successful.
           content:
@@ -208,7 +205,6 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-
   /gethistory:
     get:
       summary: Retrieves all contests currently on the database.
@@ -290,7 +286,6 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-
   /getquestions/:id:
     get:
       summary: Retrieves all questions from a specific contest and the information related to them.
@@ -372,3 +367,189 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
+  /profile:
+    get:
+      summary: Retrieves the profile of the authenticated user.
+      operationId: getProfile
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: >
+            Bearer token for authentication. Format: `Bearer <token>`.
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJzdHVkZW50IiwiaWF0IjoxNjE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      responses:
+        '200':
+          description: User profile retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: Username of the authenticated user.
+                    example: student
+                  email:
+                    type: string
+                    description: Email of the authenticated user.
+                    example: student@example.com
+        '401':
+          description: Unauthorized. The user is not authenticated or the token is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: Unauthorized
+        '404':
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: User not found
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: Internal server error
+  /askllm:
+    post:
+      summary: Sends a question to the LLM and retrieves a hint based on the provided context.
+      operationId: askLLM
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                  description: The question or input to be sent to the LLM.
+                  example: "Dame una pista para esta pregunta"
+                model:
+                  type: string
+                  description: The LLM model to be used for generating the response.
+                  example: "gemini"
+                mode:
+                  type: string
+                  description: The game mode or context for the hint generation.
+                  example: "Banderas"
+                resCorr:
+                  type: string
+                  description: The correct answer for which the hint should be generated.
+                  example: "Argentina"
+      responses:
+        '200':
+          description: Hint generated successfully by the LLM.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  answer:
+                    type: string
+                    description: The hint generated by the LLM.
+                    example: "Este país tuvo el primer ferrocarril de su continente."
+        '400':
+          description: Bad request. Missing required fields or invalid input.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: "API key is missing"
+        '500':
+          description: Internal server error. An error occurred while processing the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: "Internal server error"
+  /questions/{kind}:
+    post:
+      summary: Retrieves a question and its possible answers based on the specified kind.
+      operationId: getQuestionsByKind
+      parameters:
+        - name: kind
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 
+            The type of question to retrieve. Possible values include "city", "flag", "music", "foodS" or "football".
+          example: flag
+      responses:
+        '200':
+          description: Question retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  question:
+                    type: string
+                    description: The question text.
+                    example: "¿Qué país tiene esta bandera?"
+                  image:
+                    type: string
+                    description: URL of the image associated with the question.
+                    example: "https://example.com/flag.jpg"
+                  answer:
+                    type: string
+                    description: The correct answer to the question.
+                    example: "Argentina"
+                  wrongAnswers:
+                    type: array
+                    items:
+                      type: string
+                    description: A list of incorrect answers.
+                    example: ["Brasil", "Chile", "Uruguay"]
+        '400':
+          description: Bad request. The query could not be processed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: "Invalid query parameters."
+        '500':
+          description: Internal server error. An error occurred while processing the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: "Internal server error."
