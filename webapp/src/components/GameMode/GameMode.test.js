@@ -39,12 +39,12 @@ describe('GameMode component', () => {
 
     // Al hacer click en el botón "Ciudades", debería activarse el estilo "contained"
     fireEvent.click(ciudadesButton);
-    expect(ciudadesButton).toHaveClass('MuiButton-contained');
+    expect(ciudadesButton).toHaveClass('selected');
 
     // Al hacer click en "Banderas", se debería desactivar el estilo "contained" en el botón anterior
     fireEvent.click(banderasButton);
-    expect(banderasButton).toHaveClass('MuiButton-contained');
-    expect(ciudadesButton).not.toHaveClass('MuiButton-contained');
+    expect(banderasButton).toHaveClass('selected');
+    expect(ciudadesButton).not.toHaveClass('selected');
   });
 
   it('should change button state when a difficulty is selected', () => {
@@ -59,12 +59,12 @@ describe('GameMode component', () => {
 
     // Al hacer click en "Fácil", debería activarse el estilo "contained"
     fireEvent.click(facilButton);
-    expect(facilButton).toHaveClass('MuiButton-contained');
+    expect(facilButton).toHaveClass('selected');
 
     // Al hacer click en "Media", se debería desactivar el estilo "contained" en el botón anterior
     fireEvent.click(medioButton);
-    expect(medioButton).toHaveClass('MuiButton-contained');
-    expect(facilButton).not.toHaveClass('MuiButton-contained');
+    expect(medioButton).toHaveClass('selected');
+    expect(facilButton).not.toHaveClass('selected');
   });
 
   it('should enable the start game button when both mode and difficulty are selected', () => {
