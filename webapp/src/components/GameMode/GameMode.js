@@ -40,19 +40,7 @@ const GameMode = () => {
         <Grid container spacing={2} justifyContent="center">
           {gameModes.map((mode) => (
             <Grid item key={mode.value}>
-              <Button
-                variant={selectedMode === mode.value ? 'contained' : 'outlined'}
-                onClick={() => setSelectedMode(mode.value)}
-                sx={{
-                  backgroundColor: selectedMode === mode.value ? "#606462" : "transparent",
-                  color: selectedMode === mode.value ? "white" : "#606462",
-                  borderColor: "#606462",
-                  "&:hover": {
-                    backgroundColor: selectedMode === mode.value ? "darkgray" : "rgba(128, 128, 128, 0.1)",
-                    borderColor: "darkgray"
-                  },
-                }}
-              >
+              <Button className={selectedMode === mode.value ? "selected" : "unselected"} onClick={() => setSelectedMode(mode.value)}>
                 {mode.label}
               </Button>
             </Grid>
@@ -65,19 +53,7 @@ const GameMode = () => {
         <Grid container spacing={2} justifyContent="center">
           {difficulties.map((level) => (
             <Grid item key={level}>
-              <Button
-                variant={selectedDifficulty === level ? 'contained' : 'outlined'}
-                onClick={() => setSelectedDifficulty(level)}
-                sx={{
-                  backgroundColor: selectedDifficulty === level ? "#606462" : "transparent",
-                  color: selectedDifficulty === level ? "white" : "#606462",
-                  borderColor: "#606462",
-                  "&:hover": {
-                    backgroundColor: selectedDifficulty === level ? "darkgray" : "rgba(128, 128, 128, 0.1)",
-                    borderColor: "darkgray"
-                  },
-                }}
-              >
+              <Button className={selectedDifficulty === level ? "selected" : "unselected"} onClick={() => setSelectedDifficulty(level)}>
                 {level}
               </Button>
             </Grid>
@@ -85,11 +61,7 @@ const GameMode = () => {
         </Grid>
 
         <Box mt={4}>
-        <Button
-          variant="contained"
-          disabled={!selectedMode || !selectedDifficulty}
-          onClick={startGame} id="button-start"
-        >
+        <Button variant="contained" disabled={!selectedMode || !selectedDifficulty} onClick={startGame} id="button-start">
           Empezar juego
         </Button>
         </Box>
