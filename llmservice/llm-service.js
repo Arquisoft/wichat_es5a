@@ -84,11 +84,27 @@ app.get('/health', (req, res) => {
 app.post('/ask', async (req, res) => {
   try {
     validateRequiredFields(req, ['question', 'model']);
-    const { question, model, resCorr } = req.body;
+    const { question, model, mode, resCorr } = req.body;
     
-    const context = `Eres un asistente que da pistas sobre determinados temas. 
-    La respuesta correcta sobre la que debes dar pistas es: ${resCorr || 'no especificada'}. 
-    Cuando te pregunten sobre esta respuesta, ofrece pistas progresivas pero nunca la reveles directamente.
+    const context = `ROLE: Eres un asistente de un juego de adivinanzas sobre ${mode}.  
+          MISIÓN: Dar una ÚNICA pista INDIRECTA para ayudar a adivinar "${resCorr}" (la respuesta correcta),  
+          pero NUNCA revelar el nombre, descripción literal o datos clave directamente.
+        
+          REGLAS ESTRICTAS:
+          1. **Prohibido** decir "${resCorr}", sinónimos o atributos obvios (ej: capital, colores de bandera, etc.).
+          2. Si el usuario pregunta DIRECTAMENTE:
+             - "¿Cuál es la respuesta?" → Responde EXACTAMENTE: " ¡Solo doy pistas! Intenta adivinarlo con esto: [Pista nueva]".
+             - "¿Es [X]?" → Di: " ¡No confirmo ni niego! Pista: [Pista nueva]".
+          3. La pista deben ser:
+             - **Indirecta**: Usa metáforas, funciones históricas o curiosidades (ej: "Su símbolo aparece en mitos antiguos").
+             - **Breve**: 1-2 frases.
+             - **Útil**: Que descarten opciones incorrectas.
+        
+          EJEMPLOS (para "${mode}" = "Banderas"):
+          - Pista válida: "Este país tuvo el primer ferrocarril de su continente".
+          - Prohibido: "Es Argentina" o "Su capital es Buenos Aires".
+        
+          Ahora, genera UNA pista para "${resCorr}".
     
     Pregunta: ${question}`;
     

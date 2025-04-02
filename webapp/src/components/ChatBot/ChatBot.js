@@ -1,7 +1,7 @@
 import React, { useState, useRef} from 'react';
 import axios from 'axios';
 
-const ChatBot = ({respuestaCorrecta }) => {
+const ChatBot = ({respuestaCorrecta, mode }) => {
     const [messages, setMessages] = useState([
         { text: '¡Hola! Soy tu asistente. ¿En que puedo ayudarte?', sender: 'bot' },
     ]);
@@ -15,6 +15,7 @@ const ChatBot = ({respuestaCorrecta }) => {
             const response = await axios.post('http://localhost:8003/ask', {
                 question: input,
                 model: 'gemini',
+                mode: mode,
                 resCorr: respuestaCorrecta  
             });
     

@@ -117,12 +117,11 @@ const Juego = () => {
     setNumPistas(numPistas + 1);
     try {
       const response = await axios.post('http://localhost:8003/ask', {
-        question: `Eres un asistente experto en este tema ${mode}.Tu tarea es dar una pista sobre ${mode} sin mencionar su nombre directamente. 
-        Asegúrate de que la pista sea clara, creativa y relacionada con aspectos únicos del tema.
-        Instrucciones: No menciones ${resCorr} en la pista. Limita la pista a 1-3 frases.
-        Ahora, da una única pista corta para lo siguiente: ${resCorr}`,
-        model: 'gemini',
-        resCorr: resCorr
+          question: "",
+          model: 'gemini',
+          mode: mode,
+          resCorr: resCorr
+        
       });
       setRespuestaLLM(response.data.answer || "No se recibió una respuesta válida del LLM.");
       console.log("Respuesta del LLM:", response.data.answer || "No se recibió respuesta válida.");
@@ -271,7 +270,10 @@ const handleRestart = () => {
               </Button>
               {mostrarChat && (
                 <Box className="chatbot-container" p={2} border="1px solid #ccc" borderRadius="5px">
-                  <ChatBot />
+                 <ChatBot 
+                    respuestaCorrecta={resCorr} 
+                    mode={mode} 
+                  />
                 </Box>
               )}
             </Stack>
