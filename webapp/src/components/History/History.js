@@ -47,7 +47,7 @@ const History = () => {
   useEffect(() => {
     const getHistory = async () => {
       try {
-        const response = await axios.get(`${apiEndpoint}/getHistory`);
+        const response = await axios.get(`${apiEndpoint}/gethistory`);
         setUserCount(response.data.userCount);
         setQuestionCount(response.data.questionCount);
         setContests(response.data.contests);
