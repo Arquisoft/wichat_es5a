@@ -43,7 +43,7 @@ describe('ChatBot Component', () => {
     
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith(
-        'http://localhost:8003/ask',
+        'http://localhost:8000/askllm',
         {
           question: 'Test question',
           model: 'gemini',
