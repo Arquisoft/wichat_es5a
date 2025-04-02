@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Snackbar, Box } from '@mui/material';
+import { Container, TextField, Snackbar, Box } from '@mui/material';
 import { useNavigate, Navigate, Link } from 'react-router';
 import '../Components.css';
-import LargeButton from '../ReactComponents/LargeButton/LargeButton';
+import LargeButton from '../ReactComponents/LargeButton';
+import CustomH1 from '../ReactComponents/CustomH1';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -44,9 +45,9 @@ const Login = () => {
         <Navigate to="/home" replace />
       ) : (
         <Box sx={{ width: '100%', textAlign: 'center', marginTop: 4 }}>
-          <Typography component="h1" variant="h1" sx={{ color: "#167D7F", marginTop: 2 }}>
+          <CustomH1>
             Inicia sesión
-          </Typography>
+          </CustomH1>
           <TextField
             margin="normal"
             label="Nombre de usuario"

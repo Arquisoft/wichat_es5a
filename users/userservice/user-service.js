@@ -7,6 +7,7 @@ const User = require('./user-model');
 
 const app = express();
 const port = process.env.PORT || 8001;
+const secretKey = 'your-secret-key';
 
 // Middleware to parse JSON in request body
 app.use(express.json());
@@ -41,6 +42,66 @@ async function findOne(username, email) {
   return await User.findOne(query);
 }
 
+// Middleware to authenticate token
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, secretKey, (err, user) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+    req.user = user;
+    next();
+  });
+};
+
+// Route to get user profile using username from token
+app.get('/profile', authenticateToken, async (req, res) => {
+  try {
+    const username = req.user.user.username; // Extract username from token
+    const user = await findOne(username, null); // Use findOne() to get user data
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      username: user.username,
+      email: user.email,
+    });
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+/*app.post('/savegame', async (req, res) => {
+  try {
+    const username = req.body.username // Extract username from token
+    const user = await findOne(username, null); // Use findOne() to get user data
+    const contestId = req.body.id; // Extract id from request body
+
+    console.log(contestId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    user.contests.push(contestId);
+
+    await user.save(); // Save the updated user data
+    
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});*/
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK' });
+});
 
 app.post('/adduser', async (req, res) => {
   try {

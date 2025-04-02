@@ -10,7 +10,8 @@ const YAML = require('yaml')
 const app = express();
 const port = 8000;
 
-const wikiServiceUrl = process.env.WIKI_SERVICE_URL ||'http://localhost:8004';
+const historyServiceUrl = process.env.WIKI_SERVICE_URL || 'http://localhost:8005';
+const wikiServiceUrl = process.env.WIKI_SERVICE_URL || 'http://localhost:8004';
 const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
@@ -25,6 +26,20 @@ app.use(metricsMiddleware);
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
+});
+
+// Health check endpoint
+app.get('/health/:port', async (req, res) => {
+  try {
+    if (req.params.port != 8000) {
+      const healthResponse = await axios.get('http://localhost:', + req.params.port + '/health');
+      res.json(healthResponse.data);
+    } else {
+      res.json({ status: 'OK' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 app.post('/login', async (req, res) => {
@@ -47,6 +62,18 @@ app.post('/adduser', async (req, res) => {
   }
 });
 
+app.get('/profile', async (req, res) => {
+  try {
+    console.log(req.headers)
+    const userResponse = await axios.get(userServiceUrl + '/profile', {
+      headers: req.headers, // Forward all headers, including Authorization
+    });
+    res.json(userResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+
 app.post('/askllm', async (req, res) => {
   try {
     // Forward the add user request to the user service
@@ -57,10 +84,47 @@ app.post('/askllm', async (req, res) => {
   }
 });
 
-app.post('/questions', async (req, res) => {
+app.post('/questions/:kind', async (req, res) => {
   try {
-    const wikiResponse = await axios.post(wikiServiceUrl + '/questions', req.body);
+    const wikiResponse = await axios.post(wikiServiceUrl + '/questions/' + req.params.kind, req.body);
     res.json(wikiResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({error: error.response.data.error });
+  }
+});
+
+app.post('/savegame', async (req, res) => {
+  try {
+    const historyResponse = await axios.post(historyServiceUrl + '/savegame', req.body);
+
+    /*
+    const userResponse = await axios.get(userServiceUrl + '/profile', 
+    {
+      headers: req.headers, // Encabezados, incluyendo Authorization
+    });
+    console.log(userServiceUrl + '/savegame')
+    const userResponse2 = await axios.post(userServiceUrl + '/savegame', { id: historyResponse.data.id, username: userResponse.data.username });
+    */
+
+    res.json(historyResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({error: error.response.data.error });
+  }
+});
+
+app.get('/gethistory', async (req, res) => {
+  try {
+    const historyResponse = await axios.get(historyServiceUrl + '/gethistory');
+    res.json(historyResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({error: error.response.data.error });
+  }
+});
+
+app.get('/getquestions/:id', async (req, res) => {
+  try {
+    const historyResponse = await axios.get(historyServiceUrl + `/getquestions/${req.params.id}`);
+    res.json(historyResponse.data);
   } catch (error) {
     res.status(error.response.status).json({error: error.response.data.error });
   }

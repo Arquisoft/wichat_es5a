@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 
-import { Typography, Box } from '@mui/material';
+import {Box} from '@mui/material';
 import { useNavigate, useLocation } from 'react-router';
-import LargeButton from '../ReactComponents/LargeButton/LargeButton';
+import LargeButton from '../ReactComponents/LargeButton';
+import CustomH1 from '../ReactComponents/CustomH1';
+import NavBar from "../NavBar/NavBar";
 
 const Points = () => {
 
@@ -18,7 +20,7 @@ const Points = () => {
 
   const playAgain = () => {
     // Una vez implementado el servicio de preguntas, se podria inicializar desde aquí la llamada a el servicio
-    navigate('/game'); // Cambiar a la ventana de juego cuanto este hecha
+    navigate('/gamemode'); 
   }
 
   const exit = () => {
@@ -27,12 +29,13 @@ const Points = () => {
 
   return (
     <div>
-          <Typography component="h1" variant="h1" sx={{ color: "#167D7F", marginTop: 2, textAlign: 'center' }}>
+          <NavBar/>
+          <CustomH1>
           {numRespuestasCorrectas}/{numPreguntas} Acertadas
-          </Typography>
-          <Typography component="h1" variant="h2" sx={{ color: "#167D7F", marginTop: 2, textAlign: 'center' }}>
+          </CustomH1>
+          <CustomH1 size="h2">
             ¡Bien hecho!
-          </Typography>
+          </CustomH1>
           <Box display="flex" justifyContent="center" mt={2}>
             <LargeButton onClick={playAgain} >
               Jugar otra vez

@@ -7,6 +7,8 @@
     "react-router-dom": "^7.2.0"
   },
   "scripts": {
-    "start-all": "concurrently \"npm --prefix webapp start\" \"npm --prefix gatewayservice start\" \"npm --prefix users/authservice start\" \"npm --prefix users/userservice start\" \"npm --prefix llmservice start\" \"npm --prefix wikiservice start\""
+    "start-all": "concurrently \"npm --prefix users/authservice start\" \"npm --prefix users/userservice start\" \"npm --prefix llmservice start\" \"npm --prefix wikiservice start\" \"npm --prefix historyservice start\" \"npm --prefix gatewayservice start\" \"npm --prefix webapp start\"",
+    "start-first": "concurrently \"npm --prefix users/authservice start\" \"npm --prefix users/userservice start\" \"npm --prefix llmservice start\" \"npm --prefix wikiservice start\" \"npm --prefix historyservice start\"",
+    "start-second": "concurrently \"npm --prefix gatewayservice start\" \"npm --prefix webapp start\""
   }
 }

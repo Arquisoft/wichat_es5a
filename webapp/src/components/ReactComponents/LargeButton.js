@@ -7,7 +7,7 @@ const LargeButton = ({ onClick, children, width }) => {
     <Button
       onClick={onClick}
       sx={{
-        backgroundColor: "#167D7F",
+        backgroundColor: "#00735C",
         color: "white", '&:hover': { backgroundColor: "#29A0B1" },
         marginTop: 2,
         width: width || '15%'

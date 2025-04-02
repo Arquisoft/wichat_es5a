@@ -19,6 +19,8 @@ jobs:
     - run: npm --prefix wikiservice ci
     - run: npm --prefix historyservice ci
     - run: npm --prefix gatewayservice ci
+    - run: npm --prefix wikiservice ci
+    - run: npm --prefix historyservice ci
     - run: npm --prefix webapp ci
     - run: npm --prefix users/authservice test -- --coverage
     - run: npm --prefix users/userservice test -- --coverage

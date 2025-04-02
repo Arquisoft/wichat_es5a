@@ -11,7 +11,9 @@ import Points from "../components/Points/Points";
 import Profile from "../components/Profile/Profile";
 import Credits from "../components/Credits/Credits";
 import Game from "../components/Game/Game";
-
+import History from "../components/History/History";
+import GameMode from "../components/GameMode/GameMode";
+import ContestHistory from "../components/ContestHistory/ContestHistory";
 
 /*
 Cada vez que se añada una ventana, se debe añadir una dirección a tal ventana.
@@ -69,6 +71,29 @@ const router = createBrowserRouter([
         element:
             <PrivateRoute>
                 <Profile />
+            </PrivateRoute>
+
+    },
+    {
+        path: "/history",
+        element:
+            <PrivateRoute>
+                <History />
+            </PrivateRoute>
+
+    },
+    {
+        path: "/gamemode",
+        element:
+            <PrivateRoute>
+                <GameMode />
+            </PrivateRoute>
+    },
+    {
+        path: "/contest/:id",
+        element:
+            <PrivateRoute>
+                <ContestHistory />
             </PrivateRoute>
 
     },

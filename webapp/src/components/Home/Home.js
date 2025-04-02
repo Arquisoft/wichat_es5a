@@ -1,15 +1,16 @@
 import React from 'react';
-import { Typography, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import { useNavigate } from 'react-router';
-import LargeButton from '../ReactComponents/LargeButton/LargeButton';
+import LargeButton from '../ReactComponents/LargeButton';
+import CustomH1 from '../ReactComponents/CustomH1';
+import NavBar from "../NavBar/NavBar";
 
 const Home = () => {
 
   const navigate = useNavigate();
 
   const enterGame = () => {
-    // Una vez implementado el servicio de preguntas, se podria inicializar desde aquí la llamada a el servicio
-    navigate('/game'); // Cambiar a la ventana de juego cuanto este hecha
+    navigate('/gamemode'); 
   }
 
   const enterProfile = () => {
@@ -20,39 +21,49 @@ const Home = () => {
     navigate('/credits');
   }
 
+  const enterHistory = () => {
+    navigate('/history');
+  }
+
   const logOut = () => {
     localStorage.removeItem('token');
     navigate('/login');
   }
 
   return (
-    <div>
-      <Typography component="h1" variant="h3" sx={{ color: "#167D7F", marginTop: 2, textAlign: 'center' }}>
-        Bienvenido a
-      </Typography>
-      <Typography component="h1" variant="h1" sx={{ color: "#167D7F", marginTop: 2, textAlign: 'center' }}>
+    <div id="body-container">
+      <NavBar/>
+      <CustomH1>
         WICHAT
-      </Typography>
+      </CustomH1>
       <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
-        <Typography component="h1" variant="h6" sx={{ color: "#167D7F", marginTop: 2, textAlign: 'center' }}>
+        <CustomH1 size="h6">
           ¿Quieres echarte una partida?
-        </Typography>
+        </CustomH1>
         <LargeButton onClick={enterGame}>
           Jugar
         </LargeButton>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
-      <Typography component="h1" variant="h6" sx={{ color: "#167D7F", marginTop: 2, textAlign: 'center' }}>
+      <CustomH1 size="h6">
           ¡Edita tu perfil o consulta tus datos históricos!
-        </Typography>
+        </CustomH1>
         <LargeButton onClick={enterProfile}>
           Perfil
         </LargeButton>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
-      <Typography component="h1" variant="h6" sx={{ color: "#167D7F", marginTop: 2, textAlign: 'center' }}>
+      <CustomH1 size="h6">
+          ¡Consulta datos de otros usuarios y preguntas generadas!
+        </CustomH1>
+        <LargeButton onClick={enterHistory}>
+          Histórico
+        </LargeButton>
+      </Box>
+      <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
+      <CustomH1 size="h6">
           ¡Apoya a los desarrolladores!
-        </Typography>
+        </CustomH1>
         <LargeButton onClick={enterCredits}>
           Créditos
         </LargeButton>

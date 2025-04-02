@@ -1,6 +1,11 @@
 body {
-    background-color: #DDFFE7;
+    background: linear-gradient(to bottom, #98d7c2, #ddffe7);
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
-
-
+#body-container {
+    margin-bottom: 4em;
+}

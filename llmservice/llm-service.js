@@ -18,22 +18,22 @@ const llmConfigs = {
       contents: [{ parts: [{ text: question }] }]
     }),
     transformResponse: (response) => response.data.candidates[0]?.content?.parts[0]?.text
-  },
-  empathy: {
-    url: () => 'https://empathyai.prod.empathy.co/v1/chat/completions',
-    transformRequest: (question) => ({
-      model: "qwen/Qwen2.5-Coder-7B-Instruct",
-      messages: [
-        { role: "system", content: "You are a helpful assistant." },
-        { role: "user", content: question }
-      ]
-    }),
-    transformResponse: (response) => response.data.choices[0]?.message?.content,
-    headers: (apiKey) => ({
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
-    })
   }
+  // empathy: {
+  //   url: () => 'https://empathyai.prod.empathy.co/v1/chat/completions',
+  //   transformRequest: (question) => ({
+  //     model: "qwen/Qwen2.5-Coder-7B-Instruct",
+  //     messages: [
+  //       { role: "system", content: "You are a helpful assistant." },
+  //       { role: "user", content: question }
+  //     ]
+  //   }),
+  //   transformResponse: (response) => response.data.choices[0]?.message?.content,
+  //   headers: (apiKey) => ({
+  //     Authorization: `Bearer ${apiKey}`,
+  //     'Content-Type': 'application/json'
+  //   })
+  // }
 };
 
 // Function to validate required fields in the request body
@@ -77,17 +77,41 @@ async function sendQuestionToLLM(question, apiKey, model = 'gemini') {
   }
 }
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK' });
+});
+
 app.post('/ask', async (req, res) => {
   try {
-    // Check if required fields are present in the request body
     validateRequiredFields(req, ['question', 'model']);
-
-    const { question, model } = req.body;
-    //load the api key from an enviroment variable
+    const { question, model, mode, resCorr } = req.body;
+    
+    const context = `ROLE: Eres un asistente de un juego de adivinanzas sobre ${mode}.  
+          MISIÓN: Dar una ÚNICA pista INDIRECTA para ayudar a adivinar "${resCorr}" (la respuesta correcta),  
+          pero NUNCA revelar el nombre, descripción literal o datos clave directamente.
+        
+          REGLAS ESTRICTAS:
+          1. **Prohibido** decir "${resCorr}", sinónimos o atributos obvios (ej: capital, colores de bandera, etc.).
+          2. Si el usuario pregunta DIRECTAMENTE:
+             - "¿Cuál es la respuesta?" → Responde EXACTAMENTE: " ¡Solo doy pistas! Intenta adivinarlo con esto: [Pista nueva]".
+             - "¿Es [X]?" → Di: " ¡No confirmo ni niego! Pista: [Pista nueva]".
+          3. La pista deben ser:
+             - **Indirecta**: Usa metáforas, funciones históricas o curiosidades (ej: "Su símbolo aparece en mitos antiguos").
+             - **Breve**: 1-2 frases.
+             - **Útil**: Que descarten opciones incorrectas.
+        
+          EJEMPLOS (para "${mode}" = "Banderas"):
+          - Pista válida: "Este país tuvo el primer ferrocarril de su continente".
+          - Prohibido: "Es Argentina" o "Su capital es Buenos Aires".
+        
+          Ahora, genera UNA pista para "${resCorr}".
+    
+    Pregunta: ${question}`;
+    
     const apiKey = process.env.LLM_API_KEY;
-    console.log('API Key in /ask route:', apiKey); // Agrega este log para verificar la API key
     if(!apiKey) return res.status(400).json({error: 'API key is missing'});
-    const answer = await sendQuestionToLLM(question, apiKey, model);
+    
+    const answer = await sendQuestionToLLM(context, apiKey, model);
     res.json({ answer });
 
   } catch (error) {

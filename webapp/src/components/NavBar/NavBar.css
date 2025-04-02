@@ -1,0 +1,20 @@
+#appbar {
+    background-color: #00493A;
+    color: white;
+}
+
+#wichat {
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#profile, #credits, #history, #logout {
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#navbar {
+    margin-bottom: 8em;
+}

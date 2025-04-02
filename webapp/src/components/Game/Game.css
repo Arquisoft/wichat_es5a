@@ -1,103 +1,150 @@
-/* Estilo para centrar y hacer las imágenes responsivas */
 img {
-    display: block;
-    max-width: 90%;  /* Se ajusta al 90% del contenedor para evitar desbordamientos */
-    height: auto;    /* Mantiene la relación de aspecto */
-    margin: 0 auto;  /* Centra la imagen horizontalmente */
-  }
-  
-  /* Contenedor para la imagen para asegurar que se adapta bien */
-  .image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 100vw; /* Evita que la imagen se salga del viewport */
-    overflow: hidden;
-    padding: 2vw;
-  }
-  
-  /* Media Queries para adaptar tamaños en diferentes dispositivos */
-  @media (max-width: 768px) {
-    img {
-      max-width: 95%; /* Más ancho en pantallas pequeñas */
-    }
-  }
-  
-  @media (max-width: 480px) {
-    img {
-      max-width: 100%; /* Usa todo el ancho disponible en móviles */
-    }
-  }
-  
-  /* Estilo para los botones de respuesta */
-  .button-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Dos columnas */
-    gap: 2vw; /* Espaciado entre botones */
-    justify-content: center;
-    align-items: center;
-    margin-top: 3vh;
-  }
-  
-  .button {
-    padding: 2vh 3vw; /* Espaciado relativo */
-    font-size: 2.2vh; /* Tamaño de fuente relativo */
-    font-weight: bold;
-    text-align: center;
-    border-radius: 5vw; /* Bordes redondeados relativos */
-    border: 0.5vw solid #ccc; /* Borde relativo */
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .button:hover {
-    transform: scale(1.05);
-  }
+  display: block;
+  max-width: 80%;
+  max-height: 40vh;
+  object-fit: contain;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 0.8vw;
+  box-shadow: 0 0.3vw 0.8vw rgba(0, 0, 0, 0.15);
+}
 
-  #botonFinalizar {
-    position: fixed;
-    bottom: 2vh; /* Margen inferior */
-    right: 2vw; /* Margen derecho */
-    padding: 2vh 3vw;
-    font-size: 2.2vh;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 5vw;
-    border: 0.5vw solid #ccc;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background-color: #0056b3;
-    color: white;
-  }
-  
-  #botonFinalizar:hover {
-    transform: scale(1.05);
-    background-color: #004494;
-  }
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 80vw;
+  max-height: 50vh;
+  overflow: hidden;
+  padding: 1vw;
+  margin-bottom: 0.5vh;
+}
 
-  /* Estilo para la numeración de la pregunta */
-.numPregunta {
-    font-size: 4vh; /* Tamaño grande */
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 1vh;
-    color: #0056b3; /* Azul oscuro */
+@media (min-width: 1200px) {
+  img {
+    max-width: 60%;
+    max-height: 30vh;
   }
-  
-  /* Estilo para el temporizador */
-  .temporizador-container {
-    font-size: 3vh; /* Tamaño más grande */
-    font-weight: bold;
-    text-align: center;
-    color: #D9534F; /* Rojo para destacar el tiempo */
-    margin-bottom: 2vh;
-  }
-  
-  /* Estilo para la pregunta */
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.5vh;
+}
+
+.button-container > div {
+  flex-basis: 50%;
+  box-sizing: border-box;
+  padding: 0.3vw;
+}
+
+.button-container button {
+  width: 100%;
+  background-color: #b0e0e6;
+  padding: 0.8vh 1.5vw;
+  font-size: 1.8vh;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 1.5vw;
+  border: 0.2vw solid #555;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 0.3vw 0.8vw rgba(0, 0, 0, 0.15);
+  font-family: 'Roboto', sans-serif;
+}
+
+.button-container button:hover {
+  transform: scale(1.05);
+  background-color: #87ceeb;
+}
+
+#botonSiguiente {
+  background-color: #606462;
+  padding: 2vh 3vw;
+  font-size: 1.8vh;
+  font-weight: 600;
+  border-radius: 2.5vw;
+  border: none;
+  color: white;
+  box-shadow: 0 0.15vw 0.4vw rgba(0, 0, 0, 0.1);
+}
+
+#botonSiguiente:hover,
+#botonPista:hover {
+  background-color: black;
+  font-size: 2vh;
+}
+
+#botonPista {
+  background-color: #606462;
+  padding: 2vh 3vw;
+  font-size: 1.8vh;
+  font-weight: 600;
+  border-radius: 2.5vw;
+  border: none;
+  color: white;
+}
+
+.pregunta-texto-container {
+  background-color: #00493a;
+  padding: 0.5vh;
+  border-radius: 0.8vw;
+  margin-bottom: 0.5vh;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 6vh;
+}
+
+.pregunta-texto {
+  font-size: 1.8vw;
+  font-weight: 500;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  text-shadow: 0.08vw 0.08vw 0.15vw rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.08vw;
+}
+
+.respuesta-llm-container,
+.pregunta-info-container,
+.temporizador-info-container,
+.puntuacion-info-container {
+  font-size: 2.5vh;
+  font-weight: 500;
+  background-color: #00735c;
+  padding: 1.8vh;
+  border-radius: 1vw;
+  box-shadow: 0 0.3vw 0.8vw rgba(0, 0, 0, 0.15);
+  margin-bottom: 0.8vh;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  color: white;
+}
+
+.temporizador {
+  width: 5vh;
+  height: 5vh;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  font-weight: bold;
+  color: black;
+  border: 0.3vw solid #00493a;
+  margin: 0 1.5em;
+}
+
+.respuesta-llm-container {
+  font-size: 1em;
+}
+
+@media (min-width: 1200px) {
   .pregunta-texto {
-    font-size: 2.8vh;
-    font-weight: bold;
-    text-align: center;
-    color: black;
-    margin-bottom: 2vh;
+    font-size: 1.3vw;
   }
+}

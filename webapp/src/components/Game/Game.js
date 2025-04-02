@@ -1,4 +1,4 @@
-/*LA MAYOR PARTE DE ESTE CÓDIGO SE HA SACADO DEL SIGUIENTE ENLACE:
+/*EL ESQUELETO DE ESTE CÓDIGO SE HA SACADO DEL SIGUIENTE ENLACE:
 https://github.com/Arquisoft/wiq_es05a/blob/master/webapp/src/components/Pages/Juego.js
 CRÉDITOS AL EQUIPO DE DESARROLLO DE WIQ_ES05A
 SUS MIEMBROS SE PUEDEN ENCONTRAR EN EL SIGUIENTE ENLACE:
@@ -6,11 +6,16 @@ https://github.com/Arquisoft/wiq_es05a/blob/master/README.md
 */
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Container } from '@mui/material';
+import { Container, Grid, Box, Stack, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
+import ChatBot  from '../ChatBot/ChatBot';
+import NavBar from "../NavBar/NavBar";
 import './Game.css';
+import { useLocation } from 'react-router';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
 
 const Juego = () => {
   const navigate = useNavigate();
@@ -27,12 +32,21 @@ const Juego = () => {
   const [pausarTemporizador, setPausarTemporizador] = useState(false)
   const [restartTemporizador, setRestartTemporizador] = useState(false)
   const [firstRender, setFirstRender] = useState(false);
-  const[ready, setReady] = useState(false)
   const [numPreguntaActual, setNumPreguntaActual] = useState(0)
   const [arPreg] = useState([])
   const [numRespuestasCorrectas, setNumRespuestasCorrectas] = useState(0)
-  const [numRespuestasIncorrectas, setNumRespuestasIncorrectas] = useState(0)
   const [numPreguntas, setNumPreguntas] = useState(0)
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingComplete, setLoadingComplete] = useState(false);
+  const [points] = useState(0)
+  const [tiempoRestante, setTiempoRestante] = useState(20); // Tiempo inicial del temporizador
+  const [arTiempo] = useState([]); // Array para almacenar el tiempo restante
+  const [numPistas, setNumPistas] = useState(0); // Número de pistas solicitadas
+  const [arPistas] = useState([]); // Array para almacenar las pistas solicitadas
+  const [arCorrect] = useState([]); // Array para almacenar las respuestas correctas
+  const [mostrarChat, setMostrarChat] = useState(false);
+  const location = useLocation();
+  const { mode = 'flag', difficulty = 'Fácil' } = location.state || {};
 
     // Estados para el LLM
     const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
@@ -53,45 +67,61 @@ const Juego = () => {
     const crearPreguntas = useCallback(async (numPreguntas) => {
       setPausarTemporizador(true);
       setNumPreguntas(numPreguntas);
-      while (numPreguntas > 0) {
-        try {
-          const response = await axios.post(`${apiEndpoint}/questions`);
+      setLoadingProgress(0);
+      setLoadingComplete(false);
+      if (!mode) {
+        console.error('El modo de juego no está definido, usando valor por defecto.');
+      }
+      try{
+        const total = numPreguntas;
+        let current = 0;
+
+        while (numPreguntas > 0) {
+          const response = await axios.post(`${apiEndpoint}/questions/${mode}`); // A elegir entre city, flag, album o football
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
+          const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
+
           arPreg.push({
             id: numPreguntas,
             pregunta: response.data.question,
             resCorr: response.data.answer,
-            resFalse: respuestas,
+            resFalse: respuestasAleatorias,
             imagen: response.data.image,
           });
-        } catch (error) {
+          current++;
+          const progress = Math.round(100 * Math.log10(1 + (current / total) * 9)); // escala logarítmica en base 10
+          setLoadingProgress(progress > loadingProgress ? progress : loadingProgress); // solo actualiza si es mayor
+          numPreguntas--;
+        }
+      }catch (error) {
           console.error('Error al crear las preguntas:', error);
         }
-        numPreguntas--;
-      }
-      setReady(true);
+      setLoadingComplete(true);
       setPausarTemporizador(false);
       updateGame();
-      setNumPreguntaActual((prev) => prev + 1);
-    }, [arPreg, apiEndpoint, updateGame]);
+      setNumPreguntaActual(1);
+    }, [arPreg, apiEndpoint, updateGame, loadingProgress, mode]);
     
-    //Primer render para un comportamiento diferente
     useEffect(() => {
       if (!firstRender) {
         setFirstRender(true);
-        crearPreguntas(2);
+        let num = 5; // default (Fácil)
+        if (difficulty === 'Media') num = 10;
+        else if (difficulty === 'Difícil') num = 20;
+        crearPreguntas(num);
       }
-    }, [firstRender, crearPreguntas]);   
+    }, [firstRender, crearPreguntas, difficulty,mode]);
 
   // Función para enviar una solicitud al LLM y obtener una pista
   const enviarRespuestaALlm = async () => {
+    setNumPistas(numPistas + 1);
     try {
       const response = await axios.post('http://localhost:8003/ask', {
-        question: `Eres un asistente experto en geografía y cultura. Tu tarea es dar una pista sobre una ciudad específica sin mencionar su nombre directamente. 
-                   Asegúrate de que la pista sea clara, creativa y relacionada con aspectos únicos de la ciudad, como su historia, cultura, geografía, monumentos famosos o eventos importantes.
-                   Instrucciones: No menciones el nombre de la ciudad en la pista. Incluye aspectos culturales, históricos, geográficos o emblemáticos de la ciudad. Limita la pista a 3-5 frases.
-                   Ahora, da una única pista corta para la siguiente ciudad: ${resCorr}`,
-        model: 'gemini'
+          question: "",
+          model: 'gemini',
+          mode: mode,
+          resCorr: resCorr
+        
       });
       setRespuestaLLM(response.data.answer || "No se recibió una respuesta válida del LLM.");
       console.log("Respuesta del LLM:", response.data.answer || "No se recibió respuesta válida.");
@@ -110,10 +140,10 @@ const Juego = () => {
     setPausarTemporizador(true);
     if(respuesta === resCorr){
       //Aumenta en 1 en las estadisticas de juegos ganado
+      arCorrect.push(true);
       setNumRespuestasCorrectas(numRespuestasCorrectas+1);
-    }
-    else{
-      setNumRespuestasIncorrectas(numRespuestasIncorrectas + 1);
+    } else {
+      arCorrect.push(false);
     }
     cambiarColorBotones(respuesta, true);
   };
@@ -124,10 +154,8 @@ const Juego = () => {
     * False si se quiere mostrar color de todos (acabar el tiempo)
     */
   const cambiarColorBotones = (respuesta, bool) => { 
-    //Obtenemos el contenedor de botones
-    const buttonContainer = document.querySelector('.button-container');
-    //Obtenemos los botones dentro del dicho contenedor
-    const buttons = buttonContainer.querySelectorAll('.button');
+    //Obtenemos los botones del contenedor de botones
+    const buttons = document.querySelectorAll('.button-container button');
     //Recorremos cada boton
     buttons.forEach((button) => {
       //Desactivamos TODOS los botones
@@ -141,7 +169,6 @@ const Juego = () => {
       //Ponemos el boton de la marcada en rojo si era incorrecta
         cambiarColorUno(respuesta, button);
       }else {
-        setNumRespuestasIncorrectas(numRespuestasIncorrectas + 1);
         cambiarColorTodos(button);
       }return button; //esta linea evita un warning de sonar cloud, sin uso
     });
@@ -150,7 +177,7 @@ const Juego = () => {
 
 //Función que cambia el color de un solo boton (acierto)
 function cambiarColorUno(respuesta, button){
-  if(button.textContent.trim()!==respuesta.trim()){
+  if(button.textContent.trim() === respuesta.trim()){
     if((button.textContent.trim() !== resCorr)) {
       button.style.backgroundColor = "#E14E4E";
       button.style.border = "6px solid #E14E4E";
@@ -165,19 +192,18 @@ function cambiarColorTodos(button){
     button.style.border = "6px solid #05B92B";
   } else{
     button.style.backgroundColor = "#E14E4E";
-        button.style.border = "6px solid #E14E4E";
+    button.style.border = "6px solid #E14E4E";
   }
 } 
 
 //Función que devuelve el color original a los botones (siguiente)
 async function descolorearTodos(){
-  const buttonContainer = document.querySelector('.button-container');
-  const buttons = buttonContainer.querySelectorAll('.button');
+  const buttons = document.querySelectorAll('.button-container button');
   buttons.forEach((button) => {
-    //Desactivamos TODOS los botones
-    button.disabled=false; 
-    //Ponemos el boton de la respuesta correcta en verde
-      button.style.backgroundColor = "#FFFFFF";
+      //Activamos TODOS los botones
+      button.disabled=false; 
+      button.style.backgroundColor = '';
+      button.style.border = '';
     })
 } 
 
@@ -189,66 +215,122 @@ async function descolorearTodos(){
 //Funcion que se llama al hacer click en el boton Siguiente
 const clickSiguiente = () => {
   if(numPreguntaActual===numPreguntas){
+    arTiempo.push(tiempoRestante);
+    arPistas.push(numPistas);
+    axios.post(`${apiEndpoint}/savegame`, {mode, difficulty, arCorrect, points, arPreg, arTiempo, arPistas}); // Llama al history service para guardar el concurso y las preguntas en BBDD
     navigate('/points', {
-      state: { 
+      state: {
         numRespuestasCorrectas: numRespuestasCorrectas,
         numPreguntas: numPreguntas
       }
     });
-    
-    return
+    return;
   }
-  descolorearTodos()
+
+  setTimeout(() => descolorearTodos(), 0);
   setNumPreguntaActual(numPreguntaActual+1)
+  arTiempo.push(tiempoRestante);
+  arPistas.push(numPistas);
+  setTiempoRestante(20);
+  setNumPistas(0);
   updateGame();
-  //Recargar a 20 el temporizador
   setRestartTemporizador(true);
   setPausarTemporizador(false);
-}
+  setMostrarChat(false);
+  setRespuestaLLM("");
+};
 
 const handleRestart = () => {
   setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
 };
   return (
-    <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
-      {ready ? <>
-        <div className="numPregunta"> <p>Pregunta: {numPreguntaActual} / {numPreguntas} </p> </div>
-        <div className="temporizador-container">
-          <p>Tiempo restante: <Temporizador id="temp" restart={restartTemporizador} tiempoInicial={20} tiempoAcabado={cambiarColorBotones} pausa={pausarTemporizador} handleRestart={handleRestart} /></p>
-        </div>
-        <h2 className="pregunta-texto"> {pregunta} </h2>
-        {imagenPregunta && (
-          <div className="image-container">
-            <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
-          </div>
-        )}
-        <button
-          onClick={enviarRespuestaALlm}
-          className="button"
-          style={{ marginBottom: '10px', backgroundColor: '#FFD700', color: 'black' }}
-        >
-          PISTA
-        </button>
-        {respuestaLLM && (
-          <div style={{
-            marginTop: '10px',
-            padding: '10px',
-            backgroundColor: '#f0f0f0',
-            border: '1px solid #ccc',
-            borderRadius: '5px'
-          }}>
-            <strong>Respuesta del LLM:</strong> {respuestaLLM}
-          </div>
-        )}
-        <div className="button-container">
-          {resFalse.map((respuesta, index) => (
-            <button key={index} id={`boton${index + 1}`} className="button" onClick={() => botonRespuesta(respuesta)}>{respuesta}</button>
-          ))}
-        </div>
-        <button id="botonFinalizar" className="button" onClick={() => clickSiguiente()}> Finalizar</button>
-      </>
-        : <h2> CARGANDO... </h2>}
-    </Container>
+    <>
+      <NavBar />
+      {!loadingComplete && (
+        <Box sx={{ width: '80%', margin: 'auto', marginTop: 4 }}>
+          <Typography variant="h6">Cargando preguntas...</Typography>
+          <LinearProgress variant="determinate" value={loadingProgress} />
+        </Box>
+      )}
+      <Container component="main" maxWidth="xl" sx={{ marginTop: 4 }}>
+        <Grid container spacing={2}>
+          {/* Columna izquierda */}
+          <Grid item xs={12} md={3}>
+            <Stack spacing={2}>
+              <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm} disabled={!loadingComplete}>
+                ¿Necesitas una pista?
+              </Button>
+              {respuestaLLM && (
+                <Box className="respuesta-llm-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                  <strong>Respuesta del LLM:</strong> {respuestaLLM}
+                </Box>
+              )}
+             <Button id="botonChat" variant="contained" onClick={() => setMostrarChat(!mostrarChat)}>
+                {mostrarChat ? 'Cerrar Chat' : 'Hablar con el Chat'}
+              </Button>
+              {mostrarChat && (
+                <Box className="chatbot-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                 <ChatBot 
+                    respuestaCorrecta={resCorr} 
+                    mode={mode} 
+                  />
+                </Box>
+              )}
+            </Stack>
+          </Grid>
+
+          {/* Columna central */}
+          <Grid item xs={12} md={6}>
+            <Stack spacing={2}>
+              <Box className="pregunta-texto-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                <h2 className="pregunta-texto">{pregunta}</h2>
+              </Box>
+              {imagenPregunta && (
+                <Box className="image-container">
+                  <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
+                </Box>
+              )}
+              <Grid container spacing={2} className="button-container">
+                {resFalse.map((respuesta, index) => (
+                  <Grid item xs={6} key={index}>
+                    <Button variant="contained" onClick={() => botonRespuesta(respuesta)}>
+                      {respuesta}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+            </Stack>
+          </Grid>
+
+          {/* Columna derecha: Información del Juego */}
+          <Grid item xs={12} md={3}>
+            <Stack spacing={2}>
+              <Box className="pregunta-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                Pregunta: {numPreguntaActual} / {numPreguntas}
+              </Box>
+              <Box className="temporizador-info-container" display="flex" alignItems="center">
+                <p>Tiempo restante</p>
+                <Temporizador
+                  id="temp"
+                  restart={restartTemporizador}
+                  tiempoInicial={20}
+                  tiempoAcabado={cambiarColorBotones}
+                  pausa={pausarTemporizador}
+                  handleRestart={handleRestart}
+                  onTimeUpdate={(t) => setTiempoRestante(t)}
+                />
+              </Box>
+              <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                Puntuación: {numRespuestasCorrectas * 100}
+              </Box>
+              <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente} disabled={!loadingComplete}>
+                Siguiente pregunta
+              </Button>
+            </Stack>
+          </Grid>
+        </Grid>
+      </Container>
+    </>
   );
 };
 
