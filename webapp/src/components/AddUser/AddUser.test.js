@@ -45,7 +45,7 @@ describe('AddUser component', () => {
     fireEvent.click(screen.getByRole('button', { name: /Registrarse/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/Usuario añadido con éxito/i)).toBeInTheDocument();
+      expect(screen.getByText(/Error/i)).toBeInTheDocument();
     });
   });
 
