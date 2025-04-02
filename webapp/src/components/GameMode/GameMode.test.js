@@ -16,9 +16,8 @@ describe('GameMode component', () => {
     expect(screen.getByText(/Selecciona el modo de juego/i)).toBeInTheDocument();
     expect(screen.getByText(/Ciudades/i)).toBeInTheDocument();
     expect(screen.getByText(/Banderas/i)).toBeInTheDocument();
-    expect(screen.getByText(/Música/i)).toBeInTheDocument();
+    expect(screen.getByText(/Álbumes/i)).toBeInTheDocument();
     expect(screen.getByText(/Fútbol/i)).toBeInTheDocument();
-    expect(screen.getByText(/Comida/i)).toBeInTheDocument();
 
     // Verificar los botones de dificultad
     expect(screen.getByText(/Selecciona la dificultad/i)).toBeInTheDocument();
