@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
+import HistoryText from '../ReactComponents/HistoryText';
 import NavBar from "../NavBar/NavBar";
 
 const History = () => {
@@ -28,6 +29,19 @@ const History = () => {
   const enterContest = (id) => {
     navigate('/contest/' + id);
   }
+
+  // Función para formatear la fecha
+  const formatDate = (isoDate) => {
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, '0'); // Día con dos dígitos
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Mes con dos dígitos (0-indexado)
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0'); // Hora con dos dígitos
+    const minutes = String(date.getMinutes()).padStart(2, '0'); // Minutos con dos dígitos
+    const seconds = String(date.getSeconds()).padStart(2, '0'); // Segundos con dos dígitos
+
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  };
 
   // Se ejecuta al cargar el componente
   useEffect(() => {
@@ -107,7 +121,7 @@ const History = () => {
         {contests.map((contest, index) => (
           <Container
             sx={{
-              backgroundColor: 'lightgray',
+              backgroundColor: "#00493A",
               marginTop: 2,
               padding: 2,
               display: 'flex',
@@ -115,14 +129,32 @@ const History = () => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <CustomH1 size="h6">
-              {`Mode: ${contest.mode} - Type of questions: ${contest.typeOfQuestions} - Right answers: ${numCorrect[index]} - Points: ${contest.points} - Total Time: ${totalTime[index]} - Clues used: ${totalClues[index]} - Date: ${contest.date}`}
-            </CustomH1>
+            <HistoryText size="h6">
+              {`Dificultad: ${contest.difficulty}`}
+            </HistoryText>
+            <HistoryText size="h6">
+              {`Modo: ${contest.mode}`}
+            </HistoryText>
+            <HistoryText size="h6">
+              {`Preguntas acertadas: ${numCorrect[index]}`}
+            </HistoryText>
+            <HistoryText size="h6">
+              {`Puntos: ${contest.points}`}
+            </HistoryText>
+            <HistoryText size="h6">
+              {`Tiempo total: ${totalTime[index]} segundos`}
+            </HistoryText>
+            <HistoryText size="h6">
+              {`Número de pistas usadas: ${totalClues[index]} segundos`}
+            </HistoryText>
+            <HistoryText size="h6">
+              {`Fecha del concurso: ${formatDate(contest.date)}`}
+            </HistoryText>
             <LargeButton
               key={contest._id || index} // Usa el ID del contest como clave si está disponible
               onClick={() => enterContest(contest._id)} // Acción al hacer clic
             >
-              {`Detalles Contest ${index + 1}`}
+              {`Detalles`}
             </LargeButton>
           </Container>
         ))}

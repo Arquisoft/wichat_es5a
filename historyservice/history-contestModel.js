@@ -3,10 +3,10 @@ const { create } = require('./history-questionModel');
 
 const contestSchema = new mongoose.Schema({
     
-    mode: {
+    difficulty: {
         type: String
     },
-    typeOfQuestions: {
+    mode: {
         type: String
     },
     rightAnswers: [{type: Number}],

@@ -36,8 +36,8 @@ app.get('/health', (req, res) => {
             idPreguntas.push(newQuestion._id); // Agrega el ID al array
         }
         let contestData = {
-            mode: "mode",
-            typeOfQuestions: "typeOfQuestions",
+            difficulty: req.body.difficulty,
+            mode: req.body.mode,
             rightAnswers: req.body.arCorrect,
             points: req.body.points,
             preguntas: idPreguntas,

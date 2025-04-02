@@ -205,7 +205,7 @@ const clickSiguiente = () => {
   if(numPreguntaActual===numPreguntas){
     arTiempo.push(tiempoRestante);
     arPistas.push(numPistas);
-    axios.post(`${apiEndpoint}/savegame`, {arCorrect, points, arPreg, arTiempo, arPistas}); // Llama al history service para guardar el concurso y las preguntas en BBDD
+    axios.post(`${apiEndpoint}/savegame`, {mode, difficulty, arCorrect, points, arPreg, arTiempo, arPistas}); // Llama al history service para guardar el concurso y las preguntas en BBDD
     navigate('/points', {
       state: {
         numRespuestasCorrectas: numRespuestasCorrectas,
