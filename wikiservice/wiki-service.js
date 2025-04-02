@@ -102,7 +102,9 @@ app.post("/questions/:kind", async (req, res) => {
       answer: answer,
       wrongAnswers: wrongAnswers
     }
-    res.send(queryResults); 
+    const newQuestion = new Question(queryResults);
+    await newQuestion.save();
+    res.send(queryResults);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send(error); // Mostrar el error al usuario
