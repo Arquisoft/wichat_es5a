@@ -3,10 +3,9 @@ import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
-import Container from '@mui/material/Container';
 import NavBar from "../NavBar/NavBar";
-import Typography from '@mui/material/Typography';
 import axios from 'axios';
+import { Container, Typography, Grid, Card, CardContent } from '@mui/material';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -66,24 +65,32 @@ const Profile = () => {
   return (
     <div>
       <NavBar />
-      <Container
-        component="main"
-        sx={{
-          marginTop: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <CustomH1>Perfil de Usuario</CustomH1> {/* Cambia el texto */}
+      <Container component="main" sx={{ marginTop: 4 }}>
+        <CustomH1>Perfil de Usuario</CustomH1>
         {profileData && (
-          <div>
-            <Typography>Username: {profileData.username}</Typography>
-            <Typography>Email: {profileData.email}</Typography>
-          </div>
+          <Grid container justifyContent="center">
+            <Grid item xs={12} sm={8} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Información del Perfil
+                  </Typography>
+                  <Typography>
+                    <strong>Usuario:</strong> {profileData.username}
+                  </Typography>
+                  <Typography>
+                    <strong>Email:</strong> {profileData.email}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
         )}
-        <LargeButton onClick={exitProfile}>Salir</LargeButton>
+        <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
+          <Grid item xs={12} sm={8} md={6}>
+            <LargeButton onClick={exitProfile}>Salir</LargeButton>
+          </Grid>
+        </Grid>
       </Container>
     </div>
   );
