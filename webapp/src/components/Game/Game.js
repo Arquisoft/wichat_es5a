@@ -44,7 +44,7 @@ const Juego = () => {
   const [numPistas, setNumPistas] = useState(0); // Número de pistas solicitadas
   const [arPistas] = useState([]); // Array para almacenar las pistas solicitadas
   const [arCorrect] = useState([]); // Array para almacenar las respuestas correctas
-
+  const [mostrarChat, setMostrarChat] = useState(false);
   const location = useLocation();
   const { mode = 'flag', difficulty = 'Fácil' } = location.state || {};
 
@@ -117,10 +117,10 @@ const Juego = () => {
     setNumPistas(numPistas + 1);
     try {
       const response = await axios.post('http://localhost:8003/ask', {
-        question: `Eres un asistente experto en geografía y cultura. Tu tarea es dar una pista sobre una ciudad específica sin mencionar su nombre directamente. 
-                   Asegúrate de que la pista sea clara, creativa y relacionada con aspectos únicos de la ciudad, como su historia, cultura, geografía, monumentos famosos o eventos importantes.
-                   Instrucciones: No menciones el nombre de la ciudad en la pista. Incluye aspectos culturales, históricos, geográficos o emblemáticos de la ciudad. Limita la pista a 3-5 frases.
-                   Ahora, da una única pista corta para la siguiente ciudad: ${resCorr}`,
+        question: `Eres un asistente experto en este tema ${mode}.Tu tarea es dar una pista sobre ${mode} sin mencionar su nombre directamente. 
+        Asegúrate de que la pista sea clara, creativa y relacionada con aspectos únicos del tema.
+        Instrucciones: No menciones ${resCorr} en la pista. Limita la pista a 1-3 frases.
+        Ahora, da una única pista corta para lo siguiente: ${resCorr}`,
         model: 'gemini',
         resCorr: resCorr
       });
@@ -237,6 +237,8 @@ const clickSiguiente = () => {
   updateGame();
   setRestartTemporizador(true);
   setPausarTemporizador(false);
+  setMostrarChat(false);
+  setRespuestaLLM("");
 };
 
 const handleRestart = () => {
@@ -262,7 +264,14 @@ const handleRestart = () => {
               {respuestaLLM && (
                 <Box className="respuesta-llm-container" p={2} border="1px solid #ccc" borderRadius="5px">
                   <strong>Respuesta del LLM:</strong> {respuestaLLM}
-                  <ChatBot respuestaCorrecta={resCorr} />
+                </Box>
+              )}
+             <Button id="botonChat" variant="contained" onClick={() => setMostrarChat(!mostrarChat)}>
+                {mostrarChat ? 'Cerrar Chat' : 'Hablar con el Chat'}
+              </Button>
+              {mostrarChat && (
+                <Box className="chatbot-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                  <ChatBot />
                 </Box>
               )}
             </Stack>

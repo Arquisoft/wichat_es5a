@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Button, Typography, Grid } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import { useNavigate } from 'react-router';
+import NavBar from "../NavBar/NavBar";
+import CustomH1 from '../ReactComponents/CustomH1';
+import "./GameMode.css";
 
 const GameMode = () => {
   const navigate = useNavigate();
@@ -29,45 +32,41 @@ const GameMode = () => {
   };
 
   return (
-    <Box mt={4} textAlign="center">
-      <Typography variant="h4" gutterBottom>Selecciona el modo de juego</Typography>
-      <Grid container spacing={2} justifyContent="center">
-        {gameModes.map((mode) => (
-          <Grid item key={mode.value}>
-            <Button
-              variant={selectedMode === mode.value ? 'contained' : 'outlined'}
-              onClick={() => setSelectedMode(mode.value)}
-            >
-              {mode.label}
-            </Button>
-          </Grid>
-        ))}
-      </Grid>
+    <div>
+      <NavBar />
+      <Box mt={4} textAlign="center">
+        <CustomH1 size="h4">Selecciona el modo de juego</CustomH1>
+        <br/>
+        <Grid container spacing={2} justifyContent="center">
+          {gameModes.map((mode) => (
+            <Grid item key={mode.value}>
+              <Button className={selectedMode === mode.value ? "selected" : "unselected"} onClick={() => setSelectedMode(mode.value)}>
+                {mode.label}
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+        <br/>
 
-      <Typography variant="h5" mt={4} gutterBottom>Selecciona la dificultad</Typography>
-      <Grid container spacing={2} justifyContent="center">
-        {difficulties.map((level) => (
-          <Grid item key={level}>
-            <Button
-              variant={selectedDifficulty === level ? 'contained' : 'outlined'}
-              onClick={() => setSelectedDifficulty(level)}
-            >
-              {level}
-            </Button>
-          </Grid>
-        ))}
-      </Grid>
+        <CustomH1 size="h4">Selecciona la dificultad</CustomH1>
+        <br/>
+        <Grid container spacing={2} justifyContent="center">
+          {difficulties.map((level) => (
+            <Grid item key={level}>
+              <Button className={selectedDifficulty === level ? "selected" : "unselected"} onClick={() => setSelectedDifficulty(level)}>
+                {level}
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
 
-      <Box mt={4}>
-        <Button
-          variant="contained"
-          disabled={!selectedMode || !selectedDifficulty}
-          onClick={startGame}
-        >
+        <Box mt={4}>
+        <Button variant="contained" disabled={!selectedMode || !selectedDifficulty} onClick={startGame} id="button-start">
           Empezar juego
         </Button>
+        </Box>
       </Box>
-    </Box>
+    </div>
   );
 };
 
