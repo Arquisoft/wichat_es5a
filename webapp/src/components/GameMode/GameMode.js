@@ -14,8 +14,8 @@ const GameMode = () => {
     { label: 'Ciudades', value: 'city' },
     { label: 'Banderas', value: 'flag' },
     { label: 'Fútbol', value: 'football' },
-    { label: 'Música', value: 'music'},
-    { label: 'Comida', value: 'food'}
+    { label: 'Música', value: 'music' },
+    { label: 'Comida', value: 'food' }
   ];
 
   const difficulties = ['Fácil', 'Media', 'Difícil'];
@@ -36,24 +36,48 @@ const GameMode = () => {
       <NavBar />
       <Box mt={4} textAlign="center">
         <CustomH1 size="h4">Selecciona el modo de juego</CustomH1>
-        <br/>
+        <br />
         <Grid container spacing={2} justifyContent="center">
           {gameModes.map((mode) => (
             <Grid item key={mode.value}>
-              <Button className={selectedMode === mode.value ? "selected" : "unselected"} onClick={() => setSelectedMode(mode.value)}>
+              <Button
+                className={selectedMode === mode.value ? "selected" : "unselected"}
+                sx={{
+                  '&.selected': {
+                    backgroundColor: '#4caf50',
+                    color: 'white',
+                  },
+                  '&.unselected': {
+                    backgroundColor: '#f0f0f0',
+                    color: 'black',
+                  },
+                }}
+                onClick={() => setSelectedMode(mode.value)}
+              >
                 {mode.label}
               </Button>
             </Grid>
           ))}
         </Grid>
-        <br/>
+        <br />
 
         <CustomH1 size="h4">Selecciona la dificultad</CustomH1>
-        <br/>
+        <br />
         <Grid container spacing={2} justifyContent="center">
           {difficulties.map((level) => (
             <Grid item key={level}>
-              <Button className={selectedDifficulty === level ? "selected" : "unselected"} onClick={() => setSelectedDifficulty(level)}>
+              <Button 
+              sx={{
+                '&.selected': {
+                  backgroundColor: '#4caf50',
+                  color: 'white',
+                },
+                '&.unselected': {
+                  backgroundColor: '#f0f0f0',
+                  color: 'black',
+                },
+              }}
+              className={selectedDifficulty === level ? "selected" : "unselected"} onClick={() => setSelectedDifficulty(level)}>
                 {level}
               </Button>
             </Grid>
@@ -61,9 +85,9 @@ const GameMode = () => {
         </Grid>
 
         <Box mt={4}>
-        <Button variant="contained" disabled={!selectedMode || !selectedDifficulty} onClick={startGame} id="button-start">
-          Empezar juego
-        </Button>
+          <Button variant="contained" disabled={!selectedMode || !selectedDifficulty} onClick={startGame} id="button-start">
+            Empezar juego
+          </Button>
         </Box>
       </Box>
     </div>
