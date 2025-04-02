@@ -682,7 +682,7 @@ If requirements documents exist this overview should refer to these documents.</
 </div>
 </li>
 <li>
-<p>Si el registro es exitoso, se guardará la información del usuario es base de datos.</p>
+<p>Si el registro es exitoso, se guardará la información del usuario en la base de datos.</p>
 </li>
 <li>
 <p>Si el registro NO es exitoso, notificará el fallo al usuario.</p>
@@ -721,14 +721,24 @@ If requirements documents exist this overview should refer to these documents.</
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Los concursos tienen un total de 20 preguntas.</p>
+<p>El usuario podrá elegir la temática y dificultad del concurso.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Las temáticas son variadas y contarán con categorías como banderas, ciudades, etc&#8230;&#8203;</p>
+</li>
+<li>
+<p>Habrá tres niveles de dificultad que alteren la cantidad de preguntas a contestar, fácil, medio y difícil.</p>
+</li>
+</ol>
+</div>
 </li>
 <li>
 <p>Los concursos tiene un límite de tiempo indicado por un temporizador.</p>
 <div class="olist lowerroman">
 <ol class="lowerroman" type="i">
 <li>
-<p>Si el usuario se queda sin tiempo, el concurso acaba inmediatamente.</p>
+<p>Si el usuario se queda sin tiempo, se pasa a la siguiente pregunta del concurso.</p>
 </li>
 </ol>
 </div>
@@ -747,7 +757,17 @@ If requirements documents exist this overview should refer to these documents.</
 </div>
 </li>
 <li>
-<p>Los usuarios registrados pueden interactuar con un LLM para conseguir pistas sobre la pregunta actual.</p>
+<p>Los usuarios registrados pueden interactuar con un LLM.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>En forma de pistas de la pregunta actual.</p>
+</li>
+<li>
+<p>En forma de un chat conversacional simulando un "comodín de la llamada".</p>
+</li>
+</ol>
+</div>
 </li>
 <li>
 <p>Al acabar el concurso, se le mostrará al usuario información sobre el concurso.</p>
@@ -757,10 +777,7 @@ If requirements documents exist this overview should refer to these documents.</
 <p>Se mostrará cuantas preguntas han sido acertadas.</p>
 </li>
 <li>
-<p>Se mostrará cuantas pistas se han usado.</p>
-</li>
-<li>
-<p>Se mostrará cuanto tiempo se ha tardado en acabar el concurso.</p>
+<p>Se mostrará un botón por si el usuario quisiera volver a jugar otro concurso.</p>
 </li>
 </ol>
 </div>
@@ -1069,7 +1086,7 @@ conventions (e.g. programming or versioning guidelines, documentation or naming 
 <p><strong>Infraestructura:</strong> La aplicación debe estar desplegada y accesible a través de la web.</p>
 </li>
 <li>
-<p><strong>Generación de contenido:</strong> Las preguntas, respuestas y pistas deben generarse automáticamente a partir de datos de Wikidata. Dichas preguntas deberán tener una respuesta correcta y varias distractoras, todas ellas generadas automáticamente por Wikidata.</p>
+<p><strong>Generación de contenido:</strong> Las preguntas y respuestas deben generarse automáticamente a partir de datos de Wikidata. Dichas preguntas deberán tener una respuesta correcta y varias distractoras, todas ellas generadas automáticamente por Wikidata.</p>
 </li>
 <li>
 <p><strong>Integración con un LLM:</strong> Se utilizará un modelo de lenguaje externo para generar pistas conversacionales (se debe mitigar la generación de respuestas incorrectas o alucinaciones).</p>
@@ -1159,7 +1176,7 @@ The title of the table is the name of your system, the three columns contain the
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Contexto%20de%20negocio%20WIChat.png" alt="Contexto de negocio WIChat" width="581" height="291">
+<img src="./images/Contexto%20de%20negocio%20WIChat.png" alt="Contexto de negocio WIChat" width="1013" height="638">
 </div>
 </div>
 <div class="paragraph">
@@ -1204,7 +1221,7 @@ together with a mapping table showing the relationships between channels and inp
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="992" height="608">
+<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="999" height="638">
 </div>
 </div>
 <div class="paragraph">
@@ -1216,13 +1233,17 @@ together with a mapping table showing the relationships between channels and inp
 y "Users service", que se encarga del registro de nuevos usuarios. Ambos se comunican con la base de datos para guardar o obetener información.</p>
 </div>
 <div class="paragraph">
-<div class="title">Question service</div>
+<div class="title">Wiki service</div>
 <p>Es el servicio encargado de comunicarse con la API de WikiData para generar las preguntas y respuestas mostradas a los usuarios.
 Las preguntas generadas son guardadas en base de datos para el historial de los usuarios.</p>
 </div>
 <div class="paragraph">
 <div class="title">Gateway service</div>
 <p>El gateway se encarga de recibir las peticiones y redirigirlas al servicio correspondiente.</p>
+</div>
+<div class="paragraph">
+<div class="title">History service</div>
+<p>Es el servicio que se encarga con todo lo relacionado con el historial de partidas de la aplicación</p>
 </div>
 <div class="paragraph">
 <div class="title">WIChat API</div>
@@ -1243,7 +1264,7 @@ Las preguntas generadas son guardadas en base de datos para el historial de los 
 <div class="ulist">
 <ul>
 <li>
-<p><strong>TypeScript:</strong> Hemos elegido usar TypeScript como el lenguaje de la aplicación debido a su gran similitud con JavaScript y su agregado de tipado estático y sus características como detección de errores en tiempo de compilación. Además de que soporta interfaces y tipos personalizados y el editor VSCode proporciona autocompletado inteligente gracias a los tipos. También si en algún punto del desarrollo quisieramos convertir el código a JavaScript nos sería mucho más cómodo.</p>
+<p><strong>JavaScript:</strong> Hemos elegido usar JavaScript como el lenguaje de la aplicación debido a que el esqueleto que se nos proporcionó ya venía con código en este lenguaje, entonces para más comodidad, hemos seguido usándolo. Además, es un lenguaje compatible con todos los navegadores que maneja tanto programación orientada a objetos como funcional y que nos permite crear páginas web interactivas y dinámicas sin necesidad de recargar la página. Además de que maneja asincronía y es un lenguaje muy versátil.</p>
 </li>
 <li>
 <p><strong>MongoDB:</strong> Hemos elegido usar MongoDB para la base de datos de la aplicación debido a que tiene un modelo de datos flexible ya que no requiere esquema fijo, es fácil de modificar y además usa BSON (Binary JSON), lo que permite que no se requiera un alto conocimiento por ejemplo en SQL y se almacenen los datos de manera eficiente.</p>
@@ -1258,7 +1279,7 @@ Las preguntas generadas son guardadas en base de datos para el historial de los 
 <p><strong>GitHub:</strong> Para subir el proyecto y sus respectivos cambios y poder tener un lugar de trabajo conjunto nos hemos decantado por GitHub porque nos permite un historial completo de los cambios que va a realizar cada miembro a lo largo del tiempo, así como la facilidad de trabajar en paralelo mediante el uso de ramas y que los distintos commits del proyecto se guardarán en la nube por si hubiera algún problema en el desarrollo. También cabe destacar el uso de issues y el de pull requests que nos sirven para revisar distitos cambios antes de fusionarlos con la rama principal del proyecto.</p>
 </li>
 <li>
-<p><strong>React:</strong> Hemos elegido React para construir nuestras interfaces de usuario debido a que aunque sea una biblioteca de JavaScript es perfectamente utilizable en conjunto a TypeScript. React divide la interfaz de usuario en pqueños componentes reutilizables que facilitan el mantenimiento y escalabilidad del código. Además que al haber trabajado ya con JavaScript y HTML React es fácil de aprender y de usar.</p>
+<p><strong>React:</strong> Hemos elegido React para construir nuestras interfaces de usuario debido a que es una biblioteca de JavaScript. React divide la interfaz de usuario en pqueños componentes reutilizables que facilitan el mantenimiento y escalabilidad del código. Además que al haber trabajado ya con JavaScript y HTML React es fácil de aprender y de usar.</p>
 </li>
 <li>
 <p><strong>Docker:</strong> Tecnología usada para desplegar el proyecto y todos sus distintos módulos en la web. Usamos docker ya que es el que se nos ha enseñado a utilizar en el laboratorio y además es un sistema portable que lo único que necesitamos es tener docker instalado para que funcione. Además de la eficiencia que nos permite empaquetar los contenedores en un período de tiempo razonable.</p>
@@ -1268,6 +1289,9 @@ Las preguntas generadas son guardadas en base de datos para el historial de los 
 </li>
 <li>
 <p><strong>Express:</strong> Es un framework de JavaScript que se utiliza para desarrollar aplicaciones web y Apis en Node.js. Lo usamos debido a que es uno de los frameworks más populares para construir aplicaciones del lado del servidor debido a su simplicidad, flexibilidad y alto rendimiento.</p>
+</li>
+<li>
+<p><strong>Azure_Cloud:</strong> Para desplegar la aplicación usamos una máquina virtual hosteada en Azure_Cloud, ya que además de que todos los miembros del equipo de desarrollo tienen una cuenta, cuenta con ventajas como la escalabilidad, alta disponibilidad y fiabilidad.</p>
 </li>
 </ul>
 </div>
@@ -1833,7 +1857,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/07-diagramaDespliegue.png" alt="Diagrama de Despliegue">
+<img src="./images/DiagramaDespliegue.png" alt="Diagrama de Despliegue">
 </div>
 </div>
 <div class="sect2">
@@ -2470,9 +2494,6 @@ El sistema debe someterse a pruebas de carga.</p>
 <div class="paragraph">
 <p>Atajos o compromisos que se han tomado para acortar el tiempo de desarrollo o bajar la complejidad de la implementación.</p>
 </div>
-<div class="paragraph">
-<p>Debido a la etapa temprana del proyecto, no se ha acumulado excesiva deuda técnica. Sin embargo, con las decisiones que se tomen a lo largo del proyecto, la deuda técnica aumentará y este apartado se actualizará.</p>
-</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -2490,8 +2511,8 @@ El sistema debe someterse a pruebas de carga.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Usamos una base para el proyecto con varios microservicios ya incorporados y con algunas tecnologías ya usadas. Al ser código no desarrollado por el equipo, puede resultar en confusión e implementación deficiente.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Uso de TypeScript</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Decidimos utilizar TypeScript gracias a su implementación de tipos y detección de errores en tiempo de compilación, sin embargo el proyecto base está implementado en JavaScript y no sabemos el impacto que puede tener esta decisión en relación con otros componentes.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Abandono de un miembro del equipo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Un miembro del equipo abandonó el proyecto entre el segundo y tercer sprint, es decir, antes de la entrega de la aplicación 1.0. Esto supuso un contratiempo para el equipo que se pudo recomponer pero que perdió todos los archivos de los que disponía el compañero y además nos tuvimos que readministrar las tareas de este último, las cuales si que se iban dejando un poco más de lado.</p></td>
 </tr>
 </tbody>
 </table>
@@ -2602,7 +2623,7 @@ El sistema debe someterse a pruebas de carga.</p>
 <div id="footer">
 <div id="footer-text">
 Version 8.2 EN<br>
-Last updated 2025-02-12 17:46:11 +0100
+Last updated 2025-04-01 18:00:07 +0200
 </div>
 </div>
 </body>
