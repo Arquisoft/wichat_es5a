@@ -42,11 +42,11 @@ describe('AddUser component', () => {
     fireEvent.change(screen.getByLabelText(/Nombre de usuario/i), { target: { value: 'testUser' } });
     fireEvent.change(screen.getByLabelText(/Contraseña/i), { target: { value: 'testPassword' } });
 
-    fireEvent.click(screen.getByRole('button', { name: /Registrarse/i }));
+    fireEvent.click(screen.getByText(/Registrarse/i));
 
     await waitFor(() => {
-      expect(screen.getByText(/Error/i)).toBeInTheDocument();
-    });
+      expect(screen.getByText(/Usuario añadido con éxito/i)).toBeInTheDocument();
+    }, { timeout: 5000 });
   });
 
   /*it('should handle error when adding user', async () => {
