@@ -8,6 +8,7 @@ describe('Temporizador Component', () => {
   it('should start with the initial time and count down', () => {
     const tiempoInicial = 10;
     const tiempoAcabadoMock = jest.fn();
+    const onTimeUpdateMock = jest.fn(); // Mock para onTimeUpdate
 
     render(
       <Temporizador
@@ -16,6 +17,7 @@ describe('Temporizador Component', () => {
         tiempoAcabado={tiempoAcabadoMock}
         pausa={false}
         handleRestart={jest.fn()}
+        onTimeUpdate={onTimeUpdateMock} // Pasar el mock
       />
     );
 
@@ -34,6 +36,7 @@ describe('Temporizador Component', () => {
   it('should call tiempoAcabado when the timer reaches 0', () => {
     const tiempoInicial = 5;
     const tiempoAcabadoMock = jest.fn();
+    const onTimeUpdateMock = jest.fn(); // Mock para onTimeUpdate
 
     render(
       <Temporizador
@@ -42,6 +45,7 @@ describe('Temporizador Component', () => {
         tiempoAcabado={tiempoAcabadoMock}
         pausa={false}
         handleRestart={jest.fn()}
+        onTimeUpdate={onTimeUpdateMock} // Pasar el mock
       />
     );
 
@@ -57,6 +61,7 @@ describe('Temporizador Component', () => {
   it('should pause the timer when pausa is true', () => {
     const tiempoInicial = 10;
     const tiempoAcabadoMock = jest.fn();
+    const onTimeUpdateMock = jest.fn(); // Mock para onTimeUpdate
 
     const { rerender } = render(
       <Temporizador
@@ -65,6 +70,7 @@ describe('Temporizador Component', () => {
         tiempoAcabado={tiempoAcabadoMock}
         pausa={false}
         handleRestart={jest.fn()}
+        onTimeUpdate={onTimeUpdateMock} // Pasar el mock
       />
     );
 
@@ -84,6 +90,7 @@ describe('Temporizador Component', () => {
         tiempoAcabado={tiempoAcabadoMock}
         pausa={true}
         handleRestart={jest.fn()}
+        onTimeUpdate={onTimeUpdateMock} // Pasar el mock
       />
     );
 
@@ -100,6 +107,7 @@ describe('Temporizador Component', () => {
     const tiempoInicial = 10;
     const tiempoAcabadoMock = jest.fn();
     const handleRestartMock = jest.fn();
+    const onTimeUpdateMock = jest.fn(); // Mock para onTimeUpdate
 
     const { rerender } = render(
       <Temporizador
@@ -108,6 +116,7 @@ describe('Temporizador Component', () => {
         tiempoAcabado={tiempoAcabadoMock}
         pausa={false}
         handleRestart={handleRestartMock}
+        onTimeUpdate={onTimeUpdateMock} // Pasar el mock
       />
     );
 
@@ -127,6 +136,7 @@ describe('Temporizador Component', () => {
         tiempoAcabado={tiempoAcabadoMock}
         pausa={false}
         handleRestart={handleRestartMock}
+        onTimeUpdate={onTimeUpdateMock} // Pasar el mock
       />
     );
 
