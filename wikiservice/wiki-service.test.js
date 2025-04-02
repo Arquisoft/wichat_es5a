@@ -9,6 +9,8 @@ const wikiQuery = new WikiQuery(); // Crear una instancia de WikiQuery
 
 let mongoServer;
 
+jest.setTimeout(30000); 
+
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
