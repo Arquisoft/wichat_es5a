@@ -10,7 +10,7 @@ const YAML = require('yaml')
 const app = express();
 const port = 8000;
 
-const historyServiceUrl = process.env.WIKI_SERVICE_URL || 'http://localhost:8005';
+const historyServiceUrl = process.env.HISTORY_SERVICE_URL || 'http://localhost:8005';
 const wikiServiceUrl = process.env.WIKI_SERVICE_URL || 'http://localhost:8004';
 const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
@@ -29,7 +29,7 @@ app.get('/health', (req, res) => {
 });
 
 // Health check endpoint
-app.get('/health/:port', async (req, res) => {
+/*app.get('/health/:port', async (req, res) => {
   try {
     if (req.params.port != 8000) {
       const healthResponse = await axios.get('http://localhost:', + req.params.port + '/health');
@@ -40,7 +40,7 @@ app.get('/health/:port', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
-});
+});*/
 
 app.post('/login', async (req, res) => {
   try {
