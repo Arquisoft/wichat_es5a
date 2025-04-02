@@ -1,0 +1,40 @@
+.profile-container {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile-card {
+    width: 80%;
+    max-width: 60rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border-radius: 1.5vw;
+    box-shadow: 0 0.3vw 0.8vw rgba(0, 0, 0, 0.15);
+    background-color: #b0e0e6;
+  }
+  
+  .profile-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .profile-info {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .profile-info strong {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .profile-button {
+    margin-top: 2rem;
+  }
