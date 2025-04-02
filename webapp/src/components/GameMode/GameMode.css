@@ -1,0 +1,31 @@
+#button-start {
+    background-color: #00735C;
+    color: white;
+    width: 15%;
+}
+
+#button-start:disabled, #button-start:hover {
+    background-color: #29A0B1;
+}
+
+.selected {
+    background-color: #606462;
+    border: 1px solid #606462;
+    color: white;
+}
+
+.selected:hover {
+    background-color: darkgray;
+    border-color: darkgray;
+}
+
+.unselected {
+    background-color: transparent;
+    border: 1px solid #606462;
+    color: #606462;
+}
+
+.unselected:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+    border-color: darkgray;
+}
