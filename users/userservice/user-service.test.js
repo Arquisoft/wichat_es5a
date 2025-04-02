@@ -47,58 +47,6 @@ describe('User Service', () => {
     expect(isPasswordValid).toBe(true);
   });
 
-  // it('should return 500 if internal server error in /profile', async () => {
-  //   jest.mock('jsonwebtoken');
-  //   const jwt = require('jsonwebtoken');
-
-  //   jwt.verify.mockImplementation((token, secretKey, callback) => {
-  //     callback(null, { user: { username: 'testuser' } });
-  //   });
-
-  //   jest.spyOn(User, 'findOne').mockRejectedValue(new Error('Database error'));
-
-  //   const newUserResponse = await request(app)
-  //     .post('/adduser')
-  //     .send({ username: 'testuser', password: 'password123' });
-
-  //   const token = newUserResponse.body.token; // Obtiene el token generado
-
-  //   const response = await request(app)
-  //     .get('/profile')
-  //     .set('Authorization', `Bearer ${token}`); // Utiliza el token generado
-
-  //   expect(response.status).toBe(500);
-  //   expect(response.body).toHaveProperty('error');
-
-  //   jest.resetModules();
-  // });
-
-  // it('should return 404 if user not found in /profile', async () => {
-  //   jest.mock('jsonwebtoken');
-  //   const jwt = require('jsonwebtoken');
-
-  //   jwt.verify.mockImplementation((token, secretKey, callback) => {
-  //     callback(null, { user: { username: 'testuser' } });
-  //   });
-
-  //   jest.spyOn(User, 'findOne').mockResolvedValue(null);
-
-  //   const newUserResponse = await request(app)
-  //     .post('/adduser')
-  //     .send({ username: 'testuser', password: 'password123' });
-
-  //   const token = newUserResponse.body.token; // Obtiene el token generado
-
-  //   const response = await request(app)
-  //     .get('/profile')
-  //     .set('Authorization', `Bearer ${token}`); // Utiliza el token generado
-
-  //   expect(response.status).toBe(404);
-  //   expect(response.body).toHaveProperty('error');
-
-  //   jest.resetModules();
-  // });
-
   it('should return 400 if required fields are missing in /adduser', async () => {
     const response = await request(app).post('/adduser').send({ username: 'testuser' });
     expect(response.status).toBe(400);
