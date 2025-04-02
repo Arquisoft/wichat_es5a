@@ -14,54 +14,68 @@ jest.mock('react-router', () => ({
   useParams: () => ({ id: '123' }),
 }));
 
-describe('ContestHistory Component', () => {
-  const mockData = {
-    questions: [
-      {
-        question: '¿Cuál es la capital de Francia?',
-        image: 'image_url',
-        wrongAnswers: ['Madrid', 'Londres', 'Berlín', 'Roma'],
-        answer: 'París',
-        createdAt: '2025-04-01T12:00:00Z',
-      },
-    ],
-    times: [15],
-    clues: [1],
-    correctAnswers: [1],
-  };
+// Datos de prueba y textos esperados
+const mockData = {
+  questions: [
+    {
+      question: '¿Cuál es la capital de Francia?',
+      image: 'image_url',
+      wrongAnswers: ['Madrid', 'Londres', 'Berlín', 'Roma'],
+      answer: 'París',
+      createdAt: '2025-04-01T12:00:00Z',
+    },
+  ],
+  times: [15],
+  clues: [1],
+  correctAnswers: [1],
+};
 
+const expectedTexts = {
+  title: 'Historial de preguntas',
+  exitButton: 'Salir',
+  question: 'Pregunta: ¿Cuál es la capital de Francia?',
+  wrongAnswers: 'Respuestas mostradas: Madrid, Londres, Berlín, Roma',
+  correctAnswer: 'Respuesta correcta: París',
+  correct: 'Acertada: ✅',
+  time: 'Tiempo en responder: 15 segundos',
+  clues: 'Número de pistas usadas: 1',
+  date: /Fecha de generación de la pregunta: 01\/04\/2025/,
+};
+
+// Función auxiliar para renderizar el componente
+const renderComponent = () => {
+  render(
+    <BrowserRouter>
+      <ContestHistory />
+    </BrowserRouter>
+  );
+};
+
+describe('ContestHistory Component', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it('should render the initial UI correctly', () => {
-    render(
-      <BrowserRouter>
-        <ContestHistory />
-      </BrowserRouter>
-    );
+    renderComponent();
 
-    expect(screen.getByText('Historial de preguntas')).toBeInTheDocument();
-    expect(screen.getByText('Salir')).toBeInTheDocument();
+    expect(screen.getByText(expectedTexts.title)).toBeInTheDocument();
+    expect(screen.getByText(expectedTexts.exitButton)).toBeInTheDocument();
   });
 
   it('should fetch and display data from the API', async () => {
     axios.get.mockResolvedValueOnce({ data: mockData });
 
-    render(
-      <BrowserRouter>
-        <ContestHistory />
-      </BrowserRouter>
-    );
+    renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText('Pregunta: ¿Cuál es la capital de Francia?')).toBeInTheDocument();
-      expect(screen.getByText('Respuestas mostradas: Madrid, Londres, Berlín, Roma')).toBeInTheDocument();
-      expect(screen.getByText('Respuesta correcta: París')).toBeInTheDocument();
-      expect(screen.getByText('Acertada: ✅')).toBeInTheDocument();
-      expect(screen.getByText('Tiempo en responder: 15 segundos')).toBeInTheDocument();
-      expect(screen.getByText('Número de pistas usadas: 1')).toBeInTheDocument();
-      expect(screen.getByText(/Fecha de generación de la pregunta: 01\/04\/2025/)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.question)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.wrongAnswers)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.correctAnswer)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.correct)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.time)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.clues)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.date)).toBeInTheDocument();
     });
   });
 
@@ -69,11 +83,7 @@ describe('ContestHistory Component', () => {
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     axios.get.mockRejectedValueOnce(new Error('API Error'));
 
-    render(
-      <BrowserRouter>
-        <ContestHistory />
-      </BrowserRouter>
-    );
+    renderComponent();
 
     await waitFor(() => {
       expect(consoleErrorSpy).toHaveBeenCalledWith(
@@ -86,13 +96,9 @@ describe('ContestHistory Component', () => {
   });
 
   it('should navigate to the history page when "Salir" is clicked', () => {
-    render(
-      <BrowserRouter>
-        <ContestHistory />
-      </BrowserRouter>
-    );
+    renderComponent();
 
-    const exitButton = screen.getByText('Salir');
+    const exitButton = screen.getByText(expectedTexts.exitButton);
     fireEvent.click(exitButton);
 
     expect(mockNavigate).toHaveBeenCalledWith('/history');
