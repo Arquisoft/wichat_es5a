@@ -18,63 +18,25 @@ describe('History Service', () => {
     await User.deleteMany({});
   });
 
-  // Test /health endpoint
-  it('should return 200 and a health status message', async () => {
-    const response = await request(app).get('/health');
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({ status: 'OK' });
-  });
+  // Datos comunes para los tests
+  const mockRequest = {
+    arPreg: [
+      {
+        pregunta: 'What is 2+2?',
+        imagen: 'image_url',
+        resCorr: '4',
+        resFalse: ['3', '5', '6'],
+      },
+    ],
+    difficulty: 'easy',
+    mode: 'single',
+    arCorrect: [1],
+    points: 10,
+    arTiempo: [30],
+    arPistas: [0],
+  };
 
-  // Test /savegame endpoint
-  it('should save a game and return success', async () => {
-    const mockRequest = {
-      arPreg: [
-        {
-          pregunta: 'What is 2+2?',
-          imagen: 'image_url',
-          resCorr: '4',
-          resFalse: ['3', '5', '6'],
-        },
-      ],
-      difficulty: 'easy',
-      mode: 'single',
-      arCorrect: [1],
-      points: 10,
-      arTiempo: [30],
-      arPistas: [0],
-    };
-
-    const response = await request(app).post('/savegame').send(mockRequest);
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({ success: true });
-
-    // Verifica que las preguntas y el concurso se hayan guardado
-    const questions = await Question.find();
-    const contests = await Contest.find();
-    expect(questions.length).toBe(1);
-    expect(contests.length).toBe(1);
-    expect(contests[0].difficulty).toBe('easy');
-  });
-
-  // Test /gethistory endpoint
-  it('should return user, question, and contest counts', async () => {
-    // Crea datos simulados
-    await User.create({ username: 'testuser', email: 'test@example.com' });
-    await Question.create({ question: 'What is 2+2?', answer: '4', wrongAnswers: ['3', '5', '6'] });
-    await Contest.create({ difficulty: 'easy', mode: 'single', points: 10 });
-
-    const response = await request(app).get('/gethistory');
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body.userCount).toBe(1);
-    expect(response.body.questionCount).toBe(1);
-    expect(response.body.contests.length).toBe(1);
-  });
-
-  // Test /getquestions/:id endpoint
-  it('should return questions and contest details for a given contest ID', async () => {
-    // Crea datos simulados
+  const createMockData = async () => {
     const question = await Question.create({ question: 'What is 2+2?', answer: '4', wrongAnswers: ['3', '5', '6'] });
     const contest = await Contest.create({
       difficulty: 'easy',
@@ -85,10 +47,51 @@ describe('History Service', () => {
       tiempos: [30],
       pistas: [0],
     });
+    await User.create({ username: 'testuser', email: 'test@example.com' });
+    return { question, contest };
+  };
+
+  // Función auxiliar para verificar respuestas de endpoints
+  const verifyResponse = (response, statusCode, expectedBody) => {
+    expect(response.statusCode).toBe(statusCode);
+    expect(response.body).toEqual(expectedBody);
+  };
+
+  it('should return 200 and a health status message', async () => {
+    const response = await request(app).get('/health');
+    verifyResponse(response, 200, { status: 'OK' });
+  });
+
+  it('should save a game and return success', async () => {
+    const response = await request(app).post('/savegame').send(mockRequest);
+
+    verifyResponse(response, 200, { success: true });
+
+    // Verifica que las preguntas y el concurso se hayan guardado
+    const questions = await Question.find();
+    const contests = await Contest.find();
+    expect(questions.length).toBe(1);
+    expect(contests.length).toBe(1);
+    expect(contests[0].difficulty).toBe('easy');
+  });
+
+  it('should return user, question, and contest counts', async () => {
+    await createMockData();
+
+    const response = await request(app).get('/gethistory');
+
+    verifyResponse(response, 200, expect.any(Object));
+    expect(response.body.userCount).toBe(1);
+    expect(response.body.questionCount).toBe(1);
+    expect(response.body.contests.length).toBe(1);
+  });
+
+  it('should return questions and contest details for a given contest ID', async () => {
+    const { contest } = await createMockData();
 
     const response = await request(app).get(`/getquestions/${contest._id}`);
 
-    expect(response.statusCode).toBe(200);
+    verifyResponse(response, 200, expect.any(Object));
     expect(response.body.questions.length).toBe(1);
     expect(response.body.questions[0].question).toBe('What is 2+2?');
     expect(response.body.correctAnswers).toEqual([1]);
