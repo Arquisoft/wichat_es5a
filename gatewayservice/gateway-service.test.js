@@ -85,4 +85,47 @@ describe('Gateway Service', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({ status: 'OK' });
   });
+
+  // Test /profile endpoint
+  it('should forward profile request to the user service', async () => {
+    axios.get.mockResolvedValueOnce({ data: { username: 'testuser', email: 'testuser@example.com' } });
+  
+    const response = await request(app)
+      .get('/profile')
+      .set('Authorization', 'Bearer mockedToken');
+  
+    expect(response.statusCode).toBe(200);
+    expect(response.body.username).toBe('testuser');
+    expect(response.body.email).toBe('testuser@example.com');
+    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/profile'), expect.objectContaining({
+      headers: expect.objectContaining({
+        authorization: 'Bearer mockedToken',
+      }),
+    }));
+  });
+
+  // Test /savegame endpoint
+  it('should forward savegame request to the history service', async () => {
+    axios.post.mockResolvedValueOnce({ data: { gameId: 'mockedGameId' } });
+
+    const response = await request(app)
+      .post('/savegame')
+      .send({ userId: 'testuser', score: 100 });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.gameId).toBe('mockedGameId');
+    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/savegame'), { userId: 'testuser', score: 100 });
+  });
+
+  // Test /getquestions endpoint
+  it('should forward getquestions request to the history service', async () => {
+    axios.get.mockResolvedValueOnce({ data: { questions: ['question1', 'question2'] } });
+
+    const response = await request(app)
+      .get('/getquestions/123');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.questions).toEqual(['question1', 'question2']);
+    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/getquestions/123'));
+  });
 });
