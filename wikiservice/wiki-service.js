@@ -102,11 +102,9 @@ app.post("/questions/:kind", async (req, res) => {
       answer: answer,
       wrongAnswers: wrongAnswers
     }
-    const uniqueKey = `${question}-${image}-${answer}`;
-    if (!preguntas.has(uniqueKey)) {
-      preguntas.add(uniqueKey); 
-      res.send(queryResults); 
-    } 
+    const newQuestion = new Question(queryResults);
+    await newQuestion.save();
+    res.send(queryResults);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send(error); // Mostrar el error al usuario
