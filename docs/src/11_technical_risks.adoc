@@ -46,12 +46,14 @@ A continuación se expresan algunos riesgos encontrados que suponen un peligro a
 
 Atajos o compromisos que se han tomado para acortar el tiempo de desarrollo o bajar la complejidad de la implementación.
 
-Debido a la etapa temprana del proyecto, no se ha acumulado excesiva deuda técnica. Sin embargo, con las decisiones que se tomen a lo largo del proyecto, la deuda técnica aumentará y este apartado se actualizará.
-
 [options="header",cols="1,3"]
 |===
 |Deuda Técnica|Descripción
 
-|Comienzo del desarrollo desde la base creada por los profesores|Usamos una base para el proyecto con varios microservicios ya incorporados y con algunas tecnologías ya usadas. Al ser código no desarrollado por el equipo, puede resultar en confusión e implementación deficiente.
-|Uso de TypeScript|Decidimos utilizar TypeScript gracias a su implementación de tipos y detección de errores en tiempo de compilación, sin embargo el proyecto base está implementado en JavaScript y no sabemos el impacto que puede tener esta decisión en relación con otros componentes.
+|Comienzo del desarrollo desde la base creada por los profesores
+|Usamos una base para el proyecto con varios microservicios ya incorporados y con algunas tecnologías ya usadas. Al ser código no desarrollado por el equipo, puede resultar en confusión e implementación deficiente.
+
+|Abandono de un miembro del equipo
+|Un miembro del equipo abandonó el proyecto entre el segundo y tercer sprint, es decir, antes de la entrega de la aplicación 1.0. Esto supuso un contratiempo para el equipo que se pudo recomponer pero que perdió todos los archivos de los que disponía el compañero y además nos tuvimos que readministrar las tareas de este último, las cuales si que se iban dejando un poco más de lado.
+
 |===
