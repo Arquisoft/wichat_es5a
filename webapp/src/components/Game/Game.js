@@ -95,7 +95,7 @@ const Juego = () => {
       setPausarTemporizador(false);
       updateGame();
       setNumPreguntaActual(1);
-    }, [arPreg, apiEndpoint, updateGame]);
+    }, [arPreg, apiEndpoint, updateGame, loadingProgress, mode]);
     
     useEffect(() => {
       if (!firstRender) {
