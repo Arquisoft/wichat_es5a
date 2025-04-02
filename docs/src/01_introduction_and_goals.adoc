@@ -65,7 +65,7 @@ Los usuarios pueden interactuar con un LLM que le brinde pistas y ayude al usuar
 .. El registro pedirá obligatoriamente a los usuarios:
 ... Un nombre de usuario.
 ... Una constraseña.
-.. Si el registro es exitoso, se guardará la información del usuario es base de datos.
+.. Si el registro es exitoso, se guardará la información del usuario en la base de datos.
 .. Si el registro NO es exitoso, notificará el fallo al usuario.
 . El sistema permitirá a los usuarios registrados autentificarse en la aplicación.
 .. La autenticación pedirá obligatoriamente a los usuarios:
@@ -74,17 +74,20 @@ Los usuarios pueden interactuar con un LLM que le brinde pistas y ayude al usuar
 .. Si la autenticación es exitosa, se rederegirá al usuario registrado a la pantalla principal.
 .. Si la autenticación NO es exitosa, notificará el fallo al usuario.
 . Los usuarios registrados podrán jugar concursos en los que responderán preguntas.
-.. Los concursos tienen un total de 20 preguntas.
+.. El usuario podrá elegir la temática y dificultad del concurso.
+... Las temáticas son variadas y contarán con categorías como banderas, ciudades, etc...
+... Habrá tres niveles de dificultad que alteren la cantidad de preguntas a contestar, fácil, medio y difícil.
 .. Los concursos tiene un límite de tiempo indicado por un temporizador.
-... Si el usuario se queda sin tiempo, el concurso acaba inmediatamente.
+... Si el usuario se queda sin tiempo, se pasa a la siguiente pregunta del concurso.
 .. Las preguntas y respuestas se deben generar automáticamente con información conseguida de WikiData.
 ... Las preguntas deben incluir una imagen, un enunciado y varias respuestas incorrectas.
 ... Los datos de la pregunta deben ser guardados en base de datos.
-.. Los usuarios registrados pueden interactuar con un LLM para conseguir pistas sobre la pregunta actual.
+.. Los usuarios registrados pueden interactuar con un LLM.
+... En forma de pistas de la pregunta actual.
+... En forma de un chat conversacional simulando un "comodín de la llamada".
 .. Al acabar el concurso, se le mostrará al usuario información sobre el concurso.
 ... Se mostrará cuantas preguntas han sido acertadas.
-... Se mostrará cuantas pistas se han usado.
-... Se mostrará cuanto tiempo se ha tardado en acabar el concurso.
+... Se mostrará un botón por si el usuario quisiera volver a jugar otro concurso.
 . Los usuarios registrados podrán consultar un histórico de su participación en el sistema con la siguiente información:
 .. Número de concursos jugados.
 .. Preguntas acertadas y falladas en cada concurso.

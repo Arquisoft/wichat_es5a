@@ -31,7 +31,7 @@ Ver https://docs.arc42.org/section-7/[Deployment View] en la documentación de a
 ****
 endif::arc42help[]
 
-image::07-diagramaDespliegue.png["Diagrama de Despliegue"]
+image::DiagramaDespliegue.png["Diagrama de Despliegue"]
 
 === Motivación
 En WIChat, los usuarios interactúan a través de una interfaz web basada en React.  

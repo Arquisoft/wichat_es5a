@@ -114,6 +114,7 @@ frame "Azure_Cloud" {
          [WIChat_API]
          [Gateway_service]
          [Wiki_service]
+         [History_service]
          package "Users" {
               [Auth_service]
               [User_service]
@@ -132,12 +133,14 @@ Usuario ..> Gateway_service : HTTPS
 Gateway_service --> Wiki_service
 Gateway_service --> Auth_service
 Gateway_service --> User_service
+Gateway_service --> History_service
 Gateway_service --> WIChat_API
 Wiki_service ..> WikiData_API : SPARQL
 Wiki_service ..> Gemini_API : Google Cloud
 Auth_service ..> User_data : Mongoose
 User_service ..> User_data  : Mongoose
 Wiki_service ..> Question_data : Mongoose
+History_service ..> Question_data : Mongoose
 Usuario_API ..> WIChat_API : HTTPS
 ----
 
@@ -147,12 +150,15 @@ La arquitectura de WIChat es una estructura basada en microservicios:
 El paquete users se divide en dos paquetes, "Auth service" que se encarga de la autenficación de los usuarios ya registrados
 y "Users service", que se encarga del registro de nuevos usuarios. Ambos se comunican con la base de datos para guardar o obetener información.
 
-.Question service
+.Wiki service
 Es el servicio encargado de comunicarse con la API de WikiData para generar las preguntas y respuestas mostradas a los usuarios.
 Las preguntas generadas son guardadas en base de datos para el historial de los usuarios.
 
 .Gateway service
 El gateway se encarga de recibir las peticiones y redirigirlas al servicio correspondiente.
+
+.History service
+Es el servicio que se encarga con todo lo relacionado con el historial de partidas de la aplicación
 
 .WIChat API
 Ofrece datos sobre los usuarios de la aplicación y las preguntas generadas.
