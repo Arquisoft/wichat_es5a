@@ -6,6 +6,7 @@ import CustomH1 from '../ReactComponents/CustomH1';
 import NavBar from "../NavBar/NavBar";
 import axios from 'axios';
 import { Container, Typography, Grid, Card, CardContent } from '@mui/material';
+import './Profile.css';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -65,20 +66,20 @@ const Profile = () => {
   return (
     <div>
       <NavBar />
-      <Container component="main" sx={{ marginTop: 4 }}>
+      <Container component="main" className="profile-container">
         <CustomH1>Perfil de Usuario</CustomH1>
         {profileData && (
           <Grid container justifyContent="center">
             <Grid item xs={12} sm={8} md={6}>
-              <Card>
+              <Card className="profile-card">
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant="h6" className="profile-title">
                     Información del Perfil
                   </Typography>
-                  <Typography>
+                  <Typography className="profile-info">
                     <strong>Usuario:</strong> {profileData.username}
                   </Typography>
-                  <Typography>
+                  <Typography className="profile-info">
                     <strong>Email:</strong> {profileData.email}
                   </Typography>
                 </CardContent>
@@ -86,7 +87,7 @@ const Profile = () => {
             </Grid>
           </Grid>
         )}
-        <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
+        <Grid container justifyContent="center" className="profile-button">
           <Grid item xs={12} sm={8} md={6}>
             <LargeButton onClick={exitProfile}>Salir</LargeButton>
           </Grid>
