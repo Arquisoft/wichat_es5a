@@ -1,6 +1,6 @@
 import React, { useState, useRef} from 'react';
 import axios from 'axios';
-const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8003';
+const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 const ChatBot = ({respuestaCorrecta, mode }) => {
     const [messages, setMessages] = useState([
         { text: '¡Hola! Soy tu asistente. ¿En que puedo ayudarte?', sender: 'bot' },
@@ -12,7 +12,7 @@ const ChatBot = ({respuestaCorrecta, mode }) => {
         if (!input.trim()) return;
     
         try {
-            const response = await axios.post(`${apiEndpoint}/ask`, {
+            const response = await axios.post(`${apiEndpoint}/askllm`, {
                 question: input,
                 model: 'gemini',
                 mode: mode,
