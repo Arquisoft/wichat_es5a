@@ -74,23 +74,25 @@ const Juego = () => {
       try{
         const total = numPreguntas;
         let current = 0;
-
+        let controlRepetidas = [];
         while (numPreguntas > 0) {
           const response = await axios.post(`${apiEndpoint}/questions/${mode}`); // A elegir entre city, flag, album o football
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
           const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
-
-          arPreg.push({
-            id: numPreguntas,
-            pregunta: response.data.question,
-            resCorr: response.data.answer,
-            resFalse: respuestasAleatorias,
-            imagen: response.data.image,
-          });
-          current++;
-          const progress = Math.round(100 * Math.log10(1 + (current / total) * 9)); // escala logarítmica en base 10
-          setLoadingProgress(progress > loadingProgress ? progress : loadingProgress); // solo actualiza si es mayor
-          numPreguntas--;
+          if(!controlRepetidas.includes(response.data.answer)) {
+            controlRepetidas.push(response.data.answer);
+            arPreg.push({
+              id: numPreguntas,
+              pregunta: response.data.question,
+              resCorr: response.data.answer,
+              resFalse: respuestasAleatorias,
+              imagen: response.data.image,
+            });
+            current++;
+            const progress = Math.round(100 * Math.log10(1 + (current / total) * 9)); // escala logarítmica en base 10
+            setLoadingProgress(progress > loadingProgress ? progress : loadingProgress); // solo actualiza si es mayor
+            numPreguntas--;
+          }
         }
       }catch (error) {
           console.error('Error al crear las preguntas:', error);
