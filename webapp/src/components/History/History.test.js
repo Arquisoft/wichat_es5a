@@ -3,6 +3,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import axios from 'axios';
 import { BrowserRouter } from 'react-router';
 import History from './History';
+import "../../i18n.js"
 
 jest.mock('axios');
 
@@ -64,8 +65,6 @@ const renderComponent = () => {
     </BrowserRouter>
   );
 };
-
-localStorage.setItem("language", "es");
 
 describe('History Component', () => {
   beforeEach(() => {
