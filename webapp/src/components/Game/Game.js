@@ -286,7 +286,7 @@ const handleRestart = () => {
               </Box>
               {imagenPregunta && (
                 <Box className="image-container">
-                  <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
+                  <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" draggable="false"/>
                 </Box>
               )}
               <Grid container spacing={2} className="button-container">
