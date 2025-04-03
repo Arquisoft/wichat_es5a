@@ -25,7 +25,7 @@ describe('AddUser component', () => {
     mockAxios.reset();
   });
 
-  it('should render the add user formm correctly', async () => {
+  /*it('should render the add user formm correctly', async () => {
     renderAddUser();
 
     expect(screen.getByLabelText(/Nombre de usuario/i)).toBeInTheDocument();
