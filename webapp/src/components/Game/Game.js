@@ -71,16 +71,22 @@ const Juego = () => {
       if (!mode) {
         console.error('El modo de juego no está definido, usando valor por defecto.');
       }
-      try{
+      try {
         const total = numPreguntas;
         let current = 0;
         let controlRepetidas = [];
+        let repetida = false;
         while (numPreguntas > 0) {
           const response = await axios.post(`${apiEndpoint}/questions/${mode}`); // A elegir entre city, flag, album o football
           const respuestas = [...response.data.wrongAnswers, response.data.answer];
           const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
-          if(!controlRepetidas.includes(response.data.answer)) {
-            controlRepetidas.push(response.data.answer);
+          repetida = false;
+          for(let i = 0; i < controlRepetidas.length; i++) {
+            if(controlRepetidas[i].toLowerCase() === response.data.answer) repetida = true;
+          }
+          if(!repetida) {
+            controlRepetidas.push(response.data.answer.toLowerCase());
+            console.log("NO REPETIDA - " + response.data.answer.toLowerCase() + "\n");
             arPreg.push({
               id: numPreguntas,
               pregunta: response.data.question,
@@ -92,11 +98,13 @@ const Juego = () => {
             const progress = Math.round(100 * Math.log10(1 + (current / total) * 9)); // escala logarítmica en base 10
             setLoadingProgress(progress > loadingProgress ? progress : loadingProgress); // solo actualiza si es mayor
             numPreguntas--;
+          } else {
+            console.log("REPETIDA - " + response.data.answer + "\n");
           }
         }
-      }catch (error) {
+      } catch (error) {
           console.error('Error al crear las preguntas:', error);
-        }
+      }
       setLoadingComplete(true);
       setPausarTemporizador(false);
       updateGame();

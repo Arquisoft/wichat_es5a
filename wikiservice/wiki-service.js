@@ -49,7 +49,7 @@ const queries = [{
       '?answer wdt:P31 wd:Q215380;' +
       '         wdt:P18 ?image;' +
       '         wdt:P166 ?award.' +
-      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 150'
 }, {
   kind: "food",
   question: "¿Qué plato de comida es?",
