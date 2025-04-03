@@ -90,6 +90,7 @@ services:
       - authservice
       - llmservice
       - wikiservice
+      - historyservice
     ports:
       - "8000:8000"
     networks:
@@ -99,6 +100,7 @@ services:
       USER_SERVICE_URL: http://userservice:8001
       LLM_SERVICE_URL: http://llmservice:8003
       WIKI_SERVICE_URL: http://wikiservice:8004
+      HISTORY_SERVICE_URL: http://historyservice:8005
 
   webapp:
     container_name: webapp-wichat_es5a
