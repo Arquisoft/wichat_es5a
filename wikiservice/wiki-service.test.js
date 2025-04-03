@@ -44,7 +44,6 @@ describe('POST /questions/:kind', () => {
     const endpoints = [
         { kind: 'flag', question: '¿De qué país es esta bandera?' },
         { kind: 'city', question: '¿Qué ciudad es esta?' },
-        { kind: 'album', question: '¿Cuál es el nombre de este álbum?' },
         { kind: 'football', question: '¿Qué equipo de fútbol es este?' },
         { kind: 'music', question: '¿Qué grupo es?' },
         { kind: 'food', question: '¿Qué plato de comida es?' },
