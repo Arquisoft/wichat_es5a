@@ -65,6 +65,8 @@ const renderComponent = () => {
   );
 };
 
+localStorage.setItem("language", "es");
+
 describe('History Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
