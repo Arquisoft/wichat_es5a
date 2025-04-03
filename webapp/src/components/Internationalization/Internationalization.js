@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Flag from "react-world-flags";
 import { useTranslation } from "react-i18next";
 import { Button, Menu, MenuItem } from "@mui/material";
+import '../NavBar/NavBar.css';
 
 const Internationalization = () => {
 
@@ -15,8 +16,8 @@ const Internationalization = () => {
     closeMenu();
   };
 
-  const openMenu = (event) => {
-    setAnchorEl(event.currentTarget);
+  const changeMenu = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
   const closeMenu = () => {
@@ -29,22 +30,18 @@ const Internationalization = () => {
   ];
   
   return (
-    <div>
-      <Button aria-controls="simple-menu" aria-haspopup="true" onClick={openMenu}> 
+      <Button id="language-button" aria-haspopup="true" onClick={changeMenu}> 
         {t("language")}
-      </Button>
-      <Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
         {languages.map((language) => (
           <MenuItem key={language.code} onClick={() => changeLanguage(language.code)}>
             <div>
-              <Flag code={language.country}/>
-              {language.text}
+              <Flag code={language.country}/>{language.text}
             </div>
           </MenuItem>
         ))}
       </Menu>
-    </div>
-          
+      </Button>
   );
 };
 
