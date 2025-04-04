@@ -17,7 +17,7 @@ const queries = [{
   question: "¿Qué ciudad es esta?",
   query: 'SELECT ?answerLabel ?image WHERE {' +
     '?answer wdt:P31 wd:Q515; wdt:P18 ?image; wdt:P1082 ?population. FILTER(?population > 1000000)' +
-    ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+    ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }, {
   kind: "album",
   question: "¿Cuál es el nombre de este álbum?",
@@ -26,7 +26,7 @@ const queries = [{
     '        wdt:P18 ?image.' +
     'OPTIONAL { ?answer wdt:P175 ?artist }' +
     'OPTIONAL { ?answer wdt:P166 ?award }' +
-    ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 50'
+    ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }, {
   kind: "football",
   question: "¿Qué equipo de fútbol es este?",
@@ -34,14 +34,14 @@ const queries = [{
     '?answer wdt:P31 wd:Q476028;' +
     '     wdt:P154 ?image.' +
     '?answer wdt:P118 ?league.' +
-    'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+    'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }, {
   kind: "flag",
   question: "¿De qué país es esta bandera?",
   query: 'SELECT ?answerLabel ?image WHERE {' +
     '?answer wdt:P31 wd:Q6256;' +
     '         wdt:P41 ?image.' +
-    ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+    ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }, {
   kind: "music",
   question: "¿Qué grupo es?",
@@ -49,7 +49,7 @@ const queries = [{
       '?answer wdt:P31 wd:Q215380;' +
       '         wdt:P18 ?image;' +
       '         wdt:P166 ?award.' +
-      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }, {
   kind: "food",
   question: "¿Qué plato de comida es?",
@@ -58,7 +58,7 @@ const queries = [{
       '       wdt:P18 ?image;' +
       '       wdt:P495 ?country.' +
       'FILTER(?country IN (wd:Q29, wd:Q38, wd:Q142))' +
-      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT 100'
+      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }];
 
 function getQuery(kind) {
@@ -74,37 +74,49 @@ app.get('/health', (req, res) => {
 
 app.post("/questions/:kind", async (req, res) => {
   let { question, query } = getQuery(req.params.kind);
+  let limit = req.body.numQuestions * 3;
+  if(req.params.kind === "music") {
+    limit = limit * 3;
+  }
   try {
-    const results = await wikiQuery.SPARQLQuery(query).catch((error) => {
+    const results = await wikiQuery.SPARQLQuery(query + limit).catch((error) => {
       console.error('Error al ejecutar la consulta:', error);
     });
     let size = results.results.bindings.length;
     let random = Math.floor(Math.random() * size);
+    let current = 0;
+    let questions = [];
+    let answers = [];
 
-    let wrongAnswers = [];
-    let image = results.results.bindings[random].image.value;
-    let answer = results.results.bindings[random].answerLabel.value;
-
-    //Adds wrong answer until there are 3 of them
-    while (wrongAnswers.length < 3) {
-      let randomIndex = Math.floor(Math.random() * size);
-      let wrongAnswer = results.results.bindings[randomIndex].answerLabel.value;
-
-      //Adds the anwer if it was not added previously and is wrong
-      if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer)) {
-        wrongAnswers.push(wrongAnswer);
+    while(current < req.body.numQuestions) {
+      let wrongAnswers = [];
+      let image = results.results.bindings[random].image.value;
+      let answer = results.results.bindings[random].answerLabel.value;
+      if(!answers.includes(answer.toLowerCase())) {
+        //Adds wrong answer until there are 3 of them
+        while (wrongAnswers.length < 3) {
+          let randomIndex = Math.floor(Math.random() * size);
+          let wrongAnswer = results.results.bindings[randomIndex].answerLabel.value;
+          //Adds the anwer if it was not added previously and is wrong
+          if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer)) {
+            wrongAnswers.push(wrongAnswer);
+          }
+        }
+        let queryResults = {
+          question: question,
+          image: image,
+          answer: answer,
+          wrongAnswers: wrongAnswers
+        }
+        questions.push(queryResults);
+        answers.push(queryResults.answer.toLowerCase());
+        current++;
+        const newQuestion = new Question(queryResults);
+        await newQuestion.save();
       }
+      random = Math.floor(Math.random() * size);
     }
-
-    let queryResults = {
-      question: question,
-      image: image,
-      answer: answer,
-      wrongAnswers: wrongAnswers
-    }
-    const newQuestion = new Question(queryResults);
-    await newQuestion.save();
-    res.send(queryResults);
+    res.send(questions);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send(error); // Mostrar el error al usuario
