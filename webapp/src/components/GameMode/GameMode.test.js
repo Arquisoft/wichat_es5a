@@ -99,7 +99,7 @@ describe('GameMode component', () => {
 
     const ciudadesButton = screen.getByText(/Ciudades/i);
     const facilButton = screen.getByText(/Fácil/i);
-    const startButton = screen.getByRole('button', { name: /Empezar juego/i });
+    const startButton = screen.getByRole('button', { name: /Jugar/i });
 
     // Seleccionamos el modo y la dificultad
     fireEvent.click(ciudadesButton);
