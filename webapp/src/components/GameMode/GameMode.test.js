@@ -75,7 +75,7 @@ describe('GameMode component', () => {
       </BrowserRouter>
     );
 
-    const startButton = screen.getByRole('button', { name: /Empezar juego/i });
+    const startButton = screen.getByRole('button', { name: /Jugar/i });
     const ciudadesButton = screen.getByText(/Ciudades/i);
     const facilButton = screen.getByText(/Fácil/i);
 
