@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import Home from './Home';
+import "../../i18n.js"
 
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),

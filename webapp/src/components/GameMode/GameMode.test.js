@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';  
 import GameMode from './GameMode';  
+import "../../i18n.js"
 
 describe('GameMode component', () => {
 

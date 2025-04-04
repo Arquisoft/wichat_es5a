@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import Points from './Points';
+import "../../i18n.js"
 
 // Mock global de useNavigate
 const mockNavigate = jest.fn();

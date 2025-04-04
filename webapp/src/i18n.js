@@ -46,6 +46,16 @@ i18n.use(initReactI18next).init({
                 "points-correct": "acertadas",
                 "good-job": "¡Bien hecho!",
                 "play-again": "Jugar otra vez",
+                "select-mode": "Selecciona el modo de juego",
+                "select-difficulty": "Selecciona la dificultad",
+                "cities": "Ciudades",
+                "flags": "Banderas",
+                "football": "Fútbol",
+                "music": "Música",
+                "food": "Comida",
+                "easy": "Fácil",
+                "medium": "Media",
+                "difficult": "Difícil",
             }
         },
         en: {
@@ -91,6 +101,16 @@ i18n.use(initReactI18next).init({
                 "points-correct": "correct",
                 "good-job": "¡Good job!",
                 "play-again": "Play again",
+                "select-mode": "Choose the game mode",
+                "select-difficulty": "Choose the difficulty",
+                "cities": "Cities",
+                "flags": "Flags",
+                "football": "Football",
+                "music": "Music",
+                "food": "Food",
+                "easy": "Easy",
+                "medium": "Medium",
+                "difficult": "Difficult",
             }
         }
     },
