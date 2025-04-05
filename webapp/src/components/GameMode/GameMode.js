@@ -4,21 +4,23 @@ import { useNavigate } from 'react-router';
 import NavBar from "../NavBar/NavBar";
 import CustomH1 from '../ReactComponents/CustomH1';
 import "./GameMode.css";
+import { useTranslation } from "react-i18next";
 
 const GameMode = () => {
   const navigate = useNavigate();
   const [selectedMode, setSelectedMode] = useState(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+  const { t } = useTranslation();
 
   const gameModes = [
-    { label: 'Ciudades', value: 'city' },
-    { label: 'Banderas', value: 'flag' },
-    { label: 'Fútbol', value: 'football' },
-    { label: 'Música', value: 'music' },
-    { label: 'Comida', value: 'food' }
+    { label: "cities", value: 'city' },
+    { label: 'flags', value: 'flag' },
+    { label: 'football', value: 'football' },
+    { label: 'music', value: 'music' },
+    { label: 'food', value: 'food' }
   ];
 
-  const difficulties = ['Fácil', 'Media', 'Difícil'];
+  const difficulties = ['easy', 'medium', 'difficult'];
 
   const startGame = () => {
     if (!selectedMode || !selectedDifficulty) return;
@@ -35,7 +37,7 @@ const GameMode = () => {
     <div>
       <NavBar />
       <Box mt={4} textAlign="center">
-        <CustomH1 size="h4">Selecciona el modo de juego</CustomH1>
+        <CustomH1 size="h4">{t("select-mode")}</CustomH1>
         <br />
         <Grid container spacing={2} justifyContent="center">
           {gameModes.map((mode) => (
@@ -54,14 +56,14 @@ const GameMode = () => {
                 }}
                 onClick={() => setSelectedMode(mode.value)}
               >
-                {mode.label}
+                {t(mode.label)}
               </Button>
             </Grid>
           ))}
         </Grid>
         <br />
 
-        <CustomH1 size="h4">Selecciona la dificultad</CustomH1>
+        <CustomH1 size="h4">{t("select-difficulty")}</CustomH1>
         <br />
         <Grid container spacing={2} justifyContent="center">
           {difficulties.map((level) => (
@@ -78,7 +80,7 @@ const GameMode = () => {
                 },
               }}
               className={selectedDifficulty === level ? "selected" : "unselected"} onClick={() => setSelectedDifficulty(level)}>
-                {level}
+                {t(level)}
               </Button>
             </Grid>
           ))}
@@ -86,7 +88,7 @@ const GameMode = () => {
 
         <Box mt={4}>
           <Button variant="contained" disabled={!selectedMode || !selectedDifficulty} onClick={startGame} id="button-start">
-            Empezar juego
+            {t("play")}
           </Button>
         </Box>
       </Box>

@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
 import NavBar from "../NavBar/NavBar";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
 
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const enterGame = () => {
@@ -34,43 +36,43 @@ const Home = () => {
     <div id="body-container">
       <NavBar/>
       <CustomH1>
-        WICHAT
+        {t("title")}
       </CustomH1>
       <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
         <CustomH1 size="h6">
-          ¿Quieres echarte una partida?
+          {t("wanna-play")}
         </CustomH1>
         <LargeButton onClick={enterGame}>
-          Jugar
+          {t("play")}
         </LargeButton>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
       <CustomH1 size="h6">
-          ¡Edita tu perfil o consulta tus datos históricos!
+          {t("home-profile")}
         </CustomH1>
         <LargeButton onClick={enterProfile}>
-          Perfil
+          {t("profile")}
         </LargeButton>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
       <CustomH1 size="h6">
-          ¡Consulta datos de otros usuarios y preguntas generadas!
+          {t("home-history")}
         </CustomH1>
         <LargeButton onClick={enterHistory}>
-          Histórico
+          {t("history")}
         </LargeButton>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
       <CustomH1 size="h6">
-          ¡Apoya a los desarrolladores!
+          {t("home-credits")}
         </CustomH1>
         <LargeButton onClick={enterCredits}>
-          Créditos
+          {t("credits")}
         </LargeButton>
       </Box>
       <Box display="flex" justifyContent="center" mt={2}>
         <LargeButton onClick={logOut}>
-          Salir de sesión
+          {t("logout")}
         </LargeButton>
       </Box>
     </div>

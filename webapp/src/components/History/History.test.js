@@ -3,6 +3,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import axios from 'axios';
 import { BrowserRouter } from 'react-router';
 import History from './History';
+import "../../i18n.js"
 
 jest.mock('axios');
 
@@ -50,7 +51,7 @@ const expectedTexts = {
   correctAnswers: 'Preguntas acertadas: 1',
   points: 'Puntos: 100',
   totalTime: 'Tiempo total: 70 segundos',
-  totalClues: 'Número de pistas usadas: 3 segundos',
+  totalClues: 'Número de pistas usadas: 3',
   contestDate: /Fecha del concurso: 01\/04\/2025 \d{2}:\d{2}:\d{2}/,
   detailsButton: 'Detalles',
   exitButton: 'Salir',

@@ -5,10 +5,12 @@ import { useNavigate } from 'react-router';
 import CustomH1 from '../ReactComponents/CustomH1';
 import Container from '@mui/material/Container';
 import NavBar from "../NavBar/NavBar";
+import { useTranslation } from "react-i18next";
 
 const Credits = () => {
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const exitCredits = () => {
     navigate('/home');
@@ -28,7 +30,7 @@ const Credits = () => {
       }}
       >
         <CustomH1>
-          Participantes
+          {t("colaborators")}
         </CustomH1>
         <CustomH1 size="h5">
           UO288104@uniovi.es - Miguel Morís Gómez
@@ -46,7 +48,7 @@ const Credits = () => {
           UO295029@uniovi.es - Marcos Argüelles Rivera
         </CustomH1>
         <LargeButton onClick={exitCredits}>
-          Salir
+          {t("exit")}
         </ LargeButton>
       </Container>
     </div>
