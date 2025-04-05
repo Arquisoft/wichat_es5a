@@ -8,12 +8,17 @@ import { BrowserRouter } from 'react-router'
 describe('Juego component', () => {
     let mock;
     // Datos mockeados para la pregunta
-    const mockData = {
+    const mockData = [{
       question: '¿De qué país es esta bandera?',
       answer: 'España',
       wrongAnswers: ['Francia', 'Italia', 'Alemania'],
       image: null,
-    };
+    }, {
+        question: '¿De qué país es esta bandera?',
+      answer: 'Rusia',
+      wrongAnswers: ['Francia', 'Italia', 'Alemania'],
+      image: null,
+    }];
 
     // Configuración del mock
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
