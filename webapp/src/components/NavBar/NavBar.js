@@ -38,7 +38,7 @@ const NavigationBar = () => {
     <div id="navbar">
       <AppBar id="appbar" position="absolute">
         <Tabs id="tabsContainer" aria-label="navigation tabs" value={false} variant="fullWidth">
-          <Tab id="logo" aria-label="Logo" data-testid="logo-tab" icon={<Tooltip title="Home"><img src={IconWichat} alt="Icono" /></Tooltip>} onClick={showHome}/>
+          <Tab id="logo" aria-label="Logo" data-testid="logo-tab" icon={<Tooltip title="Home"><img src={IconWichat} alt="Icono" draggable="false"/></Tooltip>} onClick={showHome}/>
           <Tab id="wichat" label={t("title")} data-testid="wichat-tab" onClick={showHome} />
           <div style={{ flex: 7 }} />
           <Tab id='profile' label={t("profile")} data-testid="profile-tab" onClick={showProfile} />
