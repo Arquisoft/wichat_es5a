@@ -80,7 +80,7 @@ const ContestHistory = () => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-            <img src={question.image} alt="Imagen de la pregunta" className="responsive-img" />
+            <img src={question.image} alt="Imagen de la pregunta" className="responsive-img" draggable="false"/>
             <HistoryText size="h6">
               {`Pregunta: ${question.question}`}
             </HistoryText>
