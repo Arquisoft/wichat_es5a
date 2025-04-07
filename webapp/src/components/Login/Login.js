@@ -5,6 +5,7 @@ import { useNavigate, Navigate, Link } from 'react-router';
 import '../Components.css';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
+import NavBar from "../NavBar/NavBar";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -37,54 +38,57 @@ const Login = () => {
   };
 
   return (
-    <Container 
-      component="main" 
-      maxWidth={false} 
-      justifyContent="center">
-      {loginSuccess ? (
-        <Navigate to="/home" replace />
-      ) : (
-        <Box sx={{ width: '100%', textAlign: 'center', marginTop: 4 }}>
-          <CustomH1>
-            Inicia sesión
-          </CustomH1>
-          <TextField
-            margin="normal"
-            label="Nombre de usuario"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            sx={{ width: '20%'}}
-          />
-          <br></br>
-          <TextField
-            margin="normal"
-            label="Contraseña"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            sx={{ width: '20%'}}
-          />
-          <br></br>
-          <LargeButton  onClick={loginUser}>
-            Login
-          </LargeButton>
-          <br></br>
-          <Link 
-            name="gotoaddUser"
-            component="button"
-            to={"/addUser"}
-            sx={{ color: "#167D7F", '&:hover': { color: "#29A0B1" }, marginTop: 2 }}
-          >
-            ¿No tienes una cuenta todavía? ¡Regístrate aquí!
-          </Link>
-          <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Login successful" />
-          {error && (
-            <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
-          )}
-        </Box>
-        
-      )}
-    </Container>
+    <div>
+      <NavBar/>
+      <Container 
+        component="main" 
+        maxWidth={false} 
+        justifyContent="center">
+        {loginSuccess ? (
+          <Navigate to="/home" replace />
+        ) : (
+          <Box sx={{ width: '100%', textAlign: 'center', marginTop: 4 }}>
+            <CustomH1>
+              Inicia sesión
+            </CustomH1>
+            <TextField
+              margin="normal"
+              label="Nombre de usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              sx={{ width: '20%'}}
+            />
+            <br></br>
+            <TextField
+              margin="normal"
+              label="Contraseña"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              sx={{ width: '20%'}}
+            />
+            <br></br>
+            <LargeButton  onClick={loginUser}>
+              Login
+            </LargeButton>
+            <br></br>
+            <Link 
+              name="gotoaddUser"
+              component="button"
+              to={"/addUser"}
+              sx={{ color: "#167D7F", '&:hover': { color: "#29A0B1" }, marginTop: 2 }}
+            >
+              ¿No tienes una cuenta todavía? ¡Regístrate aquí!
+            </Link>
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Login successful" />
+            {error && (
+              <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
+            )}
+          </Box>
+          
+        )}
+      </Container>
+    </div>
   );
 };
 
