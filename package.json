@@ -10,5 +10,8 @@
     "start-all": "concurrently \"npm --prefix users/authservice start\" \"npm --prefix users/userservice start\" \"npm --prefix llmservice start\" \"npm --prefix wikiservice start\" \"npm --prefix historyservice start\" \"npm --prefix gatewayservice start\" \"npm --prefix webapp start\"",
     "start-first": "concurrently \"npm --prefix users/authservice start\" \"npm --prefix users/userservice start\" \"npm --prefix llmservice start\" \"npm --prefix wikiservice start\" \"npm --prefix historyservice start\"",
     "start-second": "concurrently \"npm --prefix gatewayservice start\" \"npm --prefix webapp start\""
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5"
   }
 }

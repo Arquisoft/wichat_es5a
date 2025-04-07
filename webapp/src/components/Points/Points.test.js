@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import Points from './Points';
+import "../../i18n.js"
 
 // Mock global de useNavigate
 const mockNavigate = jest.fn();
@@ -29,7 +30,7 @@ describe('Points Component', () => {
     renderPoints({ numRespuestasCorrectas: 7, numPreguntas: 10 });
 
     // Verificar que el puntaje se muestra correctamente
-    expect(screen.getByText('7/10 Acertadas')).toBeInTheDocument();
+    expect(screen.getByText('7/10 acertadas')).toBeInTheDocument();
     expect(screen.getByText('¡Bien hecho!')).toBeInTheDocument();
   });
 
@@ -57,6 +58,6 @@ describe('Points Component', () => {
     renderPoints();
 
     // Verificar que muestra 0/0 Acertadas por defecto
-    expect(screen.getByText('0/0 Acertadas')).toBeInTheDocument();
+    expect(screen.getByText('0/0 acertadas')).toBeInTheDocument();
   });
 });

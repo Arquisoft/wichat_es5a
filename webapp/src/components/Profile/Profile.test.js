@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import Profile from './Profile';
 import axios from 'axios';
+import "../../i18n.js"
 
 jest.mock('axios');
 
