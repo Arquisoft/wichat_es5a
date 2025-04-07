@@ -56,6 +56,9 @@ i18n.use(initReactI18next).init({
                 "easy": "Fácil",
                 "medium": "Media",
                 "difficult": "Difícil",
+                "username": "Nombre de usuario",
+                "password": "Contraseña",
+                "enter": "Entrar",
             }
         },
         en: {
@@ -111,6 +114,9 @@ i18n.use(initReactI18next).init({
                 "easy": "Easy",
                 "medium": "Medium",
                 "difficult": "Difficult",
+                "username": "Username",
+                "password": "Password",
+                "enter": "Enter",
             }
         }
     },
