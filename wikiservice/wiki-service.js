@@ -14,13 +14,13 @@ const wikiQuery = new WikiQuery();
 
 const queries = [{
   kind: "city",
-  question: "¿Qué ciudad es esta?",
+  question: "question-city",
   query: 'SELECT ?answerLabel ?image WHERE {' +
     '?answer wdt:P31 wd:Q515; wdt:P18 ?image; wdt:P1082 ?population. FILTER(?population > 1000000)' +
     ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }, {
   kind: "album",
-  question: "¿Cuál es el nombre de este álbum?",
+  question: "question-album",
   query: 'SELECT ?answerLabel ?image WHERE {' +
     '?answer wdt:P31 wd:Q482994;' +
     '        wdt:P18 ?image.' +
@@ -29,7 +29,7 @@ const queries = [{
     ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }, {
   kind: "football",
-  question: "¿Qué equipo de fútbol es este?",
+  question: "question-football",
   query: 'SELECT ?answerLabel ?image WHERE {' +
     '?answer wdt:P31 wd:Q476028;' +
     '     wdt:P154 ?image.' +
@@ -37,14 +37,14 @@ const queries = [{
     'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }, {
   kind: "flag",
-  question: "¿De qué país es esta bandera?",
+  question: "question-flag",
   query: 'SELECT ?answerLabel ?image WHERE {' +
     '?answer wdt:P31 wd:Q6256;' +
     '         wdt:P41 ?image.' +
     ' SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }, {
   kind: "music",
-  question: "¿Qué grupo es?",
+  question: "question-music",
   query: 'SELECT ?answerLabel ?image WHERE {' +
       '?answer wdt:P31 wd:Q215380;' +
       '         wdt:P18 ?image;' +
@@ -52,7 +52,7 @@ const queries = [{
       'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
 }, {
   kind: "food",
-  question: "¿Qué plato de comida es?",
+  question: "question-food",
   query: 'SELECT ?answerLabel ?image WHERE {' +
       '?answer wdt:P31 wd:Q2095;' +
       '       wdt:P18 ?image;' +
