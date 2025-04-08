@@ -6,6 +6,7 @@ import HistoryText from '../ReactComponents/HistoryText';
 import Container from '@mui/material/Container';
 import NavBar from "../NavBar/NavBar";
 import LargeButton from '../ReactComponents/LargeButton';
+import { useTranslation } from "react-i18next";
 
 const ContestHistory = () => {
 
@@ -16,6 +17,7 @@ const ContestHistory = () => {
   const [times, setTimes] = useState([]);
   const [clues, setClues] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
+  const { t } = useTranslation();
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -65,9 +67,9 @@ const ContestHistory = () => {
           justifyContent: 'center',
         }}
       >
-        <CustomH1 size="h2">Historial de preguntas</CustomH1>
+        <CustomH1 size="h2">{t("history-title")}</CustomH1>
         <LargeButton onClick={exitContestHistory}>
-          Salir
+          {t("exit")}
         </LargeButton>
         {questions.map((question, index) => (
           <Container 
@@ -80,27 +82,27 @@ const ContestHistory = () => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-            <img src={question.image} alt="Imagen de la pregunta" className="responsive-img" />
+            <img src={question.image} alt={t("question-img-alt")} className="responsive-img" draggable="false"/>
             <HistoryText size="h6">
-              {`Pregunta: ${question.question}`}
+              {t("question")}{`: ${question.question}`}
             </HistoryText>
             <HistoryText size="h6">
-              {`Respuestas mostradas: ${question.wrongAnswers[0]}, ${question.wrongAnswers[1]}, ${question.wrongAnswers[2]}, ${question.wrongAnswers[3]}`}
+              {t("answers-shown")}{`: ${question.wrongAnswers[0]}, ${question.wrongAnswers[1]}, ${question.wrongAnswers[2]}, ${question.wrongAnswers[3]}`}
             </HistoryText>
             <HistoryText size="h6">
-              {`Respuesta correcta: ${question.answer}`}
+              {t("correct-answer")}{`: ${question.answer}`}
             </HistoryText>
             <HistoryText size="h6">
-              {`Acertada: ${correctAnswers[index] === 0 ? '❌' : '✅'}`}
+              {t("correct")}{`: ${correctAnswers[index] === 0 ? '❌' : '✅'}`}
             </HistoryText>
             <HistoryText size="h6">
-              {`Tiempo en responder: ${times[index]} segundos`}
+              {t("time-to-answer")}{`: ${times[index]}`} {t("seconds")}
             </HistoryText>
             <HistoryText size="h6">
-              {`Número de pistas usadas: ${clues[index]}`}
+              {t("number-of-clues")}{`: ${clues[index]}`}
             </HistoryText>
             <HistoryText size="h6">
-              {`Fecha de generación de la pregunta: ${formatDate(question.createdAt)}`}
+              {t("question-generation-date")}{`: ${formatDate(question.createdAt)}`}
             </HistoryText>
           </Container>
         ))}

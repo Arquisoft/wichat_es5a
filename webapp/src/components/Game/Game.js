@@ -71,30 +71,32 @@ const Juego = () => {
       if (!mode) {
         console.error('El modo de juego no está definido, usando valor por defecto.');
       }
-      try{
+      try {
         const total = numPreguntas;
         let current = 0;
-
+        const response = await axios.post(`${apiEndpoint}/questions/${mode}`, {
+          numQuestions: total
+        });
+        const preguntas = response.data;
         while (numPreguntas > 0) {
-          const response = await axios.post(`${apiEndpoint}/questions/${mode}`); // A elegir entre city, flag, album o football
-          const respuestas = [...response.data.wrongAnswers, response.data.answer];
+          let pregunta = preguntas[current];
+          const respuestas = [...pregunta.wrongAnswers, pregunta.answer];
           const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
-
           arPreg.push({
             id: numPreguntas,
-            pregunta: response.data.question,
-            resCorr: response.data.answer,
+            pregunta: pregunta.question,
+            resCorr: pregunta.answer,
             resFalse: respuestasAleatorias,
-            imagen: response.data.image,
+            imagen: pregunta.image,
           });
           current++;
           const progress = Math.round(100 * Math.log10(1 + (current / total) * 9)); // escala logarítmica en base 10
           setLoadingProgress(progress > loadingProgress ? progress : loadingProgress); // solo actualiza si es mayor
           numPreguntas--;
         }
-      }catch (error) {
+      } catch (error) {
           console.error('Error al crear las preguntas:', error);
-        }
+      }
       setLoadingComplete(true);
       setPausarTemporizador(false);
       updateGame();
@@ -286,7 +288,7 @@ const handleRestart = () => {
               </Box>
               {imagenPregunta && (
                 <Box className="image-container">
-                  <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" />
+                  <img src={imagenPregunta} alt="Imagen de la pregunta" className="responsive-img" draggable="false"/>
                 </Box>
               )}
               <Grid container spacing={2} className="button-container">

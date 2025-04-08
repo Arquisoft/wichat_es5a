@@ -5,18 +5,21 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.3",
     "@mui/icons-material": "^5.15.3",
+    "@mui/material": "^5.15.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.2",
     "axios": "^1.7.9",
+    "i18next": "^23.10.1",
     "react": "^18.2.0",
     "react-dom": "^18.3.1",
+    "react-i18next": "^13.2.0",
     "react-router": "^7.3.0",
     "react-router-dom": "^7.3.0",
     "react-scripts": "5.0.1",
     "react-simple-typewriter": "^5.0.1",
+    "react-world-flags": "^1.6.0",
     "web-vitals": "^3.5.1"
   },
   "scripts": {
@@ -24,7 +27,7 @@
     "build": "react-scripts build",
     "prod": "serve -s build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/'",
-    "test:e2e": "start-server-and-test 'node e2e/test-environment-setup.js' http://localhost:8000/health prod 3000 \"cd e2e && jest\"",
+    "test:e2e": "start-server-and-test 'node e2e/test-environment-setup.js' http://localhost:8000/health prod 8080 \"cd e2e && jest\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

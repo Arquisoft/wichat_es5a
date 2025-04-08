@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';  
 import GameMode from './GameMode';  
+import "../../i18n.js"
 
 describe('GameMode component', () => {
 
@@ -74,7 +75,7 @@ describe('GameMode component', () => {
       </BrowserRouter>
     );
 
-    const startButton = screen.getByRole('button', { name: /Empezar juego/i });
+    const startButton = screen.getByRole('button', { name: /Jugar/i });
     const ciudadesButton = screen.getByText(/Ciudades/i);
     const facilButton = screen.getByText(/Fácil/i);
 
@@ -98,7 +99,7 @@ describe('GameMode component', () => {
 
     const ciudadesButton = screen.getByText(/Ciudades/i);
     const facilButton = screen.getByText(/Fácil/i);
-    const startButton = screen.getByRole('button', { name: /Empezar juego/i });
+    const startButton = screen.getByRole('button', { name: /Jugar/i });
 
     // Seleccionamos el modo y la dificultad
     fireEvent.click(ciudadesButton);
