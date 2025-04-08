@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const app = require('./wiki-service');
 const Question = require('./question-model');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const WikiQuery = require('./wiki-query');
+
+const wikiQuery = new WikiQuery(); // Crear una instancia de WikiQuery
 
 let mongoServer;
 
