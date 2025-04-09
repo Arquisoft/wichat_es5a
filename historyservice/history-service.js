@@ -46,7 +46,7 @@ app.get('/health', (req, res) => {
         }
         const newContest = new Contest(contestData)
         await newContest.save()
-        res.json({ success: true });
+        res.json({ id: newContest.id });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }

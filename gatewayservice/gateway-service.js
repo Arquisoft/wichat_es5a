@@ -3,7 +3,7 @@ const axios = require('axios');
 const cors = require('cors');
 const promBundle = require('express-prom-bundle');
 //libraries required for OpenAPI-Swagger
-const swaggerUi = require('swagger-ui-express'); 
+const swaggerUi = require('swagger-ui-express');
 const fs = require("fs")
 const YAML = require('yaml')
 
@@ -20,7 +20,7 @@ app.use(cors());
 app.use(express.json());
 
 //Prometheus configuration
-const metricsMiddleware = promBundle({includeMethod: true});
+const metricsMiddleware = promBundle({ includeMethod: true });
 app.use(metricsMiddleware);
 
 // Health check endpoint
@@ -31,7 +31,7 @@ app.get('/health', (req, res) => {
 app.post('/login', async (req, res) => {
   try {
     // Forward the login request to the authentication service
-    const authResponse = await axios.post(authServiceUrl+'/login', req.body);
+    const authResponse = await axios.post(authServiceUrl + '/login', req.body);
     res.json(authResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
@@ -41,7 +41,7 @@ app.post('/login', async (req, res) => {
 app.post('/adduser', async (req, res) => {
   try {
     // Forward the add user request to the user service
-    const userResponse = await axios.post(userServiceUrl+'/adduser', req.body);
+    const userResponse = await axios.post(userServiceUrl + '/adduser', req.body);
     res.json(userResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
@@ -63,7 +63,7 @@ app.get('/profile', async (req, res) => {
 app.post('/askllm', async (req, res) => {
   try {
     // Forward the add user request to the user service
-    const llmResponse = await axios.post(llmServiceUrl+'/ask', req.body);
+    const llmResponse = await axios.post(llmServiceUrl + '/ask', req.body);
     res.json(llmResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
@@ -75,7 +75,7 @@ app.post('/questions/:kind', async (req, res) => {
     const wikiResponse = await axios.post(wikiServiceUrl + '/questions/' + req.params.kind, req.body);
     res.json(wikiResponse.data);
   } catch (error) {
-    res.status(error.response.status).json({error: error.response.data.error });
+    res.status(error.response.status).json({ error: error.response.data.error });
   }
 });
 
@@ -83,18 +83,19 @@ app.post('/savegame', async (req, res) => {
   try {
     const historyResponse = await axios.post(historyServiceUrl + '/savegame', req.body);
 
-    /*
-    const userResponse = await axios.get(userServiceUrl + '/profile', 
-    {
-      headers: req.headers, // Encabezados, incluyendo Authorization
-    });
-    console.log(userServiceUrl + '/savegame')
-    const userResponse2 = await axios.post(userServiceUrl + '/savegame', { id: historyResponse.data.id, username: userResponse.data.username });
-    */
+    const userResponse = await axios.get(userServiceUrl + '/savegame',
+      {
+        id: historyResponse.data
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Envía el token en la cabecera Authorization
+        },
+      });
 
-    res.json(historyResponse.data);
+    res.json(userResponse.data);
   } catch (error) {
-    res.status(error.response.status).json({error: error.response.data.error });
+    res.status(error.response.status).json({ error: error.response.data.error });
   }
 });
 
@@ -103,7 +104,7 @@ app.get('/gethistory', async (req, res) => {
     const historyResponse = await axios.get(historyServiceUrl + '/gethistory');
     res.json(historyResponse.data);
   } catch (error) {
-    res.status(error.response.status).json({error: error.response.data.error });
+    res.status(error.response.status).json({ error: error.response.data.error });
   }
 });
 
@@ -112,12 +113,12 @@ app.get('/getquestions/:id', async (req, res) => {
     const historyResponse = await axios.get(historyServiceUrl + `/getquestions/${req.params.id}`);
     res.json(historyResponse.data);
   } catch (error) {
-    res.status(error.response.status).json({error: error.response.data.error });
+    res.status(error.response.status).json({ error: error.response.data.error });
   }
 });
 
 // Read the OpenAPI YAML file synchronously
-openapiPath='./openapi.yaml'
+openapiPath = './openapi.yaml'
 if (fs.existsSync(openapiPath)) {
   const file = fs.readFileSync(openapiPath, 'utf8');
 
