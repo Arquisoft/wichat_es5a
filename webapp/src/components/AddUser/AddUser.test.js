@@ -7,6 +7,12 @@ import AddUser from "./AddUser";
 
 const mockAxios = new MockAdapter(axios);
 
+const fillForm = (username, password, confirmPassword) => {
+  fireEvent.change(screen.getByTestId('username-input'), { target: { value: username } });
+  fireEvent.change(screen.getByTestId('password-input'), { target: { value: password } });
+  fireEvent.change(screen.getByTestId('confirm-password-input'), { target: { value: confirmPassword } });
+};
+
 describe('AddUser component', () => {
 
   beforeEach(() => {
@@ -40,9 +46,7 @@ describe('AddUser component', () => {
         </BrowserRouter>
       );
   
-      fireEvent.change(screen.getByTestId('username-input'), { target: { value: 'testadduser' } });
-      fireEvent.change(screen.getByTestId('password-input'), { target: { value: 'testadduserpass' } });
-      fireEvent.change(screen.getByTestId('confirm-password-input'), { target: { value: 'testadduserpass' } });
+      fillForm('testadduser', 'testadduserpass', 'testadduserpass');
   
       await act(async () => {
         fireEvent.click(screen.getByTestId('signup-button'));
@@ -67,9 +71,7 @@ describe('AddUser component', () => {
     );
 
 
-    fireEvent.change(screen.getByTestId('username-input'), { target: { value: 'testadduser' } });
-    fireEvent.change(screen.getByTestId('password-input'), { target: { value: 'testadduserpass' } });
-    fireEvent.change(screen.getByTestId('confirm-password-input'), { target: { value: 'testadduserpass' } });
+    fillForm('testadduser', 'testadduserpass', 'testadduserpass');
 
     await act(async () => {
       fireEvent.click(screen.getByTestId('signup-button'));
