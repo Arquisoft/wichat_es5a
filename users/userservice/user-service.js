@@ -106,31 +106,31 @@ app.get('/health', (req, res) => {
 app.post('/adduser', async (req, res) => {
   try {
       // Check if required fields are present in the request body
-      validateRequiredFields(req, ['username','password']);
-      const { username/*, email, password */} = req.body;
+      validateRequiredFields(req, ['username','password','confirmPassword']);
+      const { username, password, confirmPassword } = req.body;
+      if (password !== confirmPassword) {
+        return res.status(400).json({ error: "Las contraseñas no coinciden" });
+      }
       const user_Username = await findOne(username, null);
       //const user_Email = await findOne(null, email);
       const user_Email = false; // Ahora mismo los usuarios no tienen email, cuando lo tengan cambiar la linea por la de arriba
       if(user_Email || user_Username ){
           throw new Error("Ya se ha registrado un usuario con ese email o nombre de usuario");
-      }else{
-          // Encrypt the password before saving it
-          const hashedPassword = await bcrypt.hash(req.body.password, 10);
-          //const user_Username = await findOne(username, null); // Creo que esta está mal???
-          //const user_Email = await findOne(null, email); // Creo que está mal???
-          const newUser = new User({
-              username: req.body.username,
-              email: req.body.username, //Cuando estén implementados los correos, cambiar esta linea por el correo. Si se cambia ahora da un error al tener varios correos con null
-              password: hashedPassword,
-          });
-
-          const token = jwt.sign({ userId: newUser._id,
-            username: user_Username }, 'your-secret-key', { expiresIn: '1h' });
-
-          await newUser.save();
-          res.json({token: token, user: newUser});
       }
+      const newUser = new User({
+        username,
+        email: username, //Cambiar más adelante por email
+        password: await bcrypt.hash(password, 10), //Guarda la contraseña encriptada
+      });
 
+      const token = jwt.sign(
+        { userId: newUser._id, username: newUser.username },
+        secretKey,
+        { expiresIn: '1h' }
+      );
+
+      await newUser.save();
+      res.json({token: token, user: newUser});
   } catch (error) {
     console.log("Error: " + error)
     res.status(400).json({ error: error.message }); 
