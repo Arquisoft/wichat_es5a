@@ -1,64 +1,81 @@
 import React from 'react';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import { render, fireEvent, screen, waitFor, act } from '@testing-library/react';
+import { BrowserRouter } from 'react-router';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import AddUser from './AddUser';
+import AddUser from "./AddUser";
 
 const mockAxios = new MockAdapter(axios);
 
 describe('AddUser component', () => {
 
+  beforeEach(() => {
+      mockAxios.reset();
+      localStorage.clear();
+  });
+
   it('should always pass', () => {
     expect(true).toBe(true);
   });
+  
+  it('should render the add user form correctly', () => {
+    render(
+      <BrowserRouter>
+        <AddUser/>
+      </BrowserRouter>
+    );
 
-  /*beforeEach(() => {
-    mockAxios.reset();
+    expect(screen.getByLabelText(/Nombre de usuario/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Contraseña/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Registrarse/i })).toBeInTheDocument();
+    expect(screen.getByText(/¿Ya tienes una cuenta/i)).toBeInTheDocument();
   });
 
-  it('should add user successfully', async () => {
-    render(<AddUser />);
+  it('should add a user successfully', async () => {
+      mockAxios.onPost('http://localhost:8000/adduser').reply(200, { token: 'mocked_token' });
+  
+      render(
+        <BrowserRouter>
+          <AddUser/>
+        </BrowserRouter>
+      );
+  
+      fireEvent.change(screen.getByLabelText(/Nombre de usuario/i), { target: { value: 'testadduser' } });
+      fireEvent.change(screen.getByLabelText(/Contraseña/i), { target: { value: 'testadduserpass' } });
+  
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: /Registrarse/i }));
+      });
+  
+      await waitFor(() => {
+        expect(localStorage.getItem('token')).toBe('mocked_token');
+      });
 
-    const usernameInput = screen.getByLabelText(/Username/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
-    const addUserButton = screen.getByRole('button', { name: /Add User/i });
-
-    // Mock the axios.post request to simulate a successful response
-    mockAxios.onPost('http://localhost:8000/adduser').reply(200);
-
-    // Simulate user input
-    fireEvent.change(usernameInput, { target: { value: 'testUser' } });
-    fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
-
-    // Trigger the add user button click
-    fireEvent.click(addUserButton);
-
-    // Wait for the Snackbar to be open
-    await waitFor(() => {
-      expect(screen.getByText(/User added successfully/i)).toBeInTheDocument();
-    });
+      await waitFor(() => {
+        expect(screen.getAllByText(/Usuario añadido con éxito/i)[0]).toBeInTheDocument();
+      })
   });
 
   it('should handle error when adding user', async () => {
-    render(<AddUser />);
-
-    const usernameInput = screen.getByLabelText(/Username/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
-    const addUserButton = screen.getByRole('button', { name: /Add User/i });
-
-    // Mock the axios.post request to simulate an error response
     mockAxios.onPost('http://localhost:8000/adduser').reply(500, { error: 'Internal Server Error' });
+  
+    render(
+      <BrowserRouter>
+        <AddUser/>
+      </BrowserRouter>
+    );
 
-    // Simulate user input
-    fireEvent.change(usernameInput, { target: { value: 'testUser' } });
-    fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
 
-    // Trigger the add user button click
-    fireEvent.click(addUserButton);
+    fireEvent.change(screen.getByLabelText(/Nombre de usuario/i), { target: { value: 'testadduser' } });
+    fireEvent.change(screen.getByLabelText(/Contraseña/i), { target: { value: 'testadduserpass' } });
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /Registrarse/i }));
+    });
 
     // Wait for the error Snackbar to be open
     await waitFor(() => {
       expect(screen.getByText(/Error: Internal Server Error/i)).toBeInTheDocument();
     });
-  });*/
+  });
 });

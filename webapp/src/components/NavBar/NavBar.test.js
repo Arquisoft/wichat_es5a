@@ -7,6 +7,7 @@ import "../../i18n.js"
 describe('NavBar component', () => {
     
     beforeEach(() => {
+        localStorage.setItem('token', "test-tocken");
         renderNavBar();
     });
 
