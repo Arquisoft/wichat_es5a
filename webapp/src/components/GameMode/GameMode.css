@@ -1,31 +1,31 @@
 #button-start {
-    background-color: #00735C;
-    color: white;
-    width: 15%;
+    background-color: #00735C !important;
+    color: white !important;
+    width: 15% !important;
 }
 
 #button-start:disabled, #button-start:hover {
-    background-color: #29A0B1;
+    background-color: #29A0B1 !important;
 }
 
 .selected {
-    background-color: #606462;
-    border: 1px solid #606462;
-    color: white;
+    background-color: #606462 !important;
+    border: 1px solid #606462 !important;
+    color: white !important;
 }
 
 .selected:hover {
-    background-color: darkgray;
-    border-color: darkgray;
+    background-color: darkgray !important;
+    border-color: darkgray !important;
 }
 
 .unselected {
-    background-color: transparent;
-    border: 1px solid #606462;
-    color: #606462;
+    background-color: transparent !important;
+    border: 1px solid #606462 !important;
+    color: #606462 !important;
 }
 
 .unselected:hover {
-    background-color: rgba(128, 128, 128, 0.1);
-    border-color: darkgray;
+    background-color: rgba(128, 128, 128, 0.1) !important;
+    border-color: darkgray !important;
 }
