@@ -24,6 +24,7 @@ describe('User Service', () => {
       username: 'testuser',
       //email: 'testuser@example.com',
       password: 'testpassword',
+      confirmPassword: 'testpassword'
     };
 
     const response = await request(app).post('/adduser').send(newUser);
@@ -53,14 +54,26 @@ describe('User Service', () => {
     expect(response.body).toHaveProperty('error');
   });
 
+  it('should return 400 if passwords do not match in /adduser', async () => {
+    const response = await request(app)
+      .post('/adduser')
+      .send({
+        username: 'usernomatch',
+        password: 'pass123',
+        confirmPassword: 'diff123'
+      });
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('error', 'Las contraseñas no coinciden');
+  });
+
   it('should return 400 if user already exists in /adduser', async () => {
     await request(app)
       .post('/adduser')
-      .send({ username: 'testuser', password: 'password123' });
+      .send({ username: 'testuser', password: 'password123',confirmPassword: 'password123' });
 
     const response = await request(app)
       .post('/adduser')
-      .send({ username: 'testuser', password: 'password123' });
+      .send({ username: 'testuser', password: 'password123' ,confirmPassword: 'password123'});
 
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('error');

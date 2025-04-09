@@ -13,13 +13,14 @@ const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000
 const AddUser = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const addUser = async () => {
     try {
-      const response = await axios.post(`${apiEndpoint}/adduser`, { username, password });
+      const response = await axios.post(`${apiEndpoint}/adduser`, { username, password,confirmPassword });
 
       const { token } = response.data;
 
@@ -44,6 +45,7 @@ const AddUser = () => {
           label={t("username")}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          inputProps={{ "data-testid": "username-input" }}
           sx={{ width: '20%'}}
         />
         <br></br>
@@ -54,10 +56,22 @@ const AddUser = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          inputProps={{ "data-testid": "password-input" }}
           sx={{ width: '20%'}}
         />
         <br></br>
-        <LargeButton onClick={addUser}>
+        <TextField
+          name="confirmPassword"
+          margin="normal"
+          label={t("confirmPassword")}
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          inputProps={{ "data-testid": "confirm-password-input" }}
+          sx={{ width: '20%' }}
+        />
+        <br></br>
+        <LargeButton data-testid="signup-button" onClick={addUser}>
           {t("signup")}
         </LargeButton>
         <br></br>
