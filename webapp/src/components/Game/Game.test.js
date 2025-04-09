@@ -141,40 +141,87 @@ describe('Juego component', () => {
         await waitFor(() => expect(screen.getByText(/Respuesta del LLM:/i)).toBeInTheDocument());
     });
 
-    // it('carga la siguiente pregunta al hacer clic en el botón "Siguiente pregunta"', async () => {
-    //     // Simula dos respuestas de la API.
-    //     mockAxios.onPost(`${apiEndpoint}/questions/flag`).reply(200, [
-    //         {
-    //             question: '¿De qué país es esta bandera?',
-    //             answer: 'España',
-    //             wrongAnswers: ['Francia', 'Italia', 'Alemania'],
-    //             image: null,
-    //         },
-    //         {
-    //             question: '¿De qué país es esta bandera?',
-    //             answer: 'Japón',
-    //             wrongAnswers: ['China', 'Corea del Sur', 'Vietnam'],
-    //             image: null,
-    //         },
-    //     ]);
+  
     
-    //     // Renderiza el componente Juego dentro de BrowserRouter.
-    //     render(
-    //         <BrowserRouter>
-    //             <Juego />
-    //         </BrowserRouter>
-    //     );
+    it('carga la siguiente pregunta al hacer clic en el botón "Siguiente pregunta"', async () => {
+        // Renderiza el componente Juego dentro de BrowserRouter.
+        render(
+            <BrowserRouter>
+                <Juego />
+            </BrowserRouter>
+        );
     
-    //     // Espera a que la primera pregunta y las respuestas se rendericen.
-    //     await waitFor(() => expect(screen.getByText('España')).toBeInTheDocument());
+        // Espera a que la primera pregunta y las respuestas se rendericen.
+        await waitFor(() => expect(screen.getByText('España')).toBeInTheDocument());
     
-    //     // Simula el clic en el botón "Siguiente pregunta".
-    //     fireEvent.click(screen.getByRole('button', { name: /Siguiente pregunta/i }));
+        // Simula el clic en el botón "Siguiente pregunta".
+        fireEvent.click(screen.getByRole('button', { name: /Siguiente pregunta/i }));
     
-    //     // Espera a que la segunda pregunta y las respuestas se rendericen.
-    //     await waitFor(() => expect(screen.getByText('Japón')).toBeInTheDocument());
+        // Espera a que la segunda pregunta y las respuestas se rendericen.
+        await waitFor(() => expect(screen.getByText('Rusia')).toBeInTheDocument());
     
-    //     // Verifica que la nueva pregunta se ha cargado correctamente.
-    //     expect(screen.getByText('¿De qué país es esta bandera?')).toBeInTheDocument();
-    // });
+        // Verifica que la nueva pregunta se ha cargado correctamente.
+        expect(screen.getByText('¿De qué país es esta bandera?')).toBeInTheDocument();
+    });
+    
+    it('muestra el temporizador correctamente', async () => {
+        // Renderiza el componente Juego dentro de BrowserRouter.
+        render(
+            <BrowserRouter>
+                <Juego />
+            </BrowserRouter>
+        );
+    
+        // Verifica que el temporizador se renderiza correctamente.
+        expect(screen.getByText(/Tiempo restante/i)).toBeInTheDocument();
+    
+        // Simula la actualización del temporizador.
+        const temporizador = screen.getByText(/Tiempo restante/i);
+        expect(temporizador).toBeInTheDocument();
+    });
+    
+    it('desactiva los botones después de seleccionar una respuesta', async () => {
+        // Renderiza el componente Juego dentro de BrowserRouter.
+        render(
+            <BrowserRouter>
+                <Juego />
+            </BrowserRouter>
+        );
+    
+        // Espera a que las respuestas se rendericen.
+        await waitFor(() => screen.getByText('España'));
+    
+        // Simula el clic en una respuesta.
+        fireEvent.click(screen.getByText('España'));
+    
+        // Verifica que todos los botones están deshabilitados.
+        expect(screen.getByText('España')).toBeDisabled();
+        expect(screen.getByText('Francia')).toBeDisabled();
+        expect(screen.getByText('Italia')).toBeDisabled();
+        expect(screen.getByText('Alemania')).toBeDisabled();
+    });
+    
+    it('resta puntos al usar el botón de pista', async () => {
+        // Simula la respuesta del LLM.
+        mock.onPost('http://localhost:8003/ask').reply(200, {
+            answer: 'Una pista sobre la bandera.',
+        });
+    
+        // Renderiza el componente Juego dentro de BrowserRouter.
+        render(
+            <BrowserRouter>
+                <Juego />
+            </BrowserRouter>
+        );
+    
+        // Espera a que el botón de pista esté habilitado.
+        const pistaButton = await screen.findByRole('button', { name: /¿Necesitas una pista?/i });
+        await waitFor(() => expect(pistaButton).not.toBeDisabled());
+    
+        // Simula el clic en el botón de pista.
+        fireEvent.click(pistaButton);
+    
+        // Verifica que los puntos se restan correctamente.
+        expect(screen.getByText(/Puntuación: -20/i)).toBeInTheDocument();
+    });
 });
