@@ -38,7 +38,7 @@ const Juego = () => {
   const [numPreguntas, setNumPreguntas] = useState(0)
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadingComplete, setLoadingComplete] = useState(false);
-  const [points] = useState(0)
+  const [points, setPoints] = useState(0); // Estado para manejar la puntuación
   const [tiempoRestante, setTiempoRestante] = useState(20); // Tiempo inicial del temporizador
   const [arTiempo] = useState([]); // Array para almacenar el tiempo restante
   const [numPistas, setNumPistas] = useState(0); // Número de pistas solicitadas
@@ -47,7 +47,10 @@ const Juego = () => {
   const [mostrarChat, setMostrarChat] = useState(false);
   const location = useLocation();
   const { mode = 'flag', difficulty = 'Fácil' } = location.state || {};
+  const [botonPistaHabilitado, setBotonPistaHabilitado] = useState(true); 
+  const [botonChatHabilitado, setBotonChatHabilitado] = useState(true); 
 
+  
     // Estados para el LLM
     const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
   
@@ -115,14 +118,16 @@ const Juego = () => {
 
   // Función para enviar una solicitud al LLM y obtener una pista
   const enviarRespuestaALlm = async () => {
+    if (!botonPistaHabilitado) return; // Evitar múltiples ejecuciones
+    setBotonPistaHabilitado(false); // Deshabilitar el botón de pista
     setNumPistas(numPistas + 1);
+    setPoints((prevPoints) => prevPoints - 20); // Restar 20 puntos por usar la pista
     try {
       const response = await axios.post(`${apiEndpoint}/askllm`, {
-          question: "",
-          model: 'gemini',
-          mode: mode,
-          resCorr: resCorr
-        
+        question: "",
+        model: 'gemini',
+        mode: mode,
+        resCorr: resCorr
       });
       setRespuestaLLM(response.data.answer || "No se recibió una respuesta válida del LLM.");
       console.log("Respuesta del LLM:", response.data.answer || "No se recibió respuesta válida.");
@@ -132,20 +137,31 @@ const Juego = () => {
     }
   };
 
+  // Función para manejar el botón del chat
+  const toggleChat = () => {
+    if (!botonChatHabilitado) return; // Evitar múltiples ejecuciones
+    setBotonChatHabilitado(false); // Deshabilitar el botón del chat
+    setPoints((prevPoints) => prevPoints - 40); // Restar 40 puntos por usar el chat
+    setMostrarChat(!mostrarChat);
+  };
+
   /**
      * Funcion que se llamara al hacer click a una de las respuestas
      */
   const botonRespuesta = (respuesta) => { 
-    //Comprueba si la respuesta es correcta o no y pone la variable victoria a true o false
-    //por ahora esta variable no se utiliza para nada
+    // Pausar el temporizador
     setPausarTemporizador(true);
-    if(respuesta === resCorr){
-      //Aumenta en 1 en las estadisticas de juegos ganado
+
+    if (respuesta === resCorr) {
+      // Respuesta correcta
       arCorrect.push(true);
-      setNumRespuestasCorrectas(numRespuestasCorrectas+1);
+      setNumRespuestasCorrectas(numRespuestasCorrectas + 1);
+      setPoints((prevPoints) => prevPoints + 100); // Sumar 100 puntos por respuesta correcta
     } else {
+      // Respuesta incorrecta
       arCorrect.push(false);
     }
+
     cambiarColorBotones(respuesta, true);
   };
 
@@ -222,7 +238,8 @@ const clickSiguiente = () => {
     navigate('/points', {
       state: {
         numRespuestasCorrectas: numRespuestasCorrectas,
-        numPreguntas: numPreguntas
+        numPreguntas: numPreguntas,
+        points: points, 
       }
     });
     return;
@@ -258,7 +275,12 @@ const handleRestart = () => {
           {/* Columna izquierda */}
           <Grid item xs={12} md={3}>
             <Stack spacing={2}>
-              <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm} disabled={!loadingComplete}>
+              <Button
+                id="botonPista"
+                variant="contained"
+                onClick={enviarRespuestaALlm}
+                disabled={!botonPistaHabilitado || !loadingComplete}
+              >
                 ¿Necesitas una pista?
               </Button>
               {respuestaLLM && (
@@ -266,15 +288,17 @@ const handleRestart = () => {
                   <strong>Respuesta del LLM:</strong> {respuestaLLM}
                 </Box>
               )}
-             <Button id="botonChat" variant="contained" onClick={() => setMostrarChat(!mostrarChat)}>
+              <Button
+                id="botonChat"
+                variant="contained"
+                onClick={toggleChat}
+                disabled={!botonChatHabilitado || !loadingComplete}
+              >
                 {mostrarChat ? 'Cerrar Chat' : 'Hablar con el Chat'}
               </Button>
               {mostrarChat && (
                 <Box className="chatbot-container" p={2} border="1px solid #ccc" borderRadius="5px">
-                 <ChatBot 
-                    respuestaCorrecta={resCorr} 
-                    mode={mode} 
-                  />
+                  <ChatBot respuestaCorrecta={resCorr} mode={mode} />
                 </Box>
               )}
             </Stack>
@@ -322,7 +346,7 @@ const handleRestart = () => {
                 />
               </Box>
               <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
-                Puntuación: {numRespuestasCorrectas * 100}
+                Puntuación: {points}
               </Box>
               <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente} disabled={!loadingComplete}>
                 Siguiente pregunta
