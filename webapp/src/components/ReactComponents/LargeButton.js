@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 
-const LargeButton = ({ onClick, children, width }) => {
+const LargeButton = ({ onClick, children, width, ...props }) => {
   return (
     <Button
       onClick={onClick}
@@ -12,6 +12,7 @@ const LargeButton = ({ onClick, children, width }) => {
         marginTop: 2,
         width: width || '15%'
       }}
+      {...props}//Permite aceptar las etiquetas data-testid que se usan para el AddUser.test
     >
       {children}
     </Button>
