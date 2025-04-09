@@ -4,17 +4,33 @@ import axios from 'axios';
 import Juego from './Game';
 import MockAdapter from 'axios-mock-adapter';
 import { BrowserRouter } from 'react-router'
+import "../../i18n.js"
 
 describe('Juego component', () => {
     let mock;
     // Datos mockeados para la pregunta
     const mockData = [{
-      question: '¿De qué país es esta bandera?',
+      question: 'question-flag',
       answer: 'España',
       wrongAnswers: ['Francia', 'Italia', 'Alemania'],
       image: null,
     }, {
-        question: '¿De qué país es esta bandera?',
+      question: 'question-flag',
+      answer: 'Rusia',
+      wrongAnswers: ['Francia', 'Italia', 'Alemania'],
+      image: null,
+    }, {
+      question: 'question-flag',
+      answer: 'Rusia',
+      wrongAnswers: ['Francia', 'Italia', 'Alemania'],
+      image: null,
+    }, {
+      question: 'question-flag',
+      answer: 'Rusia',
+      wrongAnswers: ['Francia', 'Italia', 'Alemania'],
+      image: null,
+    }, {
+      question: 'question-flag',
       answer: 'Rusia',
       wrongAnswers: ['Francia', 'Italia', 'Alemania'],
       image: null,

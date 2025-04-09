@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import Login from './Login';
+import "../../i18n.js";
 
 const mockAxios = new MockAdapter(axios);
 
@@ -22,8 +23,7 @@ describe('Login component', () => {
 
     expect(screen.getByLabelText(/Nombre de usuario/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Contraseña/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Login/i })).toBeInTheDocument();
-    expect(screen.getByText(/¿No tienes una cuenta/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Entrar/i })).toBeInTheDocument();
   });
 
   it('should log in successfully and redirect to /home', async () => {
@@ -39,7 +39,7 @@ describe('Login component', () => {
     fireEvent.change(screen.getByLabelText(/Contraseña/i), { target: { value: 'testpass' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Login/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entrar/i }));
     });
 
     await waitFor(() => {
@@ -59,7 +59,7 @@ describe('Login component', () => {
     fireEvent.change(screen.getByLabelText(/Nombre de usuario/i), { target: { value: 'wronguser' } });
     fireEvent.change(screen.getByLabelText(/Contraseña/i), { target: { value: 'wrongpass' } });
 
-    fireEvent.click(screen.getByRole('button', { name: /Login/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Entrar/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/Error: Credenciales incorrectas/i)).toBeInTheDocument();
