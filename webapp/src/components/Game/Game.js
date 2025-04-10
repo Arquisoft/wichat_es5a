@@ -284,6 +284,7 @@ const Juego = () => {
                 </Box>
               )}
              <Button id="botonChat" variant="contained" onClick={toggleChat} disabled={!botonChatHabilitado || !loadingComplete}>
+
                 {mostrarChat ? t("close-chat") : t("chat")}
               </Button>
               {mostrarChat && (

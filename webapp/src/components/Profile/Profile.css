@@ -1,40 +1,40 @@
 .profile-container {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    margin-top: 2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   
   .profile-card {
-    width: 80%;
-    max-width: 60rem;
-    margin-bottom: 2rem;
-    padding: 2rem;
-    border-radius: 1.5vw;
-    box-shadow: 0 0.3vw 0.8vw rgba(0, 0, 0, 0.15);
-    background-color: #b0e0e6;
+    width: 80% !important;
+    max-width: 60rem !important;
+    margin-bottom: 2rem !important;
+    padding: 2rem !important;
+    border-radius: 1.5vw !important;
+    box-shadow: 0 0.3vw 0.8vw rgba(0, 0, 0, 0.15) !important;
+    background-color: #b0e0e6 !important;
   }
   
   .profile-title {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: #333;
-    font-family: 'Roboto', sans-serif;
+    font-size: 1.8rem !important;
+    margin-bottom: 1.5rem !important;
+    color: #333 !important;
+    font-family: 'Roboto', sans-serif !important;
   }
   
   .profile-info {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-    color: #555;
-    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem !important;
+    margin-bottom: 0.5rem !important;
+    color: #555 !important;
+    font-family: 'Roboto', sans-serif !important;
   }
   
   .profile-info strong {
-    font-weight: 600;
-    color: #333;
+    font-weight: 600 !important;
+    color: #333 !important;
   }
   
   .profile-button {
-    margin-top: 2rem;
+    margin-top: 2rem !important;
   }

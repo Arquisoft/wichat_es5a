@@ -3,8 +3,8 @@ import { Box, Button, Grid } from '@mui/material';
 import { useNavigate } from 'react-router';
 import NavBar from "../NavBar/NavBar";
 import CustomH1 from '../ReactComponents/CustomH1';
-import "./GameMode.css";
 import { useTranslation } from "react-i18next";
+import "./GameMode.css";
 
 const GameMode = () => {
   const navigate = useNavigate();
@@ -44,16 +44,6 @@ const GameMode = () => {
             <Grid item key={mode.value}>
               <Button
                 className={selectedMode === mode.value ? "selected" : "unselected"}
-                sx={{
-                  '&.selected': {
-                    backgroundColor: '#4caf50',
-                    color: 'white',
-                  },
-                  '&.unselected': {
-                    backgroundColor: '#f0f0f0',
-                    color: 'black',
-                  },
-                }}
                 onClick={() => setSelectedMode(mode.value)}
               >
                 {t(mode.label)}
@@ -69,16 +59,6 @@ const GameMode = () => {
           {difficulties.map((level) => (
             <Grid item key={level}>
               <Button 
-              sx={{
-                '&.selected': {
-                  backgroundColor: '#4caf50',
-                  color: 'white',
-                },
-                '&.unselected': {
-                  backgroundColor: '#f0f0f0',
-                  color: 'black',
-                },
-              }}
               className={selectedDifficulty === level ? "selected" : "unselected"} onClick={() => setSelectedDifficulty(level)}>
                 {t(level)}
               </Button>

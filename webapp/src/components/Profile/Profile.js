@@ -50,13 +50,6 @@ const Profile = () => {
         <NavBar />
         <Container
           component="main"
-          sx={{
-            marginTop: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
         >
           <Typography color="error">{error}</Typography>
           <LargeButton onClick={exitProfile}>{t("exit")}</LargeButton>
