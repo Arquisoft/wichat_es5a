@@ -196,6 +196,7 @@ describe('Juego component', () => {
     
         // Verifica que los puntos se restan correctamente.
         expect(screen.getByText(/Puntuación: -20/i)).toBeInTheDocument();
+    });
 
     it('cambia el color del botón si la respuesta es incorrecta en cambiarColorUno', async () => {
       render(
