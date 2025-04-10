@@ -197,6 +197,29 @@ describe('Juego component', () => {
         // Verifica que los puntos se restan correctamente.
         expect(screen.getByText(/Puntuación: -20/i)).toBeInTheDocument();
     });
+    it('resta puntos al usar el chat', async () => {
+        // Simula la respuesta del LLM.
+        mock.onPost('http://localhost:8003/ask').reply(200, {
+            answer: 'Una pista sobre la bandera.',
+        });
+    
+        // Renderiza el componente Juego dentro de BrowserRouter.
+        render(
+            <BrowserRouter>
+                <Juego />
+            </BrowserRouter>
+        );
+    
+        // Espera a que el botón de pista esté habilitado.
+        const pistaButton = await screen.findByRole('button', { name: /Hablar con el chat/i });
+        await waitFor(() => expect(pistaButton).not.toBeDisabled());
+    
+        // Simula el clic en el botón de pista.
+        fireEvent.click(pistaButton);
+    
+        // Verifica que los puntos se restan correctamente.
+        expect(screen.getByText(/Puntuación: -40/i)).toBeInTheDocument();
+    });
 
     it('cambia el color del botón si la respuesta es incorrecta en cambiarColorUno', async () => {
       render(
