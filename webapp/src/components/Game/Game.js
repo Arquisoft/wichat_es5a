@@ -269,7 +269,7 @@ const Juego = () => {
                   <strong>{t("llm-response")}:</strong> {respuestaLLM}
                 </Box>
               )}
-             <Button id="botonChat" variant="contained" onClick={() => setMostrarChat(!mostrarChat)}>
+             <Button id="botonChat" variant="contained" onClick={() => setMostrarChat(!mostrarChat)} disabled={!loadingComplete}>
                 {mostrarChat ? t("close-chat") : t("chat")}
               </Button>
               {mostrarChat && (
