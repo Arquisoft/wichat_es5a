@@ -50,7 +50,6 @@ app.post('/adduser', async (req, res) => {
 
 app.get('/profile', async (req, res) => {
   try {
-    console.log(req.headers)
     const userResponse = await axios.get(userServiceUrl + '/profile', {
       headers: req.headers, // Forward all headers, including Authorization
     });
