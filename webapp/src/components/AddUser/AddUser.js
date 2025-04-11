@@ -20,8 +20,9 @@ const AddUser = () => {
 
   const addUser = async () => {
     try {
-      const response = await axios.post(`${apiEndpoint}/adduser`, { username, password,confirmPassword });
+      await axios.post(`${apiEndpoint}/adduser`, { username, password,confirmPassword });
 
+      const response = await axios.post(`${apiEndpoint}/login`, { username, password });
       const { token } = response.data;
 
       localStorage.setItem('token', token);

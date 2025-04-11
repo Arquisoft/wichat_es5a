@@ -38,6 +38,7 @@ describe('AddUser component', () => {
   });
 
   it('should add a user successfully', async () => {
+      mockAxios.onPost('http://localhost:8000/login').reply(200, { token: 'mocked_token' });
       mockAxios.onPost('http://localhost:8000/adduser').reply(200, { token: 'mocked_token' });
   
       render(
@@ -45,7 +46,7 @@ describe('AddUser component', () => {
           <AddUser/>
         </BrowserRouter>
       );
-  
+
       fillForm('testadduser', 'testadduserpass', 'testadduserpass');
   
       await act(async () => {
