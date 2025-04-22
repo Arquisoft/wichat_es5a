@@ -1,11 +1,8 @@
 const axios = require('axios');
 const express = require('express');
-const cors = require('cors');
 const app = express();
 const port = 8003;
 
-// Middleware to parse JSON in request body
-app.use(cors());
 app.use(express.json());
 // Load enviroment variables
 require('dotenv').config();
