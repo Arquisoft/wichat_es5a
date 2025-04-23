@@ -202,7 +202,6 @@ const Juego = () => {
   */
  const cambiarColorBotones = (respuesta, bool) => { 
     setAnswered(true);
-    checkFinished(false);
     //Obtenemos los botones del contenedor de botones
     const buttons = document.querySelectorAll('.button-container button');
     //Recorremos cada boton
@@ -216,11 +215,16 @@ const Juego = () => {
       }
       if(bool){
       //Ponemos el boton de la marcada en rojo si era incorrecta
-        cambiarColorUno(respuesta, button);
+      cambiarColorUno(respuesta, button);
       }else {
         cambiarColorTodos(button);
       }return button; //esta linea evita un warning de sonar cloud, sin uso
     });
+  }
+
+  const timesUp = () => {
+    checkFinished(false);
+    cambiarColorBotones();
   }
 
   //Función que cambia el color de un solo boton (acierto)
@@ -377,7 +381,7 @@ const Juego = () => {
                   id="temp"
                   restart={restartTemporizador}
                   tiempoInicial={time}
-                  tiempoAcabado={cambiarColorBotones}
+                  tiempoAcabado={timesUp}
                   pausa={pausarTemporizador}
                   handleRestart={handleRestart}
                   onTimeUpdate={(t) => setTiempoRestante(t)}
