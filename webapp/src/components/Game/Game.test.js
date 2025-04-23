@@ -128,6 +128,9 @@ describe('Juego component', () => {
         // Espera a que la primera pregunta y las respuestas se rendericen
         await waitForText('España');
 
+        // Seleccionar una opción para habilitar el botón de siguiente pregunta
+        await fireEvent.click(screen.getByText('España'));
+
         // Simula el clic en el botón "Siguiente pregunta"
         await clickButtonByText(/Siguiente pregunta/i);
 
@@ -233,7 +236,7 @@ describe('Juego component', () => {
         });
       });
       
-    it('realiza la transición correctamente al hacer clic en "Siguiente pregunta" y guarda los datos cuando se llega al final', async () => {
+    it('realiza la transición correctamente al hacer clic en "Finalizar" y guarda los datos cuando se llega al final', async () => {
         mock.onPost(`${apiEndpoint}/savegame`).reply(200, {}); 
     
         render(
@@ -247,10 +250,14 @@ describe('Juego component', () => {
         for (let i = 0; i < respuestasCorrectas.length; i++) {
             const botonCorrecto = await screen.findByText(respuestasCorrectas[i]);
             fireEvent.click(botonCorrecto);
+            if(i === respuestasCorrectas.length - 1) break;
             const siguienteBtn = await screen.findByRole('button', { name: /Siguiente pregunta/i });
             fireEvent.click(siguienteBtn);
         }
-    
+        
+        const botonFinalizar = await screen.findByRole('button', { name: /Finalizar/i });
+        fireEvent.click(botonFinalizar);
+
         await waitFor(() => {
             expect(screen.getByText(/Puntuación/i)).toBeInTheDocument();
         });
