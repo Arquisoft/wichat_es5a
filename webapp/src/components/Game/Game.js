@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 const Juego = () => {
 
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   //La pregunta (string)
   const [pregunta, setPregunta] = useState("")
@@ -80,7 +80,8 @@ const Juego = () => {
         const total = numPreguntas;
         let current = 0;
         const response = await axios.post(`${apiEndpoint}/questions/${mode}`, {
-          numQuestions: total
+          numQuestions: total,
+          language: i18n.language
         });
         const preguntas = response.data;
         while (numPreguntas > 0) {
@@ -106,7 +107,7 @@ const Juego = () => {
       setPausarTemporizador(false);
       updateGame();
       setNumPreguntaActual(1);
-    }, [arPreg, apiEndpoint, updateGame, loadingProgress, mode]);
+    }, [arPreg, apiEndpoint, updateGame, loadingProgress, mode, i18n]);
     
     useEffect(() => {
       if (!firstRender) {
