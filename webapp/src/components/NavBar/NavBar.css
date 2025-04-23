@@ -9,10 +9,15 @@
     font-weight: bold;
 }
 
-#profile, #credits, #history, #logout, #language-button, #login, #signup {
+#play, #profile, #credits, #history, #logout, #language-button, #login, #signup {
     color: white;
     font-size: 1em;
     font-weight: bold;
+}
+
+#play, #profile, #credits, #history, #language-button {
+    white-space: nowrap;
+    padding-inline: 1em;
 }
 
 #login, #signup {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Flag from "react-world-flags";
 import { useTranslation } from "react-i18next";
 import { Button, Menu, MenuItem } from "@mui/material";
+import { Public } from "@mui/icons-material";
 import '../NavBar/NavBar.css';
 
 const Internationalization = () => {
@@ -31,6 +32,7 @@ const Internationalization = () => {
   
   return (
       <Button id="language-button" aria-haspopup="true" onClick={changeMenu}> 
+        <Public></Public>
         {t("language")}
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
         {languages.map((language) => (
