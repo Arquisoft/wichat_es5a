@@ -48,6 +48,8 @@ const Juego = () => {
   const [arPistas] = useState([]); // Array para almacenar las pistas solicitadas
   const [arCorrect] = useState([]); // Array para almacenar las respuestas correctas
   const [mostrarChat, setMostrarChat] = useState(false);
+  const [finished, setFinished] = useState(false);
+  const [answered, setAnswered] = useState(false);
   const location = useLocation();
   const { mode = 'flag', difficulty = t("easy") } = location.state || {};
 
@@ -111,7 +113,7 @@ const Juego = () => {
         setFirstRender(true);
         let num = 5; // default (Fácil)
         if (difficulty === "medium") num = 10;
-        else if (difficulty === "difficult") num = 20;
+        else if (difficulty === "difficult" || difficulty === "survival") num = 20;
         crearPreguntas(num);
       }
     }, [firstRender, crearPreguntas, difficulty, mode, t]);
@@ -142,6 +144,7 @@ const Juego = () => {
     //Comprueba si la respuesta es correcta o no y pone la variable victoria a true o false
     //por ahora esta variable no se utiliza para nada
     setPausarTemporizador(true);
+    setAnswered(true);
     if(respuesta === resCorr){
       //Aumenta en 1 en las estadisticas de juegos ganado
       arCorrect.push(true);
@@ -149,7 +152,17 @@ const Juego = () => {
     } else {
       arCorrect.push(false);
     }
+    checkFinished(respuesta === resCorr);
     cambiarColorBotones(respuesta, true);
+  };
+
+  //Comprueba si la partida se ha terminado
+  const checkFinished = (correct) => {
+    if(difficulty === "survival") {
+      setFinished(!correct);
+    } else {
+      if(numPreguntaActual === numPreguntas) setFinished(true);
+    }
   };
 
   /*
@@ -217,14 +230,16 @@ const Juego = () => {
 
   //Funcion que se llama al hacer click en el boton Siguiente
   const clickSiguiente = () => {
-    if(numPreguntaActual===numPreguntas){
+    setAnswered(false);
+    if(finished){
       arTiempo.push(tiempoRestante);
       arPistas.push(numPistas);
       axios.post(`${apiEndpoint}/savegame`, {mode, difficulty, arCorrect, points, arPreg, arTiempo, arPistas}); // Llama al history service para guardar el concurso y las preguntas en BBDD
       navigate('/points', {
         state: {
           numRespuestasCorrectas: numRespuestasCorrectas,
-          numPreguntas: numPreguntas
+          numPreguntas: numPreguntas,
+          difficluty: difficulty
         }
       });
       return;
@@ -310,7 +325,7 @@ const Juego = () => {
           <Grid item xs={12} md={3}>
             <Stack spacing={2}>
               <Box className="pregunta-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
-                {t("question")}: {numPreguntaActual} / {numPreguntas}
+                {t("question")}: {numPreguntaActual} {difficulty === "survival" ? "" : ("/ " + numPreguntas)}
               </Box>
               <Box className="temporizador-info-container" display="flex" alignItems="center">
                 <p>{t("remaining-time")}:</p>
@@ -327,8 +342,8 @@ const Juego = () => {
               <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
                 {t("punctuation")}: {numRespuestasCorrectas * 100}
               </Box>
-              <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente} disabled={!loadingComplete}>
-                {t("next-question")}
+              <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente} disabled={!loadingComplete || (difficulty === "survival" && !answered && !finished)}>
+                {finished ? t("finish") : t("next-question")}
               </Button>
             </Stack>
           </Grid>
