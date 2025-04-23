@@ -282,7 +282,7 @@ describe('Juego component', () => {
                 </MemoryRouter>
             );
 
-            const correcta = await screen.findByText('España');
+            const correcta = await screen.findByText('Rusia');
             fireEvent.click(correcta);
             const siguienteBtn = await screen.findByRole('button', { name: /Siguiente pregunta/i });
             fireEvent.click(siguienteBtn);
