@@ -266,9 +266,9 @@ describe('Juego component', () => {
 
     const testCases = [
         { difficulty: 'easy', time: 25 },
-        { difficulty: 'medium', time: 25 },
-        { difficulty: 'difficult', time: 25 },
-        { difficulty: 'survival', time: 25 }
+        { difficulty: 'medium', time: 20 },
+        { difficulty: 'difficult', time: 15 },
+        { difficulty: 'survival', time: 20 }
     ];
 
     testCases.forEach(({ difficulty, time }) => {
