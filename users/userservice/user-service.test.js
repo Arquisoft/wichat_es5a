@@ -22,17 +22,16 @@ describe('User Service', () => {
   it('should add a new user on POST /adduser', async () => {
     const newUser = {
       username: 'testuser',
-      //email: 'testuser@example.com',
-      password: 'testpassword',
-      confirmPassword: 'testpassword'
+      email: 'testuser@example.com',
+      password: 'testpass1',
+      confirmPassword: 'testpass1'
     };
 
     const response = await request(app).post('/adduser').send(newUser);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('token');
     expect(response.body.user).toHaveProperty('username', 'testuser');
-    // Descomentar cuando estén implementados los tests.
-    //expect(response.body.user).toHaveProperty('email', 'testuser@example.com');
+    expect(response.body.user).toHaveProperty('email', 'testuser@example.com');
 
     // Check if the user is inserted into the database
     const userInDb = await User.findOne({ username: 'testuser' });
@@ -40,11 +39,10 @@ describe('User Service', () => {
     // Assert that the user exists in the database
     expect(userInDb).not.toBeNull();
     expect(userInDb.username).toBe('testuser');
-    // Descomentar cuando estén implementados los tests.
-    //expect(userInDb.email).toBe('testuser@example.com');
+    expect(userInDb.email).toBe('testuser@example.com');
 
     // Assert that the password is encrypted
-    const isPasswordValid = await bcrypt.compare('testpassword', userInDb.password);
+    const isPasswordValid = await bcrypt.compare('testpass1', userInDb.password);
     expect(isPasswordValid).toBe(true);
   });
 
@@ -59,22 +57,59 @@ describe('User Service', () => {
       .post('/adduser')
       .send({
         username: 'usernomatch',
-        password: 'pass123',
-        confirmPassword: 'diff123'
+        email: 'usernomatch@example.com',
+        password: 'pass1234',
+        confirmPassword: 'diff1234'
       });
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('error', 'Las contraseñas no coinciden');
   });
 
+  it('should return 400 if username is too short', async () => {
+    const response = await request(app).post('/adduser').send({
+      username: 'abc',
+      email: 'abc@example.com',
+      password: 'valid123',
+      confirmPassword: 'valid123'
+    });
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('error');
+  });
+
+  it('should return 400 if password is too weak', async () => {
+    const response = await request(app).post('/adduser').send({
+      username: 'stronguser',
+      email: 'stronguser@example.com',
+      password: 'abcdefg', // No contiene el número
+      confirmPassword: 'abcdefg'
+    });
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('error');
+  });
+
+  it('should return 400 if email is invalid', async () => {
+    const response = await request(app).post('/adduser').send({
+      username: 'bademailuser',
+      email: 'not-an-email',
+      password: 'testpass1',
+      confirmPassword: 'testpass1'
+    });
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('error', 'Formato de email inválido');
+  });
+
+
   it('should return 400 if user already exists in /adduser', async () => {
-    await request(app)
-      .post('/adduser')
-      .send({ username: 'testuser', password: 'password123',confirmPassword: 'password123' });
+    const user = {
+      username: 'existinguser',
+      email: 'existing@example.com',
+      password: 'testpass1',
+      confirmPassword: 'testpass1'
+    };
 
-    const response = await request(app)
-      .post('/adduser')
-      .send({ username: 'testuser', password: 'password123' ,confirmPassword: 'password123'});
+    await request(app).post('/adduser').send(user);
 
+    const response = await request(app).post('/adduser').send(user);
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('error');
   });
