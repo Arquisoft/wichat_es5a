@@ -148,7 +148,6 @@ const Juego = () => {
     //Comprueba si la respuesta es correcta o no y pone la variable victoria a true o false
     //por ahora esta variable no se utiliza para nada
     setPausarTemporizador(true);
-    setAnswered(true);
     if(respuesta === resCorr){
       //Aumenta en 1 en las estadisticas de juegos ganado
       arCorrect.push(true);
@@ -160,22 +159,23 @@ const Juego = () => {
     checkFinished(respuesta === resCorr);
     cambiarColorBotones(respuesta, true);
   };
-
+  
   //Comprueba si la partida se ha terminado
   const checkFinished = (correct) => {
     if(difficulty === "survival") {
       setFinished(!correct);
     } else {
-      if(numPreguntaActual === numPreguntas) setFinished(true);
+      if(numPreguntaActual >= numPreguntas) setFinished(true);
     }
   };
-
+  
   /*
-    * Para cambiar el color de los botones al hacer click en uno de ellos
-    * True para modo pulsar uno de ellos (acertar/fallar)
-    * False si se quiere mostrar color de todos (acabar el tiempo)
-    */
-  const cambiarColorBotones = (respuesta, bool) => { 
+  * Para cambiar el color de los botones al hacer click en uno de ellos
+  * True para modo pulsar uno de ellos (acertar/fallar)
+  * False si se quiere mostrar color de todos (acabar el tiempo)
+  */
+ const cambiarColorBotones = (respuesta, bool) => { 
+    setAnswered(true);
     //Obtenemos los botones del contenedor de botones
     const buttons = document.querySelectorAll('.button-container button');
     //Recorremos cada boton
@@ -236,7 +236,7 @@ const Juego = () => {
   //Funcion que se llama al hacer click en el boton Siguiente
   const clickSiguiente = () => {
     setAnswered(false);
-    if(finished){
+    if(finished) {
       arTiempo.push(tiempoRestante);
       arPistas.push(numPistas);
       axios.post(`${apiEndpoint}/savegame`, {mode, difficulty, arCorrect, points, arPreg, arTiempo, arPistas}); // Llama al history service para guardar el concurso y las preguntas en BBDD
@@ -244,7 +244,7 @@ const Juego = () => {
         state: {
           numRespuestasCorrectas: numRespuestasCorrectas,
           numPreguntas: numPreguntas,
-          difficluty: difficulty,
+          difficulty: difficulty,
           points: points,
         }
       });
@@ -252,7 +252,8 @@ const Juego = () => {
     }
 
     setTimeout(() => descolorearTodos(), 0);
-    setNumPreguntaActual(numPreguntaActual+1)
+    checkFinished(true);
+    setNumPreguntaActual(numPreguntaActual + 1);
     arTiempo.push(tiempoRestante);
     arPistas.push(numPistas);
     setTiempoRestante(20);
@@ -357,7 +358,7 @@ const Juego = () => {
               <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
                 {t("punctuation")}: {points}
               </Box>
-              <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente} disabled={!loadingComplete || (difficulty === "survival" && !answered && !finished)}>
+              <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente} disabled={!loadingComplete || (!answered && !finished)}>
                 {finished ? t("finish") : t("next-question")}
               </Button>
             </Stack>

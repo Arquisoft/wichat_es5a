@@ -33,7 +33,7 @@ const Points = () => {
     <div>
           <NavBar/>
           <CustomH1>
-          {numRespuestasCorrectas} {difficulty === "survival" ? ("/" + numPreguntas) : " "} {t("points-correct")}
+          {numRespuestasCorrectas}{difficulty !== "survival" ? ("/" + numPreguntas) : " "} {t("points-correct")}{console.log("--->" + difficulty)}
           </CustomH1>
           <CustomH1 size="h2">
             {t("good-job")}
