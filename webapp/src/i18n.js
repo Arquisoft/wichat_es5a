@@ -76,6 +76,17 @@ i18n.use(initReactI18next).init({
                 "question-album": "¿Cuál es el nombre de este álbum?",
                 "finish": "Finalizar",
                 "streak": "Racha",
+                "errors": {//Errores para el adduser
+                    "usernameTaken": "El nombre de usuario ya está en uso",
+                    "usernameTooShort": "El nombre de usuario debe tener al menos 4 caracteres",
+                    "emailTaken": "Ya hay un usuario registrado con ese email",
+                    "invalidEmail": "Formato de email inválido",
+                    "passwordsNoMatch": "Las contraseñas no coinciden",
+                    "weakPassword": "La contraseña debe tener al menos 7 caracteres, uno de ellos mayúscula y otro un número",
+                    "missingField": "Faltan campos obligatorios",
+                    "invalidCredentials": "Credenciales inválidas",
+                    "unknown": "Ha ocurrido un error inesperado"
+                }
             }
         },
         en: {
@@ -151,6 +162,17 @@ i18n.use(initReactI18next).init({
                 "question-album": "What music album is this?",
                 "finish": "Finish",
                 "streak": "Streak",
+                "errors": {//Errors for adduser
+                    "usernameTaken": "The username is already taken",
+                    "usernameTooShort": "The username must be at least 4 characters long",
+                    "emailTaken": "An account with this email already exists",
+                    "invalidEmail": "Invalid email format",
+                    "passwordsNoMatch": "Passwords do not match",
+                    "weakPassword": "The password must be at least 7 characters long, including at least one uppercase letter and one number.",
+                    "missingField": "Required fields are missing",
+                    "invalidCredentials": "Invalid credentials",
+                    "unknown": "An unexpected error has occurred"
+                }
             }
         }
     },
