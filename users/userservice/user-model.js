@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
       type: Date,
       default: Date.now, 
     },
+    points: {
+      type: Number,
+      default: 0,
+    },
     contests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contest' }] // Array de IDs de concursos
 });
 

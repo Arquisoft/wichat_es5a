@@ -40,6 +40,10 @@ const Profile = () => {
     }
   }, [token]);
 
+  const enterHistory = () => {
+    navigate('/history/' + profileData.username);
+  }
+
   const exitProfile = () => {
     navigate('/home');
   }
@@ -84,6 +88,7 @@ const Profile = () => {
         )}
         <Grid container justifyContent="center" className="profile-button">
           <Grid item xs={12} sm={8} md={6}>
+          <LargeButton onClick={enterHistory}>{t("history")}</LargeButton>
             <LargeButton onClick={exitProfile}>{t("exit")}</LargeButton>
           </Grid>
         </Grid>

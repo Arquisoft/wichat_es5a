@@ -10,13 +10,14 @@ import { Container, Grid, Box, Stack, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
-import ChatBot  from '../ChatBot/ChatBot';
+import ChatBot from '../ChatBot/ChatBot';
 import NavBar from "../NavBar/NavBar";
 import './Game.css';
 import { useLocation } from 'react-router';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from "react-i18next";
+import { jwtDecode } from "jwt-decode";
 
 const Juego = () => {
 
@@ -41,7 +42,7 @@ const Juego = () => {
   const [numPreguntas, setNumPreguntas] = useState(0)
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadingComplete, setLoadingComplete] = useState(false);
-  const [points] = useState(0)
+  const [points, setPoints] = useState(0)
   const [tiempoRestante, setTiempoRestante] = useState(20); // Tiempo inicial del temporizador
   const [arTiempo] = useState([]); // Array para almacenar el tiempo restante
   const [numPistas, setNumPistas] = useState(0); // Número de pistas solicitadas
@@ -51,81 +52,81 @@ const Juego = () => {
   const location = useLocation();
   const { mode = 'flag', difficulty = t("easy") } = location.state || {};
 
-    // Estados para el LLM
-    const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
-  
-    //Variables para la obtencion y modificacion de estadisticas del usuario y de preguntas
-    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-    // Función que actualiza la pregunta que se muestra en pantalla
-    const updateGame = useCallback(() => {
-      setPregunta(arPreg[numPreguntaActual].pregunta);
-      setResCorr(arPreg[numPreguntaActual].resCorr);
-      setResFalse(arPreg[numPreguntaActual].resFalse);
-      setImagenPregunta(arPreg[numPreguntaActual].imagen);
-      //Poner temporizador a 20 de nuevo
-      setRestartTemporizador(true);
-    }, [arPreg, numPreguntaActual]);
+  // Estados para el LLM
+  const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
 
-    const crearPreguntas = useCallback(async (numPreguntas) => {
-      setPausarTemporizador(true);
-      setNumPreguntas(numPreguntas);
-      setLoadingProgress(0);
-      setLoadingComplete(false);
-      if (!mode) {
-        console.error('El modo de juego no está definido, usando valor por defecto.');
-      }
-      try {
-        const total = numPreguntas;
-        let current = 0;
-        const response = await axios.post(`${apiEndpoint}/questions/${mode}`, {
-          numQuestions: total
+  //Variables para la obtencion y modificacion de estadisticas del usuario y de preguntas
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+  // Función que actualiza la pregunta que se muestra en pantalla
+  const updateGame = useCallback(() => {
+    setPregunta(arPreg[numPreguntaActual].pregunta);
+    setResCorr(arPreg[numPreguntaActual].resCorr);
+    setResFalse(arPreg[numPreguntaActual].resFalse);
+    setImagenPregunta(arPreg[numPreguntaActual].imagen);
+    //Poner temporizador a 20 de nuevo
+    setRestartTemporizador(true);
+  }, [arPreg, numPreguntaActual]);
+
+  const crearPreguntas = useCallback(async (numPreguntas) => {
+    setPausarTemporizador(true);
+    setNumPreguntas(numPreguntas);
+    setLoadingProgress(0);
+    setLoadingComplete(false);
+    if (!mode) {
+      console.error('El modo de juego no está definido, usando valor por defecto.');
+    }
+    try {
+      const total = numPreguntas;
+      let current = 0;
+      const response = await axios.post(`${apiEndpoint}/questions/${mode}`, {
+        numQuestions: total
+      });
+      const preguntas = response.data;
+      while (numPreguntas > 0) {
+        let pregunta = preguntas[current];
+        const respuestas = [...pregunta.wrongAnswers, pregunta.answer];
+        const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
+        arPreg.push({
+          id: numPreguntas,
+          pregunta: pregunta.question,
+          resCorr: pregunta.answer,
+          resFalse: respuestasAleatorias,
+          imagen: pregunta.image,
         });
-        const preguntas = response.data;
-        while (numPreguntas > 0) {
-          let pregunta = preguntas[current];
-          const respuestas = [...pregunta.wrongAnswers, pregunta.answer];
-          const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
-          arPreg.push({
-            id: numPreguntas,
-            pregunta: pregunta.question,
-            resCorr: pregunta.answer,
-            resFalse: respuestasAleatorias,
-            imagen: pregunta.image,
-          });
-          current++;
-          const progress = Math.round(100 * Math.log10(1 + (current / total) * 9)); // escala logarítmica en base 10
-          setLoadingProgress(progress > loadingProgress ? progress : loadingProgress); // solo actualiza si es mayor
-          numPreguntas--;
-        }
-      } catch (error) {
-          console.error('Error al crear las preguntas:', error);
+        current++;
+        const progress = Math.round(100 * Math.log10(1 + (current / total) * 9)); // escala logarítmica en base 10
+        setLoadingProgress(progress > loadingProgress ? progress : loadingProgress); // solo actualiza si es mayor
+        numPreguntas--;
       }
-      setLoadingComplete(true);
-      setPausarTemporizador(false);
-      updateGame();
-      setNumPreguntaActual(1);
-    }, [arPreg, apiEndpoint, updateGame, loadingProgress, mode]);
-    
-    useEffect(() => {
-      if (!firstRender) {
-        setFirstRender(true);
-        let num = 5; // default (Fácil)
-        if (difficulty === "medium") num = 10;
-        else if (difficulty === "difficult") num = 20;
-        crearPreguntas(num);
-      }
-    }, [firstRender, crearPreguntas, difficulty, mode, t]);
+    } catch (error) {
+      console.error('Error al crear las preguntas:', error);
+    }
+    setLoadingComplete(true);
+    setPausarTemporizador(false);
+    updateGame();
+    setNumPreguntaActual(1);
+  }, [arPreg, apiEndpoint, updateGame, loadingProgress, mode]);
+
+  useEffect(() => {
+    if (!firstRender) {
+      setFirstRender(true);
+      let num = 5; // default (Fácil)
+      if (difficulty === "medium") num = 10;
+      else if (difficulty === "difficult") num = 20;
+      crearPreguntas(num);
+    }
+  }, [firstRender, crearPreguntas, difficulty, mode, t]);
 
   // Función para enviar una solicitud al LLM y obtener una pista
   const enviarRespuestaALlm = async () => {
     setNumPistas(numPistas + 1);
     try {
       const response = await axios.post(`${apiEndpoint}/askllm`, {
-          question: "",
-          model: 'gemini',
-          mode: mode,
-          resCorr: resCorr
-        
+        question: "",
+        model: 'gemini',
+        mode: mode,
+        resCorr: resCorr
+
       });
       setRespuestaLLM(response.data.answer || "No se recibió una respuesta válida del LLM.");
       console.log("Respuesta del LLM:", response.data.answer || "No se recibió respuesta válida.");
@@ -138,14 +139,15 @@ const Juego = () => {
   /**
      * Funcion que se llamara al hacer click a una de las respuestas
      */
-  const botonRespuesta = (respuesta) => { 
+  const botonRespuesta = (respuesta) => {
     //Comprueba si la respuesta es correcta o no y pone la variable victoria a true o false
     //por ahora esta variable no se utiliza para nada
     setPausarTemporizador(true);
-    if(respuesta === resCorr){
+    if (respuesta === resCorr) {
       //Aumenta en 1 en las estadisticas de juegos ganado
       arCorrect.push(true);
-      setNumRespuestasCorrectas(numRespuestasCorrectas+1);
+      setNumRespuestasCorrectas(numRespuestasCorrectas + 1);
+      setPoints(points + 100);
     } else {
       arCorrect.push(false);
     }
@@ -157,31 +159,31 @@ const Juego = () => {
     * True para modo pulsar uno de ellos (acertar/fallar)
     * False si se quiere mostrar color de todos (acabar el tiempo)
     */
-  const cambiarColorBotones = (respuesta, bool) => { 
+  const cambiarColorBotones = (respuesta, bool) => {
     //Obtenemos los botones del contenedor de botones
     const buttons = document.querySelectorAll('.button-container button');
     //Recorremos cada boton
     buttons.forEach((button) => {
       //Desactivamos TODOS los botones
-      button.disabled=true; 
+      button.disabled = true;
       //Ponemos el boton de la respuesta correcta en verde
-      if(button.textContent.trim() === resCorr) {
+      if (button.textContent.trim() === resCorr) {
         button.style.backgroundColor = "#05B92B";
         button.style.border = "6px solid #05B92B";
       }
-      if(bool){
-      //Ponemos el boton de la marcada en rojo si era incorrecta
+      if (bool) {
+        //Ponemos el boton de la marcada en rojo si era incorrecta
         cambiarColorUno(respuesta, button);
-      }else {
+      } else {
         cambiarColorTodos(button);
-      }return button; //esta linea evita un warning de sonar cloud, sin uso
+      } return button; //esta linea evita un warning de sonar cloud, sin uso
     });
   }
 
   //Función que cambia el color de un solo boton (acierto)
-  function cambiarColorUno(respuesta, button){
-    if(button.textContent.trim() === respuesta.trim()){
-      if((button.textContent.trim() !== resCorr)) {
+  function cambiarColorUno(respuesta, button) {
+    if (button.textContent.trim() === respuesta.trim()) {
+      if ((button.textContent.trim() !== resCorr)) {
         button.style.backgroundColor = "#E14E4E";
         button.style.border = "6px solid #E14E4E";
       }
@@ -189,26 +191,26 @@ const Juego = () => {
   }
 
   //Funcion que cambia el color de todos los botones (fallo)
-  function cambiarColorTodos(button){
-    if(button.textContent.trim() === resCorr) {
+  function cambiarColorTodos(button) {
+    if (button.textContent.trim() === resCorr) {
       button.style.backgroundColor = "#05B92B";
       button.style.border = "6px solid #05B92B";
-    } else{
+    } else {
       button.style.backgroundColor = "#E14E4E";
       button.style.border = "6px solid #E14E4E";
     }
-  } 
+  }
 
   //Función que devuelve el color original a los botones (siguiente)
-  async function descolorearTodos(){
+  async function descolorearTodos() {
     const buttons = document.querySelectorAll('.button-container button');
     buttons.forEach((button) => {
-        //Activamos TODOS los botones
-        button.disabled=false; 
-        button.style.backgroundColor = '';
-        button.style.border = '';
-      })
-  } 
+      //Activamos TODOS los botones
+      button.disabled = false;
+      button.style.backgroundColor = '';
+      button.style.border = '';
+    })
+  }
 
   // //Primer render para un comportamiento diferente
   // useEffect(() => {
@@ -216,11 +218,17 @@ const Juego = () => {
   // }, [finishGame])
 
   //Funcion que se llama al hacer click en el boton Siguiente
-  const clickSiguiente = () => {
-    if(numPreguntaActual===numPreguntas){
+  const clickSiguiente = async () => {
+    if (numPreguntaActual === numPreguntas) {
       arTiempo.push(tiempoRestante);
       arPistas.push(numPistas);
-      axios.post(`${apiEndpoint}/savegame`, {mode, difficulty, arCorrect, points, arPreg, arTiempo, arPistas}); // Llama al history service para guardar el concurso y las preguntas en BBDD
+      let token = localStorage.getItem("token") // Obtiene el token de localStorage
+      let user = jwtDecode(token).user
+      let username = user.username
+      console.log(username)
+      axios.post(
+        `${apiEndpoint}/savegame`, 
+        { mode, difficulty, arCorrect, points, arPreg, arTiempo, arPistas, username });
       navigate('/points', {
         state: {
           numRespuestasCorrectas: numRespuestasCorrectas,
@@ -231,7 +239,7 @@ const Juego = () => {
     }
 
     setTimeout(() => descolorearTodos(), 0);
-    setNumPreguntaActual(numPreguntaActual+1)
+    setNumPreguntaActual(numPreguntaActual + 1)
     arTiempo.push(tiempoRestante);
     arPistas.push(numPistas);
     setTiempoRestante(20);
@@ -269,14 +277,14 @@ const Juego = () => {
                   <strong>{t("llm-response")}:</strong> {respuestaLLM}
                 </Box>
               )}
-             <Button id="botonChat" variant="contained" onClick={() => setMostrarChat(!mostrarChat)} disabled={!loadingComplete}>
+              <Button id="botonChat" variant="contained" onClick={() => setMostrarChat(!mostrarChat)} disabled={!loadingComplete}>
                 {mostrarChat ? t("close-chat") : t("chat")}
               </Button>
               {mostrarChat && (
                 <Box className="chatbot-container" p={2} border="1px solid #ccc" borderRadius="5px">
-                 <ChatBot 
-                    respuestaCorrecta={resCorr} 
-                    mode={mode} 
+                  <ChatBot
+                    respuestaCorrecta={resCorr}
+                    mode={mode}
                   />
                 </Box>
               )}
@@ -291,7 +299,7 @@ const Juego = () => {
               </Box>
               {imagenPregunta && (
                 <Box className="image-container">
-                  <img src={imagenPregunta} alt={t("question-img-alt")} className="responsive-img" draggable="false"/>
+                  <img src={imagenPregunta} alt={t("question-img-alt")} className="responsive-img" draggable="false" />
                 </Box>
               )}
               <Grid container spacing={2} className="button-container">

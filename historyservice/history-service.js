@@ -46,7 +46,7 @@ app.get('/health', (req, res) => {
         }
         const newContest = new Contest(contestData)
         await newContest.save()
-        res.json({ success: true });
+        res.json({ success: true, id: newContest._id });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -62,6 +62,17 @@ app.get('/gethistory', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+app.post('/getUserHistory', async (req, res) => {
+    try {
+        console.log(req.body.contestIds)
+        const contests = await Contest.find({ _id: { $in: req.body.contestIds } });
+        res.json({ contests: contests });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+);
 
 app.get('/getquestions/:id', async (req, res) => {
     try {
