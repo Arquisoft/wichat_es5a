@@ -281,7 +281,12 @@ describe('Juego component', () => {
                   </Routes>
                 </MemoryRouter>
             );
-    
+
+            const correcta = await screen.findByText('España');
+            fireEvent.click(correcta);
+            const siguienteBtn = await screen.findByRole('button', { name: /Siguiente pregunta/i });
+            fireEvent.click(siguienteBtn);
+            
             expect(screen.getByText("" + time)).toBeInTheDocument();
         });
     });
