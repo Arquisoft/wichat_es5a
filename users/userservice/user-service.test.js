@@ -23,8 +23,8 @@ describe('User Service', () => {
     const newUser = {
       username: 'testuser',
       email: 'testuser@example.com',
-      password: 'testpass1',
-      confirmPassword: 'testpass1'
+      password: 'Testpass1',
+      confirmPassword: 'Testpass1'
     };
 
     const response = await request(app).post('/adduser').send(newUser);
@@ -42,7 +42,7 @@ describe('User Service', () => {
     expect(userInDb.email).toBe('testuser@example.com');
 
     // Assert that the password is encrypted
-    const isPasswordValid = await bcrypt.compare('testpass1', userInDb.password);
+    const isPasswordValid = await bcrypt.compare('Testpass1', userInDb.password);
     expect(isPasswordValid).toBe(true);
   });
 
@@ -58,7 +58,7 @@ describe('User Service', () => {
       .send({
         username: 'usernomatch',
         email: 'usernomatch@example.com',
-        password: 'pass1234',
+        password: 'Pass1234',
         confirmPassword: 'diff1234'
       });
     expect(response.status).toBe(400);
