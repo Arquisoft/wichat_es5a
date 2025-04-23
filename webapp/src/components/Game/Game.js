@@ -50,6 +50,7 @@ const Juego = () => {
   const [mostrarChat, setMostrarChat] = useState(false);
   const [finished, setFinished] = useState(false);
   const [answered, setAnswered] = useState(false);
+  const [time, setTime] = useState(20);
   const location = useLocation();
   const [botonPistaHabilitado, setBotonPistaHabilitado] = useState(true); 
   const [botonChatHabilitado, setBotonChatHabilitado] = useState(true);
@@ -60,15 +61,40 @@ const Juego = () => {
   
     //Variables para la obtencion y modificacion de estadisticas del usuario y de preguntas
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+    
+      //Comprueba el tiempo que se debe mostrar en el temporizador
+      const checkTime = useCallback(() => {
+        switch(difficulty) {
+          case "survival":
+            if(numPreguntaActual < 5) setTime(20);
+            else if(numPreguntaActual < 10) setTime(15);
+            else if(numPreguntaActual < 15) setTime(10);
+            else setTime(5);
+            break;
+          case "easy":
+            setTime(25);
+            break;
+          case "medium": 
+            setTime(20);
+            break;
+          case "difficult":
+            setTime(15);
+            break;
+          default:
+            setTime(25);
+        }
+      }, [difficulty, numPreguntaActual]);
+
     // Función que actualiza la pregunta que se muestra en pantalla
     const updateGame = useCallback(() => {
       setPregunta(arPreg[numPreguntaActual].pregunta);
       setResCorr(arPreg[numPreguntaActual].resCorr);
       setResFalse(arPreg[numPreguntaActual].resFalse);
       setImagenPregunta(arPreg[numPreguntaActual].imagen);
+      checkTime();
       //Poner temporizador a 20 de nuevo
       setRestartTemporizador(true);
-    }, [arPreg, numPreguntaActual]);
+    }, [arPreg, numPreguntaActual, checkTime]);
 
     const crearPreguntas = useCallback(async (numPreguntas) => {
       setPausarTemporizador(true);
@@ -176,6 +202,7 @@ const Juego = () => {
   */
  const cambiarColorBotones = (respuesta, bool) => { 
     setAnswered(true);
+    checkFinished(false);
     //Obtenemos los botones del contenedor de botones
     const buttons = document.querySelectorAll('.button-container button');
     //Recorremos cada boton
@@ -254,9 +281,10 @@ const Juego = () => {
     setTimeout(() => descolorearTodos(), 0);
     checkFinished(true);
     setNumPreguntaActual(numPreguntaActual + 1);
+    checkTime();
     arTiempo.push(tiempoRestante);
     arPistas.push(numPistas);
-    setTiempoRestante(20);
+    setTiempoRestante(time);
     setNumPistas(0);
     updateGame();
     setRestartTemporizador(true);
@@ -348,7 +376,7 @@ const Juego = () => {
                 <Temporizador
                   id="temp"
                   restart={restartTemporizador}
-                  tiempoInicial={20}
+                  tiempoInicial={time}
                   tiempoAcabado={cambiarColorBotones}
                   pausa={pausarTemporizador}
                   handleRestart={handleRestart}

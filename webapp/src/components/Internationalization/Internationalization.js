@@ -37,7 +37,7 @@ const Internationalization = () => {
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
         {languages.map((language) => (
           <MenuItem key={language.code} onClick={() => changeLanguage(language.code)}>
-            <div>
+            <div class="language-tab">
               <Flag code={language.country}/>{language.text}
             </div>
           </MenuItem>

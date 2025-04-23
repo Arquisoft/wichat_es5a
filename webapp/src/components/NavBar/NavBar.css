@@ -17,7 +17,7 @@
 
 #play, #profile, #credits, #history, #language-button {
     white-space: nowrap;
-    padding-inline: 1em;
+    padding-inline: 2em;
 }
 
 #login, #signup {
@@ -27,4 +27,9 @@
 
 #navbar {
     margin-bottom: 8em;
+}
+
+.language-tab {
+    display: grid;
+    grid-template-columns: 3em 1fr;
 }
