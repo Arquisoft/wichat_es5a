@@ -12,7 +12,7 @@ jest.mock('react-router', () => ({
 }));
 
 describe('Points Component', () => {
-  const renderPoints = (state = { numRespuestasCorrectas: 0, numPreguntas: 0 }) => {
+  const renderPoints = (state = { numRespuestasCorrectas: 0, numPreguntas: 0, difficulty: "easy" }) => {
     return render(
       <MemoryRouter initialEntries={[{ pathname: '/points', state }]}>
         <Routes>
@@ -26,11 +26,19 @@ describe('Points Component', () => {
     jest.clearAllMocks(); 
   });
 
-  it('should display the correct score passed from Game.js', () => {
-    renderPoints({ numRespuestasCorrectas: 7, numPreguntas: 10 });
+  it('should display the correct score passed from Game.js when a normal game is played', () => {
+    renderPoints({ numRespuestasCorrectas: 7, numPreguntas: 10, difficulty: "medium" });
 
     // Verificar que el puntaje se muestra correctamente
     expect(screen.getByText('7/10 acertadas')).toBeInTheDocument();
+    expect(screen.getByText('¡Bien hecho!')).toBeInTheDocument();
+  });
+
+  it('should display the correct score passed from Game.js when a survival game is played', () => {
+    renderPoints({ numRespuestasCorrectas: 7, numPreguntas: 10, difficulty: "survival" });
+
+    // Verificar que el puntaje se muestra correctamente
+    expect(screen.getByText('7 acertadas')).toBeInTheDocument();
     expect(screen.getByText('¡Bien hecho!')).toBeInTheDocument();
   });
 

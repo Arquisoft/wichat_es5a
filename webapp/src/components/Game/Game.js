@@ -164,8 +164,8 @@ const Juego = () => {
   const checkFinished = (correct) => {
     if(difficulty === "survival") {
       if(!correct || numPreguntaActual >= numPreguntas * 1.5) setFinished(true);
-    } else {
-      if(numPreguntaActual >= numPreguntas) setFinished(true);
+    } else if(numPreguntaActual >= numPreguntas) {
+      setFinished(true);
     }
   };
   
