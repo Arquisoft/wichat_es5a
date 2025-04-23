@@ -163,7 +163,7 @@ const Juego = () => {
   //Comprueba si la partida se ha terminado
   const checkFinished = (correct) => {
     if(difficulty === "survival") {
-      setFinished(!correct);
+      if(!correct || numPreguntaActual >= numPreguntas * 1.5) setFinished(true);
     } else {
       if(numPreguntaActual >= numPreguntas) setFinished(true);
     }
