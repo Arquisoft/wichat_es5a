@@ -81,6 +81,7 @@ i18n.use(initReactI18next).init({
                     "passwordsNoMatch": "Las contraseñas no coinciden",
                     "weakPassword": "La contraseña debe tener al menos 7 caracteres y un número",
                     "missingField": "Faltan campos obligatorios",
+                    "invalidCredentials": "Credenciales inválidas",
                     "unknown": "Ha ocurrido un error inesperado"
                 }
             }
@@ -163,6 +164,7 @@ i18n.use(initReactI18next).init({
                     "passwordsNoMatch": "Passwords do not match",
                     "weakPassword": "The password must be at least 7 characters long and contain at least one number",
                     "missingField": "Required fields are missing",
+                    "invalidCredentials": "Invalid credentials",
                     "unknown": "An unexpected error has occurred"
                 }
             }
