@@ -78,27 +78,6 @@ app.get('/profile', authenticateToken, async (req, res) => {
   }
 });
 
-/*app.post('/savegame', async (req, res) => {
-  try {
-    const username = req.body.username // Extract username from token
-    const user = await findOne(username, null); // Use findOne() to get user data
-    const contestId = req.body.id; // Extract id from request body
-
-    console.log(contestId);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    user.contests.push(contestId);
-
-    await user.save(); // Save the updated user data
-    
-  } catch (error) {
-    console.error('Error fetching profile:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});*/
-
 app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
 });
@@ -106,20 +85,40 @@ app.get('/health', (req, res) => {
 app.post('/adduser', async (req, res) => {
   try {
       // Check if required fields are present in the request body
-      validateRequiredFields(req, ['username','password','confirmPassword']);
-      const { username, password, confirmPassword } = req.body;
+      validateRequiredFields(req, ['username', 'email', 'password', 'confirmPassword']);
+      const { username, email, password, confirmPassword } = req.body;
+
+      //Comprobación de que el nombre de usuario tenga mínimo 4 caracteres
+      if (username.length < 4) {
+        return res.status(400).json({ error: "El nombre de usuario debe tener al menos 4 caracteres" });
+      }
+
+      //Comprobación de que el email sea del tipo cualquiercosa@cualquiercosa.letras(mínimo 2)
+      const emailRegex = /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: "Formato de email inválido" });
+      }
+
+      //Comprobación de que el password tenga 7 o más caracteres y que uno de ellos sea un número
+      const passwordRegex = /^(?=.*[0-9]).{7,}$/;
+      if (!passwordRegex.test(password)) {
+        return res.status(400).json({ error: "La contraseña debe tener al menos 7 caracteres y contener al menos un número" });
+      }
+
+      //Comprobación de que las contraseñas tienen que coincidir
       if (password !== confirmPassword) {
         return res.status(400).json({ error: "Las contraseñas no coinciden" });
       }
+
       const user_Username = await findOne(username, null);
-      //const user_Email = await findOne(null, email);
-      const user_Email = false; // Ahora mismo los usuarios no tienen email, cuando lo tengan cambiar la linea por la de arriba
+      const user_Email = await findOne(null, email);
+
       if(user_Email || user_Username ){
           throw new Error("Ya se ha registrado un usuario con ese email o nombre de usuario");
       }
       const newUser = new User({
         username,
-        email: username, //Cambiar más adelante por email
+        email, 
         password: await bcrypt.hash(password, 10), //Guarda la contraseña encriptada
       });
 
@@ -131,6 +130,7 @@ app.post('/adduser', async (req, res) => {
 
       await newUser.save();
       res.json({token: token, user: newUser});
+      
   } catch (error) {
     console.log("Error: " + error)
     res.status(400).json({ error: error.message }); 
