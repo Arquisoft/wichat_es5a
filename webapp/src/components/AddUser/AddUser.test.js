@@ -16,6 +16,16 @@ const fillForm = (username, email, password, confirmPassword) => {
   fireEvent.change(screen.getByTestId('confirm-password-input'), { target: { value: confirmPassword } });
 };
 
+const renderWithProviders = (component) => {
+  render(
+    <BrowserRouter>
+      <I18nextProvider i18n={i18n}>
+        {component}
+      </I18nextProvider>
+    </BrowserRouter>
+  );
+};
+
 describe('AddUser component', () => {
 
   beforeEach(() => {
@@ -28,11 +38,7 @@ describe('AddUser component', () => {
   });
   
   it('should render the add user form correctly', () => {
-    render(
-      <BrowserRouter>
-        <AddUser/>
-      </BrowserRouter>
-    );
+    renderWithProviders(<AddUser />);
 
     expect(screen.getByTestId('username-input')).toBeInTheDocument();
     expect(screen.getByTestId('email-input')).toBeInTheDocument();
@@ -45,11 +51,7 @@ describe('AddUser component', () => {
       mockAxios.onPost('http://localhost:8000/login').reply(200, { token: 'mocked_token' });
       mockAxios.onPost('http://localhost:8000/adduser').reply(200, { token: 'mocked_token' });
   
-      render(
-        <BrowserRouter>
-          <AddUser/>
-        </BrowserRouter>
-      );
+      renderWithProviders(<AddUser />);
 
       fillForm('testuser', 'test@example.com', 'Testpass1', 'Testpass1');
   
@@ -67,13 +69,7 @@ describe('AddUser component', () => {
       error: 'El nombre de usuario ya está en uso',
     });
 
-    render(
-      <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          <AddUser />
-        </I18nextProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<AddUser />);
 
     fillForm('existinguser', 'test@example.com', 'Testpass1', 'Testpass1');
 
@@ -91,13 +87,7 @@ describe('AddUser component', () => {
       error: 'Ya hay un usuario registrado con ese email',
     });
   
-    render(
-      <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          <AddUser />
-        </I18nextProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<AddUser />);
   
     fillForm('newuser', 'usedemail@example.com', 'Testpass1', 'Testpass1');
   
@@ -115,13 +105,7 @@ describe('AddUser component', () => {
       error: 'Las contraseñas no coinciden',
     });
   
-    render(
-      <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          <AddUser />
-        </I18nextProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<AddUser />);
   
     fillForm('newuser', 'test@example.com', 'Testpass1', 'differentpass');
   
@@ -139,13 +123,7 @@ describe('AddUser component', () => {
       error: 'La contraseña debe tener al menos 7 caracteres y un número',
     });
   
-    render(
-      <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          <AddUser />
-        </I18nextProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<AddUser />);
   
     fillForm('newuser', 'test@example.com', 'abcdefg', 'abcdefg');
   
@@ -163,13 +141,7 @@ describe('AddUser component', () => {
       error: 'Error inesperado del servidor',
     });
   
-    render(
-      <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          <AddUser />
-        </I18nextProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<AddUser />);
   
     fillForm('anyuser', 'test@example.com', 'Testpass1', 'Testpass1');
   
@@ -187,13 +159,7 @@ describe('AddUser component', () => {
       error: 'Formato de email inválido',
     });
   
-    render(
-      <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          <AddUser />
-        </I18nextProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<AddUser />);
   
     fillForm('newuser', 'invalid-email', 'Testpass1', 'Testpass1');
   
@@ -211,13 +177,7 @@ describe('AddUser component', () => {
       error: 'El nombre de usuario debe tener al menos 4 caracteres',
     });
   
-    render(
-      <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          <AddUser />
-        </I18nextProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<AddUser />);
   
     fillForm('usr', 'short@example.com', 'Testpass1', 'Testpass1');
   
