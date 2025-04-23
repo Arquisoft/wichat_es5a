@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, TextField, Snackbar, Box } from '@mui/material';
+import { Container, TextField, Box } from '@mui/material';
 import { useNavigate, Navigate } from 'react-router';
 import '../Components.css';
 import LargeButton from '../ReactComponents/LargeButton';
@@ -11,12 +11,16 @@ import { useTranslation } from "react-i18next";
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
   const [loginSuccess, setLoginSuccess] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+
+  const clearFieldError = (field) => {
+    setFieldErrors((prev) => ({ ...prev, [field]: null }));
+  };
 
   const loginUser = async () => {
     try {
@@ -29,7 +33,7 @@ const Login = () => {
       setLoginSuccess(true);
       navigate('/home'); // Redirige a la ruta /home después de un login exitoso
     } catch (error) {
-      setError(error.response.data.error);
+      setFieldErrors({ general: t('errors.invalidCredentials') });
     }
   };
 
@@ -50,7 +54,12 @@ const Login = () => {
               margin="normal"
               label={t("username")}
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                clearFieldError('username');
+              }}
+              error={!!fieldErrors.username}
+              helperText={fieldErrors.username}
               sx={{ width: '20%'}}
             />
             <br></br>
@@ -59,7 +68,12 @@ const Login = () => {
               label={t("password")}
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                clearFieldError('password');
+              }}
+              error={!!fieldErrors.password}
+              helperText={fieldErrors.password}
               sx={{ width: '20%'}}
             />
             <br></br>
@@ -67,8 +81,8 @@ const Login = () => {
               {t("enter")}
             </LargeButton>
             <br></br>
-            {error && (
-              <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
+            {fieldErrors.general && (
+              <p style={{ color: 'red', marginTop: '1rem' }}>{fieldErrors.general}</p>
             )}
           </Box>
           
