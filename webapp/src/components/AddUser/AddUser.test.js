@@ -4,11 +4,14 @@ import { BrowserRouter } from 'react-router';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import AddUser from "./AddUser";
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../../i18n'; 
 
 const mockAxios = new MockAdapter(axios);
 
-const fillForm = (username, password, confirmPassword) => {
+const fillForm = (username, email, password, confirmPassword) => {
   fireEvent.change(screen.getByTestId('username-input'), { target: { value: username } });
+  fireEvent.change(screen.getByTestId('email-input'), { target: { value: email } });
   fireEvent.change(screen.getByTestId('password-input'), { target: { value: password } });
   fireEvent.change(screen.getByTestId('confirm-password-input'), { target: { value: confirmPassword } });
 };
@@ -32,6 +35,7 @@ describe('AddUser component', () => {
     );
 
     expect(screen.getByTestId('username-input')).toBeInTheDocument();
+    expect(screen.getByTestId('email-input')).toBeInTheDocument();
     expect(screen.getByTestId('password-input')).toBeInTheDocument();
     expect(screen.getByTestId('confirm-password-input')).toBeInTheDocument();
     expect(screen.getByTestId('signup-button')).toBeInTheDocument();
@@ -47,7 +51,7 @@ describe('AddUser component', () => {
         </BrowserRouter>
       );
 
-      fillForm('testadduser', 'testadduserpass', 'testadduserpass');
+      fillForm('testuser', 'test@example.com', 'testpass1', 'testpass1');
   
       await act(async () => {
         fireEvent.click(screen.getByTestId('signup-button'));
@@ -56,31 +60,173 @@ describe('AddUser component', () => {
       await waitFor(() => {
         expect(localStorage.getItem('token')).toBe('mocked_token');
       });
-
-      // await waitFor(() => {
-      //   expect(screen.getAllByText(/Usuario añadido con éxito/i)[0]).toBeInTheDocument();
-      // })
   });
 
-  it('should handle error when adding user', async () => {
-    mockAxios.onPost('http://localhost:8000/adduser').reply(500, { error: 'Internal Server Error' });
-  
+  it('should show error if username is already taken', async () => {
+    mockAxios.onPost('http://localhost:8000/adduser').reply(400, {
+      error: 'El nombre de usuario ya está en uso',
+    });
+
     render(
       <BrowserRouter>
-        <AddUser/>
+        <I18nextProvider i18n={i18n}>
+          <AddUser />
+        </I18nextProvider>
       </BrowserRouter>
     );
 
-
-    fillForm('testadduser', 'testadduserpass', 'testadduserpass');
+    fillForm('existinguser', 'test@example.com', 'testpass1', 'testpass1');
 
     await act(async () => {
       fireEvent.click(screen.getByTestId('signup-button'));
     });
 
-    // Wait for the error Snackbar to be open
     await waitFor(() => {
-      expect(screen.getByText(/Error: Internal Server Error/i)).toBeInTheDocument();
+      expect(screen.getByText(/El nombre de usuario ya está en uso/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should show error if email is already used', async () => {
+    mockAxios.onPost('http://localhost:8000/adduser').reply(400, {
+      error: 'Ya hay un usuario registrado con ese email',
+    });
+  
+    render(
+      <BrowserRouter>
+        <I18nextProvider i18n={i18n}>
+          <AddUser />
+        </I18nextProvider>
+      </BrowserRouter>
+    );
+  
+    fillForm('newuser', 'usedemail@example.com', 'testpass1', 'testpass1');
+  
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('signup-button'));
+    });
+  
+    await waitFor(() => {
+      expect(screen.getByText(/Ya hay un usuario registrado con ese email/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should show error if passwords do not match', async () => {
+    mockAxios.onPost('http://localhost:8000/adduser').reply(400, {
+      error: 'Las contraseñas no coinciden',
+    });
+  
+    render(
+      <BrowserRouter>
+        <I18nextProvider i18n={i18n}>
+          <AddUser />
+        </I18nextProvider>
+      </BrowserRouter>
+    );
+  
+    fillForm('newuser', 'test@example.com', 'testpass1', 'differentpass');
+  
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('signup-button'));
+    });
+  
+    await waitFor(() => {
+      expect(screen.getByText(/Las contraseñas no coinciden/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should show error if password is weak', async () => {
+    mockAxios.onPost('http://localhost:8000/adduser').reply(400, {
+      error: 'La contraseña debe tener al menos 7 caracteres y un número',
+    });
+  
+    render(
+      <BrowserRouter>
+        <I18nextProvider i18n={i18n}>
+          <AddUser />
+        </I18nextProvider>
+      </BrowserRouter>
+    );
+  
+    fillForm('newuser', 'test@example.com', 'abcdefg', 'abcdefg');
+  
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('signup-button'));
+    });
+  
+    await waitFor(() => {
+      expect(screen.getByText(/La contraseña debe tener al menos 7 caracteres y un número/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should show unknown error if response is unexpected', async () => {
+    mockAxios.onPost('http://localhost:8000/adduser').reply(500, {
+      error: 'Error inesperado del servidor',
+    });
+  
+    render(
+      <BrowserRouter>
+        <I18nextProvider i18n={i18n}>
+          <AddUser />
+        </I18nextProvider>
+      </BrowserRouter>
+    );
+  
+    fillForm('anyuser', 'test@example.com', 'testpass1', 'testpass1');
+  
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('signup-button'));
+    });
+  
+    await waitFor(() => {
+      expect(screen.getByText(/Ha ocurrido un error inesperado/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should show error if email format is invalid', async () => {
+    mockAxios.onPost('http://localhost:8000/adduser').reply(400, {
+      error: 'Formato de email inválido',
+    });
+  
+    render(
+      <BrowserRouter>
+        <I18nextProvider i18n={i18n}>
+          <AddUser />
+        </I18nextProvider>
+      </BrowserRouter>
+    );
+  
+    fillForm('newuser', 'invalid-email', 'testpass1', 'testpass1');
+  
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('signup-button'));
+    });
+  
+    await waitFor(() => {
+      expect(screen.getByText(/Formato de email inválido/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should show error if username is too short', async () => {
+    mockAxios.onPost('http://localhost:8000/adduser').reply(400, {
+      error: 'El nombre de usuario debe tener al menos 4 caracteres',
+    });
+  
+    render(
+      <BrowserRouter>
+        <I18nextProvider i18n={i18n}>
+          <AddUser />
+        </I18nextProvider>
+      </BrowserRouter>
+    );
+  
+    fillForm('usr', 'short@example.com', 'testpass1', 'testpass1');
+  
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('signup-button'));
+    });
+  
+    await waitFor(() => {
+      expect(screen.getByText(/al menos 4 caracteres/i)).toBeInTheDocument();
     });
   });
 });
