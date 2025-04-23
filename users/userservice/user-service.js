@@ -99,10 +99,10 @@ app.post('/adduser', async (req, res) => {
         return res.status(400).json({ error: "Formato de email inválido" });
       }
 
-      //Comprobación de que el password tenga 7 o más caracteres y que uno de ellos sea un número
-      const passwordRegex = /^(?=.*[0-9]).{7,}$/;
+      // Comprobación de que el password tenga 7 o más caracteres, al menos un número y al menos una mayúscula
+      const passwordRegex = /^(?=.*[0-9])(?=.*[A-Z]).{7,}$/;
       if (!passwordRegex.test(password)) {
-        return res.status(400).json({ error: "La contraseña debe tener al menos 7 caracteres y contener al menos un número" });
+        return res.status(400).json({ error: "La contraseña debe tener al menos 7 caracteres, uno de ellos mayúscula y otro un número" });
       }
 
       //Comprobación de que las contraseñas tienen que coincidir
@@ -130,7 +130,7 @@ app.post('/adduser', async (req, res) => {
 
       await newUser.save();
       res.json({token: token, user: newUser});
-      
+
   } catch (error) {
     console.log("Error: " + error)
     res.status(400).json({ error: error.message }); 

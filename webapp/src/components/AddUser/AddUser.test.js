@@ -51,7 +51,7 @@ describe('AddUser component', () => {
         </BrowserRouter>
       );
 
-      fillForm('testuser', 'test@example.com', 'testpass1', 'testpass1');
+      fillForm('testuser', 'test@example.com', 'Testpass1', 'Testpass1');
   
       await act(async () => {
         fireEvent.click(screen.getByTestId('signup-button'));
@@ -75,7 +75,7 @@ describe('AddUser component', () => {
       </BrowserRouter>
     );
 
-    fillForm('existinguser', 'test@example.com', 'testpass1', 'testpass1');
+    fillForm('existinguser', 'test@example.com', 'Testpass1', 'Testpass1');
 
     await act(async () => {
       fireEvent.click(screen.getByTestId('signup-button'));
@@ -99,7 +99,7 @@ describe('AddUser component', () => {
       </BrowserRouter>
     );
   
-    fillForm('newuser', 'usedemail@example.com', 'testpass1', 'testpass1');
+    fillForm('newuser', 'usedemail@example.com', 'Testpass1', 'Testpass1');
   
     await act(async () => {
       fireEvent.click(screen.getByTestId('signup-button'));
@@ -123,7 +123,7 @@ describe('AddUser component', () => {
       </BrowserRouter>
     );
   
-    fillForm('newuser', 'test@example.com', 'testpass1', 'differentpass');
+    fillForm('newuser', 'test@example.com', 'Testpass1', 'differentpass');
   
     await act(async () => {
       fireEvent.click(screen.getByTestId('signup-button'));
@@ -154,7 +154,7 @@ describe('AddUser component', () => {
     });
   
     await waitFor(() => {
-      expect(screen.getByText(/La contraseña debe tener al menos 7 caracteres y un número/i)).toBeInTheDocument();
+      expect(screen.getByText(/La contraseña debe tener al menos 7 caracteres, uno de ellos mayúscula y otro un número/i)).toBeInTheDocument();
     });
   });
 
@@ -171,7 +171,7 @@ describe('AddUser component', () => {
       </BrowserRouter>
     );
   
-    fillForm('anyuser', 'test@example.com', 'testpass1', 'testpass1');
+    fillForm('anyuser', 'test@example.com', 'Testpass1', 'Testpass1');
   
     await act(async () => {
       fireEvent.click(screen.getByTestId('signup-button'));
@@ -195,7 +195,7 @@ describe('AddUser component', () => {
       </BrowserRouter>
     );
   
-    fillForm('newuser', 'invalid-email', 'testpass1', 'testpass1');
+    fillForm('newuser', 'invalid-email', 'Testpass1', 'Testpass1');
   
     await act(async () => {
       fireEvent.click(screen.getByTestId('signup-button'));
@@ -219,7 +219,7 @@ describe('AddUser component', () => {
       </BrowserRouter>
     );
   
-    fillForm('usr', 'short@example.com', 'testpass1', 'testpass1');
+    fillForm('usr', 'short@example.com', 'Testpass1', 'Testpass1');
   
     await act(async () => {
       fireEvent.click(screen.getByTestId('signup-button'));

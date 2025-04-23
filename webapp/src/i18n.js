@@ -79,7 +79,7 @@ i18n.use(initReactI18next).init({
                     "emailTaken": "Ya hay un usuario registrado con ese email",
                     "invalidEmail": "Formato de email inválido",
                     "passwordsNoMatch": "Las contraseñas no coinciden",
-                    "weakPassword": "La contraseña debe tener al menos 7 caracteres y un número",
+                    "weakPassword": "La contraseña debe tener al menos 7 caracteres, uno de ellos mayúscula y otro un número",
                     "missingField": "Faltan campos obligatorios",
                     "invalidCredentials": "Credenciales inválidas",
                     "unknown": "Ha ocurrido un error inesperado"
@@ -162,7 +162,7 @@ i18n.use(initReactI18next).init({
                     "emailTaken": "An account with this email already exists",
                     "invalidEmail": "Invalid email format",
                     "passwordsNoMatch": "Passwords do not match",
-                    "weakPassword": "The password must be at least 7 characters long and contain at least one number",
+                    "weakPassword": "The password must be at least 7 characters long, including at least one uppercase letter and one number.",
                     "missingField": "Required fields are missing",
                     "invalidCredentials": "Invalid credentials",
                     "unknown": "An unexpected error has occurred"
