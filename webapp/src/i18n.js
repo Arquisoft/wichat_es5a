@@ -75,6 +75,7 @@ i18n.use(initReactI18next).init({
                 "question-food": "¿Qué plato de comida es?",
                 "question-album": "¿Cuál es el nombre de este álbum?",
                 "finish": "Finalizar",
+                "streak": "Racha",
             }
         },
         en: {
@@ -149,6 +150,7 @@ i18n.use(initReactI18next).init({
                 "question-food": "What plate of food is this?",
                 "question-album": "What music album is this?",
                 "finish": "Finish",
+                "streak": "Streak",
             }
         }
     },

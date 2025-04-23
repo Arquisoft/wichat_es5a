@@ -23,17 +23,12 @@ const Juego = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  //La pregunta (string)
-  const [pregunta, setPregunta] = useState("")
-  //La Respuesta correcta (string)
-  const [resCorr, setResCorr] = useState("")
-  //Array de las cuatros respuestas
-  const [resFalse, setResFalse] = useState([])
-  //Constante que se usa para almacenar la URL de la imagen de la pregunta
-  const [imagenPregunta, setImagenPregunta] = useState("");
-  //Para saber si el temporizador se ha parado al haber respondido una respuesta
-  const [pausarTemporizador, setPausarTemporizador] = useState(false)
-  const [restartTemporizador, setRestartTemporizador] = useState(false)
+  const [pregunta, setPregunta] = useState(""); //La pregunta (string)
+  const [resCorr, setResCorr] = useState("");//La Respuesta correcta (string)
+  const [resFalse, setResFalse] = useState([]);
+  const [imagenPregunta, setImagenPregunta] = useState("");  //Constante que se usa para almacenar la URL de la imagen de la pregunta
+  const [pausarTemporizador, setPausarTemporizador] = useState(false); //Para saber si el temporizador se ha parado al haber respondido una respuesta
+  const [restartTemporizador, setRestartTemporizador] = useState(false);
   const [firstRender, setFirstRender] = useState(false);
   const [numPreguntaActual, setNumPreguntaActual] = useState(0)
   const [arPreg] = useState([])
@@ -51,100 +46,101 @@ const Juego = () => {
   const [finished, setFinished] = useState(false);
   const [answered, setAnswered] = useState(false);
   const [time, setTime] = useState(20);
+  const [streak, setStreak] = useState(0);
   const location = useLocation();
   const [botonPistaHabilitado, setBotonPistaHabilitado] = useState(true); 
   const [botonChatHabilitado, setBotonChatHabilitado] = useState(true);
   const { mode = 'flag', difficulty = t("easy") } = location.state || {};
 
-    // Estados para el LLM
-    const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
+  // Estados para el LLM
+  const [respuestaLLM, setRespuestaLLM] = useState(""); // Estado para almacenar la respuesta del LLM
   
-    //Variables para la obtencion y modificacion de estadisticas del usuario y de preguntas
-    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+  //Variables para la obtencion y modificacion de estadisticas del usuario y de preguntas
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
     
-      //Comprueba el tiempo que se debe mostrar en el temporizador
-      const checkTime = useCallback(() => {
-        switch(difficulty) {
-          case "survival":
-            if(numPreguntaActual < 5) setTime(20);
-            else if(numPreguntaActual < 10) setTime(15);
-            else if(numPreguntaActual < 15) setTime(10);
-            else setTime(5);
-            break;
-          case "easy":
-            setTime(25);
-            break;
-          case "medium": 
-            setTime(20);
-            break;
-          case "difficult":
-            setTime(15);
-            break;
-          default:
-            setTime(25);
-        }
-      }, [difficulty, numPreguntaActual]);
+  //Comprueba el tiempo que se debe mostrar en el temporizador
+  const checkTime = useCallback(() => {
+    switch(difficulty) {
+      case "survival":
+        if(numPreguntaActual < 5) setTime(20);
+        else if(numPreguntaActual < 10) setTime(15);
+        else if(numPreguntaActual < 15) setTime(10);
+        else setTime(5);
+        break;
+      case "easy":
+        setTime(25);
+        break;
+      case "medium": 
+        setTime(20);
+        break;
+      case "difficult":
+        setTime(15);
+        break;
+      default:
+        setTime(25);
+    }
+  }, [difficulty, numPreguntaActual]);
 
-    // Función que actualiza la pregunta que se muestra en pantalla
-    const updateGame = useCallback(() => {
-      setPregunta(arPreg[numPreguntaActual].pregunta);
-      setResCorr(arPreg[numPreguntaActual].resCorr);
-      setResFalse(arPreg[numPreguntaActual].resFalse);
-      setImagenPregunta(arPreg[numPreguntaActual].imagen);
-      checkTime();
-      //Poner temporizador a 20 de nuevo
-      setRestartTemporizador(true);
-    }, [arPreg, numPreguntaActual, checkTime]);
+  // Función que actualiza la pregunta que se muestra en pantalla
+  const updateGame = useCallback(() => {
+    setPregunta(arPreg[numPreguntaActual].pregunta);
+    setResCorr(arPreg[numPreguntaActual].resCorr);
+    setResFalse(arPreg[numPreguntaActual].resFalse);
+    setImagenPregunta(arPreg[numPreguntaActual].imagen);
+    checkTime();
+    //Poner temporizador a 20 de nuevo
+    setRestartTemporizador(true);
+  }, [arPreg, numPreguntaActual, checkTime]);
 
-    const crearPreguntas = useCallback(async (numPreguntas) => {
-      setPausarTemporizador(true);
-      setNumPreguntas(numPreguntas);
-      setLoadingProgress(0);
-      setLoadingComplete(false);
-      if (!mode) {
-        console.error('El modo de juego no está definido, usando valor por defecto.');
-      }
-      try {
-        const total = numPreguntas;
-        let current = 0;
-        const response = await axios.post(`${apiEndpoint}/questions/${mode}`, {
-          numQuestions: total
+  const crearPreguntas = useCallback(async (numPreguntas) => {
+    setPausarTemporizador(true);
+    setNumPreguntas(numPreguntas);
+    setLoadingProgress(0);
+    setLoadingComplete(false);
+    if (!mode) {
+      console.error('El modo de juego no está definido, usando valor por defecto.');
+    }
+    try {
+      const total = numPreguntas;
+      let current = 0;
+      const response = await axios.post(`${apiEndpoint}/questions/${mode}`, {
+        numQuestions: total
+      });
+      const preguntas = response.data;
+      while (numPreguntas > 0) {
+        let pregunta = preguntas[current];
+        const respuestas = [...pregunta.wrongAnswers, pregunta.answer];
+        const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
+        arPreg.push({
+          id: numPreguntas,
+          pregunta: pregunta.question,
+          resCorr: pregunta.answer,
+          resFalse: respuestasAleatorias,
+          imagen: pregunta.image,
         });
-        const preguntas = response.data;
-        while (numPreguntas > 0) {
-          let pregunta = preguntas[current];
-          const respuestas = [...pregunta.wrongAnswers, pregunta.answer];
-          const respuestasAleatorias = respuestas.sort(() => Math.random() - 0.5);
-          arPreg.push({
-            id: numPreguntas,
-            pregunta: pregunta.question,
-            resCorr: pregunta.answer,
-            resFalse: respuestasAleatorias,
-            imagen: pregunta.image,
-          });
-          current++;
-          const progress = Math.round(100 * Math.log10(1 + (current / total) * 9)); // escala logarítmica en base 10
-          setLoadingProgress(progress > loadingProgress ? progress : loadingProgress); // solo actualiza si es mayor
-          numPreguntas--;
-        }
-      } catch (error) {
-          console.error('Error al crear las preguntas:', error);
+        current++;
+        const progress = Math.round(100 * Math.log10(1 + (current / total) * 9)); // escala logarítmica en base 10
+        setLoadingProgress(progress > loadingProgress ? progress : loadingProgress); // solo actualiza si es mayor
+        numPreguntas--;
       }
-      setLoadingComplete(true);
-      setPausarTemporizador(false);
-      updateGame();
-      setNumPreguntaActual(1);
-    }, [arPreg, apiEndpoint, updateGame, loadingProgress, mode]);
+    } catch (error) {
+        console.error('Error al crear las preguntas:', error);
+    }
+    setLoadingComplete(true);
+    setPausarTemporizador(false);
+    updateGame();
+    setNumPreguntaActual(1);
+  }, [arPreg, apiEndpoint, updateGame, loadingProgress, mode]);
     
-    useEffect(() => {
-      if (!firstRender) {
-        setFirstRender(true);
-        let num = 5; // default (Fácil)
-        if (difficulty === "medium") num = 10;
-        else if (difficulty === "difficult" || difficulty === "survival") num = 20;
-        crearPreguntas(num);
-      }
-    }, [firstRender, crearPreguntas, difficulty, mode, t]);
+  useEffect(() => {
+    if (!firstRender) {
+      setFirstRender(true);
+      let num = 5; // default (Fácil)
+      if (difficulty === "medium") num = 10;
+      else if (difficulty === "difficult" || difficulty === "survival") num = 20;
+      crearPreguntas(num);
+    }
+  }, [firstRender, crearPreguntas, difficulty, mode, t]);
 
   const enviarRespuestaALlm = async () => {
     if (!botonPistaHabilitado) return; // Evitar múltiples ejecuciones
@@ -178,9 +174,13 @@ const Juego = () => {
       //Aumenta en 1 en las estadisticas de juegos ganado
       arCorrect.push(true);
       setNumRespuestasCorrectas(numRespuestasCorrectas+1);
-      setPoints((prevPoints) => prevPoints + 100);
+      setStreak(streak + 1);
+      var plus = 100;
+      if(streak > 2) plus += (streak - 2) * 20;
+      setPoints(points + plus);
     } else {
       arCorrect.push(false);
+      setStreak(0);
     }
     checkFinished(respuesta === resCorr);
     cambiarColorBotones(respuesta, true);
@@ -291,7 +291,7 @@ const Juego = () => {
     setPausarTemporizador(false);
     setMostrarChat(false);
     setRespuestaLLM("");
-};
+  };
 
   const handleRestart = () => {
     setRestartTemporizador(false); // Cambia el estado de restart a false, se llama aqui desde Temporizador.js
@@ -386,6 +386,11 @@ const Juego = () => {
               <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
                 {t("punctuation")}: {points}
               </Box>
+              {!(difficulty === "survival") && (
+                <Box className="puntuacion-info-container" p={2} border="1px solid #ccc" borderRadius="5px">
+                {t("streak") + ": " + streak}{streak >= 3 ? '🔥' : ""}
+                </Box>
+              )}
               <Button id="botonSiguiente" variant="contained" onClick={clickSiguiente} disabled={!loadingComplete || (!answered && !finished)}>
                 {finished ? t("finish") : t("next-question")}
               </Button>
