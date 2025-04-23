@@ -3,7 +3,7 @@ import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import Juego from './Game';
 import MockAdapter from 'axios-mock-adapter';
-import { BrowserRouter } from 'react-router'
+import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router'
 import "../../i18n.js"
 
 // Función auxiliar para renderizar el componente Juego
@@ -188,6 +188,7 @@ describe('Juego component', () => {
         // Verifica que los puntos se restan correctamente
         await waitForText(/Puntuación: -40/i);
     });
+    
     it('cambia el color del botón si la respuesta es incorrecta en cambiarColorUno', async () => {
         render(
             <BrowserRouter>
@@ -207,24 +208,24 @@ describe('Juego component', () => {
     
         // Verifica que el botón correcto se ponga en verde
         expect(correcta).toHaveStyle('background-color: #05B92B');
-      });
+    });
   
-      it('restablece el color de todos los botones al hacer clic en "Siguiente pregunta"', async () => {
+    it('restablece el color de todos los botones al hacer clic en "Siguiente pregunta"', async () => {
         render(
             <BrowserRouter>
                 <Juego />
             </BrowserRouter>
         );
-    
+
         const incorrecta = await screen.findByText('Francia');
-    
+
         // Simula respuesta
         fireEvent.click(incorrecta);
-    
+
         // Clic en botón siguiente
         const siguienteBtn = await screen.findByRole('button', { name: /Siguiente pregunta/i });
         fireEvent.click(siguienteBtn);
-    
+
         // Espera a que se actualicen los botones
         await waitFor(() => {
             const botones = screen.getAllByRole('button');
@@ -234,7 +235,7 @@ describe('Juego component', () => {
                 expect(btn).not.toHaveStyle('background-color: #05B92B');
             });
         });
-      });
+    });
       
     it('realiza la transición correctamente al hacer clic en "Finalizar" y guarda los datos cuando se llega al final', async () => {
         mock.onPost(`${apiEndpoint}/savegame`).reply(200, {}); 
@@ -261,5 +262,27 @@ describe('Juego component', () => {
         await waitFor(() => {
             expect(screen.getByText(/Puntuación/i)).toBeInTheDocument();
         });
-      });
+    });
+
+    const testCases = [
+        { difficulty: 'easy', time: 25 },
+        { difficulty: 'medium', time: 25 },
+        { difficulty: 'difficult', time: 25 },
+        { difficulty: 'survival', time: 25 }
+    ];
+
+    testCases.forEach(({ difficulty, time }) => {
+        it('poner el tiempo del temporizador en función de la dificultad', async () => {
+            var state = { difficulty: difficulty }
+            render(
+                <MemoryRouter initialEntries={[{ pathname: '/game', state }]}>
+                  <Routes>
+                    <Route path="/game" element={<Game />} />
+                  </Routes>
+                </MemoryRouter>
+            );
+    
+            expect(screen.getByText("" + time)).toBeInTheDocument();
+        });
+    });
 });
