@@ -56,6 +56,7 @@ i18n.use(initReactI18next).init({
                 "easy": "Fácil",
                 "medium": "Media",
                 "difficult": "Difícil",
+                "survival": "Supervivencia",
                 "username": "Nombre de usuario",
                 "password": "Contraseña",
                 "confirmPassword": "Confirmar contraseña",
@@ -73,6 +74,8 @@ i18n.use(initReactI18next).init({
                 "question-football": "¿Qué equipo de fútbol es este?",
                 "question-food": "¿Qué plato de comida es?",
                 "question-album": "¿Cuál es el nombre de este álbum?",
+                "finish": "Finalizar",
+                "streak": "Racha",
                 "errors": {//Errores para el adduser
                     "usernameTaken": "El nombre de usuario ya está en uso",
                     "usernameTooShort": "El nombre de usuario debe tener al menos 4 caracteres",
@@ -139,6 +142,7 @@ i18n.use(initReactI18next).init({
                 "easy": "Easy",
                 "medium": "Medium",
                 "difficult": "Difficult",
+                "survival": "Survival",
                 "username": "Username",
                 "password": "Password",
                 "confirmPassword": "Confirm password",
@@ -156,6 +160,8 @@ i18n.use(initReactI18next).init({
                 "question-football": "What football team is this?",
                 "question-food": "What plate of food is this?",
                 "question-album": "What music album is this?",
+                "finish": "Finish",
+                "streak": "Streak",
                 "errors": {//Errors for adduser
                     "usernameTaken": "The username is already taken",
                     "usernameTooShort": "The username must be at least 4 characters long",

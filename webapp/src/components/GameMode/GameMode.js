@@ -20,7 +20,7 @@ const GameMode = () => {
     { label: 'food', value: 'food' }
   ];
 
-  const difficulties = ['easy', 'medium', 'difficult'];
+  const difficulties = ['easy', 'medium', 'difficult', 'survival'];
 
   const startGame = () => {
     if (!selectedMode || !selectedDifficulty) return;
