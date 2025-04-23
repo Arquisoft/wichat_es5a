@@ -244,7 +244,7 @@ const Juego = () => {
         state: {
           numRespuestasCorrectas: numRespuestasCorrectas,
           numPreguntas: numPreguntas,
-          difficluty: difficulty
+          difficluty: difficulty,
           points: points,
         }
       });
