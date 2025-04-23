@@ -272,12 +272,12 @@ describe('Juego component', () => {
     ];
 
     testCases.forEach(({ difficulty, time }) => {
-        it('poner el tiempo del temporizador en función de la dificultad', async () => {
+        it('poner el tiempo del temporizador en función de la dificultad: ' + difficulty, async () => {
             var state = { difficulty: difficulty }
             render(
                 <MemoryRouter initialEntries={[{ pathname: '/game', state }]}>
                   <Routes>
-                    <Route path="/game" element={<Game />} />
+                    <Route path="/game" element={<Juego />} />
                   </Routes>
                 </MemoryRouter>
             );
