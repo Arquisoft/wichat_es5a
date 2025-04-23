@@ -185,4 +185,74 @@ describe('Juego component', () => {
         // Verifica que los puntos se restan correctamente
         await waitForText(/Puntuación: -40/i);
     });
+    it('cambia el color del botón si la respuesta es incorrecta en cambiarColorUno', async () => {
+        render(
+            <BrowserRouter>
+                <Juego />
+            </BrowserRouter>
+        );
+    
+        // Espera a que se rendericen los botones con las respuestas
+        const incorrecta = await screen.findByText('Francia');
+        const correcta = await screen.findByText('España');
+    
+        // Clic en la respuesta incorrecta
+        fireEvent.click(incorrecta);
+    
+        // Verifica que el botón incorrecto se ponga en rojo
+        expect(incorrecta).toHaveStyle('background-color: #E14E4E');
+    
+        // Verifica que el botón correcto se ponga en verde
+        expect(correcta).toHaveStyle('background-color: #05B92B');
+      });
+  
+      it('restablece el color de todos los botones al hacer clic en "Siguiente pregunta"', async () => {
+        render(
+            <BrowserRouter>
+                <Juego />
+            </BrowserRouter>
+        );
+    
+        const incorrecta = await screen.findByText('Francia');
+    
+        // Simula respuesta
+        fireEvent.click(incorrecta);
+    
+        // Clic en botón siguiente
+        const siguienteBtn = await screen.findByRole('button', { name: /Siguiente pregunta/i });
+        fireEvent.click(siguienteBtn);
+    
+        // Espera a que se actualicen los botones
+        await waitFor(() => {
+            const botones = screen.getAllByRole('button');
+            botones.forEach(btn => {
+                // Asegura que no tengan color
+                expect(btn).not.toHaveStyle('background-color: #E14E4E');
+                expect(btn).not.toHaveStyle('background-color: #05B92B');
+            });
+        });
+      });
+      
+    it('realiza la transición correctamente al hacer clic en "Siguiente pregunta" y guarda los datos cuando se llega al final', async () => {
+        mock.onPost(`${apiEndpoint}/savegame`).reply(200, {}); 
+    
+        render(
+            <BrowserRouter>
+                <Juego />
+            </BrowserRouter>
+        );
+    
+        const respuestasCorrectas = ['España', 'Rusia', 'Rusia', 'Rusia', 'Rusia'];
+    
+        for (let i = 0; i < respuestasCorrectas.length; i++) {
+            const botonCorrecto = await screen.findByText(respuestasCorrectas[i]);
+            fireEvent.click(botonCorrecto);
+            const siguienteBtn = await screen.findByRole('button', { name: /Siguiente pregunta/i });
+            fireEvent.click(siguienteBtn);
+        }
+    
+        await waitFor(() => {
+            expect(screen.getByText(/Puntuación/i)).toBeInTheDocument();
+        });
+      });
 });
