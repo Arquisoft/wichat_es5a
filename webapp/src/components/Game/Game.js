@@ -323,7 +323,7 @@ const Juego = () => {
           {/* Columna izquierda */}
           <Grid item xs={12} md={3}>
             <Stack spacing={2}>
-              <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm} disabled={!botonPistaHabilitado || !loadingComplete}>
+              <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm} disabled={!botonPistaHabilitado || !loadingComplete || answered}>
                 {t("need-clue")}
               </Button>
               {respuestaLLM && (
@@ -331,8 +331,7 @@ const Juego = () => {
                   <strong>{t("llm-response")}:</strong> {respuestaLLM}
                 </Box>
               )}
-             <Button id="botonChat" variant="contained" onClick={toggleChat} disabled={!botonChatHabilitado || !loadingComplete}>
-
+              <Button id="botonChat" variant="contained" onClick={toggleChat} disabled={!botonChatHabilitado || !loadingComplete || answered}>
                 {mostrarChat ? t("close-chat") : t("chat")}
               </Button>
               {mostrarChat && (
