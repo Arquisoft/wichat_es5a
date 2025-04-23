@@ -154,7 +154,15 @@ app.post('/adduser', async (req, res) => {
   }
 );
 
-
+app.get('/getranking', async (req, res) => {
+  try {
+    const users = await User.find({}).sort({ points: -1 });
+    res.json({ users });
+  } catch (error) {
+    console.error('Error fetching ranking:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 const server = app.listen(port, () => {
   console.log(`User Service listening at http://localhost:${port}`);

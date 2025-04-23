@@ -112,8 +112,16 @@ app.get('/gethistory/:username', async (req, res) => {
     const userResponse = await axios.get(userServiceUrl + '/getUserhistory/' + req.params.username);
     
     const historyResponse = await axios.post(historyServiceUrl + '/getUserhistory', {contestIds: userResponse.data.contests});
-    console.log("Respuesta del historial: ", historyResponse.data)
     res.json(historyResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({error: error.response.data.error });
+  }
+});
+
+app.get('/getranking', async (req, res) => {
+  try {
+    const userResponse = await axios.get(userServiceUrl + '/getranking');
+    res.json(userResponse.data);
   } catch (error) {
     res.status(error.response.status).json({error: error.response.data.error });
   }
