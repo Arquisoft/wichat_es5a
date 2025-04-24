@@ -76,7 +76,6 @@ app.post("/questions/:kind", async (req, res) => {
   let { question, query } = getQuery(req.params.kind);
   let { language, numQuestions } = req.body;
   query = query.replace("[AUTO_LANGUAGE],es,en", language + ",es,en");
-  console.log("lengua: " + language);
   let limit = numQuestions * 3;
   if(req.params.kind === "music") {
     limit = limit * 3;
