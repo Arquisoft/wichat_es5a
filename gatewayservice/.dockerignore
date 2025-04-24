@@ -1,2 +1,4 @@
 node_modules
 coverage
+Dockerfile
+gateway.service,test.js
