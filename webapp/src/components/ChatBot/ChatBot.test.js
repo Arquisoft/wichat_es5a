@@ -15,7 +15,7 @@ describe('ChatBot Component', () => {
 
   it('renders initial bot message', () => {
     render(<ChatBot respuestaCorrecta={mockRespuestaCorrecta} />);
-    expect(screen.getByText(/¡Hola! Soy tu asistente. ¿En que puedo ayudarte?/i)).toBeInTheDocument();
+    expect(screen.getByText(/¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?/i)).toBeInTheDocument();
   });
 
   it('displays user message when sent', async () => {
