@@ -6,85 +6,89 @@ import LargeButton from '../ReactComponents/LargeButton';
 import HistoryText from '../ReactComponents/HistoryText';
 import NavBar from "../NavBar/NavBar";
 import { useTranslation } from "react-i18next";
+import CustomH1 from '../ReactComponents/CustomH1';
 
 const Ranking = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [users, setUsers] = useState([])
-  const { t } = useTranslation();
-  
+    const [users, setUsers] = useState([])
+    const { t } = useTranslation();
 
-  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-  const exitRanking = () => {
-    navigate('/home');
-  }
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-  const enterHistory = (username) => {
-    navigate('/history/' + username);
-  }
+    const exitRanking = () => {
+        navigate('/home');
+    }
 
-  // Se ejecuta al cargar el componente
-  useEffect(() => {
-    const getRanking = async () => {
-      try {
-        const response = await axios.get(`${apiEndpoint}/getranking`);
-        setUsers(response.data.users);
-      } catch (error) {
-        console.error('Error al obtener el número de usuarios:', error);
-      }
-    };
+    const enterHistory = (username) => {
+        navigate('/history/' + username);
+    }
 
-    getRanking();
-  }, [apiEndpoint]);
+    // Se ejecuta al cargar el componente
+    useEffect(() => {
+        const getRanking = async () => {
+            try {
+                const response = await axios.get(`${apiEndpoint}/getranking`);
+                setUsers(response.data.users);
+            } catch (error) {
+                console.error('Error al obtener el número de usuarios:', error);
+            }
+        };
 
-  return (
-    <div>
-      <NavBar />
-      <Container
-        component="main"
-        sx={{
-          marginTop: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <LargeButton onClick={exitRanking}>
-          {t("exit")}
-        </LargeButton>
-        {users.map((user, index) => (
-          <Container
-            sx={{
-              backgroundColor: "#00493A",
-              marginTop: 2,
-              padding: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <HistoryText size="h6">
-              {t("Puesto")}{`: ${index + 1}`}
-            </HistoryText>    
-            <HistoryText size="h6">
-              {t("Nombre de usuario")}{`: ${user.username}`}
-            </HistoryText>
-            <HistoryText size="h6">
-              {t("Puntos")}{`: ${user.points}`}
-            </HistoryText>
-            <LargeButton
-              key={user.username || index} // Usa el ID del contest como clave si está disponible
-              onClick={() => enterHistory(user.username)} // Acción al hacer clic
+        getRanking();
+    }, [apiEndpoint]);
+
+    return (
+        <div>
+            <NavBar />
+            <Container
+                component="main"
+                sx={{
+                    marginTop: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
             >
-              {t("Historial")}
-            </LargeButton>
-          </Container>
-        ))}
-      </Container>
-    </div>
-  );
+                <CustomH1 size="h1">
+                    {t("Ranking")}
+                </CustomH1>
+                <LargeButton onClick={exitRanking}>
+                    {t("exit")}
+                </LargeButton>
+                {users.map((user, index) => (
+                    <Container
+                        sx={{
+                            backgroundColor: "#00493A",
+                            marginTop: 2,
+                            padding: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                        <HistoryText size="h6">
+                            {t("Puesto")}{`: ${index + 1}`}
+                        </HistoryText>
+                        <HistoryText size="h6">
+                            {t("Nombre de usuario")}{`: ${user.username}`}
+                        </HistoryText>
+                        <HistoryText size="h6">
+                            {t("Puntos")}{`: ${user.points}`}
+                        </HistoryText>
+                        <LargeButton
+                            key={user.username || index} // Usa el ID del contest como clave si está disponible
+                            onClick={() => enterHistory(user.username)} // Acción al hacer clic
+                        >
+                            {t("Historial")}
+                        </LargeButton>
+                    </Container>
+                ))}
+            </Container>
+        </div>
+    );
 };
 
 export default Ranking;
