@@ -85,8 +85,11 @@ i18n.use(initReactI18next).init({
                     "weakPassword": "La contraseña debe tener al menos 7 caracteres, uno de ellos mayúscula y otro un número",
                     "missingField": "Faltan campos obligatorios",
                     "invalidCredentials": "Credenciales inválidas",
-                    "unknown": "Ha ocurrido un error inesperado"
-                }
+                    "unknown": "Ha ocurrido un error inesperado",
+                    "invalid-response": 'No pude obtener una respuesta válida.',
+                    "llm": "Ocurrió un error al procesar tu pregunta.",
+                },
+                "llm-welcome": "¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?",
             }
         },
         en: {
@@ -171,8 +174,11 @@ i18n.use(initReactI18next).init({
                     "weakPassword": "The password must be at least 7 characters long, including at least one uppercase letter and one number.",
                     "missingField": "Required fields are missing",
                     "invalidCredentials": "Invalid credentials",
-                    "unknown": "An unexpected error has occurred"
-                }
+                    "unknown": "An unexpected error has occurred",
+                    "invalid-response": 'Could not get a valid response.',
+                    "llm": "An error ocurred while processing your question.",
+                },
+                "llm-welcome": "Hello! I am your assistant. How can i help you?",
             }
         },
         fr: {
@@ -255,8 +261,11 @@ i18n.use(initReactI18next).init({
                     "weakPassword": "Le mot de passe doit contenir au moins 7 caractères, dont une majuscule et un chiffre",
                     "missingField": "Des champs obligatoires sont manquants",
                     "invalidCredentials": "Identifiants incorrects",
-                    "unknown": "Une erreur inattendue est survenue"
-                }
+                    "unknown": "Une erreur inattendue est survenue",
+                    "invalid-response": "Je n'ai pas pu obtenir une réponse valide.",
+                    "llm": "Une erreur s'est produite lors du traitement de votre question."
+                },
+                "llm-welcome": "Bonjour! Je suis votre assistant. Comment puis-je vous aider?",
             }
         }
     },

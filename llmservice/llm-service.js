@@ -81,7 +81,7 @@ app.get('/health', (req, res) => {
 app.post('/ask', async (req, res) => {
   try {
     validateRequiredFields(req, ['question', 'model']);
-    const { question, model, mode, resCorr } = req.body;
+    const { question, model, mode, resCorr, language } = req.body;
     
     const context = `ROLE: Eres un asistente de un juego de adivinanzas sobre ${mode}.  
           MISIÓN: Dar una ÚNICA pista INDIRECTA para ayudar a adivinar "${resCorr}" (la respuesta correcta),  
@@ -96,6 +96,7 @@ app.post('/ask', async (req, res) => {
              - **Indirecta**: Usa metáforas, funciones históricas o curiosidades (ej: "Su símbolo aparece en mitos antiguos").
              - **Breve**: 1-2 frases.
              - **Útil**: Que descarten opciones incorrectas.
+          4. Debes hablar en el idioma: "${language}"
         
           EJEMPLOS (para "${mode}" = "Banderas"):
           - Pista válida: "Este país tuvo el primer ferrocarril de su continente".

@@ -340,6 +340,7 @@ const Juego = () => {
                  <ChatBot 
                     respuestaCorrecta={resCorr} 
                     mode={mode} 
+                    language={i18n.language}
                   />
                 </Box>
               )}
