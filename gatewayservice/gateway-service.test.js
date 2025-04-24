@@ -113,16 +113,34 @@ describe('Gateway Service', () => {
 
   // Test /savegame endpoint
   it('should forward savegame request to the history service', async () => {
-    axios.post.mockResolvedValueOnce({ data: { gameId: 'mockedGameId' } });
-
+    const mockRequestData = {
+      mode: 'normal',
+      difficulty: 'easy',
+      arCorrect: [true, false, true],
+      points: 100,
+      arPreg: ['p1', 'p2', 'p3'],
+      arTiempo: [12, 15, 10],
+      arPistas: [0, 1, 2],
+      username: 'testuser'
+    };
+  
+    axios.post
+      .mockResolvedValueOnce({ data: { id: 'mockedGameId' } })
+      .mockResolvedValueOnce({ data: { gameId: 'mockedGameId' } });
+  
     const response = await request(app)
       .post('/savegame')
-      .send({ userId: 'testuser', score: 100 });
-
+      .send(mockRequestData);
+  
     expect(response.statusCode).toBe(200);
     expect(response.body.gameId).toBe('mockedGameId');
-    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/savegame'), { userId: 'testuser', score: 100 });
+  
+    expect(axios.post).toHaveBeenCalledWith(
+      expect.stringContaining('/savegame'),
+      expect.objectContaining({ username: 'testuser', points: 100 })
+    );
   });
+  
 
   // Test /getquestions endpoint
   it('should forward getquestions request to the history service', async () => {
