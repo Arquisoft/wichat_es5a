@@ -153,8 +153,8 @@ const Juego = () => {
           question: "",
           model: 'gemini',
           mode: mode,
-          resCorr: resCorr
-        
+          resCorr: resCorr,
+          language: i18n.language
       });
       setRespuestaLLM(response.data.answer || "No se recibió una respuesta válida del LLM.");
       console.log("Respuesta del LLM:", response.data.answer || "No se recibió respuesta válida.");
