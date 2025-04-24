@@ -48,7 +48,9 @@ describe('ChatBot Component', () => {
         {
           question: 'Test question',
           model: 'gemini',
-          resCorr: mockRespuestaCorrecta
+          resCorr: mockRespuestaCorrecta,
+          language: "es",
+          mode: undefined,
         }
       );
     });
