@@ -252,6 +252,8 @@ i18n.use(initReactI18next).init({
                 "question-football": "Quelle est cette équipe de football ?",
                 "question-food": "Quel est ce plat ?",
                 "question-album": "Quel est le nom de cet album ?",
+                "finish": "Terminer",
+                "streak": "Série",
                 "errors": {
                     "usernameTaken": "Ce nom d'utilisateur est déjà utilisé",
                     "usernameTooShort": "Le nom d'utilisateur doit contenir au moins 4 caractères",
