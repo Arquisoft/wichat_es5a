@@ -63,6 +63,7 @@ i18n.use(initReactI18next).init({
                 "enter": "Entrar",
                 "need-clue": "¿Necesitas una pista?",
                 "llm-response": "Respuesta del LLM",
+                "close-chat": "Cerrar chat",
                 "chat": "Hablar con el chat",
                 "remaining-time": "Tiempo restante",
                 "punctuation": "Puntuación",
@@ -89,6 +90,24 @@ i18n.use(initReactI18next).init({
                     "llm": "Ocurrió un error al procesar tu pregunta.",
                 },
                 "llm-welcome": "¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?",
+                "help-text": "¡Bienvenido al juego! Aquí tienes una guía rápida para empezar:\n\n" +
+                "1. **Selecciona el Modo de Juego**:\n" +
+                "   - Elige entre diferentes modos como 'Ciudades', 'Banderas', 'Fútbol', 'Música' o 'Comida'. Cada modo tiene preguntas relacionadas con ese tema.\n\n" +
+                "2. **Selecciona la Dificultad**:\n" +
+                "   - Puedes elegir entre 'Fácil', 'Medio', 'Difícil' o 'Supervivencia'. La dificultad afecta el número de preguntas y el tiempo disponible.\n\n" +
+                "3. **Responde las Preguntas**:\n" +
+                "   - Lee la pregunta y selecciona la respuesta correcta entre las opciones disponibles. Si aciertas, ganarás puntos. Si fallas, perderás tu racha.\n\n" +
+                "4. **Usa las Herramientas**:\n" +
+                "   - **Pista**: Si necesitas ayuda, pulsa el botón de pista para obtener una pista del asistente. Esto reducirá tus puntos.\n" +
+                "   - **Chat**: Habla con el asistente para obtener más información. Usar el chat también reducirá tus puntos.\n\n" +
+                "5. **Temporizador**:\n" +
+                "   - Tienes un tiempo limitado para responder cada pregunta. Si el tiempo se acaba, la respuesta será incorrecta automáticamente.\n\n" +
+                "6. **Racha de Respuestas Correctas**:\n" +
+                "   - Si aciertas varias preguntas seguidas, ganarás puntos extra. ¡Mantén tu racha para obtener la máxima puntuación!\n\n" +
+                "7. **Finaliza el Juego**:\n" +
+                "   - Cuando completes todas las preguntas o falles en el modo 'Supervivencia', el juego terminará. Podrás ver tu puntuación final y tus estadísticas.",
+                "help": "Ayuda",
+                "close": "Cerrar",
             }
         },
         en: {
@@ -151,6 +170,7 @@ i18n.use(initReactI18next).init({
                 "enter": "Enter",
                 "need-clue": "¿Do you need a clue?",
                 "llm-response": "LLM response",
+                "close-chat": "Close chat",
                 "chat": "Talk with the chat",
                 "remaining-time": "Remaining time",
                 "punctuation": "Punctuation",
@@ -177,6 +197,24 @@ i18n.use(initReactI18next).init({
                     "llm": "An error ocurred while processing your question.",
                 },
                 "llm-welcome": "Hello! I am your assistant. How can i help you?",
+                "help-text": "Welcome to the game! Here's a quick guide to get started:\n\n" +
+                "1. **Select the Game Mode**:\n" +
+                "   - Choose from different modes like 'Cities', 'Flags', 'Football', 'Music', or 'Food'. Each mode has questions related to that theme.\n\n" +
+                "2. **Select the Difficulty**:\n" +
+                "   - You can choose between 'Easy', 'Medium', 'Difficult', or 'Survival'. The difficulty affects the number of questions and the time available.\n\n" +
+                "3. **Answer the Questions**:\n" +
+                "   - Read the question and select the correct answer from the available options. If you get it right, you'll earn points. If you get it wrong, you'll lose your streak.\n\n" +
+                "4. **Use the Tools**:\n" +
+                "   - **Clue**: If you need help, press the clue button to get a hint from the assistant. This will reduce your points.\n" +
+                "   - **Chat**: Talk to the assistant for more information. Using the chat will also reduce your points.\n\n" +
+                "5. **Timer**:\n" +
+                "   - You have a limited time to answer each question. If the time runs out, the answer will automatically be marked as incorrect.\n\n" +
+                "6. **Correct Answer Streak**:\n" +
+                "   - If you answer several questions correctly in a row, you'll earn extra points. Keep your streak to maximize your score!\n\n" +
+                "7. **Finish the Game**:\n" +
+                "   - When you complete all the questions or fail in 'Survival' mode, the game will end. You can then see your final score and statistics.",
+                "help": "Help",
+                "close": "Close",
             }
         },
         fr: {
@@ -239,6 +277,7 @@ i18n.use(initReactI18next).init({
                 "enter": "Entrer",
                 "need-clue": "Besoin d’un indice ?",
                 "llm-response": "Réponse du LLM",
+                "close-chat": "Fermer le chat",
                 "chat": "Parler avec le chat",
                 "remaining-time": "Temps restant",
                 "punctuation": "Score",
@@ -265,6 +304,24 @@ i18n.use(initReactI18next).init({
                     "llm": "Une erreur s'est produite lors du traitement de votre question."
                 },
                 "llm-welcome": "Bonjour! Je suis votre assistant. Comment puis-je vous aider?",
+                "help-text": "Bienvenue dans le jeu ! Voici un guide rapide pour commencer :\n\n" +
+                "1. **Sélectionnez le Mode de Jeu** :\n" +
+                "   - Choisissez parmi différents modes comme 'Villes', 'Drapeaux', 'Football', 'Musique' ou 'Nourriture'. Chaque mode contient des questions liées à ce thème.\n\n" +
+                "2. **Sélectionnez la Difficulté** :\n" +
+                "   - Vous pouvez choisir entre 'Facile', 'Moyenne', 'Difficile' ou 'Survie'. La difficulté affecte le nombre de questions et le temps disponible.\n\n" +
+                "3. **Répondez aux Questions** :\n" +
+                "   - Lisez la question et sélectionnez la bonne réponse parmi les options disponibles. Si vous répondez correctement, vous gagnez des points. Si vous vous trompez, vous perdez votre série.\n\n" +
+                "4. **Utilisez les Outils** :\n" +
+                "   - **Indice** : Si vous avez besoin d'aide, appuyez sur le bouton indice pour obtenir un indice de l'assistant. Cela réduira vos points.\n" +
+                "   - **Chat** : Parlez à l'assistant pour obtenir plus d'informations. Utiliser le chat réduira également vos points.\n\n" +
+                "5. **Minuteur** :\n" +
+                "   - Vous avez un temps limité pour répondre à chaque question. Si le temps est écoulé, la réponse sera automatiquement marquée comme incorrecte.\n\n" +
+                "6. **Série de Réponses Correctes** :\n" +
+                "   - Si vous répondez correctement à plusieurs questions d'affilée, vous gagnez des points supplémentaires. Maintenez votre série pour maximiser votre score !\n\n" +
+                "7. **Terminez le Jeu** :\n" +
+                "   - Lorsque vous avez répondu à toutes les questions ou échoué en mode 'Survie', le jeu se termine. Vous pourrez alors voir votre score final et vos statistiques.",         
+                "help": "Aide",
+                "close": "Fermer",
             }
         }
     },
