@@ -79,7 +79,7 @@ const Login = () => {
               sx={{ width: '20%'}}
             />
             <br></br>
-            <LargeButton  onClick={loginUser}>
+            <LargeButton data-testid="login-button" onClick={loginUser}>
               {t("enter")}
             </LargeButton>
             <br></br>
