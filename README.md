@@ -8,7 +8,7 @@
   
   ![Logo](/webapp/public/logo.png)
   <br/><br/>
-  🔗 [Acceder a wichat](http://48.209.10.166:8080)
+  🔗 [Acceder a wichat](http://48.209.10.166)
 
 ## Participantes 🛠️
 | 👤 Name                            | 📧 Email                    | 🐱 GitHub                                                                                             |
