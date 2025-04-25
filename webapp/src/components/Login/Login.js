@@ -53,6 +53,7 @@ const Login = () => {
             <TextField
               margin="normal"
               label={t("username")}
+              name="username"
               value={username}
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -66,6 +67,7 @@ const Login = () => {
             <TextField
               margin="normal"
               label={t("password")}
+              name="password"
               type="password"
               value={password}
               onChange={(e) => {
