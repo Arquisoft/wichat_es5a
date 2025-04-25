@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import ChatBot from './ChatBot';
+import "../../i18n.js"
 
 jest.mock('axios');
 
@@ -47,7 +48,9 @@ describe('ChatBot Component', () => {
         {
           question: 'Test question',
           model: 'gemini',
-          resCorr: mockRespuestaCorrecta
+          resCorr: mockRespuestaCorrecta,
+          language: "es",
+          mode: undefined,
         }
       );
     });

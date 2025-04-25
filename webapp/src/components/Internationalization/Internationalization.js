@@ -28,6 +28,7 @@ const Internationalization = () => {
   const languages = [
     { country: "ES", text: "Español", code: "es" },
     { country: "GB", text: "English", code: "en" },
+    { country: "FR", text: "Français", code: "fr"}
   ];
   
   return (

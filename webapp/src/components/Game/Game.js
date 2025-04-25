@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 const Juego = () => {
 
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [pregunta, setPregunta] = useState(""); //La pregunta (string)
   const [resCorr, setResCorr] = useState("");//La Respuesta correcta (string)
@@ -104,7 +104,8 @@ const Juego = () => {
       const total = numPreguntas;
       let current = 0;
       const response = await axios.post(`${apiEndpoint}/questions/${mode}`, {
-        numQuestions: total
+        numQuestions: total,
+        language: i18n.language
       });
       const preguntas = response.data;
       while (numPreguntas > 0) {
@@ -130,7 +131,7 @@ const Juego = () => {
     setPausarTemporizador(false);
     updateGame();
     setNumPreguntaActual(1);
-  }, [arPreg, apiEndpoint, updateGame, loadingProgress, mode]);
+  }, [arPreg, apiEndpoint, updateGame, loadingProgress, mode, i18n]);
     
   useEffect(() => {
     if (!firstRender) {
@@ -152,8 +153,8 @@ const Juego = () => {
           question: "",
           model: 'gemini',
           mode: mode,
-          resCorr: resCorr
-        
+          resCorr: resCorr,
+          language: i18n.language
       });
       setRespuestaLLM(response.data.answer || "No se recibió una respuesta válida del LLM.");
       console.log("Respuesta del LLM:", response.data.answer || "No se recibió respuesta válida.");
@@ -339,6 +340,7 @@ const Juego = () => {
                  <ChatBot 
                     respuestaCorrecta={resCorr} 
                     mode={mode} 
+                    language={i18n.language}
                   />
                 </Box>
               )}
