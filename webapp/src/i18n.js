@@ -107,6 +107,7 @@ i18n.use(initReactI18next).init({
                 "7. **Finaliza el Juego**:\n" +
                 "   - Cuando completes todas las preguntas o falles en el modo 'Supervivencia', el juego terminará. Podrás ver tu puntuación final y tus estadísticas.",
                 "help": "Ayuda",
+                "close": "Cerrar",
             }
         },
         en: {
@@ -213,6 +214,7 @@ i18n.use(initReactI18next).init({
                 "7. **Finish the Game**:\n" +
                 "   - When you complete all the questions or fail in 'Survival' mode, the game will end. You can then see your final score and statistics.",
                 "help": "Help",
+                "close": "Close",
             }
         },
         fr: {
@@ -319,6 +321,7 @@ i18n.use(initReactI18next).init({
                 "7. **Terminez le Jeu** :\n" +
                 "   - Lorsque vous avez répondu à toutes les questions ou échoué en mode 'Survie', le jeu se termine. Vous pourrez alors voir votre score final et vos statistiques.",         
                 "help": "Aide",
+                "close": "Fermer",
             }
         }
     },
