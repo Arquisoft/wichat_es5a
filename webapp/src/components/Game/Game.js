@@ -333,7 +333,7 @@ const Juego = () => {
                 </Box>
               )}
               <Button id="botonChat" variant="contained" onClick={toggleChat} disabled={!botonChatHabilitado || !loadingComplete || answered}>
-                {mostrarChat ? t("close-chat") : t("chat")}
+                {t("chat")}
               </Button>
               {mostrarChat && (
                 <Box className="chatbot-container" p={2} border="1px solid #ccc" borderRadius="5px">

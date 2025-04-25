@@ -1,15 +1,15 @@
 import React, { useState, useRef} from 'react';
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
-
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-const ChatBot = ({respuestaCorrecta, mode, language}) => {
+const ChatBot = ({respuestaCorrecta, mode,language}) => {
     const { t } = useTranslation();
     const [messages, setMessages] = useState([
         { text: t("llm-welcome"), sender: 'bot' },
     ]);
     const [input, setInput] = useState('');
+    const [isVisible, setIsVisible] = useState(true); 
     const chatEndRef = useRef(null);
 
     const handleSendMessage = async () => {
@@ -20,7 +20,7 @@ const ChatBot = ({respuestaCorrecta, mode, language}) => {
                 model: 'gemini',
                 mode: mode,
                 resCorr: respuestaCorrecta,
-                language: language || "es"
+                language: language || "es",
             });
 
             const llmResponse = { 
@@ -39,6 +39,8 @@ const ChatBot = ({respuestaCorrecta, mode, language}) => {
         }
     };
 
+    if (!isVisible) return null;
+
     return (
         <div
             style={{
@@ -56,7 +58,26 @@ const ChatBot = ({respuestaCorrecta, mode, language}) => {
                 left: '2%', 
                 zIndex: 1000,
             }}
-        >
+        >    <button
+                onClick={() => setIsVisible(false)} 
+                style={{
+                        position: 'absolute',
+                        top: '0.5rem',
+                        right: '0.5rem',
+                        backgroundColor: '#e74c3c',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '1.5rem',
+                        height: '1.5rem',
+                        cursor: 'pointer',
+                        fontSize: '1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                    justifyContent: 'center',
+            }}
+            >X
+            </button>
             <div
                 style={{
                     display: 'flex',
@@ -100,8 +121,8 @@ const ChatBot = ({respuestaCorrecta, mode, language}) => {
             <div
                 style={{
                     display: 'flex',
-                    flexWrap: 'wrap', // Permitir que los elementos se ajusten en pantallas pequeñas
-                    gap: '0.5rem', // Espaciado entre el input y el botón
+                    flexWrap: 'wrap', 
+                    gap: '0.5rem', 
                     marginTop: '0.5rem',
                 }}
             >

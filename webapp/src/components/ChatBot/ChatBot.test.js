@@ -81,4 +81,14 @@ describe('ChatBot Component', () => {
       expect(input).toHaveValue('');
     });
   });
+  it('closes the chat when the close button is clicked', () => {
+    render(<ChatBot respuestaCorrecta={mockRespuestaCorrecta} />);
+
+    expect(screen.getByText(/¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?/i)).toBeInTheDocument();
+
+    const closeButton = screen.getByText('X');
+    fireEvent.click(closeButton);
+
+    expect(screen.queryByText(/¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?/i)).not.toBeInTheDocument();
+});
 });
