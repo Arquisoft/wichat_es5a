@@ -16,7 +16,9 @@ const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
 
-const allowedOrigins = ['http://localhost','http://48.209.10.166'];
+const allowedOrigins = ['http://localhost','http://48.209.10.166', 
+  'http://localhost:3000', 'http://48.209.10.166:3000'];
+
 app.use(cors({
   origin: function (origin, callback) {
     // Permitir requests sin 'origin' (por ejemplo, Postman)
