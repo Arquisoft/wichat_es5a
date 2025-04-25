@@ -16,7 +16,7 @@ defineFeature(feature, test => {
     //Way of setting up the timeout
     setDefaultOptions({ timeout: 10000 });
     await page
-      .goto("http://localhost:3000", {
+      .goto("http://localhost:80", {
         waitUntil: "networkidle0",
       })
       .catch(() => {});
@@ -49,6 +49,22 @@ defineFeature(feature, test => {
       await expect(page).toMatchElement("h1", { text: "¿Quieres echarte una partida?" });
     });
   })
+
+  test('The user submits an empty form', ({given,when,then}) =>  {
+
+    given('An unregistered user', async () => {
+      await expect(page).toClick('[data-testid="signup-tab"]');
+    });
+
+    when('I submit the empty form', async () => {
+      await expect(page).toClick('[data-testid="signup-button"]');
+    });
+
+    then('An error message should be shown', async () => {
+      await expect(page).toMatchElement("div", { text: `El campo nombre de usuario es obligatorio y no puede estar vacío` });
+    });
+  })
+  
 
   afterAll(async ()=>{
     browser.close()
