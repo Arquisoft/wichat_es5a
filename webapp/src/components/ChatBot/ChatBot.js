@@ -1,11 +1,12 @@
 import React, { useState, useRef} from 'react';
 import axios from 'axios';
-
+import { useTranslation } from "react-i18next";
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-const ChatBot = ({respuestaCorrecta, mode}) => {
+const ChatBot = ({respuestaCorrecta, mode,language}) => {
+    const { t } = useTranslation();
     const [messages, setMessages] = useState([
-        { text: '¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?', sender: 'bot' },
+        { text: t("llm-welcome"), sender: 'bot' },
     ]);
     const [input, setInput] = useState('');
     const [isVisible, setIsVisible] = useState(true); 
@@ -19,10 +20,11 @@ const ChatBot = ({respuestaCorrecta, mode}) => {
                 model: 'gemini',
                 mode: mode,
                 resCorr: respuestaCorrecta,
+                language: language || "es",
             });
 
             const llmResponse = { 
-                text: response.data.answer || 'No pude obtener una respuesta válida.',
+                text: response.data.answer || t("errors.invalid-response"),
                 sender: 'bot',
             };
             setMessages(prev => [...prev, { text: input, sender: 'user' }, llmResponse]);
@@ -30,7 +32,7 @@ const ChatBot = ({respuestaCorrecta, mode}) => {
         } catch (error) {
             console.error('Error:', error);
             setMessages((prev) => [...prev, {
-                    text: 'Ocurrió un error al procesar tu pregunta.',
+                    text: t("errors.llm"),
                     sender: 'bot',
                 },
             ]);
