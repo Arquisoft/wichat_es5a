@@ -111,5 +111,24 @@ describe('GameMode component', () => {
     // Esperamos que la navegación haya ocurrido (esto verifica que la URL cambie)
     await waitFor(() => expect(window.location.pathname).toBe('/game'));
   });
+  it('should open the help text when the help button is clicked', () => {
+    render(
+      <BrowserRouter>
+        <GameMode />
+      </BrowserRouter>
+    );
+
+    // Obtener el botón de ayuda
+    const helpButton = screen.getByRole('button', { name: /Ayuda/i });
+
+    // Verificar que el modal no está visible inicialmente
+    expect(screen.queryByText(/¡Bienvenido al juego! Aquí tienes una guía rápida para empezar:/i)).not.toBeInTheDocument();
+
+    // Pulsar el botón de ayuda
+    fireEvent.click(helpButton);
+
+    // Verificar que el modal se abre y contiene el texto de ayuda
+    expect(screen.getByText(/¡Bienvenido al juego!/i)).toBeInTheDocument();
+  });
 
 });
