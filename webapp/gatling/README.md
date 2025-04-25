@@ -1,18 +1,33 @@
-Gatling plugin for Maven - Java demo project
-============================================
+# Gatling Bundle
 
-A simple showcase of a Maven project using the Gatling plugin for Maven. Refer to the plugin documentation
-[on the Gatling website](https://docs.gatling.io/reference/integrations/build-tools/maven-plugin/) for usage.
+The Gatling Bundle gives you a quick start to your Gatling journey.
+It is based on the [Gatling Maven Plugin demo, in Java](https://github.com/gatling/gatling-maven-plugin-demo-java).
 
-This project is written in Java, others are available for [Kotlin](https://github.com/gatling/gatling-maven-plugin-demo-kotlin)
-and [Scala](https://github.com/gatling/gatling-maven-plugin-demo-scala).
+## Run a test locally
 
-It includes:
+On Linux / MacOS:
+```console
+./mvnw gatling:test
+```
 
-* [Maven Wrapper](https://maven.apache.org/wrapper/), so that you can immediately run Maven with `./mvnw` without having
-  to install it on your computer
-* minimal `pom.xml`
-* latest version of `io.gatling:gatling-maven-plugin` applied
-* sample [Simulation](https://docs.gatling.io/reference/glossary/#simulation) class,
-  demonstrating sufficient Gatling functionality
-* proper source file layout
+On Windows:
+```console
+mvnw.cmd gatling:test
+```
+
+## Run the Gatling Recorder
+
+On Linux / MacOS:
+```console
+./mvnw gatling:recorder
+```
+
+On Windows:
+```console
+mvnw.cmd gatling:recorder
+```
+
+## To go further
+
+* [our scripting introduction](https://docs.gatling.io/tutorials/scripting-intro/)
+* [the Gatling Maven plugin documentation](https://docs.gatling.io/reference/extensions/build-tools/maven-plugin/)

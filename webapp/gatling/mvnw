@@ -1,4 +1,7 @@
 #!/bin/sh
+SCRIPT_PATH="$(cd "$(dirname "$0")"; pwd -P)"
+export MAVEN_USER_HOME=$SCRIPT_PATH/.mvn
+export REPO_HOME=$SCRIPT_PATH/.m2/repository
 # ----------------------------------------------------------------------------
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
