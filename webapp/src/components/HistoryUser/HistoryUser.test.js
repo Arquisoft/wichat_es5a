@@ -61,6 +61,19 @@ const renderComponent = () => {
   );
 };
 
+// Función auxiliar para simular la API y verificar datos
+const mockAndVerifyAPI = async (mockData, verifyTexts) => {
+  axios.get.mockResolvedValueOnce(mockData);
+
+  renderComponent();
+
+  await waitFor(() => {
+    verifyTexts.forEach((text) => {
+      expect(screen.getByText(text)).toBeInTheDocument();
+    });
+  });
+};
+
 describe('HistoryUser Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -69,23 +82,19 @@ describe('HistoryUser Component', () => {
   it('should render the initial UI correctly', () => {
     renderComponent();
 
-    expect(screen.getByText('Salir')).toBeInTheDocument();
+    expect(screen.getByText(expectedTexts.exitButton)).toBeInTheDocument();
   });
 
   it('should fetch and display data from the API', async () => {
-    axios.get.mockResolvedValueOnce(mockResponse);
-
-    renderComponent();
-
-    await waitFor(() => {
-      expect(screen.getByText(expectedTexts.difficulty)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.mode)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.correctAnswers)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.points)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.totalTime)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.totalClues)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.gameDate)).toBeInTheDocument();
-    });
+    await mockAndVerifyAPI(mockResponse, [
+      expectedTexts.difficulty,
+      expectedTexts.mode,
+      expectedTexts.correctAnswers,
+      expectedTexts.points,
+      expectedTexts.totalTime,
+      expectedTexts.totalClues,
+      expectedTexts.gameDate,
+    ]);
   });
 
   it('should navigate to the contest details page when "Detalles" is clicked', async () => {

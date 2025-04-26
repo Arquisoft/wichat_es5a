@@ -100,7 +100,7 @@ const History = () => {
     getHistory();
   }, [apiEndpoint]);
 
-  const ContestRow = ({ contest, index, numCorrect, totalTime, totalClues, formatDate, enterContest, t }) => (
+  const ContestRow = ({ contest, index, numCorrect, totalTime, totalClues, formatDate, enterContest, t, isHeader }) => (
     <Grid container spacing={2}
       sx={{
         marginTop: 2,
@@ -112,48 +112,50 @@ const History = () => {
     >
       <Grid item xs={1}>
         <HistoryText color="#00493A" size="h6">
-          {`${contest.difficulty}`}
+          {isHeader ? <b>{t("difficulty")}</b> : `${contest.difficulty}`}
         </HistoryText>
       </Grid>
       <Grid item xs={1}>
         <HistoryText color="#00493A" size="h6">
-          {`${contest.mode}`}
+          {isHeader ? <b>{t("mode")}</b> : `${contest.mode}`}
         </HistoryText>
       </Grid>
       <Grid item xs={2}>
         <HistoryText color="#00493A" size="h6">
-          {`${numCorrect[index]}`}
+          {isHeader ? <b>{t("correct-answers")}</b> : `${numCorrect[index]}`}
         </HistoryText>
       </Grid>
       <Grid item xs={1}>
         <HistoryText color="#00493A" size="h6">
-          {`${contest.points}`}
+          {isHeader ? <b>{t("points")}</b> : `${contest.points}`}
         </HistoryText>
       </Grid>
       <Grid item xs={1}>
         <HistoryText color="#00493A" size="h6">
-          {`${totalTime[index]}"`}
+          {isHeader ? <b>{t("total-time")}</b> : `${totalTime[index]}"`}
         </HistoryText>
       </Grid>
       <Grid item xs={2}>
         <HistoryText color="#00493A" size="h6">
-          {`${totalClues[index]}`}
+          {isHeader ? <b>{t("number-of-clues")}</b> : `${totalClues[index]}`}
         </HistoryText>
       </Grid>
       <Grid item xs={2}>
         <HistoryText color="#00493A" size="h6">
-          {`${formatDate(contest.date)}`}
+          {isHeader ? <b>{t("game-date")}</b> : `${formatDate(contest.date)}`}
         </HistoryText>
       </Grid>
       <Grid item xs={2}>
-        <LargeButton
-          width="50%"
-          left="25%"
-          key={contest._id || index} // Usa el ID del contest como clave si está disponible
-          onClick={() => enterContest(contest._id)} // Acción al hacer clic
-        >
-          {t("details")}
-        </LargeButton>
+        {isHeader ? null : (
+          <LargeButton
+            width="50%"
+            left="25%"
+            key={contest._id || index}
+            onClick={() => enterContest(contest._id)}
+          >
+            {t("details")}
+          </LargeButton>
+        )}
       </Grid>
     </Grid>
   );
@@ -185,53 +187,15 @@ const History = () => {
             backgroundColor: "#98d7c2",
             marginTop: 2,
             marginBottom: 2,
-          }}>
-          <Grid container spacing={2}
-            sx={{
-              marginTop: 2,
-              marginBottom: 2,
-              display: "flex",
-              flexWrap: "wrap",
-              direction: "row"
-            }}
-          >
-            <Grid item xs={1}>
-              <HistoryText color="#00493A" size="h6">
-                <b>{t("difficulty")}</b>
-              </HistoryText>
-            </Grid>
-            <Grid item xs={1}>
-              <HistoryText color="#00493A" size="h6">
-                <b>{t("mode")}</b>
-              </HistoryText>
-            </Grid>
-            <Grid item xs={2}>
-              <HistoryText color="#00493A" size="h6">
-                <b>{t("correct-answers")}</b>
-              </HistoryText>
-            </Grid>
-            <Grid item xs={1}>
-              <HistoryText color="#00493A" size="h6">
-                <b>{t("points")}</b>
-              </HistoryText>
-            </Grid>
-            <Grid item xs={1}>
-              <HistoryText color="#00493A" size="h6">
-                <b>{t("total-time")}</b>
-              </HistoryText>
-            </Grid>
-            <Grid item xs={2}>
-              <HistoryText color="#00493A" size="h6">
-                <b>{t("number-of-clues")}</b>
-              </HistoryText>
-            </Grid>
-            <Grid item xs={2}>
-              <HistoryText color="#00493A" size="h6">
-                <b>{t("game-date")}</b>
-              </HistoryText>
-            </Grid>
-            <Grid item xs={1}></Grid>
-          </Grid>
+          }}
+        >
+          {/* Fila de encabezados */}
+          <ContestRow
+            isHeader={true}
+            t={t}
+          />
+
+          {/* Filas dinámicas */}
           {contests.map((contest, index) => (
             <ContestRow
               key={contest._id || index}
@@ -243,6 +207,7 @@ const History = () => {
               formatDate={formatDate}
               enterContest={enterContest}
               t={t}
+              isHeader={false}
             />
           ))}
         </Container>
