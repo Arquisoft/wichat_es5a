@@ -1,5 +1,5 @@
 # Dockerfile for Prometheus
-FROM prom/prometheus:latest
+FROM prom/prometheus:v2.45.0
 
 # Copy Prometheus configuration
 COPY ./gatewayservice/monitoring/prometheus/prometheus.yml /etc/prometheus/prometheus.yml

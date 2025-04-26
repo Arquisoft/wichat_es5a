@@ -1,4 +1,4 @@
-# Dockerfile for Prometheus
-FROM grafana/grafana
+# Dockerfile for Grafana
+FROM grafana/grafana:latest
 
-COPY ..
+COPY . .
