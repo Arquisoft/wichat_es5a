@@ -100,6 +100,64 @@ const History = () => {
     getHistory();
   }, [apiEndpoint]);
 
+  const ContestRow = ({ contest, index, numCorrect, totalTime, totalClues, formatDate, enterContest, t }) => (
+    <Grid container spacing={2}
+      sx={{
+        marginTop: 2,
+        marginBottom: 2,
+        display: "flex",
+        flexWrap: "wrap",
+        direction: "row"
+      }}
+    >
+      <Grid item xs={1}>
+        <HistoryText color="#00493A" size="h6">
+          {`${contest.difficulty}`}
+        </HistoryText>
+      </Grid>
+      <Grid item xs={1}>
+        <HistoryText color="#00493A" size="h6">
+          {`${contest.mode}`}
+        </HistoryText>
+      </Grid>
+      <Grid item xs={2}>
+        <HistoryText color="#00493A" size="h6">
+          {`${numCorrect[index]}`}
+        </HistoryText>
+      </Grid>
+      <Grid item xs={1}>
+        <HistoryText color="#00493A" size="h6">
+          {`${contest.points}`}
+        </HistoryText>
+      </Grid>
+      <Grid item xs={1}>
+        <HistoryText color="#00493A" size="h6">
+          {`${totalTime[index]}"`}
+        </HistoryText>
+      </Grid>
+      <Grid item xs={2}>
+        <HistoryText color="#00493A" size="h6">
+          {`${totalClues[index]}`}
+        </HistoryText>
+      </Grid>
+      <Grid item xs={2}>
+        <HistoryText color="#00493A" size="h6">
+          {`${formatDate(contest.date)}`}
+        </HistoryText>
+      </Grid>
+      <Grid item xs={2}>
+        <LargeButton
+          width="50%"
+          left="25%"
+          key={contest._id || index} // Usa el ID del contest como clave si está disponible
+          onClick={() => enterContest(contest._id)} // Acción al hacer clic
+        >
+          {t("details")}
+        </LargeButton>
+      </Grid>
+    </Grid>
+  );
+
   return (
     <div>
       <NavBar />
@@ -175,61 +233,17 @@ const History = () => {
             <Grid item xs={1}></Grid>
           </Grid>
           {contests.map((contest, index) => (
-            <Grid container spacing={2}
-            sx={{
-              marginTop: 2,
-              marginBottom: 2,
-              display: "flex",
-              flexWrap: "wrap",
-              direction: "row"
-            }}
-          >
-            <Grid item xs={1}>
-              <HistoryText color="#00493A" size="h6">
-              {`${contest.difficulty}`}
-              </HistoryText>
-            </Grid>
-            <Grid item xs={1}>
-              <HistoryText color="#00493A" size="h6">
-              {`${contest.mode}`}
-              </HistoryText>
-            </Grid>
-            <Grid item xs={2}>
-              <HistoryText color="#00493A" size="h6">
-              {`${numCorrect[index]}`}
-              </HistoryText>
-            </Grid>
-            <Grid item xs={1}>
-              <HistoryText color="#00493A" size="h6">
-              {`${contest.points}`}
-              </HistoryText>
-            </Grid>
-            <Grid item xs={1}>
-              <HistoryText color="#00493A" size="h6">
-              {`${totalTime[index]}"`}
-              </HistoryText>
-            </Grid>
-            <Grid item xs={2}>
-              <HistoryText color="#00493A" size="h6">
-              {`${totalClues[index]}`}
-              </HistoryText>
-            </Grid>
-            <Grid item xs={2}>
-              <HistoryText color="#00493A" size="h6">
-              {`${formatDate(contest.date)}`}
-              </HistoryText>
-            </Grid>
-            <Grid item xs={2}>
-            <LargeButton
-                width = "50%"
-                left = "25%"
-                key={contest._id || index} // Usa el ID del contest como clave si está disponible
-                onClick={() => enterContest(contest._id)} // Acción al hacer clic
-              >
-                {t("details")}
-              </LargeButton>
-            </Grid>
-          </Grid>
+            <ContestRow
+              key={contest._id || index}
+              contest={contest}
+              index={index}
+              numCorrect={numCorrect}
+              totalTime={totalTime}
+              totalClues={totalClues}
+              formatDate={formatDate}
+              enterContest={enterContest}
+              t={t}
+            />
           ))}
         </Container>
       </Container>
