@@ -16,17 +16,22 @@
     "react": "^18.2.0",
     "react-dom": "^18.3.1",
     "react-i18next": "^13.2.0",
+    "react-markdown": "^8.0.7",
     "react-router": "^7.3.0",
     "react-router-dom": "^7.3.0",
     "react-scripts": "5.0.1",
     "react-simple-typewriter": "^5.0.1",
     "react-world-flags": "^1.6.0",
+    "remark": "^15.0.1",
+    "remark-rehype": "^10.1.0",
+    "unist-util-visit": "^4.1.2",
+    "unist-util-visit-parents": "^5.1.3",
     "web-vitals": "^3.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "prod": "serve -s build",
+    "prod": "serve -p 8080 -s build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/'",
     "test:e2e": "start-server-and-test 'node e2e/test-environment-setup.js' http://localhost:8000/health prod 8080 \"cd e2e && jest\"",
     "eject": "react-scripts eject"

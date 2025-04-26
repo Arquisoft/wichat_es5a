@@ -88,8 +88,29 @@ i18n.use(initReactI18next).init({
                     "weakPassword": "La contraseña debe tener al menos 7 caracteres, uno de ellos mayúscula y otro un número",
                     "missingField": "Faltan campos obligatorios",
                     "invalidCredentials": "Credenciales inválidas",
-                    "unknown": "Ha ocurrido un error inesperado"
-                }
+                    "unknown": "Ha ocurrido un error inesperado",
+                    "invalid-response": 'No pude obtener una respuesta válida.',
+                    "llm": "Ocurrió un error al procesar tu pregunta.",
+                },
+                "llm-welcome": "¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?",
+                "help-text": "¡Bienvenido al juego! Aquí tienes una guía rápida para empezar:\n\n" +
+                "1. **Selecciona el Modo de Juego**:\n" +
+                "   - Elige entre diferentes modos como 'Ciudades', 'Banderas', 'Fútbol', 'Música' o 'Comida'. Cada modo tiene preguntas relacionadas con ese tema.\n\n" +
+                "2. **Selecciona la Dificultad**:\n" +
+                "   - Puedes elegir entre 'Fácil', 'Medio', 'Difícil' o 'Supervivencia'. La dificultad afecta el número de preguntas y el tiempo disponible.\n\n" +
+                "3. **Responde las Preguntas**:\n" +
+                "   - Lee la pregunta y selecciona la respuesta correcta entre las opciones disponibles. Si aciertas, ganarás puntos. Si fallas, perderás tu racha.\n\n" +
+                "4. **Usa las Herramientas**:\n" +
+                "   - **Pista**: Si necesitas ayuda, pulsa el botón de pista para obtener una pista del asistente. Esto reducirá tus puntos.\n" +
+                "   - **Chat**: Habla con el asistente para obtener más información. Usar el chat también reducirá tus puntos.\n\n" +
+                "5. **Temporizador**:\n" +
+                "   - Tienes un tiempo limitado para responder cada pregunta. Si el tiempo se acaba, la respuesta será incorrecta automáticamente.\n\n" +
+                "6. **Racha de Respuestas Correctas**:\n" +
+                "   - Si aciertas varias preguntas seguidas, ganarás puntos extra. ¡Mantén tu racha para obtener la máxima puntuación!\n\n" +
+                "7. **Finaliza el Juego**:\n" +
+                "   - Cuando completes todas las preguntas o falles en el modo 'Supervivencia', el juego terminará. Podrás ver tu puntuación final y tus estadísticas.",
+                "help": "Ayuda",
+                "close": "Cerrar",
             }
         },
         en: {
@@ -177,8 +198,136 @@ i18n.use(initReactI18next).init({
                     "weakPassword": "The password must be at least 7 characters long, including at least one uppercase letter and one number.",
                     "missingField": "Required fields are missing",
                     "invalidCredentials": "Invalid credentials",
-                    "unknown": "An unexpected error has occurred"
-                }
+                    "unknown": "An unexpected error has occurred",
+                    "invalid-response": 'Could not get a valid response.',
+                    "llm": "An error ocurred while processing your question.",
+                },
+                "llm-welcome": "Hello! I am your assistant. How can i help you?",
+                "help-text": "Welcome to the game! Here's a quick guide to get started:\n\n" +
+                "1. **Select the Game Mode**:\n" +
+                "   - Choose from different modes like 'Cities', 'Flags', 'Football', 'Music', or 'Food'. Each mode has questions related to that theme.\n\n" +
+                "2. **Select the Difficulty**:\n" +
+                "   - You can choose between 'Easy', 'Medium', 'Difficult', or 'Survival'. The difficulty affects the number of questions and the time available.\n\n" +
+                "3. **Answer the Questions**:\n" +
+                "   - Read the question and select the correct answer from the available options. If you get it right, you'll earn points. If you get it wrong, you'll lose your streak.\n\n" +
+                "4. **Use the Tools**:\n" +
+                "   - **Clue**: If you need help, press the clue button to get a hint from the assistant. This will reduce your points.\n" +
+                "   - **Chat**: Talk to the assistant for more information. Using the chat will also reduce your points.\n\n" +
+                "5. **Timer**:\n" +
+                "   - You have a limited time to answer each question. If the time runs out, the answer will automatically be marked as incorrect.\n\n" +
+                "6. **Correct Answer Streak**:\n" +
+                "   - If you answer several questions correctly in a row, you'll earn extra points. Keep your streak to maximize your score!\n\n" +
+                "7. **Finish the Game**:\n" +
+                "   - When you complete all the questions or fail in 'Survival' mode, the game will end. You can then see your final score and statistics.",
+                "help": "Help",
+                "close": "Close",
+            }
+        },
+        fr: {
+            translation: {
+                "title": "WICHAT",
+                "play": "Jouer",
+                "profile": "Profil",
+                "history": "Historique",
+                "credits": "Crédits",
+                "login": "Connexion",
+                "signup": "Créer un compte",
+                "logout": "Se déconnecter",
+                "language": "Langue",
+                "history-title": "Historique des questions",
+                "exit": "Quitter",
+                "question-img-alt": "Image de la question",
+                "question": "Question",
+                "answers-shown": "Réponses affichées",
+                "correct-answer": "Bonne réponse",
+                "correct": "Correcte",
+                "time-to-answer": "Temps de réponse",
+                "number-of-clues": "Nombre d’indices utilisés",
+                "question-generation-date": "Date de génération de la question",
+                "seconds": "secondes",
+                "total-users": "Joueurs au total",
+                "questions-generated": "Questions générées",
+                "difficulty": "Difficulté",
+                "mode": "Mode",
+                "correct-answers": "Bonnes réponses",
+                "points": "Points",
+                "total-time": "Temps total",
+                "game-date": "Date du jeu",
+                "details": "Détails",
+                "colaborators": "Collaborateurs",
+                "wanna-play": "Tu veux jouer une partie ?",
+                "home-profile": "Modifie ton profil ou consulte ton historique !",
+                "home-history": "Consulte les données des autres utilisateurs et les questions générées !",
+                "home-credits": "Soutiens les développeurs !",
+                "user-profile": "Profil de l'utilisateur",
+                "profile-info": "Informations du profil",
+                "user": "Utilisateur",
+                "email": "Email",
+                "points-correct": "bonnes",
+                "good-job": "Bien joué !",
+                "play-again": "Rejouer",
+                "select-mode": "Choisis le mode de jeu",
+                "select-difficulty": "Choisis la difficulté",
+                "cities": "Villes",
+                "flags": "Drapeaux",
+                "football": "Football",
+                "music": "Musique",
+                "food": "Nourriture",
+                "easy": "Facile",
+                "medium": "Moyenne",
+                "difficult": "Difficile",
+                "survival": "Survie",
+                "username": "Nom d'utilisateur",
+                "password": "Mot de passe",
+                "confirmPassword": "Confirme le mot de passe",
+                "enter": "Entrer",
+                "need-clue": "Besoin d’un indice ?",
+                "llm-response": "Réponse du LLM",
+                "close-chat": "Fermer le chat",
+                "chat": "Parler avec le chat",
+                "remaining-time": "Temps restant",
+                "punctuation": "Score",
+                "next-question": "Question suivante",
+                "question-flag": "De quel pays est ce drapeau ?",
+                "question-city": "Quelle est cette ville ?",
+                "question-music": "Quel est ce groupe de musique ?",
+                "question-football": "Quelle est cette équipe de football ?",
+                "question-food": "Quel est ce plat ?",
+                "question-album": "Quel est le nom de cet album ?",
+                "finish": "Terminer",
+                "streak": "Série",
+                "errors": {
+                    "usernameTaken": "Ce nom d'utilisateur est déjà utilisé",
+                    "usernameTooShort": "Le nom d'utilisateur doit contenir au moins 4 caractères",
+                    "emailTaken": "Un compte avec cet email existe déjà",
+                    "invalidEmail": "Format d'email invalide",
+                    "passwordsNoMatch": "Les mots de passe ne correspondent pas",
+                    "weakPassword": "Le mot de passe doit contenir au moins 7 caractères, dont une majuscule et un chiffre",
+                    "missingField": "Des champs obligatoires sont manquants",
+                    "invalidCredentials": "Identifiants incorrects",
+                    "unknown": "Une erreur inattendue est survenue",
+                    "invalid-response": "Je n'ai pas pu obtenir une réponse valide.",
+                    "llm": "Une erreur s'est produite lors du traitement de votre question."
+                },
+                "llm-welcome": "Bonjour! Je suis votre assistant. Comment puis-je vous aider?",
+                "help-text": "Bienvenue dans le jeu ! Voici un guide rapide pour commencer :\n\n" +
+                "1. **Sélectionnez le Mode de Jeu** :\n" +
+                "   - Choisissez parmi différents modes comme 'Villes', 'Drapeaux', 'Football', 'Musique' ou 'Nourriture'. Chaque mode contient des questions liées à ce thème.\n\n" +
+                "2. **Sélectionnez la Difficulté** :\n" +
+                "   - Vous pouvez choisir entre 'Facile', 'Moyenne', 'Difficile' ou 'Survie'. La difficulté affecte le nombre de questions et le temps disponible.\n\n" +
+                "3. **Répondez aux Questions** :\n" +
+                "   - Lisez la question et sélectionnez la bonne réponse parmi les options disponibles. Si vous répondez correctement, vous gagnez des points. Si vous vous trompez, vous perdez votre série.\n\n" +
+                "4. **Utilisez les Outils** :\n" +
+                "   - **Indice** : Si vous avez besoin d'aide, appuyez sur le bouton indice pour obtenir un indice de l'assistant. Cela réduira vos points.\n" +
+                "   - **Chat** : Parlez à l'assistant pour obtenir plus d'informations. Utiliser le chat réduira également vos points.\n\n" +
+                "5. **Minuteur** :\n" +
+                "   - Vous avez un temps limité pour répondre à chaque question. Si le temps est écoulé, la réponse sera automatiquement marquée comme incorrecte.\n\n" +
+                "6. **Série de Réponses Correctes** :\n" +
+                "   - Si vous répondez correctement à plusieurs questions d'affilée, vous gagnez des points supplémentaires. Maintenez votre série pour maximiser votre score !\n\n" +
+                "7. **Terminez le Jeu** :\n" +
+                "   - Lorsque vous avez répondu à toutes les questions ou échoué en mode 'Survie', le jeu se termine. Vous pourrez alors voir votre score final et vos statistiques.",         
+                "help": "Aide",
+                "close": "Fermer",
             }
         }
     },
