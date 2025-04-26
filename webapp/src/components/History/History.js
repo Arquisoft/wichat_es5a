@@ -4,50 +4,42 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
-import HistoryText from '../ReactComponents/HistoryText';
 import NavBar from "../NavBar/NavBar";
 import { useTranslation } from "react-i18next";
-import Grid from '@mui/material/Grid';
+import ContestRow from '../ReactComponents/ContestRow';
 
 const History = () => {
   const navigate = useNavigate();
-
-  // Jugadores totales
-  const [userCount, setUserCount] = useState(0)
-  // Preguntas generadas
-  const [questionCount, setQuestionCount] = useState(0)
-  // Contests generados
-  const [contests, setContests] = useState([])
-  const [totalTime, setTotalTime] = useState([])
-  const [totalClues, setTotalClues] = useState([])
-  const [numCorrect, setNumCorrect] = useState([])
+  const [userCount, setUserCount] = useState(0);
+  const [questionCount, setQuestionCount] = useState(0);
+  const [contests, setContests] = useState([]);
+  const [totalTime, setTotalTime] = useState([]);
+  const [totalClues, setTotalClues] = useState([]);
+  const [numCorrect, setNumCorrect] = useState([]);
   const { t } = useTranslation();
-
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
   const exitHistory = () => {
     navigate('/home');
-  }
+  };
 
   const enterContest = (id) => {
     navigate('/contest/' + id);
-  }
+  };
 
-  // Función para formatear la fecha
   const formatDate = (isoDate) => {
     const date = new Date(isoDate);
-    const day = String(date.getDate()).padStart(2, '0'); // Día con dos dígitos
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Mes con dos dígitos (0-indexado)
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, '0'); // Hora con dos dígitos
-    const minutes = String(date.getMinutes()).padStart(2, '0'); // Minutos con dos dígitos
-    const seconds = String(date.getSeconds()).padStart(2, '0'); // Segundos con dos dígitos
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   };
 
-  // Se ejecuta al cargar el componente
   useEffect(() => {
     const getHistory = async () => {
       try {
@@ -63,31 +55,19 @@ const History = () => {
           let auxTimes = 0;
           let auxCorrect = 0;
           contest.pistas.forEach(clue => {
-            if (clue === undefined) {
-              clue = 0;
-            }
-            auxClues += clue;
+            auxClues += clue || 0;
           });
           auxArClues.push(auxClues);
-          auxClues = 0;
 
           contest.tiempos.forEach(time => {
-            if (time === undefined) {
-              time = 0;
-            }
-            auxTimes += time;
+            auxTimes += time || 0;
           });
           auxArTimes.push(auxTimes);
-          auxTimes = 0;
 
           contest.rightAnswers.forEach(answer => {
-            if (answer === 1) {
-              auxCorrect++;
-            }
+            if (answer === 1) auxCorrect++;
           });
           auxArCorrect.push(auxCorrect);
-          auxCorrect = 0;
-
         });
         setTotalClues(auxArClues);
         setTotalTime(auxArTimes);
@@ -99,66 +79,6 @@ const History = () => {
 
     getHistory();
   }, [apiEndpoint]);
-
-  const ContestRow = ({ contest, index, numCorrect, totalTime, totalClues, formatDate, enterContest, t, isHeader }) => (
-    <Grid container spacing={2}
-      sx={{
-        marginTop: 2,
-        marginBottom: 2,
-        display: "flex",
-        flexWrap: "wrap",
-        direction: "row"
-      }}
-    >
-      <Grid item xs={1}>
-        <HistoryText color="#00493A" size="h6">
-          {isHeader ? <b>{t("difficulty")}</b> : `${contest.difficulty}`}
-        </HistoryText>
-      </Grid>
-      <Grid item xs={1}>
-        <HistoryText color="#00493A" size="h6">
-          {isHeader ? <b>{t("mode")}</b> : `${contest.mode}`}
-        </HistoryText>
-      </Grid>
-      <Grid item xs={2}>
-        <HistoryText color="#00493A" size="h6">
-          {isHeader ? <b>{t("correct-answers")}</b> : `${numCorrect[index]}`}
-        </HistoryText>
-      </Grid>
-      <Grid item xs={1}>
-        <HistoryText color="#00493A" size="h6">
-          {isHeader ? <b>{t("points")}</b> : `${contest.points}`}
-        </HistoryText>
-      </Grid>
-      <Grid item xs={1}>
-        <HistoryText color="#00493A" size="h6">
-          {isHeader ? <b>{t("total-time")}</b> : `${totalTime[index]}"`}
-        </HistoryText>
-      </Grid>
-      <Grid item xs={2}>
-        <HistoryText color="#00493A" size="h6">
-          {isHeader ? <b>{t("number-of-clues")}</b> : `${totalClues[index]}`}
-        </HistoryText>
-      </Grid>
-      <Grid item xs={2}>
-        <HistoryText color="#00493A" size="h6">
-          {isHeader ? <b>{t("game-date")}</b> : `${formatDate(contest.date)}`}
-        </HistoryText>
-      </Grid>
-      <Grid item xs={2}>
-        {isHeader ? null : (
-          <LargeButton
-            width="50%"
-            left="25%"
-            key={contest._id || index}
-            onClick={() => enterContest(contest._id)}
-          >
-            {t("details")}
-          </LargeButton>
-        )}
-      </Grid>
-    </Grid>
-  );
 
   return (
     <div>
@@ -189,13 +109,7 @@ const History = () => {
             marginBottom: 2,
           }}
         >
-          {/* Fila de encabezados */}
-          <ContestRow
-            isHeader={true}
-            t={t}
-          />
-
-          {/* Filas dinámicas */}
+          <ContestRow isHeader={true} t={t} />
           {contests.map((contest, index) => (
             <ContestRow
               key={contest._id || index}

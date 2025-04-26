@@ -4,70 +4,9 @@ import Container from '@mui/material/Container';
 import { useNavigate, useParams } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
-import HistoryText from '../ReactComponents/HistoryText';
 import NavBar from "../NavBar/NavBar";
 import { useTranslation } from "react-i18next";
-import Grid from '@mui/material/Grid';
-
-const ContestRow = ({ contest, index, numCorrect, totalTime, totalClues, formatDate, enterContest, t, isHeader }) => (
-  <Grid container spacing={2}
-    sx={{
-      marginTop: 2,
-      marginBottom: 2,
-      display: "flex",
-      flexWrap: "wrap",
-      direction: "row"
-    }}
-  >
-    <Grid item xs={1}>
-      <HistoryText color="#00493A" size="h6">
-        {isHeader ? <b>{t("difficulty")}</b> : `${contest.difficulty}`}
-      </HistoryText>
-    </Grid>
-    <Grid item xs={1}>
-      <HistoryText color="#00493A" size="h6">
-        {isHeader ? <b>{t("mode")}</b> : `${contest.mode}`}
-      </HistoryText>
-    </Grid>
-    <Grid item xs={2}>
-      <HistoryText color="#00493A" size="h6">
-        {isHeader ? <b>{t("correct-answers")}</b> : `${numCorrect[index]}`}
-      </HistoryText>
-    </Grid>
-    <Grid item xs={1}>
-      <HistoryText color="#00493A" size="h6">
-        {isHeader ? <b>{t("points")}</b> : `${contest.points}`}
-      </HistoryText>
-    </Grid>
-    <Grid item xs={1}>
-      <HistoryText color="#00493A" size="h6">
-        {isHeader ? <b>{t("total-time")}</b> : `${totalTime[index]}"`}
-      </HistoryText>
-    </Grid>
-    <Grid item xs={2}>
-      <HistoryText color="#00493A" size="h6">
-        {isHeader ? <b>{t("number-of-clues")}</b> : `${totalClues[index]}`}
-      </HistoryText>
-    </Grid>
-    <Grid item xs={2}>
-      <HistoryText color="#00493A" size="h6">
-        {isHeader ? <b>{t("game-date")}</b> : `${formatDate(contest.date)}`}
-      </HistoryText>
-    </Grid>
-    <Grid item xs={2}>
-      {isHeader ? null : (
-        <LargeButton
-          width="50%"
-          left="25%"
-          key={contest._id || index}
-          onClick={() => enterContest(contest._id)}
-        >
-          {t("details")}
-        </LargeButton>
-      )}
-    </Grid>
-  </Grid>
-);
+import ContestRow from '../ReactComponents/ContestRow';
 
 const HistoryUser = () => {
   const { username } = useParams();
@@ -163,13 +102,7 @@ const HistoryUser = () => {
             marginBottom: 2,
           }}
         >
-          {/* Fila de encabezados */}
-          <ContestRow
-            isHeader={true}
-            t={t}
-          />
-
-          {/* Filas dinámicas */}
+          <ContestRow isHeader={true} t={t} />
           {contests.map((contest, index) => (
             <ContestRow
               key={contest._id || index}
