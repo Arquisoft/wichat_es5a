@@ -154,7 +154,8 @@ const Juego = () => {
           model: 'gemini',
           mode: mode,
           resCorr: resCorr,
-          language: i18n.language
+          language: i18n.language5,
+          version: 'pregunta',
       });
       setRespuestaLLM(response.data.answer || "No se recibió una respuesta válida del LLM.");
       console.log("Respuesta del LLM:", response.data.answer || "No se recibió respuesta válida.");
@@ -324,7 +325,12 @@ const Juego = () => {
           {/* Columna izquierda */}
           <Grid item xs={12} md={3}>
             <Stack spacing={2}>
-              <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm} disabled={!botonPistaHabilitado || !loadingComplete || answered}>
+              <Button id="botonPista" variant="contained" onClick={enviarRespuestaALlm} disabled={!botonPistaHabilitado || !loadingComplete || answered}
+              style={{
+                opacity: !botonPistaHabilitado ? 0.5 : 1,
+                cursor: !botonPistaHabilitado ? 'not-allowed' : 'pointer',
+              }}  
+              >
                 {t("need-clue")}
               </Button>
               {respuestaLLM && (
