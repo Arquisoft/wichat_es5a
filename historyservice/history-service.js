@@ -56,7 +56,7 @@ app.get('/gethistory', async (req, res) => {
     try {
         const userCount = await User.countDocuments();
         const questionCount = await Question.countDocuments();
-        const contests = await Contest.find();
+        const contests = await Contest.find().sort({ date: -1 })
         res.json({ userCount: userCount, questionCount: questionCount, contests: contests});
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
