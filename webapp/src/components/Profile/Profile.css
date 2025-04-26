@@ -37,3 +37,8 @@
   .profile-button {
     margin-top: 2rem;
   }
+
+  .profile-button button {
+    width: 30%;
+    max-width: 40rem;
+  }

@@ -71,6 +71,17 @@ app.get('/profile', async (req, res) => {
   }
 });
 
+app.put('/profile/edit/:username', async (req, res) => {
+  try {
+    const userResponse = await axios.put(userServiceUrl + `/profile/edit/${req.params.username}`, req.body, {
+      headers: req.headers, // Forward all headers, including Authorization
+    });
+    res.json(userResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+
 app.post('/askllm', async (req, res) => {
   try {
     // Forward the add user request to the user service

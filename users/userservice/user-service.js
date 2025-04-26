@@ -42,6 +42,33 @@ async function findOne(username, email) {
   return await User.findOne(query);
 }
 
+// Función para actualizar la información del usuario en la base de datos
+async function updateUserProfile(username, newUsername, newEmail) {
+  const user = findOne(username, "");
+  if (!user) {
+    throw new Error('Usuario no encontrado.');
+  }
+
+  if (newUsername && newUsername !== user.username) {
+    const existingUserWithNewUsername = findOne(newUsername, "");
+    if (existingUserWithNewUsername) {
+      throw new Error('El nombre de usuario ya está en uso.');
+    }
+    user.username = newUsername;
+  }
+
+  if (newEmail && newEmail !== user.email) {
+    const existingUserWithNewEmail = findOne("", newEmail);
+    if (existingUserWithNewEmail) {
+      throw new Error('El correo electrónico ya está en uso.');
+    }
+    user.email = newEmail;
+  }
+
+  await user.save();
+  return { message: 'Perfil actualizado exitosamente.' };
+}
+
 // Middleware to authenticate token
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -75,6 +102,30 @@ app.get('/profile', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Error fetching profile:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/profile/edit/:username', async (req, res) => {
+  try {
+    const currUsername = req.params.username;
+    const newUsername = req.body.username; 
+    const newEmail = req.body.email;
+
+    //Comprobación de que el email sea del tipo cualquiercosa@cualquiercosa.letras(mínimo 2)
+    const emailRegex = /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(newEmail)) {
+      return res.status(400).json({ error: "Formato de email inválido" });
+    }
+
+    const result = await updateUserProfile(currentUsername, newUsername, newEmail);
+    res.json(result);
+
+  } catch (error) {
+    console.error('Error al actualizar el perfil:', error);
+    res.status(error.message === 'Usuario no encontrado.' ? 404 :
+      error.message === 'El nombre de usuario ya está en uso.' ? 409 :
+        error.message === 'El correo electrónico ya está en uso.' ? 409 :
+          500).json({ error: error.message || 'Error interno del servidor al actualizar el perfil.' });
   }
 });
 

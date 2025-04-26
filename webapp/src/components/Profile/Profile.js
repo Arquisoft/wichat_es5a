@@ -14,7 +14,7 @@ const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000
 const Profile = () => {
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("token") // Obtiene el token de localStorage
+  const token = localStorage.getItem("token");
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState(null);
   const { t } = useTranslation();
@@ -42,6 +42,10 @@ const Profile = () => {
 
   const exitProfile = () => {
     navigate('/home');
+  }
+
+  const goToEditProfile = () => {
+    navigate(`/profile/edit/${profileData.username}`);
   }
 
   if (error) {
@@ -85,6 +89,9 @@ const Profile = () => {
         <Grid container justifyContent="center" className="profile-button">
           <Grid item xs={12} sm={8} md={6}>
             <LargeButton onClick={exitProfile}>{t("exit")}</LargeButton>
+          </Grid>
+          <Grid item xs={12} sm={8} md={6}>
+            <LargeButton onClick={goToEditProfile}>{t("edit-profile-button")}</LargeButton>
           </Grid>
         </Grid>
       </Container>
