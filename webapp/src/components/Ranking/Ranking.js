@@ -7,6 +7,7 @@ import HistoryText from '../ReactComponents/HistoryText';
 import NavBar from "../NavBar/NavBar";
 import { useTranslation } from "react-i18next";
 import CustomH1 from '../ReactComponents/CustomH1';
+import Grid from '@mui/material/Grid';
 
 const Ranking = () => {
     const navigate = useNavigate();
@@ -58,34 +59,81 @@ const Ranking = () => {
                 <LargeButton onClick={exitRanking}>
                     {t("exit")}
                 </LargeButton>
-                {users.map((user, index) => (
-                    <Container
+                <Container
+                sx ={{
+                    backgroundColor: "#98d7c2",
+                    marginTop: 2,
+                }}>
+                    <Grid container spacing={2}
                         sx={{
-                            backgroundColor: "#00493A",
                             marginTop: 2,
-                            padding: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
-                        <HistoryText size="h6">
-                            {t("Puesto")}{`: ${index + 1}`}
-                        </HistoryText>
-                        <HistoryText size="h6">
-                            {t("Nombre de usuario")}{`: ${user.username}`}
-                        </HistoryText>
-                        <HistoryText size="h6">
-                            {t("Puntos")}{`: ${user.points}`}
-                        </HistoryText>
-                        <LargeButton
-                            key={user.username || index} // Usa el ID del contest como clave si está disponible
-                            onClick={() => enterHistory(user.username)} // Acción al hacer clic
+                            marginBottom: 2,
+                            display: "flex",
+                            flexWrap: "wrap",
+                            direction: "row"
+                        }}
+                    >
+                        <Grid item xs={2}>
+                            <HistoryText color="#00493A" size="h6">
+                                <b>{t("Puesto")}</b>
+                            </HistoryText>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <HistoryText color="#00493A" size="h6">
+                                <b>{t("Nombre de usuario")}</b>
+                            </HistoryText>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <HistoryText color="#00493A" size="h6">
+                                <b>{t("Puntos")}</b>
+                            </HistoryText>
+                        </Grid>
+                        <Grid item xs={2}>
+                        </Grid>
+                    </Grid>
+                    {users.map((user, index) => (
+                        <Grid container spacing={2}
+                            sx={{
+                                marginTop: 2,
+                                marginBottom: 2,
+                                display: "flex",
+                                flexWrap: "wrap",
+                                direction: "row"
+                            }}
+                            key={user.username || index}
                         >
-                            {t("Historial")}
-                        </LargeButton>
-                    </Container>
-                ))}
+                            <Grid item xs={2}>
+                                <HistoryText color="#00493A" size="h6">
+                                    {`${index + 1}`}
+                                </HistoryText>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <HistoryText color="#00493A" size="h6">
+                                    {`${user.username}`}
+                                </HistoryText>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <HistoryText color="#00493A" size="h6">
+                                    {`${user.points}`}
+                                </HistoryText>
+                            </Grid>
+                            <Grid item xs={2}
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center", // Centra verticalmente
+                                }}>
+                                <LargeButton
+                                    width="70%"
+                                    marginTop={0}
+                                    bottom="30%"
+                                    onClick={() => enterHistory(user.username)}
+                                >
+                                    {t("Historial")}
+                                </LargeButton>
+                            </Grid>
+                        </Grid>
+                    ))}
+                </Container>
             </Container>
         </div>
     );
