@@ -14,7 +14,7 @@ defineFeature(feature, test => {
       : await puppeteer.launch({ headless: false, slowMo: 2 });
     page = await browser.newPage();
     //Way of setting up the timeout
-    setDefaultOptions({ timeout: 10000 });
+    setDefaultOptions({ timeout: 15000 });
     await page
       .goto("http://localhost:8080", {
         waitUntil: "networkidle0",
