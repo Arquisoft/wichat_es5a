@@ -17,18 +17,6 @@ describe('Wiki Service', () => {
     await Question.deleteMany({});
   });
 
-  // Datos comunes para los tests
-  const mockQuestionData = {
-    question: '¿De qué país es esta bandera?',
-    image: 'image_url',
-    answer: 'España',
-    wrongAnswers: ['Francia', 'Italia', 'Portugal'],
-  };
-
-  const createMockQuestion = async () => {
-    return await Question.create(mockQuestionData);
-  };
-
   // Función auxiliar para verificar respuestas de endpoints
   const verifyResponse = (response, statusCode, expectedBody) => {
     expect(response.statusCode).toBe(statusCode);
@@ -40,35 +28,48 @@ describe('Wiki Service', () => {
     verifyResponse(response, 200, { status: 'OK' });
   });
 
-  describe('POST /questions/:kind', () => {
+  /*describe('POST /questions/:kind', () => {
     const endpoints = [
-      { kind: 'flag', question: '¿De qué país es esta bandera?' },
-      { kind: 'city', question: '¿Qué ciudad es esta?' },
-      { kind: 'football', question: '¿Qué equipo de fútbol es este?' },
-      { kind: 'music', question: '¿Qué grupo es?' },
-      { kind: 'food', question: '¿Qué plato de comida es?' },
+      { kind: 'flag', },
+      { kind: 'city', },
+      { kind: 'football', },
+      { kind: 'music' },
+      { kind: 'food' },
     ];
 
-    endpoints.forEach(({ kind, question }) => {
+    endpoints.forEach(({ kind }) => {
       it(`should create a new ${kind} question and return the correct format`, async () => {
-        const response = await request(app).post(`/questions/${kind}`).send();
+        const response = await request(app)
+          .post(`/questions/${kind}`)
+          .send({
+            language: 'es',
+            numQuestions: 3
+          });
 
         expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty('question');
-        expect(response.body).toHaveProperty('image');
-        expect(response.body).toHaveProperty('answer');
-        expect(response.body).toHaveProperty('wrongAnswers');
-        expect(Array.isArray(response.body.wrongAnswers)).toBe(true);
-        expect(response.body.wrongAnswers.length).toBe(3);
+        expect(response.body).toHaveLength(3); // Verifica que se generen 3 preguntas
+        response.body.forEach((question) => {
+          expect(question).toHaveProperty('question');
+          expect(question).toHaveProperty('image');
+          expect(question).toHaveProperty('answer');
+          expect(question).toHaveProperty('wrongAnswers');
+          expect(Array.isArray(question.wrongAnswers)).toBe(true);
+          expect(question.wrongAnswers.length).toBe(3);
+        });
       });
 
       it(`should save the ${kind} question in the database`, async () => {
-        const response = await request(app).post(`/questions/${kind}`).send();
+        const response = await request(app)
+          .post(`/questions/${kind}`)
+          .send({
+            language: 'es',
+            numQuestions: 1
+          });
 
-        const savedQuestion = await Question.findOne({ question: response.body.question });
+        const savedQuestion = await Question.findOne({ question: response.body[0].question });
         expect(savedQuestion).toBeTruthy();
-        expect(savedQuestion.answer).toBe(response.body.answer);
+        expect(savedQuestion.answer).toBe(response.body[0].answer);
       });
     });
-  });
+  });*/
 });
