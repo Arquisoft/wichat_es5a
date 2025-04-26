@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Sat Apr 26 02:17:34 CEST 2025
+netty-incubator-transport-native-io_uring-0.0.26.Final-linux-aarch_64.jar>central=
+netty-incubator-transport-native-io_uring-0.0.26.Final-linux-x86_64.jar>central=
+netty-incubator-transport-native-io_uring-0.0.26.Final.pom>central=
