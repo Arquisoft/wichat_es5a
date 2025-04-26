@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
 import NavBar from "../NavBar/NavBar";
 import { useTranslation } from "react-i18next";
-import ContestRow from '../ReactComponents/ContestRow';
+import ContestList from '../ReactComponents/ContestList';
+import useFetchHistory from '../../hooks/useFetchHistory';
 
 const History = () => {
   const navigate = useNavigate();
-  const [userCount, setUserCount] = useState(0);
-  const [questionCount, setQuestionCount] = useState(0);
-  const [contests, setContests] = useState([]);
-  const [totalTime, setTotalTime] = useState([]);
-  const [totalClues, setTotalClues] = useState([]);
-  const [numCorrect, setNumCorrect] = useState([]);
   const { t } = useTranslation();
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+  const { contests, totalTime, totalClues, numCorrect, extraData } = useFetchHistory(`${apiEndpoint}/gethistory`);
 
   const exitHistory = () => {
     navigate('/home');
@@ -40,46 +35,6 @@ const History = () => {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   };
 
-  useEffect(() => {
-    const getHistory = async () => {
-      try {
-        const response = await axios.get(`${apiEndpoint}/gethistory`);
-        setUserCount(response.data.userCount);
-        setQuestionCount(response.data.questionCount);
-        setContests(response.data.contests);
-        let auxArTimes = [];
-        let auxArClues = [];
-        let auxArCorrect = [];
-        response.data.contests.forEach(contest => {
-          let auxClues = 0;
-          let auxTimes = 0;
-          let auxCorrect = 0;
-          contest.pistas.forEach(clue => {
-            auxClues += clue || 0;
-          });
-          auxArClues.push(auxClues);
-
-          contest.tiempos.forEach(time => {
-            auxTimes += time || 0;
-          });
-          auxArTimes.push(auxTimes);
-
-          contest.rightAnswers.forEach(answer => {
-            if (answer === 1) auxCorrect++;
-          });
-          auxArCorrect.push(auxCorrect);
-        });
-        setTotalClues(auxArClues);
-        setTotalTime(auxArTimes);
-        setNumCorrect(auxArCorrect);
-      } catch (error) {
-        console.error('Error al obtener el número de usuarios:', error);
-      }
-    };
-
-    getHistory();
-  }, [apiEndpoint]);
-
   return (
     <div>
       <NavBar />
@@ -94,37 +49,23 @@ const History = () => {
         }}
       >
         <CustomH1 size="h5">
-          <span>{t("total-users")}: {userCount}</span>
+          <span>{t("total-users")}: {extraData.userCount}</span>
         </CustomH1>
         <CustomH1 size="h5">
-          <span>{t("questions-generated")}: {questionCount}</span>
+          <span>{t("questions-generated")}: {extraData.questionCount}</span>
         </CustomH1>
         <LargeButton onClick={exitHistory}>
           {t("exit")}
         </LargeButton>
-        <Container
-          sx={{
-            backgroundColor: "#98d7c2",
-            marginTop: 2,
-            marginBottom: 2,
-          }}
-        >
-          <ContestRow isHeader={true} t={t} />
-          {contests.map((contest, index) => (
-            <ContestRow
-              key={contest._id || index}
-              contest={contest}
-              index={index}
-              numCorrect={numCorrect}
-              totalTime={totalTime}
-              totalClues={totalClues}
-              formatDate={formatDate}
-              enterContest={enterContest}
-              t={t}
-              isHeader={false}
-            />
-          ))}
-        </Container>
+        <ContestList
+          contests={contests}
+          numCorrect={numCorrect}
+          totalTime={totalTime}
+          totalClues={totalClues}
+          formatDate={formatDate}
+          enterContest={enterContest}
+          t={t}
+        />
       </Container>
     </div>
   );
