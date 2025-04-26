@@ -128,7 +128,7 @@ describe('HistoryUser Component', () => {
 
     await waitFor(() => {
       expect(console.error).toHaveBeenCalledWith(
-        'Error al obtener el número de usuarios:',
+        'Error al obtener los datos del historial:',
         expect.any(Error)
       );
     });
