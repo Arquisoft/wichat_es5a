@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';  
 import GameMode from './GameMode';  
+import "../../i18n.js"
 
 describe('GameMode component', () => {
 
@@ -74,7 +75,7 @@ describe('GameMode component', () => {
       </BrowserRouter>
     );
 
-    const startButton = screen.getByRole('button', { name: /Empezar juego/i });
+    const startButton = screen.getByRole('button', { name: /Jugar/i });
     const ciudadesButton = screen.getByText(/Ciudades/i);
     const facilButton = screen.getByText(/Fácil/i);
 
@@ -98,7 +99,7 @@ describe('GameMode component', () => {
 
     const ciudadesButton = screen.getByText(/Ciudades/i);
     const facilButton = screen.getByText(/Fácil/i);
-    const startButton = screen.getByRole('button', { name: /Empezar juego/i });
+    const startButton = screen.getByRole('button', { name: /Jugar/i });
 
     // Seleccionamos el modo y la dificultad
     fireEvent.click(ciudadesButton);
@@ -109,6 +110,34 @@ describe('GameMode component', () => {
 
     // Esperamos que la navegación haya ocurrido (esto verifica que la URL cambie)
     await waitFor(() => expect(window.location.pathname).toBe('/game'));
+  });
+  it('should open and close the help text when the help button is clicked', () => {
+    render(
+      <BrowserRouter>
+        <GameMode />
+      </BrowserRouter>
+    );
+  
+    // Obtener el botón de ayuda
+    const helpButton = screen.getByRole('button', { name: /Ayuda/i });
+  
+    // Verificar que el modal no está visible inicialmente
+    expect(screen.queryByText(/¡Bienvenido al juego! Aquí tienes una guía rápida para empezar:/i)).not.toBeInTheDocument();
+  
+    // Pulsar el botón de ayuda
+    fireEvent.click(helpButton);
+  
+    // Verificar que el modal se abre y contiene el texto de ayuda
+    expect(screen.getByText(/¡Bienvenido al juego!/i)).toBeInTheDocument();
+  
+    // Obtener el botón de cerrar dentro del modal
+    const closeButton = screen.getByRole('button', { name: /Cerrar/i });
+  
+    // Pulsar el botón de cerrar
+    fireEvent.click(closeButton);
+  
+    // Verificar que el modal ya no está visible
+    expect(screen.queryByText(/¡Bienvenido al juego!/i)).not.toBeInTheDocument();
   });
 
 });

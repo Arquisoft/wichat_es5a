@@ -1,11 +1,8 @@
 const axios = require('axios');
 const express = require('express');
-const cors = require('cors');
 const app = express();
 const port = 8003;
 
-// Middleware to parse JSON in request body
-app.use(cors());
 app.use(express.json());
 // Load enviroment variables
 require('dotenv').config();
@@ -84,12 +81,13 @@ app.get('/health', (req, res) => {
 app.post('/ask', async (req, res) => {
   try {
     validateRequiredFields(req, ['question', 'model']);
-    const { question, model, mode, resCorr } = req.body;
-    
-    const context = `ROLE: Eres un asistente de un juego de adivinanzas sobre ${mode}.  
+    const { question, model, mode, resCorr, language, version } = req.body;
+    let context="";
+    if(version == 'pregunta') {
+      context = `ROLE: Eres un asistente de un juego de adivinanzas sobre ${mode}.  
           MISIÓN: Dar una ÚNICA pista INDIRECTA para ayudar a adivinar "${resCorr}" (la respuesta correcta),  
           pero NUNCA revelar el nombre, descripción literal o datos clave directamente.
-        
+          Si la pregunta no es sobre la respuesta correcta, responde a la pregunta normalmente
           REGLAS ESTRICTAS:
           1. **Prohibido** decir "${resCorr}", sinónimos o atributos obvios (ej: capital, colores de bandera, etc.).
           2. Si el usuario pregunta DIRECTAMENTE:
@@ -99,6 +97,7 @@ app.post('/ask', async (req, res) => {
              - **Indirecta**: Usa metáforas, funciones históricas o curiosidades (ej: "Su símbolo aparece en mitos antiguos").
              - **Breve**: 1-2 frases.
              - **Útil**: Que descarten opciones incorrectas.
+          4. Debes hablar en el idioma: "${language}"
         
           EJEMPLOS (para "${mode}" = "Banderas"):
           - Pista válida: "Este país tuvo el primer ferrocarril de su continente".
@@ -106,7 +105,40 @@ app.post('/ask', async (req, res) => {
         
           Ahora, genera UNA pista para "${resCorr}".
     
+      Pregunta: ${question}`;
+    }else{
+      context = `ROLE: Eres un asistente de un juego de adivinanzas sobre ${mode}.  
+    MISIÓN: Ayudar al usuario a adivinar "${resCorr}" (la respuesta correcta) proporcionando pistas útiles e indirectas.  
+    Sin embargo, si el usuario solicita explícitamente o implícitamente la respuesta correcta, debes proporcionarla.
+
+    REGLAS:
+    1. Si el usuario pregunta DIRECTAMENTE o IMPLÍCITAMENTE por la respuesta correcta:
+       - Ejemplos de preguntas directas:
+         - "¿Cuál es la respuesta?"
+         - "Dime la respuesta."
+       - Ejemplos de preguntas implícitas (para el modo "${mode}"):
+         - Modo "Banderas": "Dime el país", "¿Qué país es?", "¿De qué país estamos hablando?"
+         - Modo "Ciudad": "Dime la ciudad", "¿Cuál es la ciudad?", "¿Qué ciudad es?"
+         - Modo "Futbol": "¿Que equipo es?", "Dime el equipo", "¿Cuál es el equipo?"
+         - Modo "Música": "¿Que grupo es?", "Dime el grupo de música", "¿Cuál es el grupo?"
+         - Modo "Comida": "¿Que comida es?", "Dime el plato de comida", "¿Cuál es el plato?"
+       - Responde EXACTAMENTE: "${resCorr}".
+    2. Si el usuario no solicita la respuesta directamente o implícitamente:
+       - Proporciona UNA pista útil e indirecta sobre "${resCorr}".
+       - La pista debe ser:
+         - **Indirecta**: Usa metáforas, funciones históricas o curiosidades (ej: "Su símbolo aparece en mitos antiguos").
+         - **Breve**: 1-2 frases.
+         - **Útil**: Que descarten opciones incorrectas.
+    3. Debes hablar en el idioma: "${language}".
+
+    EJEMPLOS (para "${mode}" = "Banderas"):
+    - Pregunta directa: "¿Cuál es la respuesta?" → Respuesta: "La respuesta correcta es Argentina".
+    - Pregunta implícita: "Dime el país" → Respuesta: "La respuesta correcta es Argentina".
+    - Pista válida: "Este país tuvo el primer ferrocarril de su continente".
+
+    Ahora, responde a la siguiente pregunta del usuario:
     Pregunta: ${question}`;
+    }
     
     const apiKey = process.env.LLM_API_KEY;
     if(!apiKey) return res.status(400).json({error: 'API key is missing'});

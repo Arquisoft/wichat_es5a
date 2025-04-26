@@ -16,7 +16,19 @@ const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
 
-app.use(cors());
+const allowedOrigins = ['http://localhost:8080', 'http://48.209.10.166:8080'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Permitir requests sin 'origin' (por ejemplo, Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true // Solo si necesitas enviar cookies/autenticación
+}));
 app.use(express.json());
 
 //Prometheus configuration
@@ -50,7 +62,6 @@ app.post('/adduser', async (req, res) => {
 
 app.get('/profile', async (req, res) => {
   try {
-    console.log(req.headers)
     const userResponse = await axios.get(userServiceUrl + '/profile', {
       headers: req.headers, // Forward all headers, including Authorization
     });

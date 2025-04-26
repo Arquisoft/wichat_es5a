@@ -3,6 +3,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import axios from 'axios';
 import ContestHistory from './ContestHistory';
+import "../../i18n.js"
 
 jest.mock('axios');
 

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { version } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import ChatBot from './ChatBot';
+import "../../i18n.js"
 
 jest.mock('axios');
 
@@ -15,7 +16,7 @@ describe('ChatBot Component', () => {
 
   it('renders initial bot message', () => {
     render(<ChatBot respuestaCorrecta={mockRespuestaCorrecta} />);
-    expect(screen.getByText(/¡Hola! Soy tu asistente. ¿En que puedo ayudarte?/i)).toBeInTheDocument();
+    expect(screen.getByText(/¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?/i)).toBeInTheDocument();
   });
 
   it('displays user message when sent', async () => {
@@ -47,7 +48,10 @@ describe('ChatBot Component', () => {
         {
           question: 'Test question',
           model: 'gemini',
-          resCorr: mockRespuestaCorrecta
+          resCorr: mockRespuestaCorrecta,
+          language: "es",
+          mode: undefined,
+          version: "chat",
         }
       );
     });
@@ -78,4 +82,14 @@ describe('ChatBot Component', () => {
       expect(input).toHaveValue('');
     });
   });
+  it('closes the chat when the close button is clicked', () => {
+    render(<ChatBot respuestaCorrecta={mockRespuestaCorrecta} />);
+
+    expect(screen.getByText(/¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?/i)).toBeInTheDocument();
+
+    const closeButton = screen.getByText('X');
+    fireEvent.click(closeButton);
+
+    expect(screen.queryByText(/¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?/i)).not.toBeInTheDocument();
+});
 });

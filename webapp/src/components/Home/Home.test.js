@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import Home from './Home';
+import "../../i18n.js"
 
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
@@ -30,9 +31,9 @@ describe('Home Component', () => {
           <Home />
         </MemoryRouter>
       );
-
+      const buttons = screen.getAllByText(buttonText);
       // Hacer clic en el botón
-      fireEvent.click(screen.getByText(buttonText));
+      fireEvent.click(buttons.length === 1 ? buttons[0] : buttons[1]);
 
       // Verificar que se navega a la ruta esperada
       expect(mockNavigate).toHaveBeenCalledWith(expectedPath);
@@ -50,7 +51,7 @@ describe('Home Component', () => {
     );
 
     // Hacer clic en el botón "Salir de sesión"
-    fireEvent.click(screen.getByText('Salir de sesión'));
+    fireEvent.click(screen.getByText('Cerrar sesión'));
 
     // Verificar que el token fue eliminado
     expect(localStorage.getItem('token')).toBeNull();

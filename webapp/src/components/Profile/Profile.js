@@ -7,6 +7,7 @@ import NavBar from "../NavBar/NavBar";
 import axios from 'axios';
 import { Container, Typography, Grid, Card, CardContent } from '@mui/material';
 import './Profile.css';
+import { useTranslation } from "react-i18next";
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -16,6 +17,7 @@ const Profile = () => {
   const token = localStorage.getItem("token") // Obtiene el token de localStorage
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -48,16 +50,9 @@ const Profile = () => {
         <NavBar />
         <Container
           component="main"
-          sx={{
-            marginTop: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
         >
           <Typography color="error">{error}</Typography>
-          <LargeButton onClick={exitProfile}>Salir</LargeButton>
+          <LargeButton onClick={exitProfile}>{t("exit")}</LargeButton>
         </Container>
       </div>
     );
@@ -67,20 +62,20 @@ const Profile = () => {
     <div>
       <NavBar />
       <Container component="main" className="profile-container">
-        <CustomH1>Perfil de Usuario</CustomH1>
+        <CustomH1>{t("user-profile")}</CustomH1>
         {profileData && (
           <Grid container justifyContent="center">
             <Grid item xs={12} sm={8} md={6}>
               <Card className="profile-card">
                 <CardContent>
                   <Typography variant="h6" className="profile-title">
-                    Información del Perfil
+                    {t("profile-info")}
                   </Typography>
                   <Typography className="profile-info">
-                    <strong>Usuario:</strong> {profileData.username}
+                    <strong>{t("user")}:</strong> {profileData.username}
                   </Typography>
                   <Typography className="profile-info">
-                    <strong>Email:</strong> {profileData.email}
+                    <strong>{t("email")}:</strong> {profileData.email}
                   </Typography>
                 </CardContent>
               </Card>
@@ -89,7 +84,7 @@ const Profile = () => {
         )}
         <Grid container justifyContent="center" className="profile-button">
           <Grid item xs={12} sm={8} md={6}>
-            <LargeButton onClick={exitProfile}>Salir</LargeButton>
+            <LargeButton onClick={exitProfile}>{t("exit")}</LargeButton>
           </Grid>
         </Grid>
       </Container>

@@ -6,6 +6,7 @@ import LargeButton from '../ReactComponents/LargeButton';
 import CustomH1 from '../ReactComponents/CustomH1';
 import HistoryText from '../ReactComponents/HistoryText';
 import NavBar from "../NavBar/NavBar";
+import { useTranslation } from "react-i18next";
 
 const History = () => {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ const History = () => {
   const [totalTime, setTotalTime] = useState([])
   const [totalClues, setTotalClues] = useState([])
   const [numCorrect, setNumCorrect] = useState([])
+  const { t } = useTranslation();
+  
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -110,13 +113,13 @@ const History = () => {
         }}
       >
         <CustomH1 size="h5">
-          Jugadores totales: {userCount}
+          {t("total-users")}: {userCount}
         </CustomH1>
         <CustomH1 size="h5">
-          Preguntas generadas: {questionCount}
+          {t("questions-generated")}: {questionCount}
         </CustomH1>
         <LargeButton onClick={exitHistory}>
-          Salir
+          {t("exit")}
         </LargeButton>
         {contests.map((contest, index) => (
           <Container
@@ -130,31 +133,31 @@ const History = () => {
               justifyContent: 'center',
             }}>
             <HistoryText size="h6">
-              {`Dificultad: ${contest.difficulty}`}
+              {t("difficulty")}{`: ${contest.difficulty}`}
             </HistoryText>
             <HistoryText size="h6">
-              {`Modo: ${contest.mode}`}
+              {t("mode")}{`: ${contest.mode}`}
             </HistoryText>
             <HistoryText size="h6">
-              {`Preguntas acertadas: ${numCorrect[index]}`}
+              {t("correct-answers")}{`: ${numCorrect[index]}`}
             </HistoryText>
             <HistoryText size="h6">
-              {`Puntos: ${contest.points}`}
+              {t("points")}{`: ${contest.points}`}
             </HistoryText>
             <HistoryText size="h6">
-              {`Tiempo total: ${totalTime[index]} segundos`}
+              {t("total-time")}{`: ${totalTime[index]}`} {t("seconds")}
             </HistoryText>
             <HistoryText size="h6">
-              {`Número de pistas usadas: ${totalClues[index]} segundos`}
+              {t("number-of-clues")}{`: ${totalClues[index]}`}
             </HistoryText>
             <HistoryText size="h6">
-              {`Fecha del concurso: ${formatDate(contest.date)}`}
+              {t("game-date")}{`: ${formatDate(contest.date)}`}
             </HistoryText>
             <LargeButton
               key={contest._id || index} // Usa el ID del contest como clave si está disponible
               onClick={() => enterContest(contest._id)} // Acción al hacer clic
             >
-              {`Detalles`}
+              {t("details")}
             </LargeButton>
           </Container>
         ))}

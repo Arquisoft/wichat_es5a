@@ -2,10 +2,12 @@ import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import NavBar from './NavBar';
 import { BrowserRouter } from 'react-router'
+import "../../i18n.js"
 
 describe('NavBar component', () => {
     
     beforeEach(() => {
+        localStorage.setItem('token', "test-tocken");
         renderNavBar();
     });
 

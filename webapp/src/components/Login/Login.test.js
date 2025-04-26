@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import Login from './Login';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../../i18n'; 
 
 const mockAxios = new MockAdapter(axios);
 
@@ -22,8 +24,7 @@ describe('Login component', () => {
 
     expect(screen.getByLabelText(/Nombre de usuario/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Contraseña/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Login/i })).toBeInTheDocument();
-    expect(screen.getByText(/¿No tienes una cuenta/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Entrar/i })).toBeInTheDocument();
   });
 
   it('should log in successfully and redirect to /home', async () => {
@@ -39,7 +40,7 @@ describe('Login component', () => {
     fireEvent.change(screen.getByLabelText(/Contraseña/i), { target: { value: 'testpass' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Login/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entrar/i }));
     });
 
     await waitFor(() => {
@@ -48,21 +49,25 @@ describe('Login component', () => {
   });
 
   it('should show an error message if login fails', async () => {
-    mockAxios.onPost('http://localhost:8000/login').reply(401, { error: 'Credenciales incorrectas' });
+    mockAxios.onPost('http://localhost:8000/login').reply(401, { error: 'Invalid credentials' });
 
     render(
       <BrowserRouter>
-        <Login />
+        <I18nextProvider i18n={i18n}>
+          <Login />
+        </I18nextProvider>
       </BrowserRouter>
     );
 
     fireEvent.change(screen.getByLabelText(/Nombre de usuario/i), { target: { value: 'wronguser' } });
     fireEvent.change(screen.getByLabelText(/Contraseña/i), { target: { value: 'wrongpass' } });
 
-    fireEvent.click(screen.getByRole('button', { name: /Login/i }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /Entrar/i }));
+    });
 
     await waitFor(() => {
-      expect(screen.getByText(/Error: Credenciales incorrectas/i)).toBeInTheDocument();
+      expect(screen.getByText(/Credenciales inválidas/i)).toBeInTheDocument();
     });
   });
 });

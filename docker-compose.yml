@@ -110,7 +110,7 @@ services:
     depends_on:
       - gatewayservice
     ports:
-      - "3000:3000"
+      - "8080:8080"
 
   prometheus:
     image: prom/prometheus

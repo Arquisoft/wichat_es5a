@@ -1,3 +1,5 @@
 node_modules
 coverage
 .env
+Dockerfile  
+llm-service.test.js
