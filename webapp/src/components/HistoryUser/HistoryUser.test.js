@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import axios from 'axios';
 import { BrowserRouter } from 'react-router';
-import History from './History';
+import HistoryUser from './HistoryUser';
 import "../../i18n.js";
 
 jest.mock('axios');
@@ -11,6 +11,7 @@ const mockNavigate = jest.fn();
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useNavigate: () => mockNavigate,
+  useParams: () => ({ username: 'testuser' }), // Simula el parámetro de la URL
 }));
 
 jest.spyOn(console, 'error').mockImplementation(() => {}); // Suprime los warnings de console.error en los tests
@@ -18,8 +19,6 @@ jest.spyOn(console, 'error').mockImplementation(() => {}); // Suprime los warnin
 // Datos de prueba y textos esperados
 const mockResponse = {
   data: {
-    userCount: 5,
-    questionCount: 10,
     contests: [
       {
         _id: '1',
@@ -37,22 +36,18 @@ const mockResponse = {
 
 const emptyContestsResponse = {
   data: {
-    userCount: 5,
-    questionCount: 10,
     contests: [],
   },
 };
 
 const expectedTexts = {
-  totalUsers: 'Jugadores totales: 5', // Ahora solo muestra el valor
-  totalQuestions: 'Preguntas generadas: 10', // Ahora solo muestra el valor
-  difficulty: 'easy', // Ahora solo muestra el valor
-  mode: 'flag', // Ahora solo muestra el valor
-  correctAnswers: '1', // Ahora solo muestra el valor
-  points: '100', // Ahora solo muestra el valor
-  totalTime: '20"', // Cambiado para reflejar el formato actualizado
-  totalClues: '3', // Ahora solo muestra el valor
-  contestDate: /01\/04\/2025 \d{2}:\d{2}:\d{2}/, // Formato de fecha actualizado
+  difficulty: 'easy',
+  mode: 'flag',
+  correctAnswers: '1',
+  points: '100',
+  totalTime: '20"',
+  totalClues: '3',
+  gameDate: /01\/04\/2025 \d{2}:\d{2}:\d{2}/,
   detailsButton: 'Detalles',
   exitButton: 'Salir',
 };
@@ -61,12 +56,12 @@ const expectedTexts = {
 const renderComponent = () => {
   render(
     <BrowserRouter>
-      <History />
+      <HistoryUser />
     </BrowserRouter>
   );
 };
 
-describe('History Component', () => {
+describe('HistoryUser Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -74,9 +69,7 @@ describe('History Component', () => {
   it('should render the initial UI correctly', () => {
     renderComponent();
 
-    expect(screen.getByText('Jugadores totales: 0')).toBeInTheDocument();
-    expect(screen.getByText('Preguntas generadas: 0')).toBeInTheDocument();
-    expect(screen.getByText(expectedTexts.exitButton)).toBeInTheDocument();
+    expect(screen.getByText('Salir')).toBeInTheDocument();
   });
 
   it('should fetch and display data from the API', async () => {
@@ -85,15 +78,13 @@ describe('History Component', () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText(expectedTexts.totalUsers)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.totalQuestions)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.difficulty)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.mode)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.correctAnswers)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.points)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.totalTime)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.totalClues)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.contestDate)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.gameDate)).toBeInTheDocument();
     });
   });
 
@@ -110,7 +101,7 @@ describe('History Component', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/contest/1');
   });
 
-  it('should navigate to the home page when "Salir" is clicked', async () => {
+  it('should navigate to the profile page when "Salir" is clicked', async () => {
     renderComponent();
 
     await waitFor(() => {
@@ -118,7 +109,7 @@ describe('History Component', () => {
     });
 
     fireEvent.click(screen.getByText(expectedTexts.exitButton));
-    expect(mockNavigate).toHaveBeenCalledWith('/home');
+    expect(mockNavigate).toHaveBeenCalledWith('/profile');
   });
 
   it('should handle API errors gracefully', async () => {
@@ -127,14 +118,11 @@ describe('History Component', () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText('Jugadores totales: 0')).toBeInTheDocument();
-      expect(screen.getByText('Preguntas generadas: 0')).toBeInTheDocument();
+      expect(console.error).toHaveBeenCalledWith(
+        'Error al obtener el número de usuarios:',
+        expect.any(Error)
+      );
     });
-
-    expect(console.error).toHaveBeenCalledWith(
-      'Error al obtener el número de usuarios:',
-      expect.any(Error)
-    );
   });
 
   it('should display a message when there are no contests', async () => {
@@ -143,8 +131,6 @@ describe('History Component', () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText(expectedTexts.totalUsers)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.totalQuestions)).toBeInTheDocument();
       expect(screen.queryByText(expectedTexts.difficulty)).not.toBeInTheDocument();
     });
   });

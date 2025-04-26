@@ -7,6 +7,7 @@ import CustomH1 from '../ReactComponents/CustomH1';
 import HistoryText from '../ReactComponents/HistoryText';
 import NavBar from "../NavBar/NavBar";
 import { useTranslation } from "react-i18next";
+import Grid from '@mui/material/Grid';
 
 const History = () => {
   const { username } = useParams();
@@ -107,50 +108,120 @@ const History = () => {
           justifyContent: 'center',
         }}
       >
-        <CustomH1>{t("User's history")}</CustomH1>
+        <CustomH1>{t("user-history")} {` "${username}"`}</CustomH1>
         <LargeButton onClick={exitHistory}>
           {t("exit")}
         </LargeButton>
-        {contests.map((contest, index) => (
-          <Container
+        <Container
+          sx={{
+            backgroundColor: "#98d7c2",
+            marginTop: 2,
+            marginBottom: 2,
+          }}>
+          <Grid container spacing={2}
             sx={{
-              backgroundColor: "#00493A",
               marginTop: 2,
-              padding: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <HistoryText size="h6">
-              {t("difficulty")}{`: ${contest.difficulty}`}
-            </HistoryText>
-            <HistoryText size="h6">
-              {t("mode")}{`: ${contest.mode}`}
-            </HistoryText>
-            <HistoryText size="h6">
-              {t("correct-answers")}{`: ${numCorrect[index]}`}
-            </HistoryText>
-            <HistoryText size="h6">
-              {t("points")}{`: ${contest.points}`}
-            </HistoryText>
-            <HistoryText size="h6">
-              {t("total-time")}{`: ${totalTime[index]}`} {t("seconds")}
-            </HistoryText>
-            <HistoryText size="h6">
-              {t("number-of-clues")}{`: ${totalClues[index]}`}
-            </HistoryText>
-            <HistoryText size="h6">
-              {t("game-date")}{`: ${formatDate(contest.date)}`}
-            </HistoryText>
+              marginBottom: 2,
+              display: "flex",
+              flexWrap: "wrap",
+              direction: "row"
+            }}
+          >
+            <Grid item xs={1}>
+              <HistoryText color="#00493A" size="h6">
+                <b>{t("difficulty")}</b>
+              </HistoryText>
+            </Grid>
+            <Grid item xs={1}>
+              <HistoryText color="#00493A" size="h6">
+                <b>{t("mode")}</b>
+              </HistoryText>
+            </Grid>
+            <Grid item xs={2}>
+              <HistoryText color="#00493A" size="h6">
+                <b>{t("correct-answers")}</b>
+              </HistoryText>
+            </Grid>
+            <Grid item xs={1}>
+              <HistoryText color="#00493A" size="h6">
+                <b>{t("points")}</b>
+              </HistoryText>
+            </Grid>
+            <Grid item xs={1}>
+              <HistoryText color="#00493A" size="h6">
+                <b>{t("total-time")}</b>
+              </HistoryText>
+            </Grid>
+            <Grid item xs={2}>
+              <HistoryText color="#00493A" size="h6">
+                <b>{t("number-of-clues")}</b>
+              </HistoryText>
+            </Grid>
+            <Grid item xs={2}>
+              <HistoryText color="#00493A" size="h6">
+                <b>{t("game-date")}</b>
+              </HistoryText>
+            </Grid>
+            <Grid item xs={1}></Grid>
+          </Grid>
+          {contests.map((contest, index) => (
+            <Grid container spacing={2}
+            sx={{
+              marginTop: 2,
+              marginBottom: 2,
+              display: "flex",
+              flexWrap: "wrap",
+              direction: "row"
+            }}
+          >
+            <Grid item xs={1}>
+              <HistoryText color="#00493A" size="h6">
+              {`${contest.difficulty}`}
+              </HistoryText>
+            </Grid>
+            <Grid item xs={1}>
+              <HistoryText color="#00493A" size="h6">
+              {`${contest.mode}`}
+              </HistoryText>
+            </Grid>
+            <Grid item xs={2}>
+              <HistoryText color="#00493A" size="h6">
+              {`${numCorrect[index]}`}
+              </HistoryText>
+            </Grid>
+            <Grid item xs={1}>
+              <HistoryText color="#00493A" size="h6">
+              {`${contest.points}`}
+              </HistoryText>
+            </Grid>
+            <Grid item xs={1}>
+              <HistoryText color="#00493A" size="h6">
+              {`${totalTime[index]}"`}
+              </HistoryText>
+            </Grid>
+            <Grid item xs={2}>
+              <HistoryText color="#00493A" size="h6">
+              {`${totalClues[index]}`}
+              </HistoryText>
+            </Grid>
+            <Grid item xs={2}>
+              <HistoryText color="#00493A" size="h6">
+              {`${formatDate(contest.date)}`}
+              </HistoryText>
+            </Grid>
+            <Grid item xs={2}>
             <LargeButton
-              key={contest._id || index} // Usa el ID del contest como clave si está disponible
-              onClick={() => enterContest(contest._id)} // Acción al hacer clic
-            >
-              {t("details")}
-            </LargeButton>
-          </Container>
-        ))}
+                width = "50%"
+                left = "25%"
+                key={contest._id || index} // Usa el ID del contest como clave si está disponible
+                onClick={() => enterContest(contest._id)} // Acción al hacer clic
+              >
+                {t("details")}
+              </LargeButton>
+            </Grid>
+          </Grid>
+          ))}
+        </Container>
       </Container>
     </div>
   );

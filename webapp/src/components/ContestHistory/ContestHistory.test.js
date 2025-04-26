@@ -38,7 +38,7 @@ const expectedTexts = {
   wrongAnswers: 'Respuestas mostradas: Madrid, Londres, Berlín, Roma',
   correctAnswer: 'Respuesta correcta: París',
   correct: 'Acertada: ✅',
-  time: 'Tiempo en responder: 15 segundos',
+  time: 'Tiempo en responder: 15"',
   clues: 'Número de pistas usadas: 1',
   date: /Fecha de generación de la pregunta: 01\/04\/2025/,
 };

@@ -60,7 +60,7 @@ const Home = () => {
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
       <CustomH1 size="h6">
-          {t("ranking")}
+          {t("ranking-home")}
         </CustomH1>
         <LargeButton onClick={enterRanking}>
           {t("ranking")}
