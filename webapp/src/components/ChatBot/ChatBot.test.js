@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { version } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import ChatBot from './ChatBot';
@@ -51,6 +51,7 @@ describe('ChatBot Component', () => {
           resCorr: mockRespuestaCorrecta,
           language: "es",
           mode: undefined,
+          version: "chat",
         }
       );
     });

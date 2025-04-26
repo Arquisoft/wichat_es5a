@@ -21,6 +21,7 @@ const ChatBot = ({respuestaCorrecta, mode,language}) => {
                 mode: mode,
                 resCorr: respuestaCorrecta,
                 language: language || "es",
+                version: 'chat',
             });
 
             const llmResponse = { 
