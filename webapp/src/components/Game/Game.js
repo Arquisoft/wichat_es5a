@@ -227,6 +227,7 @@ const Juego = () => {
   const timesUp = () => {
     checkFinished(false);
     cambiarColorBotones();
+    setStreak(0);
   }
 
   //Función que cambia el color de un solo boton (acierto)
