@@ -14,7 +14,6 @@ import Game from "../components/Game/Game";
 import History from "../components/History/History";
 import GameMode from "../components/GameMode/GameMode";
 import ContestHistory from "../components/ContestHistory/ContestHistory";
-import HistoryUser from "../components/HistoryUser/HistoryUser";
 import Ranking from "../components/Ranking/Ranking";
 
 /*
@@ -89,14 +88,6 @@ const router = createBrowserRouter([
         element:
             <PrivateRoute>
                 <History />
-            </PrivateRoute>
-
-    },
-    {
-        path: "/history/:username",
-        element:
-            <PrivateRoute>
-                <HistoryUser />
             </PrivateRoute>
 
     },

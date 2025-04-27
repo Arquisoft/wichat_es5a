@@ -23,7 +23,11 @@ const Ranking = () => {
     }
 
     const enterHistory = (username) => {
-        navigate('/history/' + username);
+        navigate('/history', {
+            state: {
+              user: username,
+            }
+          });
     }
 
     // Se ejecuta al cargar el componente

@@ -41,7 +41,11 @@ const Profile = () => {
   }, [token]);
 
   const enterHistory = () => {
-    navigate('/history/' + profileData.username);
+    navigate('/history', {
+      state: {
+        user: profileData.username,
+      }
+    });
   }
 
   const exitProfile = () => {
