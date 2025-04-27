@@ -80,7 +80,7 @@ describe('Ranking Component', () => {
     });
 
     fireEvent.click(screen.getAllByText('Historial')[0]); // Haz clic en el botón "Historial" del primer usuario
-    expect(mockNavigate).toHaveBeenCalledWith('/history/user1');
+    expect(mockNavigate).toHaveBeenCalledWith('/history', {"state": {"user": "user1"}});
   });
 
   it('should navigate to the home page when "Salir" is clicked', () => {
