@@ -79,6 +79,8 @@ i18n.use(initReactI18next).init({
                 "ranking-home": "¿Cómo de alto puedes llegar?",
                 "ranking": "Clasificación",
                 "user-history": "Histórico del usuario",
+                "flag": "Bandera",
+                "city": "Ciudad",
                 "errors": {//Errores para el adduser
                     "usernameTaken": "El nombre de usuario ya está en uso",
                     "usernameTooShort": "El nombre de usuario debe tener al menos 4 caracteres",
@@ -189,6 +191,8 @@ i18n.use(initReactI18next).init({
                 "ranking-home": "How high can you go?",
                 "ranking": "Ranking",
                 "user-history": "User history of",
+                "flag": "Flag",
+                "city": "city",
                 "errors": {//Errors for adduser
                     "usernameTaken": "The username is already taken",
                     "usernameTooShort": "The username must be at least 4 characters long",

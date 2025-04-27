@@ -95,7 +95,6 @@ const History = () => {
 
     getHistory();
   }, [apiEndpoint, user]);
-
   const renderContestRow = (contest, index) => (
     <Grid container spacing={2}
       key={contest._id || index}
@@ -107,17 +106,17 @@ const History = () => {
         direction: "row"
       }}
     >
-      <Grid item xs={1}>
-        <HistoryText color="#00493A" size="h6">
-          {contest.difficulty}
-        </HistoryText>
-      </Grid>
-      <Grid item xs={1}>
-        <HistoryText color="#00493A" size="h6">
-          {contest.mode}
-        </HistoryText>
-      </Grid>
       <Grid item xs={2}>
+        <HistoryText color="#00493A" size="h6">
+          {t(contest.difficulty)}
+        </HistoryText>
+      </Grid>
+      <Grid item xs={1}>
+        <HistoryText color="#00493A" size="h6">
+          {t(contest.mode)}
+        </HistoryText>
+      </Grid>
+      <Grid item xs={1.5}>
         <HistoryText color="#00493A" size="h6">
           {numCorrect[index]}
         </HistoryText>
@@ -137,7 +136,7 @@ const History = () => {
           {totalClues[index]}
         </HistoryText>
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={1.5}>
         <HistoryText color="#00493A" size="h6">
           {formatDate(contest.date)}
         </HistoryText>

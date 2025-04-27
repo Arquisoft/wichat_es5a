@@ -5,13 +5,13 @@ import HistoryText from '../ReactComponents/HistoryText';
 const HistoryTableHeader = ({ t }) => {
   // Configuración de las columnas
   const columns = [
-    { key: 'difficulty', xs: 1 },
+    { key: 'difficulty', xs: 2 },
     { key: 'mode', xs: 1 },
-    { key: 'correct-answers', xs: 2 },
+    { key: 'correct-answers', xs: 1.5 },
     { key: 'points', xs: 1 },
     { key: 'total-time', xs: 1 },
     { key: 'number-of-clues', xs: 2 },
-    { key: 'game-date', xs: 2 },
+    { key: 'game-date', xs: 1.5 },
   ];
 
   return (
