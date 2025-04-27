@@ -142,4 +142,37 @@ describe('User Service', () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ status: 'OK' });
   });
+
+  it('should update user points and add contest ID on POST /savegame', async () => {
+    // Crear un usuario de prueba
+    const user = new User({
+      username: validUser.username,
+      email: validUser.email,
+      password: await bcrypt.hash(validUser.password, 10),
+      points: 100,
+      contests: [],
+    });
+    await user.save();
+
+    // Datos de prueba para la solicitud
+    const saveGamePayload = {
+      username: validUser.username,
+      points: 50,
+      id: new mongoose.Types.ObjectId().toString(), // ID del concurso
+    };
+
+    // Realizar la solicitud POST a /savegame
+    const response = await request(app).post('/savegame').send(saveGamePayload);
+
+    // Verificar que la respuesta sea correcta
+    expect(response.status).toBe(200);
+
+    // Verificar que los puntos del usuario se hayan actualizado
+    const updatedUser = await User.findOne({ username: validUser.username });
+    expect(updatedUser).not.toBeNull();
+    expect(updatedUser.points).toBe(150); // 100 puntos iniciales + 50 puntos nuevos
+
+    // Verificar que el ID del concurso se haya agregado a la lista de concursos
+    expect(updatedUser.contests).toContain(saveGamePayload.id);
+  });
 });
