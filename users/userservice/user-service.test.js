@@ -183,4 +183,88 @@ describe('User Service', () => {
     expect(updatedUser.contests.map(String)).toContain(saveGamePayload.id);
   });
 
+  it('should update an existing user on PUT /profile/edit/:username', async () => {
+    // Crear un usuario inicial en la base de datos
+    const user = new User({
+      username: validUser.username,
+      email: validUser.email,
+      password: await bcrypt.hash(validUser.password, 10),
+      contests: [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()],
+    });
+    await user.save();
+
+    const updatedData = { email: 'updated@example.com', username: 'updateduser' };
+    const response = await request(app)
+      .put(`/profile/edit/${user.username}`)
+      .send(updatedData);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message', 'Perfil actualizado exitosamente.');
+
+    const userInDb = await User.findOne({ username: updatedData.username });
+    expect(userInDb).not.toBeNull();
+    expect(userInDb.email).toBe(updatedData.email);
+    expect(userInDb.username).toBe(updatedData.username);
+  });
+
+  it('should return 404 if the user to update is not found', async () => {
+    const updatedData = { email: 'updated@example.com', username: 'nonexistentuser' };
+    const response = await request(app)
+        .put(`/profile/edit/${updatedData.username}`)
+        .send(updatedData);
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty('error', 'Usuario no encontrado.');
+  });
+
+  it('should return 400 if trying to update with an already existing email', async () => {
+    const user1 = new User(validUser);
+    await user1.save();
+    const user2 = new User({ ...validUser, username: 'existinguser', email: 'existing@example.com' });
+    await user2.save();
+
+    const updatedData = { email: 'existing@example.com', username: 'newuser'};
+    const response = await request(app)
+        .put(`/profile/edit/${user1.username}`)
+        .send(updatedData);
+
+    expect(response.status).toBe(409);
+    expect(response.body).toHaveProperty('error', 'El correo electrónico ya está en uso.');
+  });
+
+  it('should allow updating only the email', async () => {
+    const initialUser = new User(validUser);
+    await initialUser.save();
+
+    const updatedData = { email: 'onlyemailupdated@example.com', username: initialUser.username };
+    const response = await request(app)
+      .put(`/profile/edit/${initialUser.username}`)
+      .send(updatedData);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message', 'Perfil actualizado exitosamente.');
+
+    const userInDb = await User.findOne({ username: validUser.username });
+    expect(userInDb).not.toBeNull();
+    expect(userInDb.email).toBe(updatedData.email);
+    expect(userInDb.username).toBe(validUser.username); // El username no debería cambiar
+  });
+
+  it('should allow updating only the username', async () => {
+    const initialUser = new User(validUser);
+    await initialUser.save();
+
+    const updatedData = { email: initialUser.email, username: 'onlyusernameupdated' };
+    const response = await request(app)
+      .put(`/profile/edit/${validUser.username}`)
+      .send(updatedData);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message', 'Perfil actualizado exitosamente.');
+
+    const userInDb = await User.findOne({ username: updatedData.username });
+    expect(userInDb).not.toBeNull();
+    expect(userInDb.email).toBe(validUser.email); // El email no debería cambiar
+  });
+
 });
