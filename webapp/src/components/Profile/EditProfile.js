@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import NavBar from '../NavBar/NavBar';
 import { Container, Typography, Button, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
