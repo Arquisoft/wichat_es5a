@@ -124,7 +124,11 @@ app.put('/profile/edit/:username', async (req, res) => {
       return res.status(400).json({ error: "Formato de email inválido" });
     }
 
-    const result = await updateUserProfile(currUsername, newUsername, newEmail);
+    const result = await updateUserProfile(
+      currUsername.toString(), 
+      newUsername.toString(), 
+      newEmail.toString()
+    );
     res.json(result);
 
   } catch (error) {
