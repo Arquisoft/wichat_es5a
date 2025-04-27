@@ -1,12 +1,8 @@
 import React from 'react';
-import Container from '@mui/material/Container';
 import { useNavigate, useParams } from 'react-router';
-import LargeButton from '../ReactComponents/LargeButton';
-import CustomH1 from '../ReactComponents/CustomH1';
-import NavBar from "../NavBar/NavBar";
 import { useTranslation } from "react-i18next";
-import ContestList from '../ReactComponents/ContestList';
 import useFetchHistory from '../../hooks/useFetchHistory';
+import HistoryBase from '../ReactComponents/HistoryBase';
 
 const HistoryUser = () => {
   const { username } = useParams();
@@ -37,33 +33,17 @@ const HistoryUser = () => {
   };
 
   return (
-    <div>
-      <NavBar />
-      <Container
-        component="main"
-        sx={{
-          marginTop: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <CustomH1>{t("user-history")} {` "${username}"`}</CustomH1>
-        <LargeButton onClick={exitHistory}>
-          {t("exit")}
-        </LargeButton>
-        <ContestList
-          contests={contests}
-          numCorrect={numCorrect}
-          totalTime={totalTime}
-          totalClues={totalClues}
-          formatDate={formatDate}
-          enterContest={enterContest}
-          t={t}
-        />
-      </Container>
-    </div>
+    <HistoryBase
+      title={`${t("user-history")} "${username}"`}
+      contests={contests}
+      totalTime={totalTime}
+      totalClues={totalClues}
+      numCorrect={numCorrect}
+      formatDate={formatDate}
+      enterContest={enterContest}
+      exitAction={exitHistory}
+      t={t}
+    />
   );
 };
 

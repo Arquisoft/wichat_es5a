@@ -1,12 +1,8 @@
 import React from 'react';
-import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
-import LargeButton from '../ReactComponents/LargeButton';
-import CustomH1 from '../ReactComponents/CustomH1';
-import NavBar from "../NavBar/NavBar";
 import { useTranslation } from "react-i18next";
-import ContestList from '../ReactComponents/ContestList';
 import useFetchHistory from '../../hooks/useFetchHistory';
+import HistoryBase from '../ReactComponents/HistoryBase';
 
 const History = () => {
   const navigate = useNavigate();
@@ -36,38 +32,18 @@ const History = () => {
   };
 
   return (
-    <div>
-      <NavBar />
-      <Container
-        component="main"
-        sx={{
-          marginTop: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <CustomH1 size="h5">
-          <span>{t("total-users")}: {extraData.userCount}</span>
-        </CustomH1>
-        <CustomH1 size="h5">
-          <span>{t("questions-generated")}: {extraData.questionCount}</span>
-        </CustomH1>
-        <LargeButton onClick={exitHistory}>
-          {t("exit")}
-        </LargeButton>
-        <ContestList
-          contests={contests}
-          numCorrect={numCorrect}
-          totalTime={totalTime}
-          totalClues={totalClues}
-          formatDate={formatDate}
-          enterContest={enterContest}
-          t={t}
-        />
-      </Container>
-    </div>
+    <HistoryBase
+      title={t("history")}
+      extraData={extraData}
+      contests={contests}
+      totalTime={totalTime}
+      totalClues={totalClues}
+      numCorrect={numCorrect}
+      formatDate={formatDate}
+      enterContest={enterContest}
+      exitAction={exitHistory}
+      t={t}
+    />
   );
 };
 
