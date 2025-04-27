@@ -65,7 +65,7 @@ describe('History Service', () => {
   it('should save a game and return success', async () => {
     const response = await request(app).post('/savegame').send(mockRequest);
 
-    verifyResponse(response, 200, { success: true });
+    verifyResponse(response, 200, { success: true, id: response.body.id });
 
     // Verifica que las preguntas y el concurso se hayan guardado
     const questions = await Question.find();
