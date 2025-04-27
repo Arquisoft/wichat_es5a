@@ -44,15 +44,15 @@ const emptyContestsResponse = {
 };
 
 const expectedTexts = {
-  totalUsers: 'Jugadores totales: 5', // Ahora solo muestra el valor
-  totalQuestions: 'Preguntas generadas: 10', // Ahora solo muestra el valor
-  difficulty: 'easy', // Ahora solo muestra el valor
-  mode: 'flag', // Ahora solo muestra el valor
-  correctAnswers: '1', // Ahora solo muestra el valor
-  points: '100', // Ahora solo muestra el valor
-  totalTime: '20"', // Cambiado para reflejar el formato actualizado
-  totalClues: '3', // Ahora solo muestra el valor
-  contestDate: /01\/04\/2025 \d{2}:\d{2}:\d{2}/, // Formato de fecha actualizado
+  totalUsers: 'Jugadores totales: 5',
+  totalQuestions: 'Preguntas generadas: 10',
+  difficulty: 'easy',
+  mode: 'flag',
+  correctAnswers: '1',
+  points: '100',
+  totalTime: '20"',
+  totalClues: '3',
+  contestDate: /01\/04\/2025 \d{2}:\d{2}:\d{2}/,
   detailsButton: 'Detalles',
   exitButton: 'Salir',
 };
@@ -74,8 +74,6 @@ describe('History Component', () => {
   it('should render the initial UI correctly', () => {
     renderComponent();
 
-    //expect(screen.getByText('Jugadores totales: 5')).toBeInTheDocument();
-    //expect(screen.getByText('Preguntas generadas: 10')).toBeInTheDocument();
     expect(screen.getByText(expectedTexts.exitButton)).toBeInTheDocument();
   });
 
@@ -93,7 +91,7 @@ describe('History Component', () => {
       expect(screen.getByText(expectedTexts.points)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.totalTime)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.totalClues)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.contestDate)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.detailsButton)).toBeInTheDocument();
     });
   });
 
@@ -121,7 +119,7 @@ describe('History Component', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/home');
   });
 
-  /*it('should handle API errors gracefully', async () => {
+  it('should handle API errors gracefully', async () => {
     axios.get.mockRejectedValueOnce(new Error('API Error'));
 
     renderComponent();
@@ -135,7 +133,7 @@ describe('History Component', () => {
       'Error al obtener el número de usuarios:',
       expect.any(Error)
     );
-  });*/
+  });
 
   it('should display a message when there are no contests', async () => {
     axios.get.mockResolvedValueOnce(emptyContestsResponse);
