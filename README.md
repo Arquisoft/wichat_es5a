@@ -32,3 +32,30 @@ This is a base project for the Software Architecture course in 2024/2025. It is 
 - **Webapp**. React web application that uses the gateway service to allow basic login and new user features.
 
 Both the user and auth service share a Mongo database that is accessed with mongoose.
+
+## Características del Juego 🎮
+
+- **Modos de Juego**: Elige entre diferentes modos como "Ciudades", "Banderas", "Fútbol", "Música" o "Comida".
+- **Dificultades**: Selecciona entre "Fácil", "Media", "Difícil" o "Supervivencia".
+- **Interacción con el Asistente**: Usa pistas o chatea con el asistente para obtener ayuda (con penalización de puntos).
+- **Racha de Respuestas Correctas**: Gana puntos extra al acertar varias preguntas consecutivas.
+- **Estadísticas**: Consulta tu historial de partidas y estadísticas.
+
+## Guía para Empezar 🚀
+
+1. **Accede al Juego**: Haz clic en el enlace [Acceder a wichat](http://48.209.10.166).
+2. **Regístrate o Inicia Sesión**:
+   - Si eres nuevo, regístrate con un nombre de usuario, correo electrónico y contraseña.
+   - Si ya tienes una cuenta, inicia sesión con tus credenciales.
+3. **Selecciona el Modo y la Dificultad**:
+   - Elige un modo de juego y una dificultad en la pantalla de selección.
+4. **Empieza a Jugar**:
+   - Responde las preguntas seleccionando la opción correcta.
+   - Usa pistas o el chat si necesitas ayuda.
+5. **Consulta tus Resultados**:
+   - Al finalizar la partida, revisa tu puntuación y estadísticas.
+
+## Enlaces Útiles 🔗
+
+- **Juego**: [Acceder a wichat](http://48.209.10.166)
+- **Documentación**: [Documentación del Proyecto](https://arquisoft.github.io/wichat_es5a/)
