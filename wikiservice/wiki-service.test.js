@@ -1,77 +1,136 @@
 const request = require('supertest');
-const mongoose = require('mongoose');
-const app = require('./wiki-service');
-const Question = require('./question-model');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const mongoose = require('mongoose');
+const Question = require('./question-model'); // Modelo de preguntas
 const WikiQuery = require('./wiki-query');
 
-const wikiQuery = new WikiQuery(); // Crear una instancia de WikiQuery
+// Mock the WikiQuery class to avoid actual API calls during tests
+jest.mock('./wiki-query');
 
 let mongoServer;
-
-jest.setTimeout(30000); 
+let server;
 
 beforeAll(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
-
-    await mongoose.disconnect();
-    await mongoose.connect(mongoUri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
+  // Inicia MongoMemoryServer
+  mongoServer = await MongoMemoryServer.create();
+  const mongoUri = mongoServer.getUri();
+  process.env.MONGODB_URI = mongoUri;
+  
+  // Conectar a la base de datos antes de importar la app
+  await mongoose.connect(mongoUri);
+  
+  // Mock implementation for SPARQLQuery
+  WikiQuery.prototype.SPARQLQuery = jest.fn().mockResolvedValue({
+    results: {
+      bindings: [
+        { 
+          image: { value: 'http://example.com/image1.jpg' }, 
+          answerLabel: { value: 'Answer1' } 
+        },
+        { 
+          image: { value: 'http://example.com/image2.jpg' }, 
+          answerLabel: { value: 'Answer2' } 
+        },
+        { 
+          image: { value: 'http://example.com/image3.jpg' }, 
+          answerLabel: { value: 'Answer3' } 
+        },
+        { 
+          image: { value: 'http://example.com/image4.jpg' }, 
+          answerLabel: { value: 'Answer4' } 
+        }
+      ]
+    }
+  });
+  
+  // Import app after setting up mocks and environment
+  server = require('./wiki-service');
 });
 
 afterEach(async () => {
-    await Question.deleteMany(); // Limpiar la base de datos después de cada test
+  await Question.deleteMany({});
+  jest.clearAllMocks();
 });
 
 afterAll(async () => {
-    await mongoose.connection.close();
-    await mongoServer.stop();
-    app.close();
+  await mongoose.connection.close();
+  await server.close();
+  await mongoServer.stop();
 });
 
-describe('GET /health', () => {
-    it('should return status OK', async () => {
-        const response = await request(app).get('/health');
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toEqual({ status: 'OK' });
-    });
-});
+describe('Wiki Service', () => {
+  it('should return health status OK', async () => {
+    const response = await request(server).get('/health');
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: 'OK' });
+  });
 
-describe('POST /questions/:kind', () => {
+  describe('POST /questions/:kind', () => {
     const endpoints = [
-        { kind: 'flag', question: '¿De qué país es esta bandera?' },
-        { kind: 'city', question: '¿Qué ciudad es esta?' },
-        { kind: 'football', question: '¿Qué equipo de fútbol es este?' },
-        { kind: 'music', question: '¿Qué grupo es?' },
-        { kind: 'food', question: '¿Qué plato de comida es?' },
+      { kind: 'flag', questionText: 'question-flag' },
+      { kind: 'city', questionText: 'question-city' },
+      { kind: 'football', questionText: 'question-football' },
+      { kind: 'album', questionText: 'question-album' },
+      { kind: 'music', questionText: 'question-music' },
+      { kind: 'food', questionText: 'question-food' },
     ];
 
-    endpoints.forEach(({ kind, question }) => {
-        it(`should create a new ${kind} question and return the correct format`, async () => {
-            const response = await request(app)
-                .post(`/questions/${kind}`)
-                .send();
+    endpoints.forEach(({ kind, questionText }) => {
+      it(`should create new ${kind} questions and return them in the correct format`, async () => {
+        const numQuestions = 2;
+        const response = await request(server)
+          .post(`/questions/${kind}`)
+          .send({ language: "es", numQuestions });
 
-            expect(response.statusCode).toBe(200);
-            expect(response.body).toHaveProperty('question', question);
-            expect(response.body).toHaveProperty('image');
-            expect(response.body).toHaveProperty('answer');
-            expect(response.body).toHaveProperty('wrongAnswers');
-            expect(Array.isArray(response.body.wrongAnswers)).toBe(true);
-            expect(response.body.wrongAnswers.length).toBe(3);
+        expect(response.statusCode).toBe(200);
+        // Check if response is an array
+        expect(Array.isArray(response.body)).toBe(true);
+        // Check if the correct number of questions was returned
+        expect(response.body.length).toBe(numQuestions);
+        
+        // Check each question's structure
+        response.body.forEach(question => {
+          expect(question).toHaveProperty('question', questionText);
+          expect(question).toHaveProperty('image');
+          expect(question).toHaveProperty('answer');
+          expect(question).toHaveProperty('wrongAnswers');
+          expect(Array.isArray(question.wrongAnswers)).toBe(true);
+          expect(question.wrongAnswers.length).toBe(3);
         });
+      });
 
-        it(`should save the ${kind} question in the database`, async () => {
-            const response = await request(app)
-                .post(`/questions/${kind}`)
-                .send();
+      it(`should save the ${kind} questions in the database`, async () => {
+        const numQuestions = 2;
+        const response = await request(server)
+          .post(`/questions/${kind}`)
+          .send({ language: "es", numQuestions });
 
-            const savedQuestion = await Question.findOne({ question });
-            expect(savedQuestion).toBeTruthy();
-            expect(savedQuestion.answer).toBe(response.body.answer);
-        });
+        // Check if questions were saved in the database
+        const savedQuestions = await Question.find({ question: questionText });
+        expect(savedQuestions.length).toBe(numQuestions);
+        
+        // Check if one of the saved questions matches the response
+        const firstResponseQuestion = response.body[0];
+        const matchingQuestion = savedQuestions.find(q => 
+          q.answer === firstResponseQuestion.answer &&
+          q.image === firstResponseQuestion.image
+        );
+        
+        expect(matchingQuestion).toBeTruthy();
+        expect(matchingQuestion.question).toBe(firstResponseQuestion.question);
+        expect(matchingQuestion.wrongAnswers.length).toBe(3);
+      });
     });
+
+    it('should handle errors properly', async () => {
+      // Mock implementation to simulate an error
+      WikiQuery.prototype.SPARQLQuery.mockRejectedValueOnce(new Error('SPARQL query failed'));
+      
+      const response = await request(server)
+        .post('/questions/flag')
+        .send({ language: "es", numQuestions: 1 });
+      
+      expect(response.statusCode).toBe(500);
+    });
+  });
 });
