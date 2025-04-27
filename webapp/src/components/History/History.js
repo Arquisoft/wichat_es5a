@@ -12,7 +12,7 @@ import HistoryText from '../ReactComponents/HistoryText';
 
 const History = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation(); 
 
   const { user } = location.state || { user: null };
 
