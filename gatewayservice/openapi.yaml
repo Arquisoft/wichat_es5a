@@ -123,8 +123,7 @@ paths:
                 password:
                   type: string
                   description: User password.
-                  example: pass
-            
+                  example: pass 
       responses:
         '200':
           description: Login successful. Returns user token, username, and creation date.
@@ -178,6 +177,14 @@ paths:
             schema:
               type: object
               properties:
+                mode:
+                  type: string
+                  description: Mode of the game.
+                  example: 'flag'
+                difficulty:
+                  type: string
+                  description: Difficulty of the game.
+                  example: 'easy'
                 arCorrect:
                   type: array
                   description: Array which contains if the answer was answered correctly or not.
@@ -206,6 +213,10 @@ paths:
                   items:
                     type: integer
                   example: [0, 1, 0, 2, 0]
+                username:
+                  type: string
+                  description: Username of the user who played the game.
+                  example: student
       responses:
         '200':
           description: Game saved successfully. Returns true, stating that the operation was successful.
@@ -218,6 +229,10 @@ paths:
                     type: boolean
                     description: Success status.
                     example: true
+                  id:
+                    type: string
+                    description: ID of the saved game.
+                    example: 65f756db3fa22d227a4b7c7d
         '500':
           description: Internal server error.
           content:
@@ -259,14 +274,14 @@ paths:
                           type: string
                           description: Contest ID.
                           example: 65f756db3fa22d227a4b7c7d
+                        difficulty:
+                          type: string
+                          description: Difficulty of the game.
+                          example: 'easy'
                         mode:
                           type: string
                           description: Mode of the game.
-                          example: 'Normal'
-                        typeOfQuestions:
-                          type: string
-                          description: Type of the questions
-                          example: 'Flags'
+                          example: 'flag'
                         rightAnswers:
                           type: array
                           description: Array which contains if the answer was answered correctly or not for every question included in the game.
@@ -310,7 +325,7 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-  /getquestions/{id}:
+  /getquestions/:id:
     get:
       summary: Retrieves all questions from a specific contest and the information related to them.
       operationId: getQuestions
@@ -343,7 +358,7 @@ paths:
                         question:
                           type: string
                           description: Question text.
-                          example: 'What is the capital of Spain?'
+                          example: 'question-flag'
                         image:
                           type: string
                           description: Image URL.
@@ -482,6 +497,14 @@ paths:
                   type: string
                   description: The correct answer for which the hint should be generated.
                   example: "Argentina"
+                language:
+                  type: string
+                  description: The language in which the hint should be generated.
+                  example: "es"
+                version:
+                  type: string
+                  description: The version of the LLM to be used.
+                  example: "pregunta"
       responses:
         '200':
           description: Hint generated successfully by the LLM.
@@ -529,6 +552,21 @@ paths:
           description: >
             The type of question to retrieve. Possible values include "city", "flag", "music", "food" or "football".
           example: flag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language:
+                  type: string
+                  description: The language in which the question should be generated.
+                  example: es
+                numQuestions:
+                  type: number
+                  description: The number of questions to retrieve.
+                  example: 5
       responses:
         '200':
           description: Question retrieved successfully.
@@ -538,23 +576,30 @@ paths:
                 type: object
                 properties:
                   question:
-                    type: string
-                    description: The question text.
-                    example: "¿Qué país tiene esta bandera?"
-                  image:
-                    type: string
-                    description: URL of the image associated with the question.
-                    example: "https://example.com/flag.jpg"
-                  answer:
-                    type: string
-                    description: The correct answer to the question.
-                    example: "Argentina"
-                  wrongAnswers:
-                    type: array
-                    items:
-                      type: string
-                    description: A list of incorrect answers.
-                    example: ["Brasil", "Chile", "Uruguay"]
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: Question ID.
+                        example: 67e4a171206740a957c5988e
+                      question:
+                        type: string
+                        description: The question text.
+                        example: "¿Qué país tiene esta bandera?"
+                      image:
+                        type: string
+                        description: URL of the image associated with the question.
+                        example: "https://example.com/flag.jpg"
+                      answer:
+                        type: string
+                        description: The correct answer to the question.
+                        example: "Argentina"
+                      wrongAnswers:
+                        type: array
+                        items:
+                          type: string
+                        description: A list of incorrect answers.
+                        example: ["Brasil", "Chile", "Uruguay"]
         '400':
           description: Bad request. The query could not be processed.
           content:
@@ -577,7 +622,7 @@ paths:
                     type: string
                     description: Error message.
                     example: "Internal server error"
-  /getUserHistory/:username:
+  /gethistory/:username:
     get:
       summary: Retrieves the contest history of a specific user.
       operationId: getUserHistory
@@ -599,10 +644,54 @@ paths:
                 properties:
                   contests:
                     type: array
-                    description: List of contest IDs associated with the user.
+                    description: List of contests associated with the user.
                     items:
-                      type: string
-                    example: ['65f756db3fa22d227a4b7c7d', '65f756db3fa22d227a4b7c7e']
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: Contest ID.
+                          example: 65f756db3fa22d227a4b7c7d
+                        difficulty:
+                          type: string
+                          description: Difficulty of the game.
+                          example: 'easy'
+                        mode:
+                          type: string
+                          description: Mode of the game.
+                          example: 'flag'
+                        rightAnswers:
+                          type: array
+                          description: Array which contains if the answer was answered correctly or not for every question included in the game.
+                          items:
+                            type: boolean
+                          example: [true, false, true, true, false]
+                        points:
+                          type: integer
+                          description: Points gained in the game.
+                          example: 500
+                        preguntas:
+                          type: array
+                          description: Array which contains the ids of the questions included in the game.
+                          items:
+                            type: string
+                          example: ['67e4a171206740a957c5988e','67e4a171206740a957c59890','67e4a171206740a957c59892']
+                        tiempos:
+                          type: array
+                          description: Array which contains the time taken to answer each question.
+                          items:
+                            type: integer
+                          example: [2, 4, 7, 1, 3]
+                        pistas:
+                          type: array
+                          description: Array which contains the number of hints used in each question.
+                          items:
+                            type: integer
+                          example: [0, 1, 0, 2, 0]
+                        date:
+                          type: string
+                          description: Date of the contest.
+                          example: '2025-03-27T00:53:05.578+00:00'
         '404':
           description: User not found.
           content:
@@ -625,7 +714,6 @@ paths:
                     type: string
                     description: Error message.
                     example: Internal server error
-
   /getranking:
     get:
       summary: Retrieves the ranking of all users sorted by points.
