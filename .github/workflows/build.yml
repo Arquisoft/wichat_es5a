@@ -8,6 +8,11 @@ on:
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:6
+        ports:
+          - 27017:27017
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -16,6 +21,8 @@ jobs:
     - run: npm --prefix users/authservice ci
     - run: npm --prefix users/userservice ci
     - run: npm --prefix llmservice ci
+    - run: npm --prefix wikiservice ci
+    - run: npm --prefix historyservice ci
     - run: npm --prefix gatewayservice ci
     - run: npm --prefix wikiservice ci
     - run: npm --prefix historyservice ci
@@ -23,6 +30,8 @@ jobs:
     - run: npm --prefix users/authservice test -- --coverage
     - run: npm --prefix users/userservice test -- --coverage
     - run: npm --prefix llmservice test -- --coverage
+    - run: npm --prefix wikiservice test -- --coverage
+    - run: npm --prefix historyservice test -- --coverage
     - run: npm --prefix gatewayservice test -- --coverage
     - run: npm --prefix webapp test -- --coverage
     - name: Analyze with SonarQube
