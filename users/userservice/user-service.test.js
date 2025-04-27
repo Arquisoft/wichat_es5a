@@ -7,6 +7,8 @@ const mongoose = require('mongoose'); // Asegúrate de importar mongoose
 let mongoServer;
 let app;
 
+jest.setTimeout(10000);
+
 const sendAddUserRequest = (payload) => request(app).post('/adduser').send(payload);
 
 const validUser = {
@@ -21,6 +23,10 @@ beforeAll(async () => {
   const mongoUri = mongoServer.getUri();
   process.env.MONGODB_URI = mongoUri;
   app = require('./user-service');
+});
+
+afterAll(async () => {
+  await User.deleteMany();
 });
 
 afterAll(async () => {
@@ -166,6 +172,7 @@ describe('User Service', () => {
 
     // Verificar que la respuesta sea correcta
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message', 'Game saved successfully');
 
     // Verificar que los puntos del usuario se hayan actualizado
     const updatedUser = await User.findOne({ username: validUser.username });
@@ -173,6 +180,7 @@ describe('User Service', () => {
     expect(updatedUser.points).toBe(150); // 100 puntos iniciales + 50 puntos nuevos
 
     // Verificar que el ID del concurso se haya agregado a la lista de concursos
-    expect(updatedUser.contests).toContain(saveGamePayload.id);
+    expect(updatedUser.contests.map(String)).toContain(saveGamePayload.id);
   });
+
 });

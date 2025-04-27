@@ -92,6 +92,9 @@ app.post('/savegame', async (req, res) => {
     user.contests.push(contestId);
 
     await user.save(); // Save the updated user data
+
+    res.json({message: 'Game saved successfully'});
+
     
   } catch (error) {
     console.error('Error fetching profile:', error);
