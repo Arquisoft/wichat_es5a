@@ -26,10 +26,8 @@ app.get('/health', (req, res) => {
         let idPreguntas = []
         let arrayPreg = req.body.arPreg;
         if (req.body.difficulty === "survival") {
-            console.log("req.body.arCorrect: ", req.body.arCorrect)
             const lastCorrectIndex = req.body.arCorrect.indexOf(false); // Encuentra el índice de la última respuesta correcta
             arrayPreg = req.body.arPreg.slice(0, lastCorrectIndex + 1); // Trunca las preguntas hasta ese índice
-            console.log("arrayPreg: ", arrayPreg)
         }
         for (const preg of arrayPreg) {
             const questionData = {

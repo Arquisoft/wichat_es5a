@@ -46,8 +46,8 @@ const emptyContestsResponse = {
 const expectedTexts = {
   totalUsers: 'Jugadores totales: 5',
   totalQuestions: 'Preguntas generadas: 10',
-  difficulty: 'easy',
-  mode: 'flag',
+  difficulty: 'Fácil',
+  mode: 'Bandera',
   correctAnswers: '1',
   points: '100',
   totalTime: '20"',
