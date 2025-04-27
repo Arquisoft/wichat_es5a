@@ -63,6 +63,7 @@ const GameMode = () => {
               <Button
                 className={selectedMode === mode.value ? "selected" : "unselected"}
                 onClick={() => setSelectedMode(mode.value)}
+                data-testid={mode.value}
               >
                 {t(mode.label)}
               </Button>
@@ -76,9 +77,10 @@ const GameMode = () => {
         <Grid container spacing={2} justifyContent="center">
           {difficulties.map((level) => (
             <Grid item key={level}>
-              <Button
-                className={selectedDifficulty === level ? "selected" : "unselected"}
+              <Button 
+                className={selectedDifficulty === level ? "selected" : "unselected"} 
                 onClick={() => setSelectedDifficulty(level)}
+                data-testid={level}
               >
                 {t(level)}
               </Button>
