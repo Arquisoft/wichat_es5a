@@ -138,7 +138,8 @@ const Juego = () => {
       setFirstRender(true);
       let num = 5; // default (Fácil)
       if (difficulty === "medium") num = 10;
-      else if (difficulty === "difficult" || difficulty === "survival") num = 20;
+      else if (difficulty === "difficult") num = 20;
+      else if(difficulty === "survival") num = 25;
       crearPreguntas(num);
     }
   }, [firstRender, crearPreguntas, difficulty, mode, t]);
@@ -190,9 +191,7 @@ const Juego = () => {
   
   //Comprueba si la partida se ha terminado
   const checkFinished = (correct) => {
-    if(difficulty === "survival") {
-      if(!correct || numPreguntaActual >= numPreguntas * 1.5) setFinished(true);
-    } else if(numPreguntaActual >= numPreguntas) {
+    if((difficulty === "survival" && !correct) || numPreguntaActual >= numPreguntas) {
       setFinished(true);
     }
   };
@@ -227,6 +226,7 @@ const Juego = () => {
   const timesUp = () => {
     checkFinished(false);
     cambiarColorBotones();
+    setStreak(0);
   }
 
   //Función que cambia el color de un solo boton (acierto)

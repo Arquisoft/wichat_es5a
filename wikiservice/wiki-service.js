@@ -58,7 +58,7 @@ const queries = [{
       '       wdt:P18 ?image;' +
       '       wdt:P495 ?country.' +
       'FILTER(?country IN (wd:Q29, wd:Q38, wd:Q142))' +
-      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en". }} LIMIT '
+      'SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es,en,it". }} LIMIT '
 }];
 
 function getQuery(kind) {
@@ -94,13 +94,13 @@ app.post("/questions/:kind", async (req, res) => {
       let wrongAnswers = [];
       let image = results.results.bindings[random].image.value;
       let answer = results.results.bindings[random].answerLabel.value;
-      if(!answers.includes(answer.toLowerCase())) {
+      if(!answers.includes(answer.toLowerCase()) && !/^Q\d+$/.test(answer)) {
         //Adds wrong answer until there are 3 of them
         while (wrongAnswers.length < 3) {
           let randomIndex = Math.floor(Math.random() * size);
           let wrongAnswer = results.results.bindings[randomIndex].answerLabel.value;
           //Adds the anwer if it was not added previously and is wrong
-          if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer)) {
+          if (wrongAnswer !== answer && !wrongAnswers.includes(wrongAnswer) && !/^Q\d+$/.test(wrongAnswer)) {
             wrongAnswers.push(wrongAnswer);
           }
         }
