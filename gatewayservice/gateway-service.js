@@ -16,7 +16,8 @@ const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
 
-const allowedOrigins = ['http://localhost:8080', 'http://48.209.10.166:8080'];
+const allowedOrigins = ['http://localhost:8080', 'http://48.209.10.166:8080',
+  'http://localhost', 'http://48.209.10.166'];
 
 app.use(cors({
   origin: function (origin, callback) {
