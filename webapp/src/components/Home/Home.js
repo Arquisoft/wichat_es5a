@@ -27,6 +27,10 @@ const Home = () => {
     navigate('/history');
   }
 
+  const enterRanking = () => {
+    navigate('/ranking');
+  }
+
   const logOut = () => {
     localStorage.removeItem('token');
     navigate('/login');
@@ -52,6 +56,14 @@ const Home = () => {
         </CustomH1>
         <LargeButton onClick={enterProfile}>
           {t("profile")}
+        </LargeButton>
+      </Box>
+      <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
+      <CustomH1 size="h6">
+          {t("ranking-home")}
+        </CustomH1>
+        <LargeButton onClick={enterRanking}>
+          {t("ranking")}
         </LargeButton>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" mt={2}>

@@ -22,6 +22,7 @@ describe('Home Component', () => {
     { buttonText: 'Perfil', expectedPath: '/profile' },
     { buttonText: 'Histórico', expectedPath: '/history' },
     { buttonText: 'Créditos', expectedPath: '/credits' },
+    { buttonText: 'Clasificación', expectedPath: '/ranking' }, // Nuevo caso para el botón Ranking
   ];
 
   testCases.forEach(({ buttonText, expectedPath }) => {
@@ -31,16 +32,15 @@ describe('Home Component', () => {
           <Home />
         </MemoryRouter>
       );
-      const buttons = screen.getAllByText(buttonText);
-      // Hacer clic en el botón
-      fireEvent.click(buttons.length === 1 ? buttons[0] : buttons[1]);
+      const button = screen.getByText(buttonText);
+      fireEvent.click(button);
 
       // Verificar que se navega a la ruta esperada
       expect(mockNavigate).toHaveBeenCalledWith(expectedPath);
     });
   });
 
-  it('should navigate to /login and remove token when "Salir de sesión" is clicked', () => {
+  it('should navigate to /login and remove token when "Cerrar sesión" is clicked', () => {
     // Simular que hay un token en localStorage
     localStorage.setItem('token', 'mockToken');
 
@@ -50,7 +50,7 @@ describe('Home Component', () => {
       </MemoryRouter>
     );
 
-    // Hacer clic en el botón "Salir de sesión"
+    // Hacer clic en el botón "Cerrar sesión"
     fireEvent.click(screen.getByText('Cerrar sesión'));
 
     // Verificar que el token fue eliminado

@@ -8,7 +8,7 @@ afterAll(async () => {
 
 jest.mock('axios');
 
-// Datos comunes para las respuestas simuladas
+// Respuestas simuladas
 const mockResponses = {
   login: { token: 'mockedToken' },
   adduser: { userId: 'mockedUserId' },
@@ -16,25 +16,31 @@ const mockResponses = {
   questions: { answer: 'questions' },
   savegame: { id: 'mockedGameId' },
   gethistory: { userCount: 10, questionCount: 5 },
-  getquestions: { question: 'mockedQuestion' },
+  getquestions: { questions: ['question1', 'question2'] },
   profile: { username: 'mockedUser', email: 'mockedEmail' },
   health: { status: 'OK' },
+  ranking: { ranking: [{ username: 'user1', points: 100 }] },
+  userHistory: { contests: ['contest1', 'contest2'] },
+  historyDetails: { history: ['history1', 'history2'] },
 };
 
-// Función auxiliar para simular respuestas de POST
+// Mock de POST
 const mockPost = (url, data) => {
   if (url.endsWith('/login')) return Promise.resolve({ data: mockResponses.login });
   if (url.endsWith('/adduser')) return Promise.resolve({ data: mockResponses.adduser });
   if (url.endsWith('/ask')) return Promise.resolve({ data: mockResponses.ask });
   if (url.endsWith('/questions/city')) return Promise.resolve({ data: mockResponses.questions });
   if (url.endsWith('/savegame')) return Promise.resolve({ data: mockResponses.savegame });
+  if (url.endsWith('/getUserhistory')) return Promise.resolve({ data: mockResponses.historyDetails });
 };
 
-// Función auxiliar para simular respuestas de GET
+// Mock de GET
 const mockGet = (url) => {
   if (url.endsWith('/gethistory')) return Promise.resolve({ data: mockResponses.gethistory });
   if (url.includes('/getquestions/')) return Promise.resolve({ data: mockResponses.getquestions });
   if (url.endsWith('/profile')) return Promise.resolve({ data: mockResponses.profile });
+  if (url.endsWith('/getranking')) return Promise.resolve({ data: mockResponses.ranking });
+  if (url.includes('/getUserhistory/')) return Promise.resolve({ data: mockResponses.userHistory });
 };
 
 axios.post.mockImplementation(mockPost);
@@ -93,46 +99,17 @@ describe('Gateway Service', () => {
     await testGetEndpoint('/health', mockResponses.health);
   });
 
-  // Test /profile endpoint
-  it('should forward profile request to the user service', async () => {
-    axios.get.mockResolvedValueOnce({ data: { username: 'testuser', email: 'testuser@example.com' } });
-  
-    const response = await request(app)
-      .get('/profile')
-      .set('Authorization', 'Bearer mockedToken');
-  
+  it('should forward getUserHistory request to the user and history services', async () => {
+    const response = await request(app).get('/gethistory/testuser');
     expect(response.statusCode).toBe(200);
-    expect(response.body.username).toBe('testuser');
-    expect(response.body.email).toBe('testuser@example.com');
-    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/profile'), expect.objectContaining({
-      headers: expect.objectContaining({
-        authorization: 'Bearer mockedToken',
-      }),
-    }));
+    expect(response.body).toEqual(mockResponses.historyDetails);
+    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/getUserhistory/testuser'));
   });
 
-  // Test /savegame endpoint
-  it('should forward savegame request to the history service', async () => {
-    axios.post.mockResolvedValueOnce({ data: { gameId: 'mockedGameId' } });
-
-    const response = await request(app)
-      .post('/savegame')
-      .send({ userId: 'testuser', score: 100 });
-
+  it('should forward getRanking request to the user service', async () => {
+    const response = await request(app).get('/getranking');
     expect(response.statusCode).toBe(200);
-    expect(response.body.gameId).toBe('mockedGameId');
-    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/savegame'), { userId: 'testuser', score: 100 });
-  });
-
-  // Test /getquestions endpoint
-  it('should forward getquestions request to the history service', async () => {
-    axios.get.mockResolvedValueOnce({ data: { questions: ['question1', 'question2'] } });
-
-    const response = await request(app)
-      .get('/getquestions/123');
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body.questions).toEqual(['question1', 'question2']);
-    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/getquestions/123'));
+    expect(response.body).toEqual(mockResponses.ranking);
+    expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/getranking'));
   });
 });

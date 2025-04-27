@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router';
 import LargeButton from '../ReactComponents/LargeButton';
@@ -39,6 +39,14 @@ const Profile = () => {
       setError('No se encontró el token.');
     }
   }, [token]);
+
+  const enterHistory = () => {
+    navigate('/history', {
+      state: {
+        user: profileData.username,
+      }
+    });
+  }
 
   const exitProfile = () => {
     navigate('/home');
@@ -88,7 +96,8 @@ const Profile = () => {
         )}
         <Grid container justifyContent="center" className="profile-button">
           <Grid item xs={12} sm={8} md={6}>
-            <LargeButton onClick={exitProfile}>{t("exit")}</LargeButton>
+            <LargeButton marginRight={2} width="30%" onClick={enterHistory}>{t("history")}</LargeButton>
+            <LargeButton width="30%" onClick={exitProfile}>{t("exit")}</LargeButton>
           </Grid>
           <Grid item xs={12} sm={8} md={6}>
             <LargeButton onClick={goToEditProfile}>{t("edit-profile-button")}</LargeButton>

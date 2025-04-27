@@ -24,7 +24,12 @@ app.get('/health', (req, res) => {
   app.post('/savegame', async (req, res) => {
     try {
         let idPreguntas = []
-        for (const preg of req.body.arPreg) {
+        let arrayPreg = req.body.arPreg;
+        if (req.body.difficulty === "survival") {
+            const lastCorrectIndex = req.body.arCorrect.indexOf(false); // Encuentra el índice de la última respuesta correcta
+            arrayPreg = req.body.arPreg.slice(0, lastCorrectIndex + 1); // Trunca las preguntas hasta ese índice
+        }
+        for (const preg of arrayPreg) {
             const questionData = {
                 question: preg.pregunta,
                 image: preg.imagen,
@@ -46,7 +51,7 @@ app.get('/health', (req, res) => {
         }
         const newContest = new Contest(contestData)
         await newContest.save()
-        res.json({ success: true });
+        res.json({ success: true, id: newContest._id });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -56,12 +61,22 @@ app.get('/gethistory', async (req, res) => {
     try {
         const userCount = await User.countDocuments();
         const questionCount = await Question.countDocuments();
-        const contests = await Contest.find();
+        const contests = await Contest.find().sort({ date: -1 })
         res.json({ userCount: userCount, questionCount: questionCount, contests: contests});
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+app.post('/getUserHistory', async (req, res) => {
+    try {
+        const contests = await Contest.find({ _id: { $in: req.body.contestIds } });
+        res.json({ contests: contests });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+);
 
 app.get('/getquestions/:id', async (req, res) => {
     try {

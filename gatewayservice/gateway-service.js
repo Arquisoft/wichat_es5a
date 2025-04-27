@@ -16,7 +16,8 @@ const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
 
-const allowedOrigins = ['http://localhost:8080', 'http://48.209.10.166:8080'];
+const allowedOrigins = ['http://localhost:8080', 'http://48.209.10.166:8080',
+  'http://localhost', 'http://48.209.10.166'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -103,20 +104,20 @@ app.post('/questions/:kind', async (req, res) => {
 
 app.post('/savegame', async (req, res) => {
   try {
+    // Llama al servicio de historial para guardar el juego
     const historyResponse = await axios.post(historyServiceUrl + '/savegame', req.body);
 
-    /*
-    const userResponse = await axios.get(userServiceUrl + '/profile', 
-    {
-      headers: req.headers, // Encabezados, incluyendo Authorization
+    // Llama al servicio de usuario para asociar el historial con el usuario
+    const userResponse = await axios.post(userServiceUrl + '/savegame', {
+      id: historyResponse.data.id,
+      username: req.body.username,
+      points: req.body.points,
     });
-    console.log(userServiceUrl + '/savegame')
-    const userResponse2 = await axios.post(userServiceUrl + '/savegame', { id: historyResponse.data.id, username: userResponse.data.username });
-    */
 
-    res.json(historyResponse.data);
+    res.json(userResponse.data);
   } catch (error) {
-    res.status(error.response.status).json({error: error.response.data.error });
+    console.error('Error en /savegame:', error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Internal Server Error' });
   }
 });
 
@@ -124,6 +125,27 @@ app.get('/gethistory', async (req, res) => {
   try {
     const historyResponse = await axios.get(historyServiceUrl + '/gethistory');
     res.json(historyResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({error: error.response.data.error });
+  }
+});
+
+app.get('/gethistory/:username', async (req, res) => {
+  try {
+    
+    const userResponse = await axios.get(userServiceUrl + '/getUserhistory/' + req.params.username);
+    
+    const historyResponse = await axios.post(historyServiceUrl + '/getUserhistory', {contestIds: userResponse.data.contests});
+    res.json(historyResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({error: error.response.data.error });
+  }
+});
+
+app.get('/getranking', async (req, res) => {
+  try {
+    const userResponse = await axios.get(userServiceUrl + '/getranking');
+    res.json(userResponse.data);
   } catch (error) {
     res.status(error.response.status).json({error: error.response.data.error });
   }

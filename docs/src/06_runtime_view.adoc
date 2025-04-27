@@ -61,7 +61,7 @@ US -> US: Encriptar contraseña
 US -> DB: Guardar usuario en la base de datos
 DB -> US: Confirmación de almacenamiento
 US -> GS: Confirmación de registro
-GS -> Usuario: Mostrar confirmación de registro exitoso
+GS -> Usuario: Redirección a home
 
 ----
 
@@ -87,7 +87,7 @@ DB -> AS: Datos del usuario
 AS -> AS: Comparar contraseña utilizando bcrypt
 alt Contraseña válida
     AS -> GS: Datos del usuario
-    GS -> Usuario: Mostrar confirmación de inicio de sesión
+    GS -> Usuario: Redirección a home
 else Contraseña inválida
     AS -> GS: Devolver el error(credenciales inválidas)
     GS -> Usuario: Mostrar el error de autenticación
@@ -103,25 +103,38 @@ end
 ----
 
 actor Usuario
+participant "Webapp" as W
 participant "GatewayService" as GS
+participant "LLMService" as LLM
+participant "HistoryService" as HS
 participant "WikiService" as WS
 participant "WikiData" as WD
 database "Base de datos" as DB
 
-Usuario -> GS: Comenzar partida
-loop Generación de preguntas
-    GS -> WS: Pedir una pregunta
-    WS -> WD: Pedir una pregunta
-    WD -> WS: Devolver información de la pregunta
-    WS -> GS: Devolver opciones y foto de la pregunta
-    GS -> Usuario: Mostrar opciones y foto de la pregunta
-    Usuario -> GS: Responder a la pregunta
-    GS -> WS: Corroborar respuesta
-    WS -> GS: Devolver resultado de la pregunta
-    GS -> Usuario: Mostrar resultado de la pregunta
+Usuario -> W: Comenzar partida
+W -> GS: Obtener preguntas de wikidata
+GS -> WS: Pedir las preguntas
+WS -> WD: Pedir las preguntas
+WD -> WS: Devolver información de las preguntas
+WS -> GS: Devolver información de las preguntas
+GS -> W: Devolver información de las preguntas
+loop Partida
+    W -> Usuario: Mostrar pregunta
+    alt Usuario pide ayuda a la IA
+        Usuario -> W: Obtener pista del LLM
+        W -> GS: Obtener pista del LLM
+        GS -> LLM: Obtener pista
+        LLM -> GS: Devolver pista
+        GS -> W: Devolver pista
+        W -> Usuario: Mostrar pista
+    end
+    Usuario -> W: Responder a la pregunta
+    W -> Usuario: Mostrar resultado de la respuesta
+    Usuario -> W: Pedir otra pregunta
 end
-WS -> DB: Almacenar los resultados finales
-WS -> GS: Devolver los resultados finales
-GS -> Usuario: Mostrar los resultados finales
+W -> GS: Almacenar la información de la partida
+GS -> HS: Almacenar la información de la partida
+HS -> DB: Almacenar la información de la partida
+W -> Usuario: Mostrar los resultados de la partida
 
 ----

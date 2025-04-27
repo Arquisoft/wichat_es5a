@@ -112,6 +112,30 @@ app.get('/profile', authenticateToken, async (req, res) => {
   }
 });
 
+app.post('/savegame', async (req, res) => {
+  try {
+    const username = req.body.username // Extract username from token
+    const user = await findOne(username, null); // Use findOne() to get user data
+    const contestId = req.body.id; // Extract id from request body
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    user.points = req.body.points + user.points
+    user.contests.push(contestId);
+
+    await user.save(); // Save the updated user data
+
+    res.json({message: 'Game saved successfully'});
+
+    
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.put('/profile/edit/:username', async (req, res) => {
   try {
     const currUsername = req.params.username;
@@ -197,7 +221,32 @@ app.post('/adduser', async (req, res) => {
     res.status(400).json({ error: error.message }); 
   }});
 
+  app.get('/getUserHistory/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await findOne(username, null);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        const contests = user.contests;
 
+        res.json({ contests: contests });
+    } catch (error) {
+        console.error('Error fetching user history:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
+
+app.get('/getranking', async (req, res) => {
+  try {
+    const users = await User.find({}).sort({ points: -1 });
+    res.json({ users });
+  } catch (error) {
+    console.error('Error fetching ranking:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 const server = app.listen(port, () => {
   console.log(`User Service listening at http://localhost:${port}`);
