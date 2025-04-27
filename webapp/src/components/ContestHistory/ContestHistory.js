@@ -84,7 +84,7 @@ const ContestHistory = () => {
           }}>
             <img src={question.image} alt={t("question-img-alt")} className="responsive-img" draggable="false"/>
             <HistoryText size="h6">
-              {t("question")}{`: ${question.question}`}
+              {t("question")}{`: ${t(question.question)}`}
             </HistoryText>
             <HistoryText size="h6">
               {t("answers-shown")}{`: ${question.wrongAnswers[0]}, ${question.wrongAnswers[1]}, ${question.wrongAnswers[2]}, ${question.wrongAnswers[3]}`}
@@ -96,7 +96,7 @@ const ContestHistory = () => {
               {t("correct")}{`: ${correctAnswers[index] === 0 ? '❌' : '✅'}`}
             </HistoryText>
             <HistoryText size="h6">
-              {t("time-to-answer")}{`: ${times[index]}`} {t("seconds")}
+              {t("time-to-answer")}{`: ${times[index]}"`}
             </HistoryText>
             <HistoryText size="h6">
               {t("number-of-clues")}{`: ${clues[index]}`}
