@@ -48,19 +48,19 @@ async function updateUserProfile(currentUsername, newUsername, newEmail) {
     const updateFields = {};
 
     if (newUsername) {
-      const existingUserWithNewUsername = await User.findOne({ username: newUsername });
+      const existingUserWithNewUsername = await findOne(newUsername, null);
       if (existingUserWithNewUsername && existingUserWithNewUsername.username !== currentUsername) {
         throw new Error('El nombre de usuario ya está en uso.');
       }
-      updateFields.username = newUsername;
+      updateFields.username = newUsername.toString();
     }
 
     if (newEmail) {
-      const existingUserWithNewEmail = await User.findOne({ email: newEmail });
+      const existingUserWithNewEmail = await findOne(null, newEmail);
       if (existingUserWithNewEmail && existingUserWithNewEmail.email !== (await User.findOne({ username: currentUsername })).email) {
         throw new Error('El correo electrónico ya está en uso.');
       }
-      updateFields.email = newEmail;
+      updateFields.email = newEmail.toString();
     }
 
     const result = await User.updateOne({ username: currentUsername }, { $set: updateFields });
