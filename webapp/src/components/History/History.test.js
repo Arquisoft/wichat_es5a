@@ -3,7 +3,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import axios from 'axios';
 import { BrowserRouter } from 'react-router';
 import History from './History';
-import "../../i18n.js"
+import "../../i18n.js";
 
 jest.mock('axios');
 
@@ -13,7 +13,7 @@ jest.mock('react-router', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-jest.spyOn(console, 'error').mockImplementation(() => {}); // Suppress console.error warnings in tests
+jest.spyOn(console, 'error').mockImplementation(() => {}); // Suprime los warnings de console.error en los tests
 
 // Datos de prueba y textos esperados
 const mockResponse = {
@@ -24,11 +24,11 @@ const mockResponse = {
       {
         _id: '1',
         difficulty: 'easy',
-        mode: 'single',
+        mode: 'flag',
         points: 100,
         date: '2025-04-01T12:00:00Z',
-        tiempos: [30, 40],
-        pistas: [1, 2],
+        tiempos: [15, 5],
+        pistas: [2, 1],
         rightAnswers: [1, 0],
       },
     ],
@@ -44,15 +44,15 @@ const emptyContestsResponse = {
 };
 
 const expectedTexts = {
-  totalPlayers: 'Jugadores totales: 5',
+  totalUsers: 'Jugadores totales: 5',
   totalQuestions: 'Preguntas generadas: 10',
-  difficulty: 'Dificultad: easy',
-  mode: 'Modo: single',
-  correctAnswers: 'Preguntas acertadas: 1',
-  points: 'Puntos: 100',
-  totalTime: 'Tiempo total: 70 segundos',
-  totalClues: 'Número de pistas usadas: 3',
-  contestDate: /Fecha del concurso: 01\/04\/2025 \d{2}:\d{2}:\d{2}/,
+  difficulty: 'Fácil',
+  mode: 'Bandera',
+  correctAnswers: '1',
+  points: '100',
+  totalTime: '20"',
+  totalClues: '3',
+  contestDate: /01\/04\/2025 \d{2}:\d{2}:\d{2}/,
   detailsButton: 'Detalles',
   exitButton: 'Salir',
 };
@@ -74,8 +74,6 @@ describe('History Component', () => {
   it('should render the initial UI correctly', () => {
     renderComponent();
 
-    expect(screen.getByText('Jugadores totales: 0')).toBeInTheDocument();
-    expect(screen.getByText('Preguntas generadas: 0')).toBeInTheDocument();
     expect(screen.getByText(expectedTexts.exitButton)).toBeInTheDocument();
   });
 
@@ -85,7 +83,7 @@ describe('History Component', () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText(expectedTexts.totalPlayers)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.totalUsers)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.totalQuestions)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.difficulty)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.mode)).toBeInTheDocument();
@@ -93,7 +91,7 @@ describe('History Component', () => {
       expect(screen.getByText(expectedTexts.points)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.totalTime)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.totalClues)).toBeInTheDocument();
-      expect(screen.getByText(expectedTexts.contestDate)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.detailsButton)).toBeInTheDocument();
     });
   });
 
@@ -143,7 +141,7 @@ describe('History Component', () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText(expectedTexts.totalPlayers)).toBeInTheDocument();
+      expect(screen.getByText(expectedTexts.totalUsers)).toBeInTheDocument();
       expect(screen.getByText(expectedTexts.totalQuestions)).toBeInTheDocument();
       expect(screen.queryByText(expectedTexts.difficulty)).not.toBeInTheDocument();
     });

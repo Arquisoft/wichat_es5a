@@ -28,7 +28,7 @@ const Temporizador = ({ restart, tiempoInicial, tiempoAcabado, pausa, handleRest
                 
             }, 1000);
         } else {
-            onTimeUpdate(20-tiempoSegundos);
+            onTimeUpdate(tiempoInicial-tiempoSegundos);
         }
 
         if (tiempoSegundos <= 0)

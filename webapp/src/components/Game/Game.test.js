@@ -31,45 +31,47 @@ describe('Juego component', () => {
     let mock;
     // Datos mockeados para la pregunta
     const mockData = [{
-      question: 'question-flag',
-      answer: 'España',
-      wrongAnswers: ['Francia', 'Italia', 'Alemania'],
-      image: null,
+        question: 'question-flag',
+        answer: 'España',
+        wrongAnswers: ['Francia', 'Italia', 'Alemania'],
+        image: null,
     }, {
-      question: 'question-flag',
-      answer: 'Rusia',
-      wrongAnswers: ['Francia', 'Italia', 'Alemania'],
-      image: null,
+        question: 'question-flag',
+        answer: 'Rusia',
+        wrongAnswers: ['Francia', 'Italia', 'Alemania'],
+        image: null,
     }, {
-      question: 'question-flag',
-      answer: 'Rusia',
-      wrongAnswers: ['Francia', 'Italia', 'Alemania'],
-      image: null,
+        question: 'question-flag',
+        answer: 'Rusia',
+        wrongAnswers: ['Francia', 'Italia', 'Alemania'],
+        image: null,
     }, {
-      question: 'question-flag',
-      answer: 'Rusia',
-      wrongAnswers: ['Francia', 'Italia', 'Alemania'],
-      image: null,
+        question: 'question-flag',
+        answer: 'Rusia',
+        wrongAnswers: ['Francia', 'Italia', 'Alemania'],
+        image: null,
     }, {
-      question: 'question-flag',
-      answer: 'Rusia',
-      wrongAnswers: ['Francia', 'Italia', 'Alemania'],
-      image: null,
+        question: 'question-flag',
+        answer: 'Rusia',
+        wrongAnswers: ['Francia', 'Italia', 'Alemania'],
+        image: null,
     }];
 
     // Configuración del mock
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
     beforeEach(() => {
-      // Crear un nuevo mock de axios antes de cada prueba
-      mock = new MockAdapter(axios);
-      // Aquí mockeamos cualquier endpoint dinámico que pase `mode` en la URL
-      mock.onPost(new RegExp(`${apiEndpoint}/questions/.*`)).reply(200, mockData);
+        const mockToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdHVzZXIifX0.signature";
+        localStorage.setItem("token", mockToken);
+        // Crear un nuevo mock de axios antes de cada prueba
+        mock = new MockAdapter(axios);
+        // Aquí mockeamos cualquier endpoint dinámico que pase `mode` en la URL
+        mock.onPost(new RegExp(`${apiEndpoint}/questions/.*`)).reply(200, mockData);
     });
 
     afterEach(() => {
-      // Restaurar el mock después de cada prueba
-      mock.restore();
+        // Restaurar el mock después de cada prueba
+        mock.restore();
     });
     it('should always pass', () => {
         expect(true).toBe(true);
@@ -82,18 +84,18 @@ describe('Juego component', () => {
 
     it('actualiza la puntuación al seleccionar la respuesta correcta', async () => {
         const mode = 'flag';
-    
+
         renderJuego();
-    
+
         // Espera a que la pregunta y las respuestas se rendericen.
         await waitForText('¿De qué país es esta bandera?');
-    
+
         // Simula el clic en el botón de la respuesta correcta.
         fireEvent.click(screen.getByText('España'));
-    
+
         // Verifica que la puntuación se actualiza a 100.
         expect(screen.getByText(/Puntuación: 100/i)).toBeInTheDocument();
-    
+
         // Verifica que el botón de la respuesta correcta se pone en verde.
         expect(screen.getByText('España')).toHaveStyle('background-color: #05B92B');
 
@@ -108,16 +110,16 @@ describe('Juego component', () => {
         mock.onPost('http://localhost:8003/ask').reply(200, {
             answer: 'Una pista sobre la bandera.',
         });
-    
+
         renderJuego();
 
         // Espera a que el botón de pista esté habilitado.
         const pistaButton = await screen.findByRole('button', { name: /¿Necesitas una pista?/i });
         await waitFor(() => expect(pistaButton).not.toBeDisabled());
-    
+
         // Simula el clic en el botón de pista.
         fireEvent.click(screen.getByRole('button', { name: /¿Necesitas una pista?/i }));
-    
+
         // Espera a que la respuesta del LLM se muestre en el DOM.
         await waitFor(() => expect(screen.getByText(/Respuesta del LLM:/i)).toBeInTheDocument());
     });
@@ -188,28 +190,28 @@ describe('Juego component', () => {
         // Verifica que los puntos se restan correctamente
         await waitForText(/Puntuación: -40/i);
     });
-    
+
     it('cambia el color del botón si la respuesta es incorrecta en cambiarColorUno', async () => {
         render(
             <BrowserRouter>
                 <Juego />
             </BrowserRouter>
         );
-    
+
         // Espera a que se rendericen los botones con las respuestas
         const incorrecta = await screen.findByText('Francia');
         const correcta = await screen.findByText('España');
-    
+
         // Clic en la respuesta incorrecta
         fireEvent.click(incorrecta);
-    
+
         // Verifica que el botón incorrecto se ponga en rojo
         expect(incorrecta).toHaveStyle('background-color: #E14E4E');
-    
+
         // Verifica que el botón correcto se ponga en verde
         expect(correcta).toHaveStyle('background-color: #05B92B');
     });
-  
+
     it('restablece el color de todos los botones al hacer clic en "Siguiente pregunta"', async () => {
         render(
             <BrowserRouter>
@@ -236,26 +238,26 @@ describe('Juego component', () => {
             });
         });
     });
-      
+
     it('realiza la transición correctamente al hacer clic en "Finalizar" y guarda los datos cuando se llega al final', async () => {
-        mock.onPost(`${apiEndpoint}/savegame`).reply(200, {}); 
-    
+        mock.onPost(`${apiEndpoint}/savegame`).reply(200, {});
+
         render(
             <BrowserRouter>
                 <Juego />
             </BrowserRouter>
         );
-    
+
         const respuestasCorrectas = ['España', 'Rusia', 'Rusia', 'Rusia', 'Rusia'];
-    
+
         for (let i = 0; i < respuestasCorrectas.length; i++) {
             const botonCorrecto = await screen.findByText(respuestasCorrectas[i]);
             fireEvent.click(botonCorrecto);
-            if(i === respuestasCorrectas.length - 1) break;
+            if (i === respuestasCorrectas.length - 1) break;
             const siguienteBtn = await screen.findByRole('button', { name: /Siguiente pregunta/i });
             fireEvent.click(siguienteBtn);
         }
-        
+
         const botonFinalizar = await screen.findByRole('button', { name: /Finalizar/i });
         fireEvent.click(botonFinalizar);
 
@@ -276,9 +278,9 @@ describe('Juego component', () => {
             var state = { difficulty: difficulty }
             render(
                 <MemoryRouter initialEntries={[{ pathname: '/game', state }]}>
-                  <Routes>
-                    <Route path="/game" element={<Juego />} />
-                  </Routes>
+                    <Routes>
+                        <Route path="/game" element={<Juego />} />
+                    </Routes>
                 </MemoryRouter>
             );
 
@@ -286,7 +288,7 @@ describe('Juego component', () => {
             fireEvent.click(correcta);
             const siguienteBtn = await screen.findByRole('button', { name: /Siguiente pregunta/i });
             fireEvent.click(siguienteBtn);
-            
+
             expect(screen.getByText("" + time)).toBeInTheDocument();
         });
     });

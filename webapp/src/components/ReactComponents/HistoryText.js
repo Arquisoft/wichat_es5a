@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
 
-const CustomH1 = ({children, size}) => {
+const CustomH1 = ({children, size, color}) => {
     return (
         <Typography
             component="h1"
             variant={size || "h1"}
-            sx={{ color: "#FFFFFF", marginTop: 2, textAlign: 'center' }}>
+            sx={{ color: color || "#FFFFFF", textAlign: 'center' }}>
             {children}
         </Typography>
     );

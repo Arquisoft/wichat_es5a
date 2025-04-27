@@ -10,13 +10,14 @@ import { Container, Grid, Box, Stack, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import Temporizador from '../Temporizador/Temporizador';
 import { useNavigate } from 'react-router';
-import ChatBot  from '../ChatBot/ChatBot';
+import ChatBot from '../ChatBot/ChatBot';
 import NavBar from "../NavBar/NavBar";
 import './Game.css';
 import { useLocation } from 'react-router';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from "react-i18next";
+import { jwtDecode } from "jwt-decode";
 
 const Juego = () => {
 
@@ -169,11 +170,11 @@ const Juego = () => {
   /**
      * Funcion que se llamara al hacer click a una de las respuestas
      */
-  const botonRespuesta = (respuesta) => { 
+  const botonRespuesta = (respuesta) => {
     //Comprueba si la respuesta es correcta o no y pone la variable victoria a true o false
     //por ahora esta variable no se utiliza para nada
     setPausarTemporizador(true);
-    if(respuesta === resCorr){
+    if (respuesta === resCorr) {
       //Aumenta en 1 en las estadisticas de juegos ganado
       arCorrect.push(true);
       setNumRespuestasCorrectas(numRespuestasCorrectas+1);
@@ -208,9 +209,9 @@ const Juego = () => {
     //Recorremos cada boton
     buttons.forEach((button) => {
       //Desactivamos TODOS los botones
-      button.disabled=true; 
+      button.disabled = true;
       //Ponemos el boton de la respuesta correcta en verde
-      if(button.textContent.trim() === resCorr) {
+      if (button.textContent.trim() === resCorr) {
         button.style.backgroundColor = "#05B92B";
         button.style.border = "6px solid #05B92B";
       }
@@ -219,7 +220,7 @@ const Juego = () => {
       cambiarColorUno(respuesta, button);
       }else {
         cambiarColorTodos(button);
-      }return button; //esta linea evita un warning de sonar cloud, sin uso
+      } return button; //esta linea evita un warning de sonar cloud, sin uso
     });
   }
 
@@ -230,9 +231,9 @@ const Juego = () => {
   }
 
   //Función que cambia el color de un solo boton (acierto)
-  function cambiarColorUno(respuesta, button){
-    if(button.textContent.trim() === respuesta.trim()){
-      if((button.textContent.trim() !== resCorr)) {
+  function cambiarColorUno(respuesta, button) {
+    if (button.textContent.trim() === respuesta.trim()) {
+      if ((button.textContent.trim() !== resCorr)) {
         button.style.backgroundColor = "#E14E4E";
         button.style.border = "6px solid #E14E4E";
       }
@@ -240,26 +241,26 @@ const Juego = () => {
   }
 
   //Funcion que cambia el color de todos los botones (fallo)
-  function cambiarColorTodos(button){
-    if(button.textContent.trim() === resCorr) {
+  function cambiarColorTodos(button) {
+    if (button.textContent.trim() === resCorr) {
       button.style.backgroundColor = "#05B92B";
       button.style.border = "6px solid #05B92B";
-    } else{
+    } else {
       button.style.backgroundColor = "#E14E4E";
       button.style.border = "6px solid #E14E4E";
     }
-  } 
+  }
 
   //Función que devuelve el color original a los botones (siguiente)
-  async function descolorearTodos(){
+  async function descolorearTodos() {
     const buttons = document.querySelectorAll('.button-container button');
     buttons.forEach((button) => {
-        //Activamos TODOS los botones
-        button.disabled=false; 
-        button.style.backgroundColor = '';
-        button.style.border = '';
-      })
-  } 
+      //Activamos TODOS los botones
+      button.disabled = false;
+      button.style.backgroundColor = '';
+      button.style.border = '';
+    })
+  }
 
   // //Primer render para un comportamiento diferente
   // useEffect(() => {
@@ -272,7 +273,13 @@ const Juego = () => {
     if(finished) {
       arTiempo.push(tiempoRestante);
       arPistas.push(numPistas);
-      axios.post(`${apiEndpoint}/savegame`, {mode, difficulty, arCorrect, points, arPreg, arTiempo, arPistas}); // Llama al history service para guardar el concurso y las preguntas en BBDD
+      let token = localStorage.getItem("token") // Obtiene el token de localStorage
+      let user = jwtDecode(token).user
+      let username = user.username
+      console.log(username)
+      axios.post(
+        `${apiEndpoint}/savegame`, 
+        { mode, difficulty, arCorrect, points, arPreg, arTiempo, arPistas, username });
       navigate('/points', {
         state: {
           numRespuestasCorrectas: numRespuestasCorrectas,
@@ -361,7 +368,7 @@ const Juego = () => {
               </Box>
               {imagenPregunta && (
                 <Box className="image-container">
-                  <img src={imagenPregunta} alt={t("question-img-alt")} className="responsive-img" draggable="false"/>
+                  <img src={imagenPregunta} alt={t("question-img-alt")} className="responsive-img" draggable="false" />
                 </Box>
               )}
               <Grid container spacing={2} className="button-container">
