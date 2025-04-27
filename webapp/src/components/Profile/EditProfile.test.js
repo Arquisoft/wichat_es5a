@@ -131,4 +131,73 @@ describe('EditProfile Component', () => {
             expect(mockNavigate).toHaveBeenCalledWith('/profile');
         });
     });
+
+    it('displays error message if username is already taken on save', async () => {
+        axios.put.mockRejectedValueOnce({
+            response: {
+                data: { error: 'El nombre de usuario ya está en uso.' },
+                status: 409,
+            },
+        });
+        render(
+            <BrowserRouter>
+                <EditProfile />
+            </BrowserRouter>
+        );
+
+        await waitFor(() => {
+            const saveButton = screen.getByTestId('save-button');
+            fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText(/el nombre de usuario ya está en uso/i)).toBeInTheDocument();
+        });
+    });
+
+    it('displays generic error message if user is not found on save (updateOne returns 0 matched)', async () => {
+        axios.put.mockRejectedValueOnce({
+            response: {
+                data: { error: 'Usuario no encontrado.' },
+                status: 404,
+            },
+        });
+        render(
+            <BrowserRouter>
+                <EditProfile />
+            </BrowserRouter>
+        );
+
+        await waitFor(() => {
+            const saveButton = screen.getByTestId('save-button');
+            fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText(/usuario no encontrado/i)).toBeInTheDocument();
+        });
+    });
+
+    it('displays generic internal server error on 500 error during save', async () => {
+        axios.put.mockRejectedValueOnce({ 
+            response: { 
+                status: 500, 
+                data: { error: 'Error interno del servidor al actualizar el perfil.' } 
+            } 
+        });
+        render(
+            <BrowserRouter>
+                <EditProfile />
+            </BrowserRouter>
+        );
+
+        await waitFor(() => {
+            const saveButton = screen.getByTestId('save-button');
+            fireEvent.click(saveButton);
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText(/error interno del servidor al actualizar el perfil/i)).toBeInTheDocument();
+        });
+    });
 });
