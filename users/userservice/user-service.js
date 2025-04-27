@@ -128,7 +128,6 @@ app.put('/profile/edit/:username', async (req, res) => {
     res.json(result);
 
   } catch (error) {
-    console.error('Error al actualizar el perfil:', error);
     res.status(error.message === 'Usuario no encontrado.' ? 404 :
       error.message === 'El nombre de usuario ya está en uso.' ? 409 :
         error.message === 'El correo electrónico ya está en uso.' ? 409 :
