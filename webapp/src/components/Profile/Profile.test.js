@@ -41,9 +41,6 @@ describe('Profile Component', () => {
       </BrowserRouter>
     );
 
-    console.log(mockProfileData.username)
-    console.log(mockProfileData.email)
-
     await waitFor(() => {
         expect(screen.getByText(new RegExp(mockProfileData.username))).toBeInTheDocument();
         expect(screen.getByText(new RegExp(mockProfileData.email))).toBeInTheDocument();

@@ -84,7 +84,6 @@ app.post('/savegame', async (req, res) => {
     const user = await findOne(username, null); // Use findOne() to get user data
     const contestId = req.body.id; // Extract id from request body
 
-    console.log(contestId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }

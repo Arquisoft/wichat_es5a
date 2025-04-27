@@ -65,7 +65,6 @@ app.get('/gethistory', async (req, res) => {
 
 app.post('/getUserHistory', async (req, res) => {
     try {
-        console.log(req.body.contestIds)
         const contests = await Contest.find({ _id: { $in: req.body.contestIds } });
         res.json({ contests: contests });
     } catch (error) {
