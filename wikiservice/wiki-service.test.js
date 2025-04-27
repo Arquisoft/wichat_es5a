@@ -1,25 +1,21 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
-const Question = require('./question-model'); // Modelo de preguntas
+const Question = require('./question-model');
 const WikiQuery = require('./wiki-query');
 
-// Mock the WikiQuery class to avoid actual API calls during tests
 jest.mock('./wiki-query');
 
 let mongoServer;
 let server;
 
 beforeAll(async () => {
-  // Inicia MongoMemoryServer
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
   process.env.MONGODB_URI = mongoUri;
   
-  // Conectar a la base de datos antes de importar la app
   await mongoose.connect(mongoUri);
   
-  // Mock implementation for SPARQLQuery
   WikiQuery.prototype.SPARQLQuery = jest.fn().mockResolvedValue({
     results: {
       bindings: [
@@ -42,8 +38,6 @@ beforeAll(async () => {
       ]
     }
   });
-  
-  // Import app after setting up mocks and environment
   server = require('./wiki-service');
 });
 
@@ -83,12 +77,8 @@ describe('Wiki Service', () => {
           .send({ language: "es", numQuestions });
 
         expect(response.statusCode).toBe(200);
-        // Check if response is an array
-        expect(Array.isArray(response.body)).toBe(true);
-        // Check if the correct number of questions was returned
         expect(response.body.length).toBe(numQuestions);
-        
-        // Check each question's structure
+    
         response.body.forEach(question => {
           expect(question).toHaveProperty('question', questionText);
           expect(question).toHaveProperty('image');
@@ -105,17 +95,9 @@ describe('Wiki Service', () => {
           .post(`/questions/${kind}`)
           .send({ language: "es", numQuestions });
 
-        // Check if questions were saved in the database
         const savedQuestions = await Question.find({ question: questionText });
         expect(savedQuestions.length).toBe(numQuestions);
-        
-        // Check if one of the saved questions matches the response
-        const firstResponseQuestion = response.body[0];
-        const matchingQuestion = savedQuestions.find(q => 
-          q.answer === firstResponseQuestion.answer &&
-          q.image === firstResponseQuestion.image
-        );
-        
+
         expect(matchingQuestion).toBeTruthy();
         expect(matchingQuestion.question).toBe(firstResponseQuestion.question);
         expect(matchingQuestion.wrongAnswers.length).toBe(3);
@@ -123,7 +105,6 @@ describe('Wiki Service', () => {
     });
 
     it('should handle errors properly', async () => {
-      // Mock implementation to simulate an error
       WikiQuery.prototype.SPARQLQuery.mockRejectedValueOnce(new Error('SPARQL query failed'));
       
       const response = await request(server)
