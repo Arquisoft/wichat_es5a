@@ -43,30 +43,37 @@ async function findOne(username, email) {
 }
 
 // Función para actualizar la información del usuario en la base de datos
-async function updateUserProfile(username, newUsername, newEmail) {
-  const user = findOne(username, "");
-  if (!user) {
-    throw new Error('Usuario no encontrado.');
-  }
+async function updateUserProfile(currentUsername, newUsername, newEmail) {
+  try {
+    const updateFields = {};
 
-  if (newUsername && newUsername !== user.username) {
-    const existingUserWithNewUsername = findOne(newUsername, "");
-    if (existingUserWithNewUsername) {
-      throw new Error('El nombre de usuario ya está en uso.');
+    if (newUsername) {
+      const existingUserWithNewUsername = await User.findOne({ username: newUsername });
+      if (existingUserWithNewUsername && existingUserWithNewUsername.username !== currentUsername) {
+        throw new Error('El nombre de usuario ya está en uso.');
+      }
+      updateFields.username = newUsername;
     }
-    user.username = newUsername;
-  }
 
-  if (newEmail && newEmail !== user.email) {
-    const existingUserWithNewEmail = findOne("", newEmail);
-    if (existingUserWithNewEmail) {
-      throw new Error('El correo electrónico ya está en uso.');
+    if (newEmail) {
+      const existingUserWithNewEmail = await User.findOne({ email: newEmail });
+      if (existingUserWithNewEmail && existingUserWithNewEmail.email !== (await User.findOne({ username: currentUsername })).email) {
+        throw new Error('El correo electrónico ya está en uso.');
+      }
+      updateFields.email = newEmail;
     }
-    user.email = newEmail;
-  }
 
-  await user.save();
-  return { message: 'Perfil actualizado exitosamente.' };
+    const result = await User.updateOne({ username: currentUsername }, { $set: updateFields });
+
+    if (result.matchedCount === 0) {
+      throw new Error('Usuario no encontrado.');
+    }
+
+    return { message: 'Perfil actualizado exitosamente.', modifiedCount: result.modifiedCount };
+
+  } catch (error) {
+    throw error;
+  }
 }
 
 // Middleware to authenticate token
@@ -117,7 +124,7 @@ app.put('/profile/edit/:username', async (req, res) => {
       return res.status(400).json({ error: "Formato de email inválido" });
     }
 
-    const result = await updateUserProfile(currentUsername, newUsername, newEmail);
+    const result = await updateUserProfile(currUsername, newUsername, newEmail);
     res.json(result);
 
   } catch (error) {

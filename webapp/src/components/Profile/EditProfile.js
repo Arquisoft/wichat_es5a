@@ -50,19 +50,22 @@ const EditProfile = () => {
     };
 
     const handleSave = async () => {
-        console.log("handleSave -> El token es " + token);
         setError(null);
         setLoading(true);
         try {
             const response = await axios.put(
-                `${apiEndpoint}/profile/edit/${profileData.username}`, // Usamos el username actual para la ruta
-                { username, email }
+                `${apiEndpoint}/profile/edit/${profileData.username}`,
+                { 
+                    username, 
+                    email 
+                }
             );
-            console.log('Perfil actualizado:', response.data);
-            navigate('/profile'); // Redirigir al perfil tras la actualización
+            localStorage.removeItem('token');
+            navigate('/login');
         } catch (err) {
             setError('Error al actualizar el perfil:' + err); // Nueva clave de traducción
             console.error('Error al actualizar el perfil:', err);
+            console.error('Error completo:', err.response);
         } finally {
             setLoading(false);
         }
