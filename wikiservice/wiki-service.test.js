@@ -2,74 +2,90 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('./wiki-service');
 const Question = require('./question-model');
+const { MongoMemoryServer } = require('mongodb-memory-server');
+const WikiQuery = require('./wiki-query');
 
-// Establece un timeout global de 10,000 ms
-jest.setTimeout(10000);
+const wikiQuery = new WikiQuery(); // Crear una instancia de WikiQuery
 
-afterAll(async () => {
-  await mongoose.connection.close(); // Cierra la conexión de Mongoose
-  app.close(); // Cierra el servidor Express
+let mongoServer;
+
+jest.setTimeout(30000); 
+
+beforeAll(async () => {
+    mongoServer = await MongoMemoryServer.create();
+    const mongoUri = mongoServer.getUri();
+
+    await mongoose.disconnect();
+    await mongoose.connect(mongoUri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
 });
 
-describe('Wiki Service', () => {
-  beforeEach(async () => {
-    // Limpia la colección de preguntas antes de cada test
-    await Question.deleteMany({});
-  });
+afterEach(async () => {
+    await Question.deleteMany(); // Limpiar la base de datos después de cada test
+});
 
-  // Función auxiliar para verificar respuestas de endpoints
-  const verifyResponse = (response, statusCode, expectedBody) => {
-    expect(response.statusCode).toBe(statusCode);
-    expect(response.body).toEqual(expectedBody);
-  };
+afterAll(async () => {
+    await mongoose.connection.close();
+    await mongoServer.stop();
+    app.close();
+});
 
-  it('should return 200 and a health status message', async () => {
-    const response = await request(app).get('/health');
-    verifyResponse(response, 200, { status: 'OK' });
-  });
+describe('GET /health', () => {
+    it('should return status OK', async () => {
+        const response = await request(app).get('/health');
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toEqual({ status: 'OK' });
+    });
+});
 
-  /*describe('POST /questions/:kind', () => {
+describe('POST /questions/:kind', () => {
     const endpoints = [
-      { kind: 'flag', },
-      { kind: 'city', },
-      { kind: 'football', },
-      { kind: 'music' },
-      { kind: 'food' },
+        { kind: 'flag', question: 'question-flag' },
+        { kind: 'city', question: 'question-city' },
+        { kind: 'album', question: 'question-album' },
+        { kind: 'football', question: 'question-football' },
+        { kind: 'music', question: 'question-music' },
+        { kind: 'food', question: 'question-food' },
     ];
 
-    endpoints.forEach(({ kind }) => {
-      it(`should create a new ${kind} question and return the correct format`, async () => {
-        const response = await request(app)
-          .post(`/questions/${kind}`)
-          .send({
-            language: 'es',
-            numQuestions: 3
-          });
+    endpoints.forEach(({ kind, question }) => {
+        it(`should create a new ${kind} question and return the correct format`, async () => {
+            const requestBody = {
+                language: 'es',
+                numQuestions: 3,
+            };
 
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveLength(3); // Verifica que se generen 3 preguntas
-        response.body.forEach((question) => {
-          expect(question).toHaveProperty('question');
-          expect(question).toHaveProperty('image');
-          expect(question).toHaveProperty('answer');
-          expect(question).toHaveProperty('wrongAnswers');
-          expect(Array.isArray(question.wrongAnswers)).toBe(true);
-          expect(question.wrongAnswers.length).toBe(3);
+            const response = await request(app)
+                .post(`/questions/${kind}`)
+                .send(requestBody);
+
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toHaveLength(requestBody.numQuestions); // Verifica que se generen el número correcto de preguntas
+            response.body.forEach((questionData) => {
+                expect(questionData).toHaveProperty('question', question);
+                expect(questionData).toHaveProperty('image');
+                expect(questionData).toHaveProperty('answer');
+                expect(questionData).toHaveProperty('wrongAnswers');
+                expect(Array.isArray(questionData.wrongAnswers)).toBe(true);
+                expect(questionData.wrongAnswers.length).toBe(3);
+            });
         });
-      });
 
-      it(`should save the ${kind} question in the database`, async () => {
-        const response = await request(app)
-          .post(`/questions/${kind}`)
-          .send({
-            language: 'es',
-            numQuestions: 1
-          });
+        it(`should save the ${kind} question in the database`, async () => {
+            const requestBody = {
+                language: 'es',
+                numQuestions: 1,
+            };
 
-        const savedQuestion = await Question.findOne({ question: response.body[0].question });
-        expect(savedQuestion).toBeTruthy();
-        expect(savedQuestion.answer).toBe(response.body[0].answer);
-      });
+            const response = await request(app)
+                .post(`/questions/${kind}`)
+                .send(requestBody);
+
+            const savedQuestion = await Question.findOne({ question });
+            expect(savedQuestion).toBeTruthy();
+            expect(savedQuestion.answer).toBe(response.body[0].answer);
+        });
     });
-  });*/
 });
