@@ -6,6 +6,7 @@ const User = require('./auth-model')
 const { check, matchedData, validationResult } = require('express-validator');
 const app = express();
 const port = 8002; 
+const secretKey = 'your-secret-key';
 
 // Middleware to parse JSON in request body
 app.use(express.json());
