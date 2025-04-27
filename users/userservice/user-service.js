@@ -63,7 +63,7 @@ async function updateUserProfile(currentUsername, newUsername, newEmail) {
       updateFields.email = newEmail.toString();
     }
 
-    const result = await User.updateOne({ username: currentUsername }, { $set: updateFields });
+    const result = await User.updateOne({ username: currentUsername.toString() }, { $set: updateFields });
 
     if (result.matchedCount === 0) {
       throw new Error('Usuario no encontrado.');
