@@ -102,8 +102,8 @@ const EditProfile = () => {
         return (
             <div>
                 <NavBar />
-                <Container component="main">
-                    <Typography>{t('loading')}...</Typography>
+                <Container component="main" data-testid="loading-container">
+                    <Typography data-testid="loading-text">{t('loading')}...</Typography>
                 </Container>
             </div>
         );
@@ -113,18 +113,18 @@ const EditProfile = () => {
         return (
             <div>
                 <NavBar />
-                <Container component="main">
-                    <Typography color="error">{error}</Typography>
+                <Container component="main" data-testid="error-container">
+                    <Typography color="error" data-testid="error-text">{error}</Typography>
                 </Container>
             </div>
         );
     }
 
     return (
-        <div>
+        <div data-testid="edit-profile-container">
             <NavBar />
             <Container component="main">
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h4" gutterBottom data-testid="edit-profile-title">
                     {t('edit-user-profile')}
                 </Typography>
                 <TextField
@@ -135,6 +135,9 @@ const EditProfile = () => {
                     margin="normal"
                     error={!!fieldErrors.username}
                     helperText={fieldErrors.username}
+                    data-testid="username-input"
+                    inputProps={{ 'data-testid': 'username-field' }}
+                    InputLabelProps={{ 'data-testid': 'username-label' }}
                 />
                 <TextField
                     label={t('email')}
@@ -144,12 +147,24 @@ const EditProfile = () => {
                     margin="normal"
                     error={!!fieldErrors.email}
                     helperText={fieldErrors.email}
+                    data-testid="email-input"
+                    inputProps={{ 'data-testid': 'email-field' }}
+                    InputLabelProps={{ 'data-testid': 'email-label' }}
                 />
                 {/* Otros campos de edición */}
-                <Button variant="contained" color="primary" onClick={handleSave}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSave}
+                    data-testid="save-button"
+                >
                     {t('save')}
                 </Button>
-                <Button onClick={handleCancel} style={{ marginLeft: '1rem' }}>
+                <Button
+                    onClick={handleCancel}
+                    style={{ marginLeft: '1rem' }}
+                    data-testid="cancel-button"
+                >
                     {t('cancel')}
                 </Button>
             </Container>
