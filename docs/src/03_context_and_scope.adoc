@@ -43,11 +43,13 @@ De esta se sacan los enunciados de las preguntas, las respuestas correctas e inc
 ----
 frame "Azure_Cloud" {
     package "WIChat" {
-         [WIChat_API]
-         [Gateway_service]
+         package "Gateway Service"{
+               [Gateway_Service]
+               [OpenApi]
+         }
          [Wiki_service]
          [History_service]
-         [LlmService]
+         [Llm_service]
          [WebApp]
          package "Users" {
               [Auth_service]
@@ -62,19 +64,20 @@ frame "Azure_Cloud" {
 [Gemini_API]
 () "Usuario"
 () "Usuario_API"
-Usuario ..> Gateway_service : HTTP
+Usuario ..> WebApp : HTTP
+WebApp ..> Gateway_service
 Gateway_service --> Wiki_service
 Gateway_service --> Auth_service
 Gateway_service --> User_service
 Gateway_service --> History_service
-Gateway_service --> WIChat_API
+Gateway_service --> Llm_service
 Wiki_service ..> WikiData_API : SPARQL
-Wiki_service ..> Gemini_API : Google Cloud
-Auth_service ..> User_data : Mongoose
-User_service ..> User_data  : Mongoose
-Wiki_service ..> Question_data : Mongoose
-History_service ..> Question_data : Mongoose
-Usuario_API ..> WIChat_API : HTTPS
+Llm_service ..> Gemini_API : Google Cloud
+Auth_service ..> Data : Mongoose
+User_service ..> Data  : Mongoose
+Wiki_service ..> Data : Mongoose
+History_service ..> Data : Mongoose
+Usuario_API ..> OpenApi : HTTP
 ----
 
 La arquitectura de WIChat es una estructura basada en microservicios:
@@ -89,9 +92,16 @@ Las preguntas generadas son guardadas en base de datos para el historial de los 
 
 .Gateway service
 El gateway se encarga de recibir las peticiones y redirigirlas al servicio correspondiente.
+Además será el que tenga la OpenApi con la que el usuario que quiera acceder a esta(representado como Usuario_API) pueda visualizar los datos relacionados a la aplicación, como los usuarios y las preguntas generadas.
 
 .History service
 Es el servicio que se encarga con todo lo relacionado con el historial de partidas de la aplicación
 
-.WIChat API
-Ofrece datos sobre los usuarios de la aplicación y las preguntas generadas.
+.WebApp
+Donde se encuentra todo el front-end de la aplicación. Se encargará de pedirle servicios al gateway para que el usuario pueda interactuar con las distintas características de la aplicación.
+
+.Llm service
+Es el servicio que se encarga de hacer llamadas a la Api de Gemini.
+
+.MongoDB
+Todos los datos de la aplicación se guardarán en una base de datos hecha con MongoDB.

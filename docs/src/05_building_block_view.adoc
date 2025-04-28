@@ -27,6 +27,9 @@ _Esta es la visión general en la cual el usuario usa WIQ, que es la estructura 
 
 | WikiData
 | Permite generar preguntas y respuestas, proporcionando la información.
+
+| Gemini
+| Permite generar pistas a las preguntas u consultas que haga el usuario de la aplicación.
 |===
 
 === Nivel 2
@@ -63,11 +66,8 @@ image::BuildingBlock2.png[width=600,align="center"]
 | WikiService
 | Servicio responsable de lanzar las querys a Wikidata para obtener la información.
 
-| UserData
-| Base de datos mongodb cuya función es guardar información sobre los usuarios.
-
-| QuestionData
-| Base de datos mongodb cuya función es almacenar las preguntas devuletas por wikidata.
+| MongoDB
+| Base de datos donde se almacenarán todos los datos relacionados con los usuarios y con las preguntas de los distintos juegos.
 
 | GeminiApi
 | Api proporcionada para interactuar con el modelo de lenguaje de Google Gemini.
@@ -84,7 +84,7 @@ image::BuildingBlockuserservice.png[width=600,align="center"]
 | Nombre    | Responsabilidad
 
 |AuthService
-|Solicitará a la base de datos un usuario para poder autentificarlo, verificará que el usuario suministrado por la base de datos nos proporcione la contraseña correcta para poder acceder al juego.
+|Solicitará a la base de datos un usuario para poder autentificarlo, verificará que el usuario suministrado por la base de datos nos proporcione el nombre de usuario y la contraseña correcta para poder acceder al juego.
 
 |UserService
 |Se encargará de todo lo relacionado con añadir usuarios a la base de datos. Se encargará de verificar el formato de los datos proporcioandos por el usuario para crearse una nueva cuenta, así como que la contraseña coincida con la validación de esta misma.
