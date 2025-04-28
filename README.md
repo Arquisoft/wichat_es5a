@@ -1,10 +1,11 @@
 # wichat_es5a
 
-[![Actions Status](https://github.com/arquisoft/wichat_es5a/workflows/CI%20for%20wichat_es5a/badge.svg)](https://github.com/arquisoft/wichat_es5a/actions)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wichat_es5a&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wichat_es5a)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wichat_es5a&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wichat_es5a)
 
 <div align="center">
+  
+  [![Actions Status](https://github.com/arquisoft/wichat_es5a/workflows/CI%20for%20wichat_es5a/badge.svg)](https://github.com/arquisoft/wichat_es5a/actions)
+  [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wichat_es5a&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wichat_es5a)
+  [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wichat_es5a&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wichat_es5a)
   
   ![Logo](/webapp/public/logo.png)
   <br/><br/>
@@ -17,7 +18,7 @@
 | Pablo López Tamargo                | UO287694@uniovi.es          | [![GitHub](https://img.shields.io/badge/GitHub-PLT2003-yellow)](https://github.com/PLT2003)             | 
 | Óscar Cervero Luiña                | UO295432@uniovi.es          | [![GitHub](https://img.shields.io/badge/GitHub-uo295432-blue)](https://github.com/uo295432)             |
 | Gael Horta Calzada                 | gaelhorta04@gmail.com       | [![GitHub](https://img.shields.io/badge/GitHub-gaelhorta-brightgreen)](https://github.com/gaelhorta)    |
-| Marcos Argüelles Rivera            | UO295029@uniovi.es          | [![GitHub](https://img.shields.io/badge/GitHub-uo295029-marcos)](https://github.com/uo295029)           |
+| Marcos Argüelles Rivera            | UO295029@uniovi.es          | [![GitHub](https://img.shields.io/badge/GitHub-uo295029-71efff)](https://github.com/uo295029)      |
 
 </div>
 
