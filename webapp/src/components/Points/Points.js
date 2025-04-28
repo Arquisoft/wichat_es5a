@@ -12,7 +12,7 @@ const Points = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
-  const { numRespuestasCorrectas, numPreguntas, difficulty } = location.state || { numRespuestasCorrectas: 0, numPreguntas: 0 };
+  const { numRespuestasCorrectas, numPreguntas, difficulty, points } = location.state || { numRespuestasCorrectas: 0, numPreguntas: 0 };
 
   useEffect(() => {
     // Generar un número aleatorio entre 0 y 20
@@ -32,11 +32,14 @@ const Points = () => {
   return (
     <div>
           <NavBar/>
-          <CustomH1>
+          <CustomH1 size="h1">
+            {t("good-job")}
+          </CustomH1>
+          <CustomH1 size="h2">
           {numRespuestasCorrectas}{difficulty !== "survival" ? ("/" + numPreguntas) : " "} {t("points-correct")}{console.log("--->" + difficulty)}
           </CustomH1>
           <CustomH1 size="h2">
-            {t("good-job")}
+          {points} {t("points")}
           </CustomH1>
           <Box display="flex" justifyContent="center" mt={2}>
             <LargeButton onClick={playAgain} >
