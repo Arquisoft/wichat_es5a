@@ -52,7 +52,7 @@ app.post('/login',  [
       const token = jwt.sign(
         { user: user }, 
         'your-secret-key', 
-        { expiresIn: '1h' }
+        { expiresIn: '1m' }
       );
       // Respond with the token and user information
       res.json({ token: token, username: username, createdAt: user.createdAt });

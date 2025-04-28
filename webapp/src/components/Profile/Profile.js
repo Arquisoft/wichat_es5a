@@ -30,6 +30,12 @@ const Profile = () => {
         setProfileData(response.data);
       } catch (err) {
         setError(err.response?.data?.error || 'Error fetching profile');
+        // Si el error es 401 (No autorizado) -> token null -> redirección a login
+        // Si el error es 403 (Prohibido) -> token caducado -> redirección a login
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          localStorage.removeItem('token');
+          navigate('/login');
+        }
       }
     };
 
@@ -38,7 +44,7 @@ const Profile = () => {
     } else {
       setError('No se encontró el token.');
     }
-  }, [token]);
+  }, [token, navigate]);
 
   const enterHistory = () => {
     navigate('/history', {
