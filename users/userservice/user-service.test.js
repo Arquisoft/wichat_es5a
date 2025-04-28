@@ -268,3 +268,118 @@ describe('User Service', () => {
   });
 
 });
+
+describe('PUT /profile/changePassword/:username', () => {
+  let testUser;
+
+  beforeEach(async () => {
+    await User.deleteMany();
+    testUser = new User({
+      username: 'testchange',
+      email: 'testchange@example.com',
+      password: await bcrypt.hash('OldPass1', 10),
+    });
+    await testUser.save();
+  });
+
+  it('should successfully change the password', async () => {
+    const response = await request(app)
+      .put(`/profile/changePassword/${testUser.username}`)
+      .send({
+        currentPassword: 'OldPass1',
+        newPassword: 'NewPass2!',
+        repeatPassword: 'NewPass2!',
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message', 'Contraseña modificada exitosamente.');
+    expect(response.body).toHaveProperty('modifiedCount', 1);
+
+    const updatedUser = await User.findOne({ username: testUser.username });
+    const isNewPasswordValid = await bcrypt.compare('NewPass2!', updatedUser.password);
+    expect(isNewPasswordValid).toBe(true);
+    const isOldPasswordValid = await bcrypt.compare('OldPass1', updatedUser.password);
+    expect(isOldPasswordValid).toBe(false);
+  });
+
+  it('should return 404 if the user is not found', async () => {
+    const response = await request(app)
+      .put('/profile/changePassword/nonexistentuser')
+      .send({
+        currentPassword: 'OldPass1',
+        newPassword: 'NewPass2!',
+        repeatPassword: 'NewPass2!',
+      });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty('error', 'Usuario no encontrado');
+  });
+
+  it('should return 409 if the current password is incorrect', async () => {
+    const response = await request(app)
+      .put(`/profile/changePassword/${testUser.username}`)
+      .send({
+        currentPassword: 'WrongPassword',
+        newPassword: 'NewPass2!',
+        repeatPassword: 'NewPass2!',
+      });
+
+    expect(response.status).toBe(409);
+    expect(response.body).toHaveProperty('error', 'Contraseña actual errónea');
+  });
+
+  it('should return 409 if the new password format is invalid', async () => {
+    const response = await request(app)
+      .put(`/profile/changePassword/${testUser.username}`)
+      .send({
+        currentPassword: 'OldPass1',
+        newPassword: 'weak',
+        repeatPassword: 'weak',
+      });
+
+    expect(response.status).toBe(409);
+    expect(response.body).toHaveProperty('error', 'Formato inválido');
+  });
+
+  it('should return 409 if the new and repeated passwords do not match', async () => {
+    const response = await request(app)
+      .put(`/profile/changePassword/${testUser.username}`)
+      .send({
+        currentPassword: 'OldPass1',
+        newPassword: 'NewPass2!',
+        repeatPassword: 'DifferentPass!',
+      });
+
+    expect(response.status).toBe(409);
+    expect(response.body).toHaveProperty('error', 'Las contraseñas deben ser iguales');
+  });
+
+  it('should return 500 if required fields are missing', async () => {
+    const responseWithoutNewPassword = await request(app)
+      .put(`/profile/changePassword/${testUser.username}`)
+      .send({
+        currentPassword: 'OldPass1',
+        repeatPassword: 'NewPass2!',
+      });
+    expect(responseWithoutNewPassword.status).toBe(500);
+    expect(responseWithoutNewPassword.body).toHaveProperty('error', 'Missing required field: newPassword');
+
+    const responseWithoutRepeatPassword = await request(app)
+      .put(`/profile/changePassword/${testUser.username}`)
+      .send({
+        currentPassword: 'OldPass1',
+        newPassword: 'NewPass2!',
+      });
+    expect(responseWithoutRepeatPassword.status).toBe(500);
+    expect(responseWithoutRepeatPassword.body).toHaveProperty('error', 'Missing required field: repeatPassword');
+
+    const responseWithoutCurrentPassword = await request(app)
+      .put(`/profile/changePassword/${testUser.username}`)
+      .send({
+        newPassword: 'NewPass2!',
+        repeatPassword: 'NewPass2!',
+      });
+    expect(responseWithoutCurrentPassword.status).toBe(500);
+    expect(responseWithoutCurrentPassword.body).toHaveProperty('error', 'Missing required field: currentPassword');
+  });
+});
