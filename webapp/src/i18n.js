@@ -97,6 +97,8 @@ i18n.use(initReactI18next).init({
                     "unknown": "Ha ocurrido un error inesperado",
                     "invalid-response": 'No pude obtener una respuesta válida.',
                     "llm": "Ocurrió un error al procesar tu pregunta.",
+                    "password-incorrect": "La contraseña es incorrecta",
+                    "password-dont-match": "Las contraseñas no coinciden"
                 },
                 "llm-welcome": "¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?",
                 "help-text": "¡Bienvenido al juego! Aquí tienes una guía rápida para empezar:\n\n" +
@@ -117,6 +119,10 @@ i18n.use(initReactI18next).init({
                 "   - Cuando completes todas las preguntas o falles en el modo 'Supervivencia', el juego terminará. Podrás ver tu puntuación final y tus estadísticas.",
                 "help": "Ayuda",
                 "close": "Cerrar",
+                "edit-password": "Cambiar contraseña",
+                "actual-password": "Contraseña actual",
+                "new-password": "Nueva contraseña",
+                "repeat-password": "Repetir contraseña"
             }
         },
         en: {
@@ -213,6 +219,8 @@ i18n.use(initReactI18next).init({
                     "unknown": "An unexpected error has occurred",
                     "invalid-response": 'Could not get a valid response.',
                     "llm": "An error ocurred while processing your question.",
+                    "password-incorrect": "Incorrect password",
+                    "password-dont-match": "Passwords do not match"
                 },
                 "llm-welcome": "Hello! I am your assistant. How can i help you?",
                 "help-text": "Welcome to the game! Here's a quick guide to get started:\n\n" +
@@ -233,6 +241,10 @@ i18n.use(initReactI18next).init({
                 "   - When you complete all the questions or fail in 'Survival' mode, the game will end. You can then see your final score and statistics.",
                 "help": "Help",
                 "close": "Close",
+                "edit-password": "Change password",
+                "actual-password": "Current password",
+                "new-password": "New password",
+                "repeat-password": "Repeat password"
             }
         },
         fr: {
@@ -323,7 +335,9 @@ i18n.use(initReactI18next).init({
                     "invalidCredentials": "Identifiants incorrects",
                     "unknown": "Une erreur inattendue est survenue",
                     "invalid-response": "Je n'ai pas pu obtenir une réponse valide.",
-                    "llm": "Une erreur s'est produite lors du traitement de votre question."
+                    "llm": "Une erreur s'est produite lors du traitement de votre question.",
+                    "password-incorrect": "Mot de passe incorrect",
+                    "password-dont-match": "Les mots de passe ne correspondent pas"
                 },
                 "llm-welcome": "Bonjour! Je suis votre assistant. Comment puis-je vous aider?",
                 "help-text": "Bienvenue dans le jeu ! Voici un guide rapide pour commencer :\n\n" +
@@ -344,6 +358,10 @@ i18n.use(initReactI18next).init({
                 "   - Lorsque vous avez répondu à toutes les questions ou échoué en mode 'Survie', le jeu se termine. Vous pourrez alors voir votre score final et vos statistiques.",         
                 "help": "Aide",
                 "close": "Fermer",
+                "edit-password": "Changer le mot de passe",
+                "actual-password": "Mot de passe actuel",
+                "new-password": "Nouveau mot de passe",
+                "repeat-password": "Répéter le mot de passe"
             }
         }
     },

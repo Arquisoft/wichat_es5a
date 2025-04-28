@@ -17,6 +17,10 @@ const EditProfile = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [fieldErrors, setFieldErrors] = useState({}); // Nuevo estado para errores de campo
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [repeatPassword, setRepeatPassword] = useState("");
+    const [staticUsername, setStaticUsername] = useState("");
 
     const clearFieldError = (field) => {
         setFieldErrors((prev) => ({ ...prev, [field]: null }));
@@ -35,6 +39,7 @@ const EditProfile = () => {
                 setProfileData(response.data);
                 setUsername(response.data.username);
                 setEmail(response.data.email);
+                setStaticUsername(response.data.username);
             } catch (err) {
                 setError(err.response?.data?.error || t('errors.fetchProfile')); // Clave de traducción
             } finally {
@@ -59,7 +64,7 @@ const EditProfile = () => {
         setLoading(true);
         setFieldErrors({}); // Limpiar errores previos al intentar guardar
         try {
-            const response = await axios.put(
+            await axios.put(
                 `${apiEndpoint}/profile/edit/${profileData.username}`,
                 { username, email },
                 {
@@ -97,6 +102,36 @@ const EditProfile = () => {
         setEmail(event.target.value);
         clearFieldError('email');
     };
+
+    const handleChangePassword = async () => {
+        setError(null);
+        setLoading(true);
+        setFieldErrors({}); // Limpiar errores previos al intentar guardar
+        try {
+            await axios.put(
+                `${apiEndpoint}/profile/changePassword/${profileData.username}`,
+                { staticUsername, currentPassword, newPassword, repeatPassword },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            localStorage.removeItem('token');
+            navigate('/login');
+        } catch (err) {
+            const errorMessage = err.response?.data?.error || '';
+            if (errorMessage.includes('Contraseña actual errónea')) {
+                setFieldErrors({ currentPassword: t('errors.password-incorrect') });
+            } else if (errorMessage.includes('Formato inválido')) {
+                setFieldErrors({ newPassword: t('errors.weakPassword') });
+            } else if (errorMessage.includes('Las contraseñas deben ser iguales')) {
+                setFieldErrors({ repeatPassword: t('errors.password-dont-match') });
+            }
+        } finally {
+            setLoading(false);
+        }
+      };
 
     if (loading) {
         return (
@@ -153,19 +188,70 @@ const EditProfile = () => {
                 />
                 {/* Otros campos de edición */}
                 <Button
+                    className='edit-buttons'
                     variant="contained"
-                    color="primary"
                     onClick={handleSave}
                     data-testid="save-button"
                 >
                     {t('save')}
                 </Button>
                 <Button
+                    id='cancel-button'
                     onClick={handleCancel}
                     style={{ marginLeft: '1rem' }}
                     data-testid="cancel-button"
                 >
                     {t('cancel')}
+                </Button>
+                <br/><br/>
+                <Typography variant="h4" gutterBottom data-testid="edit-profile-title">
+                        {t('edit-password')}
+                </Typography>
+                <TextField
+                    label={t("actual-password")}
+                    type="password"
+                    fullWidth
+                    variant="outlined"
+                    value={currentPassword}
+                    error={!!fieldErrors.currentPassword}
+                    helperText={fieldErrors.currentPassword}
+                    inputProps={{ 'data-testid': 'current-field' }}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    sx={{ mb: 3 }}
+                    />
+                <TextField
+                    label={t("new-password")}
+                    type="password"
+                    fullWidth
+                    variant="outlined"
+                    value={newPassword}
+                    error={!!fieldErrors.newPassword}
+                    helperText={fieldErrors.newPassword}
+                    inputProps={{ 'data-testid': 'new-field' }}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    sx={{ mb: 3 }}
+                    />
+                <TextField
+                    label={t("repeat-password")}
+                    type="password"
+                    fullWidth
+                    variant="outlined"
+                    value={repeatPassword}
+                    error={!!fieldErrors.repeatPassword}
+                    helperText={fieldErrors.repeatPassword}
+                    inputProps={{ 'data-testid': 'repeat-field' }}
+                    onChange={(e) => setRepeatPassword(e.target.value)}
+                    sx={{ mb: 3 }}
+                    />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className='edit-buttons'
+                    data-testid="change-button"
+                    onClick={handleChangePassword}
+                    size="large"
+                    >
+                    {t("edit-password")}
                 </Button>
             </Container>
         </div>

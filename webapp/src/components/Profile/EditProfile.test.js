@@ -56,6 +56,7 @@ describe('EditProfile Component', () => {
         await waitFor(() => {
             expect(screen.getByTestId('save-button')).toBeInTheDocument();
             expect(screen.getByTestId('cancel-button')).toBeInTheDocument();
+            expect(screen.getByTestId('change-button')).toBeInTheDocument();
         });
     });
 
@@ -69,12 +70,22 @@ describe('EditProfile Component', () => {
         await waitFor(() => {
             const usernameInput = screen.getByTestId('username-field');
             const emailInput = screen.getByTestId('email-field');
+            const currentInput = screen.getByTestId('current-field');
+            const newInput = screen.getByTestId('new-field');
+            const repeatInput = screen.getByTestId("repeat-field");
 
             fireEvent.change(usernameInput, { target: { value: 'newuser' } });
             fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
+            fireEvent.change(currentInput, { target: { value: 'currentPassword1' } });
+            fireEvent.change(newInput, { target: { value: 'newPassword1' } });
+            fireEvent.change(repeatInput, { target: { value: 'newPassword1' } });
+        
 
             expect(usernameInput).toHaveValue('newuser');
             expect(emailInput).toHaveValue('new@example.com');
+            expect(currentInput).toHaveValue('currentPassword1');
+            expect(newInput).toHaveValue('newPassword1');
+            expect(repeatInput).toHaveValue('newPassword1');
         });
     });
 
