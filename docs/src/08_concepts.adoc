@@ -12,7 +12,7 @@ image::DiagramaDeClases.png[width=600,align="center"]
 | Nombre    | Descripción
 
 |Usuario
-|El usuario de la aplicación podrá acceder a un historial donde se guarden los datos de sus partidas anteriores, así como poder jugar la cantidad de juegos que el usuario vea necesario.
+|El usuario de la aplicación podrá acceder a un historial donde se guarden los datos de sus partidas anteriores, así como poder jugar la cantidad de juegos que el usuario vea necesario. También podrá acceder a su perfil y a un ranking donde estarán todas las puntaciones de los jugadores.
 
 |Historial
 |Contendrá tanto las preguntas falladas y acertadas de su usuario, como el número de juegos que ha jugado y los distintos tiempos que ha tardado en completar cada juego en segundos.
@@ -22,6 +22,12 @@ image::DiagramaDeClases.png[width=600,align="center"]
 
 |Pregunta
 |Las preguntas serán las que vea el usuario en pantalla, dependen enteramente de juego. Las preguntas tendrán una descripción y una lista de opciones de las cuales solo una será la correcta.
+
+|Perfil
+|Cada usuario tendrá un perfil, donde podrá cambiar sus datos personales así como ir a su historial.
+
+|Ranking
+|Habrá un ranking global en la aplicación donde se registrarán a los mejores usuarios, es decir, aquellos que mejores puntos hayan obtenido. Solo hay uno en la aplicación.
 |===
 
 

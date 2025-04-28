@@ -59,11 +59,11 @@ Se reduce la necesidad de intervención manual en la creación de preguntas, aut
 Se introduce una dependencia con servicios externos, lo que puede afectar la disponibilidad y latencia del sistema en caso de problemas en estas APIs.  
 Es necesario implementar mecanismos para validar y filtrar la información generada, evitando errores o inconsistencias en las preguntas y respuestas.  
 
-==== Seguridad mediante HTTPS y doble autenticación
+==== Seguridad mediante encriptación
 
 **Motivación:**  
-Dado que WIChat maneja información de usuarios, es esencial garantizar su seguridad. Para ello, todas las comunicaciones se realizan a través de HTTPS y se emplea doble factor para loguearse.
+Dado que WIChat maneja información de usuarios, es esencial garantizar su seguridad. Para ello, las contraseñas se guardarán encriptadas en la base de datos y se requerirá de doble autentificación.
 
 **Consecuencias:**  
-Se protege la información personal de los usuarios mediante el cifrado de datos en tránsito.  
-Se previenen accesos no autorizados mediante un sistema de doble autenticación.
+Si el usuario se equivoca una vez escribiendo la contraseña podrá darse cuenta de su error.
+Se protege la integridad de los datos del usuario, ya que ni siquiera el equipo desarrollador tiene acceso a su contraseña.

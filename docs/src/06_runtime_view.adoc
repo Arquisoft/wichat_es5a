@@ -8,7 +8,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 
 * _Para poder jugar un usuario debe estar registrado_
-* _Para registrarse se necesita un nombre de usuario y una contraseña_
+* _Para registrarse se necesita un nombre de usuario, un email y una contraseña_
 
 [plantuml,"User registration diagram",png]
 ----
@@ -18,8 +18,8 @@ participant "GatewayService" as GS
 participant "UserService" as US
 database "Base de datos" as DB
 
-Usuario -> GS: Introducir nombre y contraseña
-GS -> US: POST /adduser con el nombre y contraseña
+Usuario -> GS: Introducir nombre, correo y contraseña
+GS -> US: POST /adduser con el nombre, correo y contraseña
 US -> US: Validar los datos requeridos
 US -> US: Encriptar contraseña
 US -> DB: Guardar usuario en la base de datos

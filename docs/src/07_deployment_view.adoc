@@ -8,15 +8,17 @@ image::DiagramaDespliegue.png["Diagrama de Despliegue"]
 
 === Motivación
 En WIChat, los usuarios interactúan a través de una interfaz web basada en React.  
-Esta aplicación se comunica con un backend desplegado en un servidor en **Azure**, donde cada componente funciona dentro de contenedores **Docker**.  
-El **Gateway Service** actúa como el núcleo del sistema, distribuyendo las solicitudes entre los servicios internos (**AuthService, UserService, QuestionService, HistoryService, WIChat_API,Wikidata API**) y servicios externos (**Gemini API y Wikidata**).  
+
+Esta aplicación se despliega en un servidor en **Azure**, donde cada componente funciona dentro de contenedores **Docker**.  
+
+El WebApp será el front-end de la aplicación, el cual realizará llamadas de peticiones al Gateway Service, que hara llamadas al resto de servicios de la aplicación. El Gateway también contendrá una Api que almacenará todos los datos de los usuarios y las preguntas. Dos de los servicios antes mencionados son el WikiService y el LlmService, que realizarán solicitudes a sus respectivas Apis externas a la aplicación.
+
 Los datos se almacenan en **MongoDB**, ejecutándose en un contenedor Docker en el mismo servidor.  
-El sistema garantiza la seguridad mediante conexiones **HTTPS** y autenticación con **API Keys**, mientras que la arquitectura basada en contenedores facilita la escalabilidad y modularidad.
 
 === Características de Calidad y Rendimiento
 
 * **Escalabilidad:** Cada servicio está encapsulado en un contenedor **Docker**, lo que permite escalar horizontalmente según la demanda.
-* **Seguridad:** Todas las comunicaciones se realizan mediante **HTTPS** y las interacciones con servicios externos requieren **API Keys**.
+* **Seguridad:** Las interacciones con servicios externos requieren **API Keys**, tenemos doble verificación de la contraseña y esta se almacena encriptada en la base de datos.
 * **Modularidad:** La separación de servicios en microservicios facilita el mantenimiento y la extensibilidad del sistema.
 
 === Mapeo de Componentes a la Infraestructura
@@ -26,38 +28,35 @@ El sistema garantiza la seguridad mediante conexiones **HTTPS** y autenticación
 | Servicio         | Descripción
 
 | **WebApp**
-| Aplicación frontend en React que permite la interacción del usuario con el sistema.
+| Frontend en React que permite la interacción del usuario con el sistema.
 
 | **Gateway Service**
-| Punto de entrada de la aplicación. Orquesta las solicitudes entre los servicios internos y externos.
+| Servicio que redirige las llamadas del WebApp a los distintos servicios de la aplicación. Contiene una Api que el usuario podrá consultar para mirar los datos de los usuarios de la aplicación como de las preguntas.
 
 | **Auth Service**
 | Responsable de la autenticación de los usuarios.
 
 | **User Service**
-| Maneja la gestión de usuarios, incluyendo registros y perfiles.
-
-| **Question Service**
-| Obtiene preguntas desde Wikidata, las procesa y las almacena en la base de datos.
+| Maneja la gestión de usuarios, se encarga del registro de usuarios.
 
 | **History Service**
 | Gestiona y almacena el historial de participación de los usuarios.
 
-| **WIChat API**
-| Proporciona información sobre los usuarios de la aplicación y las preguntas que se generan.
+| **Wiki Service**
+|  Servicio que interactúa con WikiData y que se encarga de la generación de preguntas.
 
-| **Wikidata API**
-|  API para acceder a Wikidata.
+| **LLM Service**
+| Servicio que interactúa con la API de Gemini y que se encarga de generar las pistas para el usuario.
 
 | **MongoDB**
 | Base de datos utilizada para almacenar:
-  - Información de usuarios (perfiles, credenciales).
+  - Información de usuarios.
   - Preguntas y respuestas generadas.
   - Historial de participación y partidas.
 
 | **Gemini API**
 | API de modelo de lenguaje utilizada para generar pistas en tiempo real.
 
-| **Wikidata**
+| **API Wikidata**
 | Fuente externa de información utilizada para la generación automática de preguntas.
 |===
