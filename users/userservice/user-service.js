@@ -95,7 +95,7 @@ const authenticateToken = (req, res, next) => {
 // Route to get user profile using username from token
 app.get('/profile', authenticateToken, async (req, res) => {
   try {
-    const username = req.user.user.username; // Extract username from token
+    const username = req.user.username; // Extract username from token
     const user = await findOne(username, null); // Use findOne() to get user data
 
     if (!user) {
