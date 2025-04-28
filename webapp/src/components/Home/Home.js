@@ -40,7 +40,8 @@ const Home = () => {
   return (
     <div id="body-container">
       <NavBar />
-      <CustomH1>
+      <img src={"/logo.png"} alt="Logo" height={200} width={200} />
+      <CustomH1 size="h2">
         {t("title")}
       </CustomH1>
       <Container>
@@ -50,7 +51,7 @@ const Home = () => {
             <CustomH1 size="h6">
               {t("wanna-play")}
             </CustomH1>
-            <LargeButton width="30%" onClick={enterGame}>
+            <LargeButton width="50%" onClick={enterGame}>
               {t("play")}
             </LargeButton>
           </Box>
@@ -60,7 +61,7 @@ const Home = () => {
             <CustomH1 size="h6">
               {t("home-profile")}
             </CustomH1>
-            <LargeButton width="30%" onClick={enterProfile}>
+            <LargeButton width="50%" onClick={enterProfile}>
               {t("profile")}
             </LargeButton>
           </Box>
@@ -72,7 +73,7 @@ const Home = () => {
         <CustomH1 size="h6">
           {t("ranking-home")}
         </CustomH1>
-        <LargeButton width="30%" onClick={enterRanking}>
+        <LargeButton width="50%" onClick={enterRanking}>
           {t("ranking")}
         </LargeButton>
       </Box>
@@ -82,7 +83,7 @@ const Home = () => {
         <CustomH1 size="h6">
           {t("home-history")}
         </CustomH1>
-        <LargeButton width="30%" onClick={enterHistory}>
+        <LargeButton width="50%" onClick={enterHistory}>
           {t("history")}
         </LargeButton>
       </Box>
@@ -92,7 +93,7 @@ const Home = () => {
         <CustomH1 size="h6">
           {t("home-credits")}
         </CustomH1>
-        <LargeButton onClick={enterCredits}>
+        <LargeButton width="25%" onClick={enterCredits}>
           {t("credits")}
         </LargeButton>
       </Box>
