@@ -24,9 +24,17 @@ paths:
                   type: string
                   description: User ID.
                   example: student
+                email:
+                  type: string
+                  description: User email.
+                  example: student@gmail.com
                 password:
                   type: string
                   description: User password.
+                  example: pass
+                confirmPassword:
+                  type: string
+                  description: Confirmation of the user password.
                   example: pass
       responses:
         '200':
@@ -36,24 +44,40 @@ paths:
               schema:
                 type: object
                 properties:
-                  username:
+                  token:
                     type: string
-                    description: User ID
-                  password:
-                    type: string
-                    description: Hashed password
-                    example: $2b$10$ZKdNYLWFQxzt5Rei/YTc/OsZNi12YiWz30JeUFHNdAt7MyfmkTuvC
+                    description: User token.
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWY3NTZkYjNmYTIyZDIyN2E0YjdjN2QiLCJpYXQiOjE3MTA3MDg3NDUsImV4cCI6MTcxMDcxMjM0NX0.VMG_5DOyQ4GYlJQRcu1I6ICG1IGzuo2Xuei093ONHxw
                   _id:
                     type: string
                     description: Identification
                     example: 65f756db3fa22d227a4b7c7d
+                  username:
+                    type: string
+                    description: Username
+                    example: student
+                  email:
+                    type: string
+                    description: User email.
+                    example: student@gmail.com
+                  password:
+                    type: string
+                    description: Hashed password
+                    example: $2b$10$ZKdNYLWFQxzt5Rei/YTc/OsZNi12YiWz30JeUFHNdAt7MyfmkTuvC
+                  points:
+                    type: integer
+                    description: Points of the user.
+                    example: 0
+                  contests:
+                    type: array
+                    description: List of contests associated with the user.
+                    items:
+                      type: string
+                      example: ['65f756db3fa22d227a4b7c7d', '65f756db3fa22d227a4b7c7e']
                   createdAt:
                     type: string
                     description: Creation date.
                     example: '2024-03-17T20:47:23.935Z'
-                  ___v:
-                    type: integer
-                    example: '0'                                        
         '400':
           description: Failed to add user.
           content:
@@ -64,7 +88,7 @@ paths:
                   error:
                     type: string
                     description: Error information.
-                    example: getaddrinfo EAI_AGAIN mongodb
+                    example: La contraseña debe tener al menos 7 caracteres, uno de ellos mayúscula y otro un número
   /health:
     get:
       summary: Check the health status of the service.
@@ -99,8 +123,7 @@ paths:
                 password:
                   type: string
                   description: User password.
-                  example: pass
-            
+                  example: pass 
       responses:
         '200':
           description: Login successful. Returns user token, username, and creation date.
@@ -130,7 +153,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    description: Shows the error info..
+                    description: Shows the error info.
                     example: Invalid credentials
         '500':
           description: Internal server error.
@@ -154,6 +177,14 @@ paths:
             schema:
               type: object
               properties:
+                mode:
+                  type: string
+                  description: Mode of the game.
+                  example: 'flag'
+                difficulty:
+                  type: string
+                  description: Difficulty of the game.
+                  example: 'easy'
                 arCorrect:
                   type: array
                   description: Array which contains if the answer was answered correctly or not.
@@ -182,9 +213,13 @@ paths:
                   items:
                     type: integer
                   example: [0, 1, 0, 2, 0]
+                username:
+                  type: string
+                  description: Username of the user who played the game.
+                  example: student
       responses:
         '200':
-          description: Game saved succesfully. Returns true, stating that the operation was successful.
+          description: Game saved successfully. Returns true, stating that the operation was successful.
           content:
             application/json:
               schema:
@@ -194,6 +229,10 @@ paths:
                     type: boolean
                     description: Success status.
                     example: true
+                  id:
+                    type: string
+                    description: ID of the saved game.
+                    example: 65f756db3fa22d227a4b7c7d
         '500':
           description: Internal server error.
           content:
@@ -211,7 +250,7 @@ paths:
       operationId: getHistory
       responses:
         '200':
-          description: Login successful. Returns user token, username, and creation date.
+          description: Contests retrieved successfully.
           content:
             application/json:
               schema:
@@ -235,14 +274,14 @@ paths:
                           type: string
                           description: Contest ID.
                           example: 65f756db3fa22d227a4b7c7d
+                        difficulty:
+                          type: string
+                          description: Difficulty of the game.
+                          example: 'easy'
                         mode:
                           type: string
                           description: Mode of the game.
-                          example: 'Normal'
-                        typeOfQuestions:
-                          type: string
-                          description: Type of the questions
-                          example: 'Flags'
+                          example: 'flag'
                         rightAnswers:
                           type: array
                           description: Array which contains if the answer was answered correctly or not for every question included in the game.
@@ -319,7 +358,7 @@ paths:
                         question:
                           type: string
                           description: Question text.
-                          example: 'What is the capital of Spain?'
+                          example: 'question-flag'
                         image:
                           type: string
                           description: Image URL.
@@ -458,6 +497,14 @@ paths:
                   type: string
                   description: The correct answer for which the hint should be generated.
                   example: "Argentina"
+                language:
+                  type: string
+                  description: The language in which the hint should be generated.
+                  example: "es"
+                version:
+                  type: string
+                  description: The version of the LLM to be used.
+                  example: "pregunta"
       responses:
         '200':
           description: Hint generated successfully by the LLM.
@@ -492,7 +539,7 @@ paths:
                     type: string
                     description: Error message.
                     example: "Internal server error"
-  /questions/{kind}:
+  /questions/:kind:
     post:
       summary: Retrieves a question and its possible answers based on the specified kind.
       operationId: getQuestionsByKind
@@ -502,9 +549,24 @@ paths:
           required: true
           schema:
             type: string
-          description: 
-            The type of question to retrieve. Possible values include "city", "flag", "music", "foodS" or "football".
+          description: >
+            The type of question to retrieve. Possible values include "city", "flag", "music", "food" or "football".
           example: flag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language:
+                  type: string
+                  description: The language in which the question should be generated.
+                  example: es
+                numQuestions:
+                  type: number
+                  description: The number of questions to retrieve.
+                  example: 5
       responses:
         '200':
           description: Question retrieved successfully.
@@ -514,23 +576,30 @@ paths:
                 type: object
                 properties:
                   question:
-                    type: string
-                    description: The question text.
-                    example: "¿Qué país tiene esta bandera?"
-                  image:
-                    type: string
-                    description: URL of the image associated with the question.
-                    example: "https://example.com/flag.jpg"
-                  answer:
-                    type: string
-                    description: The correct answer to the question.
-                    example: "Argentina"
-                  wrongAnswers:
-                    type: array
-                    items:
-                      type: string
-                    description: A list of incorrect answers.
-                    example: ["Brasil", "Chile", "Uruguay"]
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: Question ID.
+                        example: 67e4a171206740a957c5988e
+                      question:
+                        type: string
+                        description: The question text.
+                        example: "¿Qué país tiene esta bandera?"
+                      image:
+                        type: string
+                        description: URL of the image associated with the question.
+                        example: "https://example.com/flag.jpg"
+                      answer:
+                        type: string
+                        description: The correct answer to the question.
+                        example: "Argentina"
+                      wrongAnswers:
+                        type: array
+                        items:
+                          type: string
+                        description: A list of incorrect answers.
+                        example: ["Brasil", "Chile", "Uruguay"]
         '400':
           description: Bad request. The query could not be processed.
           content:
@@ -552,4 +621,133 @@ paths:
                   error:
                     type: string
                     description: Error message.
-                    example: "Internal server error."
+                    example: "Internal server error"
+  /gethistory/:username:
+    get:
+      summary: Retrieves the contest history of a specific user.
+      operationId: getUserHistory
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The username of the user whose contest history is being retrieved.
+          example: student
+      responses:
+        '200':
+          description: User contest history retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contests:
+                    type: array
+                    description: List of contests associated with the user.
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: Contest ID.
+                          example: 65f756db3fa22d227a4b7c7d
+                        difficulty:
+                          type: string
+                          description: Difficulty of the game.
+                          example: 'easy'
+                        mode:
+                          type: string
+                          description: Mode of the game.
+                          example: 'flag'
+                        rightAnswers:
+                          type: array
+                          description: Array which contains if the answer was answered correctly or not for every question included in the game.
+                          items:
+                            type: boolean
+                          example: [true, false, true, true, false]
+                        points:
+                          type: integer
+                          description: Points gained in the game.
+                          example: 500
+                        preguntas:
+                          type: array
+                          description: Array which contains the ids of the questions included in the game.
+                          items:
+                            type: string
+                          example: ['67e4a171206740a957c5988e','67e4a171206740a957c59890','67e4a171206740a957c59892']
+                        tiempos:
+                          type: array
+                          description: Array which contains the time taken to answer each question.
+                          items:
+                            type: integer
+                          example: [2, 4, 7, 1, 3]
+                        pistas:
+                          type: array
+                          description: Array which contains the number of hints used in each question.
+                          items:
+                            type: integer
+                          example: [0, 1, 0, 2, 0]
+                        date:
+                          type: string
+                          description: Date of the contest.
+                          example: '2025-03-27T00:53:05.578+00:00'
+        '404':
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: User not found
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: Internal server error
+  /getranking:
+    get:
+      summary: Retrieves the ranking of all users sorted by points.
+      operationId: getRanking
+      responses:
+        '200':
+          description: Ranking retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    description: List of users sorted by points.
+                    items:
+                      type: object
+                      properties:
+                        username:
+                          type: string
+                          description: Username of the user.
+                          example: student
+                        points:
+                          type: integer
+                          description: Total points of the user.
+                          example: 500
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: Internal server error
