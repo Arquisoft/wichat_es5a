@@ -244,6 +244,7 @@ const EditProfile = () => {
                     variant="contained"
                     color="primary"
                     className='edit-buttons'
+                    data-testid="change-button"
                     onClick={handleChangePassword}
                     size="large"
                     >
