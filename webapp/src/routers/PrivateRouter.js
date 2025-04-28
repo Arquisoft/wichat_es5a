@@ -7,7 +7,7 @@ Esta copiado y pegado de otro repo asi que puede no funcionar, pero la idea es l
 Lo ideal sería no implementarlo hasta mas adelante para no obstaculizar el desarrollo.
 */
 
-export const PrivateRoute = ({ children }) =>
+export const PrivateRoute = ({ children }) => 
 {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
