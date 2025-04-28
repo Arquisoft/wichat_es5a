@@ -9,6 +9,7 @@ import Home from "../components/Home/Home";
 import Error from "../components/Error/Error";
 import Points from "../components/Points/Points";
 import Profile from "../components/Profile/Profile";
+import EditProfile from "../components/Profile/EditProfile";
 import Credits from "../components/Credits/Credits";
 import Game from "../components/Game/Game";
 import History from "../components/History/History";
@@ -80,6 +81,14 @@ const router = createBrowserRouter([
         element:
             <PrivateRoute>
                 <Ranking />
+            </PrivateRoute>
+
+    },
+    {
+        path: "/profile/edit/:username",
+        element:
+            <PrivateRoute>
+                <EditProfile />
             </PrivateRoute>
 
     },

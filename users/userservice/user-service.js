@@ -42,6 +42,40 @@ async function findOne(username, email) {
   return await User.findOne(query);
 }
 
+// Función para actualizar la información del usuario en la base de datos
+async function updateUserProfile(currentUsername, newUsername, newEmail) {
+  try {
+    const updateFields = {};
+
+    if (newUsername) {
+      const existingUserWithNewUsername = await findOne(newUsername, null);
+      if (existingUserWithNewUsername && existingUserWithNewUsername.username !== currentUsername) {
+        throw new Error('El nombre de usuario ya está en uso.');
+      }
+      updateFields.username = newUsername.toString();
+    }
+
+    if (newEmail) {
+      const existingUserWithNewEmail = await findOne(null, newEmail);
+      if (existingUserWithNewEmail && existingUserWithNewEmail.email !== (await User.findOne({ username: currentUsername })).email) {
+        throw new Error('El correo electrónico ya está en uso.');
+      }
+      updateFields.email = newEmail.toString();
+    }
+
+    const result = await User.updateOne({ username: currentUsername.toString() }, { $set: updateFields });
+
+    if (result.matchedCount === 0) {
+      throw new Error('Usuario no encontrado.');
+    }
+
+    return { message: 'Perfil actualizado exitosamente.', modifiedCount: result.modifiedCount };
+
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Middleware to authenticate token
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -99,6 +133,33 @@ app.post('/savegame', async (req, res) => {
   } catch (error) {
     console.error('Error fetching profile:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/profile/edit/:username', async (req, res) => {
+  try {
+    const currUsername = req.params.username;
+    const newUsername = req.body.username; 
+    const newEmail = req.body.email;
+
+    //Comprobación de que el email sea del tipo cualquiercosa@cualquiercosa.letras(mínimo 2)
+    const emailRegex = /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(newEmail)) {
+      return res.status(400).json({ error: "Formato de email inválido" });
+    }
+
+    const result = await updateUserProfile(
+      currUsername.toString(), 
+      newUsername.toString(), 
+      newEmail.toString()
+    );
+    res.json(result);
+
+  } catch (error) {
+    res.status(error.message === 'Usuario no encontrado.' ? 404 :
+      error.message === 'El nombre de usuario ya está en uso.' ? 409 :
+        error.message === 'El correo electrónico ya está en uso.' ? 409 :
+          500).json({ error: error.message || 'Error interno del servidor al actualizar el perfil.' });
   }
 });
 
