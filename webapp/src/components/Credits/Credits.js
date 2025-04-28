@@ -19,6 +19,11 @@ const Credits = () => {
   return (
     <div>
       <NavBar/>
+      <Container>
+        <LargeButton onClick={exitCredits}>
+          {t("exit")}
+        </LargeButton>
+      </Container>
       <Container
       component="main"
       sx={{
@@ -47,9 +52,6 @@ const Credits = () => {
         <CustomH1 size="h5">
           UO295029@uniovi.es - Marcos Argüelles Rivera
         </CustomH1>
-        <LargeButton onClick={exitCredits}>
-          {t("exit")}
-        </ LargeButton>
       </Container>
     </div>
   );

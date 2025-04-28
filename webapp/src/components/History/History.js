@@ -12,7 +12,7 @@ import HistoryText from '../ReactComponents/HistoryText';
 
 const History = () => {
   const navigate = useNavigate();
-  const location = useLocation(); 
+  const location = useLocation();
 
   const { user } = location.state || { user: null };
 
@@ -29,7 +29,7 @@ const History = () => {
   const exitHistory = () => {
     if (user === null)
       navigate('/home');
-    else 
+    else
       navigate('/profile', { state: { user: user } });
   };
 
@@ -128,7 +128,7 @@ const History = () => {
       </Grid>
       <Grid item xs={1}>
         <HistoryText color="#00493A" size="h6">
-          {totalTime[index]}" 
+          {totalTime[index]}"
         </HistoryText>
       </Grid>
       <Grid item xs={2}>
@@ -156,6 +156,11 @@ const History = () => {
   return (
     <div>
       <NavBar />
+      <Container>
+        <LargeButton onClick={exitHistory}>
+          {t("exit")}
+        </LargeButton>
+      </Container>
       <Container
         component="main"
         sx={{
@@ -172,9 +177,6 @@ const History = () => {
           questionCount={questionCount}
           t={t}
         />
-        <LargeButton onClick={exitHistory}>
-          {t("exit")}
-        </LargeButton>
         <Container
           sx={{
             backgroundColor: "#98d7c2",
