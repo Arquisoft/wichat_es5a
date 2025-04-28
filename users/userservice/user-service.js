@@ -208,7 +208,7 @@ app.post('/adduser', async (req, res) => {
       });
 
       const token = jwt.sign(
-              { user: user }, 
+              { user: newUser }, 
               'your-secret-key', 
               { expiresIn: '1h' }
             );
