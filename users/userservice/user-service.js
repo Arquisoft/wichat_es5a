@@ -76,6 +76,42 @@ async function updateUserProfile(currentUsername, newUsername, newEmail) {
   }
 }
 
+// Función para cambiar la contraseña del usuario
+async function changePassword(username, currentPassword, newPassword, repeatPassword) {
+  try {
+    const updateFields = {};
+    const user = await findOne(username, null);
+    if(!user) throw new Error("Usuario no encontrado");
+    
+    if (!await bcrypt.compare(currentPassword, user.password)) {
+      throw new Error("Contraseña actual errónea");
+    }
+    
+    const passwordRegex = /^(?=.*[0-9])(?=.*[A-Z]).{7,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      throw new Error("Formato inválido");
+    }
+
+    if (!newPassword || !repeatPassword || newPassword !== repeatPassword) {
+      throw new Error('Las contraseñas deben ser iguales');
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+    updateFields.password = hashed;
+
+    const result = await User.updateOne({ username: username.toString() }, { $set: updateFields });
+
+    if (result.matchedCount === 0) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    return { message: 'Contraseña modificada exitosamente.', modifiedCount: result.modifiedCount };
+
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Middleware to authenticate token
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -95,7 +131,7 @@ const authenticateToken = (req, res, next) => {
 // Route to get user profile using username from token
 app.get('/profile', authenticateToken, async (req, res) => {
   try {
-    const username = req.user.user.username; // Extract username from token
+    const username = req.user.username; // Extract username from token
     const user = await findOne(username, null); // Use findOne() to get user data
 
     if (!user) {
@@ -160,6 +196,29 @@ app.put('/profile/edit/:username', async (req, res) => {
       error.message === 'El nombre de usuario ya está en uso.' ? 409 :
         error.message === 'El correo electrónico ya está en uso.' ? 409 :
           500).json({ error: error.message || 'Error interno del servidor al actualizar el perfil.' });
+  }
+});
+
+app.put('/profile/changePassword/:username', async (req, res) => {
+  try {
+    validateRequiredFields(req, ['currentPassword', 'newPassword', 'repeatPassword']);
+    const username = req.params.username;
+    const currentPassword = req.body.currentPassword; 
+    const newPassword = req.body.newPassword;
+    const repeatPassword = req.body.repeatPassword;
+
+    const result = await changePassword(
+      username.toString(), 
+      currentPassword.toString(), 
+      newPassword.toString(),
+      repeatPassword.toString()
+    );
+    res.json(result);
+
+  } catch (error) {
+    res.status(error.message === 'Usuario no encontrado' ? 404 : error.message === 'Contraseña actual errónea' ? 409 :
+      error.message === 'Formato inválido' ? 409 : error.message === 'Las contraseñas deben ser iguales' ? 409 :
+        500).json({ error: error.message || 'Error interno del servidor al cambiar la contraseña.' });
   }
 });
 
