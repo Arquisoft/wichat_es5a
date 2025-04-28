@@ -25,9 +25,9 @@ const Ranking = () => {
     const enterHistory = (username) => {
         navigate('/history', {
             state: {
-              user: username,
+                user: username,
             }
-          });
+        });
     }
 
     // Se ejecuta al cargar el componente
@@ -47,6 +47,11 @@ const Ranking = () => {
     return (
         <div>
             <NavBar />
+            <Container>
+                <LargeButton onClick={exitRanking}>
+                    {t("exit")}
+                </LargeButton>
+            </Container>
             <Container
                 component="main"
                 sx={{
@@ -60,14 +65,12 @@ const Ranking = () => {
                 <CustomH1 size="h1">
                     {t("Ranking")}
                 </CustomH1>
-                <LargeButton onClick={exitRanking}>
-                    {t("exit")}
-                </LargeButton>
+
                 <Container
-                sx ={{
-                    backgroundColor: "#98d7c2",
-                    marginTop: 2,
-                }}>
+                    sx={{
+                        backgroundColor: "#98d7c2",
+                        marginTop: 2,
+                    }}>
                     <Grid container spacing={2}
                         sx={{
                             marginTop: 2,
