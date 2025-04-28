@@ -215,6 +215,7 @@ const EditProfile = () => {
                     value={currentPassword}
                     error={!!fieldErrors.currentPassword}
                     helperText={fieldErrors.currentPassword}
+                    inputProps={{ 'data-testid': 'current-field' }}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     sx={{ mb: 3 }}
                     />
@@ -226,6 +227,7 @@ const EditProfile = () => {
                     value={newPassword}
                     error={!!fieldErrors.newPassword}
                     helperText={fieldErrors.newPassword}
+                    inputProps={{ 'data-testid': 'new-field' }}
                     onChange={(e) => setNewPassword(e.target.value)}
                     sx={{ mb: 3 }}
                     />
@@ -237,6 +239,7 @@ const EditProfile = () => {
                     value={repeatPassword}
                     error={!!fieldErrors.repeatPassword}
                     helperText={fieldErrors.repeatPassword}
+                    inputProps={{ 'data-testid': 'repeat-field' }}
                     onChange={(e) => setRepeatPassword(e.target.value)}
                     sx={{ mb: 3 }}
                     />
