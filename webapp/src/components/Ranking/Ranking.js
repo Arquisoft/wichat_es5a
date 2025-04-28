@@ -58,7 +58,7 @@ const Ranking = () => {
                 }}
             >
                 <CustomH1 size="h1">
-                    {t("Ranking")}
+                    {t("ranking")}
                 </CustomH1>
                 <LargeButton onClick={exitRanking}>
                     {t("exit")}
@@ -79,17 +79,17 @@ const Ranking = () => {
                     >
                         <Grid item xs={2}>
                             <HistoryText color="#00493A" size="h6">
-                                <b>{t("Puesto")}</b>
+                                <b>{t("rank")}</b>
                             </HistoryText>
                         </Grid>
                         <Grid item xs={4}>
                             <HistoryText color="#00493A" size="h6">
-                                <b>{t("Nombre de usuario")}</b>
+                                <b>{t("username")}</b>
                             </HistoryText>
                         </Grid>
                         <Grid item xs={4}>
                             <HistoryText color="#00493A" size="h6">
-                                <b>{t("Puntos")}</b>
+                                <b>{t("points")}</b>
                             </HistoryText>
                         </Grid>
                         <Grid item xs={2}>
@@ -132,7 +132,7 @@ const Ranking = () => {
                                     bottom="30%"
                                     onClick={() => enterHistory(user.username)}
                                 >
-                                    {t("Historial")}
+                                    {t("history")}
                                 </LargeButton>
                             </Grid>
                         </Grid>

@@ -38,7 +38,7 @@ describe('Ranking Component', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText('Ranking')).toBeInTheDocument();
+    expect(screen.getByText('Clasificación')).toBeInTheDocument();
     expect(screen.getByText('Salir')).toBeInTheDocument();
   });
 
@@ -76,10 +76,10 @@ describe('Ranking Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getAllByText('Historial')[0]).toBeInTheDocument();
+      expect(screen.getAllByText('Histórico')[0]).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getAllByText('Historial')[0]); // Haz clic en el botón "Historial" del primer usuario
+    fireEvent.click(screen.getAllByText('Histórico')[0]); // Haz clic en el botón "Historial" del primer usuario
     expect(mockNavigate).toHaveBeenCalledWith('/history', {"state": {"user": "user1"}});
   });
 
