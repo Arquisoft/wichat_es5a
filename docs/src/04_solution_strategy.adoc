@@ -23,33 +23,3 @@ Las siguientes tecnologías han sido usadas a lo largo del desarrollo de nuestra
 * **Visual Studio Code:** Es el IDE que hemos usado los miembros del equipo por defecto ya que es un entorno con el que estamos familiarizados y que además contiene todos los mecanismos que necesitamos para trabajar con el proyecto y entre nosotros en el repositorio remoto.
 * **Draw.io:** A la hora de crear diagramas como los de bloques nos hemos decantado por esta herramienta online, debido a su facilidad de uso y varios tipos de plantillas para crear diagramas así como que es totalmente gratuita.
 * **PlantUML:** También para los diagramas hemos usado esta herramienta. Es totalmente gratuita y funciona escribiendo el diagrama UML en formato de texto y generándolo después en formato gráfico.
-
-
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-A short summary and explanation of the fundamental decisions and solution strategies, that shape system architecture. It includes
-
-* technology decisions
-* decisions about the top-level decomposition of the system, e.g. usage of an architectural pattern or design pattern
-* decisions on how to achieve key quality goals
-* relevant organizational decisions, e.g. selecting a development process or delegating certain tasks to third parties.
-
-.Motivation
-These decisions form the cornerstones for your architecture. They are the foundation for many other detailed decisions or implementation rules.
-
-.Form
-Keep the explanations of such key decisions short.
-
-Motivate what was decided and why it was decided that way,
-based upon problem statement, quality goals and key constraints.
-Refer to details in the following sections.
-
-
-.Further Information
-
-See https://docs.arc42.org/section-4/[Solution Strategy] in the arc42 documentation.
-
-****
-endif::arc42help[]

@@ -4,33 +4,6 @@ ifndef::imagesdir[:imagesdir: images]
 
 == Diagrama de Despliegue
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Content
-Esta vista describe:
-
-1. La infraestructura técnica utilizada para ejecutar WIChat, con elementos como entornos, servidores, contenedores Docker, canales de comunicación y protocolos de red.
-
-2. La asignación de los bloques de software a esta infraestructura.
-
-Dado que WIChat está compuesto por múltiples servicios y utiliza tecnologías externas, es crucial documentar su despliegue para garantizar su mantenimiento, escalabilidad y correcto funcionamiento.
-
-.Motivación
-
-El software no puede ejecutarse sin infraestructura. Esta infraestructura subyacente afecta la arquitectura del sistema y conceptos transversales como seguridad y rendimiento. Es importante entender y documentar estos aspectos.
-
-.Forma
-
-Se presenta un diagrama de despliegue que muestra los servicios dentro de contenedores Docker, las conexiones entre ellos y su interacción con bases de datos y servicios externos.
-
-.Further Information
-
-Ver https://docs.arc42.org/section-7/[Deployment View] en la documentación de arc42.
-
-****
-endif::arc42help[]
-
 image::DiagramaDespliegue.png["Diagrama de Despliegue"]
 
 === Motivación

@@ -1,0 +1,8 @@
+ifndef::imagesdir[:imagesdir: ../images]
+
+[[section-testing]]
+== Test
+
+===
+
+===Test de carga
