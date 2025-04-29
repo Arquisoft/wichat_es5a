@@ -111,7 +111,9 @@ services:
       - gatewayservice
     ports:
       - "8080:8080"
-
+    environment:
+      - GRAFANA_URI: http://grafana:9091
+      - PROMETHEUS_URI: http://prometheus:9090
   prometheus:
     image: prom/prometheus
     container_name: prometheus-wichat_es5a

@@ -1,8 +1,8 @@
 # Dockerfile for Prometheus
-FROM prom/prometheus:v2.45.0
+FROM prom/prometheus:latest
 
 # Copy Prometheus configuration
-COPY ./prometheus.yml /etc/prometheus/prometheus.yml
+COPY . .
 
 # Expose the port
 EXPOSE 9090
