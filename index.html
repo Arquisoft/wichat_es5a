@@ -1837,11 +1837,62 @@ El sistema debe probarse con usuarios reales en su fase de desarrollo de manera 
 </div>
 <div class="sect2">
 <h3 id="_test_de_usabilidad">12.2. Test de Usabilidad</h3>
-
+<div class="paragraph">
+<p>Hemos realizado dos tandas con usuarios tanto en el sprint 3 como en el sprint 4 para que probaran la aplicación desplegada.</p>
+</div>
+<div class="paragraph">
+<p>Estos usuarios eran personas jóvenes de entre 20 y 30 años de edad, bastante familiarizados con las aplicaciones web en general, por lo que la curva de aprendizaje fue bastante rápida y no supuso un gran problema.</p>
+</div>
+<div class="paragraph">
+<p>Algunos de los problemas que encontraron los usuarios y que nos parecieron relevantes fueron:</p>
+</div>
+<div class="sect3">
+<h4 id="_sprint_3">12.2.1. Sprint 3</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Las preguntas en difícil tardan bastante en generar(1 minuto).</p>
+</li>
+<li>
+<p>La ventana del chat tapa su propio botón de cerrar.</p>
+</li>
+<li>
+<p>El botón siguiente pregunta se va desplazando hacia abajo con cada click.</p>
+</li>
+<li>
+<p>La primera vez que le das al botón de iniciar sesión no va, tienes que darle dos veces.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sprint_4">12.2.2. Sprint 4</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>El botón del LLM no era intuitivo para su uso, haciendo que el usuario no supiera si estaba desactivado.</p>
+</li>
+<li>
+<p>Algunas preguntas de comida enseñaban códigos en vez de respuestas.</p>
+</li>
+<li>
+<p>Un bug en el modo supervivencia que hacía que se repitiese la misma pregunta a partir de la 20.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_test_e2e">12.3. Test E2E</h3>
-
+<div class="paragraph">
+<p>Para la realización de test End to End hemos usado el framework de Cucumber. Los test E2E son pruebas automatizadas que validan el funcionamiento de una aplicación desde el punto de vista del usuario final. Su objetivo es comprobar que todos los componentes del sistema como el front, back, base de datos y demás, funcionen juntos como se espera.</p>
+</div>
+<div class="paragraph">
+<p>Nosotros hemos implementado 3 features a los test, siendo estas:
+* <strong>Game:</strong>Simulará al jugador jugando juegos en distintas dificultades e interactuando con el LLM mientras juega.
+* <strong>Login-form:</strong>Simulará el formulario de registro y los posibles errores que puede cometer el usuario al meter datos incorrectos o no estar registrado.
+* <strong>Register-form:</strong>Simulará el formulario de identificación de usuario y los posibles errores que puede cometer el usuario al meter datos incorrectos.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_test_de_carga">12.4. Test de carga</h3>
@@ -1857,16 +1908,67 @@ El sistema debe probarse con usuarios reales en su fase de desarrollo de manera 
 <div class="sect3">
 <h4 id="_120_usuarios_en_60_segundos">12.4.1. 120 usuarios en 60 segundos</h4>
 <div class="paragraph">
-<p>Podemos ver que en este test que casi todas las peticiones se realizan en un tiempo razonable, habiendo bastante pocas</p>
+<p>Hay que aclarar antes de este punto, que teníamos un diagrama de 120 usuarios con todas las peticiones OK y en verde, pero por malas praxis, acabamos perdiendolo, lo que pasa es que al volver a ejecutar el programa había un apagón en la zona, que hizo que incluso el día despúes el wifi no fuera. Por lo que al ejecutarse con mala conexión hace timeout en 11 peticiones y eleva el tiempo de las demás.</p>
+</div>
+<div class="paragraph">
+<p>Podemos ver que en este test que casi todas las peticiones se realizan en un tiempo razonable, habiendo bastante pocas peticiones que tarden bastante, con esto podemos comprobar que la aplicación es estable con un número adecuado de usuarios que no debería darnos problema a la hora de entregar el proyecto al solicitante.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Carga1.png" alt="Carga 1">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Carga2.png" alt="Carga 2">
+</div>
+</div>
+<div class="paragraph">
+<p><a href="../../gatling/Resultados/Prueba_120_usuarios/index.html">Ver resultados de rendimiento primer esquema</a></p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_1800_usuarios_en_60_segundos">12.4.2. 1800 usuarios en 60 segundos</h4>
-
+<div class="paragraph">
+<p>Aquí podemos ya ver bastantes errores graves, un cuarto de las peticiones fallan ante tal cantidad de usuarios.</p>
+</div>
+<div class="paragraph">
+<p>El problema principal está en que el backend, se satura de usuarios y deja de funcionar. Haciendo que peticiones como AddUser o Login dejen de funcionar, pero otros servicios como la petición al LLM o la generación de preguntas con WikiData aguantan bastante bien. También cabe destacar el 100% de error a la hora de la entrega de la css de la aplicación, lo que genera que ningún usuario pueda ver la aplicación con normalidad.</p>
+</div>
+<div class="paragraph">
+<p>El problema creemos que está en la potencia de nuestra máquina virtual, la cual tendríamos que cambiar por una más potente, con mejor memoria y rendimiento para que el backend pudiera aguantar más carga de usuarios.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Carga3.png" alt="Carga 3">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Carga4.png" alt="Carga 4">
+</div>
+</div>
+<div class="paragraph">
+<p><a href="../../gatling/Resultados/Prueba_1800_usuarios/index.html">Ver resultados de rendimiento segundo esquema</a></p>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_monitorización">12.5. Monitorización</h3>
+<div class="paragraph">
+<p>También hemos realizado monitorización de la aplicación usando las herramientas de Prometheus y Grafana para observar el comportamiento en tiempo real de la aplicación para poder asegurarse de que esta funcione correctamente y detectar sus problemas rápidamente y mejorar su rendimiento.</p>
+</div>
+<div class="paragraph">
+<p>Monitorizar una aplicación nos sirve para tener:
+* Buena disponibilidad
+* Mejor rendimiento
+* Detección temprana de errores
+* Controlar el recorrido de los usuarios
+* En caso de fallo, generación de alertas</p>
+</div>
+<div class="paragraph">
+<p>Al final, el objetivo es anticiparse a los problemas y mejorar continuamente la calidad y eficiencia de la aplicación.</p>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -1938,7 +2040,7 @@ El sistema debe probarse con usuarios reales en su fase de desarrollo de manera 
 <div id="footer">
 <div id="footer-text">
 Version 8.2 EN<br>
-Last updated 2025-04-27 21:07:24 +0200
+Last updated 2025-04-29 09:59:35 +0200
 </div>
 </div>
 </body>
