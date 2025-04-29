@@ -981,7 +981,7 @@ Se ven los sistemas de los que depende la aplicación y los usuarios que la usan
 <h3 id="_contexto_de_negocio">3.1. Contexto de negocio</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Contexto%20de%20negocio%20WIChat.png" alt="Contexto de negocio WIChat" width="581" height="195">
+<img src="./images/Contexto%20de%20negocio%20WIChat.png" alt="Contexto de negocio WIChat" width="1015" height="638">
 </div>
 </div>
 <div class="paragraph">
@@ -1005,7 +1005,7 @@ De esta se sacan los enunciados de las preguntas, las respuestas correctas e inc
 <h3 id="_contexto_técnico">3.2. Contexto técnico</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="1135" height="740">
+<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="990" height="638">
 </div>
 </div>
 <div class="paragraph">
@@ -1956,18 +1956,58 @@ El sistema debe probarse con usuarios reales en su fase de desarrollo de manera 
 <div class="sect2">
 <h3 id="_monitorización">12.5. Monitorización</h3>
 <div class="paragraph">
-<p>También hemos realizado monitorización de la aplicación usando las herramientas de Prometheus y Grafana para observar el comportamiento en tiempo real de la aplicación para poder asegurarse de que esta funcione correctamente y detectar sus problemas rápidamente y mejorar su rendimiento.</p>
+<p>También hemos realizado monitorización de la aplicación usando las herramientas de Prometheus y Grafana para observar el comportamiento en tiempo real de la aplicación y asegurarnos de que funcione correctamente, detectando problemas rápidamente y mejorando su rendimiento.</p>
 </div>
 <div class="paragraph">
-<p>Monitorizar una aplicación nos sirve para tener:
-* Buena disponibilidad
-* Mejor rendimiento
-* Detección temprana de errores
-* Controlar el recorrido de los usuarios
-* En caso de fallo, generación de alertas</p>
+<p>Monitorizar una aplicación nos sirve para:
+* Garantizar buena disponibilidad.
+* Mejorar el rendimiento.
+* Detectar errores de forma temprana.
+* Controlar el recorrido de los usuarios.
+* Generar alertas en caso de fallo.</p>
 </div>
 <div class="paragraph">
 <p>Al final, el objetivo es anticiparse a los problemas y mejorar continuamente la calidad y eficiencia de la aplicación.</p>
+</div>
+<div class="paragraph">
+<p>En las gráficas obtenidas, hemos analizado tres métricas clave:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Tasa de Solicitudes por Minuto (Rate)</strong>: Esta métrica muestra la cantidad de solicitudes procesadas por minuto. Una tasa constante indica estabilidad en el sistema, mientras que picos o caídas pueden reflejar eventos específicos, como un aumento en los usuarios concurrentes o problemas en el backend.</p>
+</li>
+<li>
+<p><strong>Peticiones fallidas por Minuto (Errors)</strong>: Representa la cantidad de solicitudes fallidas. Un aumento en los errores puede indicar saturación del backend, problemas de conectividad con otros servicios o errores en la lógica de negocio.</p>
+</li>
+<li>
+<p><strong>Duración de las Solicitudes (Duration)</strong>: Muestra el tiempo promedio que tarda el sistema en procesar una solicitud. Un aumento en esta métrica puede ser un signo de saturación o problemas de rendimiento en el backend. Picos en la duración podrían coincidir con un aumento en la carga o errores en otros servicios.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Grafana.png" alt="Monitorización">
+</div>
+</div>
+<div class="paragraph">
+<p>En esta imagen podemos observar:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Una fluctuación en el número de peticiones </strong>. Esto tiene sentido ya que el número de peticiones no es un valor fijo, sino que depende del afluente de usuarios y sus acciones en la aplicación. En esta imagen, el número de peticiones ronda entre las 44 y 54 por minuto.</p>
+</li>
+<li>
+<p><strong>Un importante aumento en el número de peticiones fallidas </strong>. Esto es síntoma de errores en algún punto de la aplicación. Aunque en la imagen se observa que inicialmente hay un número importante de errores (±8), este número se reduce posteriormente hasta llegar a 2 errores, pero aumenta drásticamente hacia el final del gráfico.</p>
+</li>
+<li>
+<p><strong>Estabilidad en el tiempo de respuestas </strong>. Podemos ver que las tres gráficas mantienen una gran estabilidad con poca variación en el tiempo de respuesta. Como se observa en la gráfica, la mediana (B-series, línea verde) se mantiene prácticamente constante a lo largo del tiempo, lo que indica que la mayoría de las solicitudes son procesadas de forma consistente.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>La monitorización es una gran herramienta para observar el rendimiento de la aplicación en tiempo real y poder identificar errores y corregirlos. En nuestro caso, debido a una situación ajena a nuestro control (falta de tiempo por un fallo en la red eléctrica de la región), no hemos podido realizar mejoras para paliar los problemas encontrados.</p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -2040,7 +2080,7 @@ El sistema debe probarse con usuarios reales en su fase de desarrollo de manera 
 <div id="footer">
 <div id="footer-text">
 Version 8.2 EN<br>
-Last updated 2025-04-29 14:01:53 +0200
+Last updated 2025-04-29 14:42:23 +0200
 </div>
 </div>
 </body>
