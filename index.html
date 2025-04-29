@@ -519,7 +519,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_deuda_técnica">11.2. Deuda Técnica</a></li>
 </ul>
 </li>
-<li><a href="#section-testing">12. Test</a></li>
+<li><a href="#section-testing">12. Test</a>
+<ul class="sectlevel2">
+<li><a href="#_test_unitarios">12.1. Test unitarios</a></li>
+<li><a href="#_test_de_usabilidad">12.2. Test de Usabilidad</a></li>
+<li><a href="#_test_e2e">12.3. Test E2E</a></li>
+<li><a href="#_test_de_carga">12.4. Test de carga</a></li>
+<li><a href="#_monitorización">12.5. Monitorización</a></li>
+</ul>
+</li>
 <li><a href="#section-glossary">13. Glosario</a></li>
 </ul>
 </div>
@@ -997,7 +1005,7 @@ De esta se sacan los enunciados de las preguntas, las respuestas correctas e inc
 <h3 id="_contexto_técnico">3.2. Contexto técnico</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="1627" height="498">
+<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="1135" height="740">
 </div>
 </div>
 <div class="paragraph">
@@ -1810,9 +1818,10 @@ El sistema debe probarse con usuarios reales en su fase de desarrollo de manera 
 <div class="sect1">
 <h2 id="section-testing">12. Test</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_test_unitarios">12.1. Test unitarios</h3>
 <div class="paragraph">
-<p>===Test unitarios
-Hemos realizado diversos test para cada servicio de la aplicación usando Jest y Testing Library de React. Para cada componente del Webapp por ejemplo hemos creado una clase test propia para probar sus funcionalidades, así como para cada servicio del backend.</p>
+<p>Hemos realizado diversos test para cada servicio de la aplicación usando Jest y Testing Library de React. Para cada componente del Webapp por ejemplo hemos creado una clase test propia para probar sus funcionalidades, así como para cada servicio del backend.</p>
 </div>
 <div class="paragraph">
 <p>Este ha sido un proceso que hemos desarrollado a lo largo del proyecto y del cual nos hemos ayudado de la herramiennta SonarCloud que analiza el código de nuestro repositorio de GitHub para decirnos cual es nuestro porcentaje de código cubierto por test, así como las posibles brechas de seguridad que puede tener la aplicación(muchas de estas falsos positivos).</p>
@@ -1825,15 +1834,19 @@ Hemos realizado diversos test para cada servicio de la aplicación usando Jest y
 <img src="./images/Test_unitarios.png" alt="Test unitarios">
 </div>
 </div>
-<div class="paragraph">
-<p>===Test de Usabilidad</p>
 </div>
-<div class="paragraph">
-<p>===Test E2E</p>
+<div class="sect2">
+<h3 id="_test_de_usabilidad">12.2. Test de Usabilidad</h3>
+
 </div>
+<div class="sect2">
+<h3 id="_test_e2e">12.3. Test E2E</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_test_de_carga">12.4. Test de carga</h3>
 <div class="paragraph">
-<p>===Test de carga
-Para realizar los test de carga hemos usado la herramienta Gatling, usando el lenguaje scala para crear los distintos programas y haciendo uso de la funcionalidad de recorder de Gatling para "grabar" los movimientos de un usuario por la aplicación y luego adaptarlos a los test de carga.</p>
+<p>Para realizar los test de carga hemos usado la herramienta Gatling, usando el lenguaje scala para crear los distintos programas y haciendo uso de la funcionalidad de recorder de Gatling para "grabar" los movimientos de un usuario por la aplicación y luego adaptarlos a los test de carga.</p>
 </div>
 <div class="paragraph">
 <p>Hemos probado los test de carga con la aplicación deplegada, ya que si lo hicieramos en local, se tendrían en cuenta los componentes de nuestro sistema. Además se ha creado una función en los programas que aleatoriza la creación de usuarios, siendo casi imposible que dos usuarios tengan el mismo nombre, correo u contraseña(aunque esta última podría ser igual).</p>
@@ -1841,17 +1854,21 @@ Para realizar los test de carga hemos usado la herramienta Gatling, usando el le
 <div class="paragraph">
 <p>Los pasos que hemos grabado han sido los siguientes: Identificar un nuevo usuario en la aplicación, después hacer login, jugar a un juego en dificultad fácil de 5 preguntas, pedirle una pista al LLM entre medias y por último, guardar la puntuación del juego y mirar el historial. Hemos realizado dos pruebas, una para probar que la aplicación puede aguantar un nivel moderado de usuarios concurrentes y otra exhaustiva para poder ver los cuellos de botella de la aplicación y el margen de mejora.</p>
 </div>
+<div class="sect3">
+<h4 id="_120_usuarios_en_60_segundos">12.4.1. 120 usuarios en 60 segundos</h4>
 <div class="paragraph">
-<p>====120 usuarios en 60 segundos
-Podemos ver que en este test que casi todas las peticiones se realizan en un tiempo razonable, habiendo bastante pocas</p>
+<p>Podemos ver que en este test que casi todas las peticiones se realizan en un tiempo razonable, habiendo bastante pocas</p>
 </div>
-<div class="paragraph">
-<p>====1800 usuarios en 60 segundos</p>
 </div>
-<div class="paragraph">
-<p>===Monitorización</p>
+<div class="sect3">
+<h4 id="_1800_usuarios_en_60_segundos">12.4.2. 1800 usuarios en 60 segundos</h4>
+
 </div>
+</div>
+<div class="sect2">
+<h3 id="_monitorización">12.5. Monitorización</h3>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 <div class="sect1">
