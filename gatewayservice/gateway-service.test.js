@@ -22,6 +22,8 @@ const mockResponses = {
   ranking: { ranking: [{ username: 'user1', points: 100 }] },
   userHistory: { contests: ['contest1', 'contest2'] },
   historyDetails: { history: ['history1', 'history2'] },
+  editProfile: { matchedCount: 1 },
+  changePassword: { matchedCount: 1},
 };
 
 // Mock de POST
@@ -43,8 +45,14 @@ const mockGet = (url) => {
   if (url.includes('/getUserhistory/')) return Promise.resolve({ data: mockResponses.userHistory });
 };
 
+const mockPut = (url) => {
+  if(url.includes("/profile/edit/")) return Promise.resolve({ data: mockResponses.editProfile });
+  if(url.includes("/profile/changePassword/")) return Promise.resolve({ data: mockResponses.changePassword });
+}
+
 axios.post.mockImplementation(mockPost);
 axios.get.mockImplementation(mockGet);
+axios.put.mockImplementation(mockPut);
 
 describe('Gateway Service', () => {
   beforeEach(() => {
@@ -59,6 +67,12 @@ describe('Gateway Service', () => {
 
   const testGetEndpoint = async (endpoint, expectedResponse, headers = {}) => {
     const response = await request(app).get(endpoint).set(headers);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual(expectedResponse);
+  };
+
+  const testPutEndpoint = async (endpoint, payload, expectedResponse) => {
+    const response = await request(app).put(endpoint).send(payload);
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(expectedResponse);
   };
@@ -93,6 +107,14 @@ describe('Gateway Service', () => {
 
   it('should forward profile request to the user service', async () => {
     await testGetEndpoint('/profile', mockResponses.profile, { Authorization: 'Bearer mockedToken' });
+  });
+
+  it('should forward change password request to the user service', async () => {
+    await testPutEndpoint('/profile/changePassword/123', mockResponses.changePassword, { matchedCount: 1 });
+  });
+
+  it('should forward change password request to the user service', async () => {
+    await testPutEndpoint('/profile/edit/123', mockResponses.editProfile, { matchedCount: 1 });
   });
 
   it('should return 200 and a health status message', async () => {
