@@ -35,6 +35,7 @@ Algunos de los problemas que encontraron los usuarios y que nos parecieron relev
 Para la realización de test End to End hemos usado el framework de Cucumber. Los test E2E son pruebas automatizadas que validan el funcionamiento de una aplicación desde el punto de vista del usuario final. Su objetivo es comprobar que todos los componentes del sistema como el front, back, base de datos y demás, funcionen juntos como se espera.
 
 Nosotros hemos implementado 3 features a los test, siendo estas:
+
 * **Game:**Simulará al jugador jugando juegos en distintas dificultades e interactuando con el LLM mientras juega.
 * **Login-form:**Simulará el formulario de registro y los posibles errores que puede cometer el usuario al meter datos incorrectos o no estar registrado.
 * **Register-form:**Simulará el formulario de identificación de usuario y los posibles errores que puede cometer el usuario al meter datos incorrectos.
@@ -47,7 +48,6 @@ Hemos probado los test de carga con la aplicación deplegada, ya que si lo hicie
 Los pasos que hemos grabado han sido los siguientes: Identificar un nuevo usuario en la aplicación, después hacer login, jugar a un juego en dificultad fácil de 5 preguntas, pedirle una pista al LLM entre medias y por último, guardar la puntuación del juego y mirar el historial. Hemos realizado dos pruebas, una para probar que la aplicación puede aguantar un nivel moderado de usuarios concurrentes y otra exhaustiva para poder ver los cuellos de botella de la aplicación y el margen de mejora.
 
 ==== 120 usuarios en 60 segundos
-Hay que aclarar antes de este punto, que teníamos un diagrama de 120 usuarios con todas las peticiones OK y en verde, pero por malas praxis, acabamos perdiendolo, lo que pasa es que al volver a ejecutar el programa había un apagón en la zona, que hizo que incluso el día despúes el wifi no fuera. Por lo que al ejecutarse con mala conexión hace timeout en 11 peticiones y eleva el tiempo de las demás.
 
 Podemos ver que en este test que casi todas las peticiones se realizan en un tiempo razonable, habiendo bastante pocas peticiones que tarden bastante, con esto podemos comprobar que la aplicación es estable con un número adecuado de usuarios que no debería darnos problema a la hora de entregar el proyecto al solicitante.
 
@@ -55,7 +55,6 @@ image::Carga1.png["Carga 1"]
 
 image::Carga2.png["Carga 2"]
 
-link:../../gatling/Resultados/Prueba_120_usuarios/index.html[Ver resultados de rendimiento primer esquema]
 
 ==== 1800 usuarios en 60 segundos
 Aquí podemos ya ver bastantes errores graves, un cuarto de las peticiones fallan ante tal cantidad de usuarios.
@@ -68,7 +67,6 @@ image::Carga3.png["Carga 3"]
 
 image::Carga4.png["Carga 4"]
 
-link:../../gatling/Resultados/Prueba_1800_usuarios/index.html[Ver resultados de rendimiento segundo esquema]
 
 === Monitorización
 También hemos realizado monitorización de la aplicación usando las herramientas de Prometheus y Grafana para observar el comportamiento en tiempo real de la aplicación y asegurarnos de que funcione correctamente, detectando problemas rápidamente y mejorando su rendimiento.
