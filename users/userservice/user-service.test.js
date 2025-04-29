@@ -271,6 +271,7 @@ describe('User Service', () => {
 
 describe('PUT /profile/changePassword/:username', () => {
   let testUser;
+  const endpoint = (username) => `/profile/changePassword/${username}`;
 
   beforeEach(async () => {
     await User.deleteMany();
@@ -282,104 +283,81 @@ describe('PUT /profile/changePassword/:username', () => {
     await testUser.save();
   });
 
+  const sendRequest = (username, body) => request(app).put(endpoint(username)).send(body);
+
   it('should successfully change the password', async () => {
-    const response = await request(app)
-      .put(`/profile/changePassword/${testUser.username}`)
-      .send({
-        currentPassword: 'OldPass1',
-        newPassword: 'NewPass2!',
-        repeatPassword: 'NewPass2!',
-      });
+    const response = await sendRequest(testUser.username, {
+      currentPassword: 'OldPass1',
+      newPassword: 'NewPass2!',
+      repeatPassword: 'NewPass2!',
+    });
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('message', 'Contraseña modificada exitosamente.');
-    expect(response.body).toHaveProperty('modifiedCount', 1);
+    expect(response.body).toEqual({ message: 'Contraseña modificada exitosamente.', modifiedCount: 1 });
 
     const updatedUser = await User.findOne({ username: testUser.username });
-    const isNewPasswordValid = await bcrypt.compare('NewPass2!', updatedUser.password);
-    expect(isNewPasswordValid).toBe(true);
-    const isOldPasswordValid = await bcrypt.compare('OldPass1', updatedUser.password);
-    expect(isOldPasswordValid).toBe(false);
+    expect(await bcrypt.compare('NewPass2!', updatedUser.password)).toBe(true);
+    expect(await bcrypt.compare('OldPass1', updatedUser.password)).toBe(false);
   });
 
   it('should return 404 if the user is not found', async () => {
-    const response = await request(app)
-      .put('/profile/changePassword/nonexistentuser')
-      .send({
-        currentPassword: 'OldPass1',
-        newPassword: 'NewPass2!',
-        repeatPassword: 'NewPass2!',
-      });
+    const response = await sendRequest('nonexistentuser', {
+      currentPassword: 'OldPass1',
+      newPassword: 'NewPass2!',
+      repeatPassword: 'NewPass2!',
+    });
 
     expect(response.status).toBe(404);
-    expect(response.body).toHaveProperty('error', 'Usuario no encontrado');
+    expect(response.body).toEqual({ error: 'Usuario no encontrado' });
   });
 
   it('should return 409 if the current password is incorrect', async () => {
-    const response = await request(app)
-      .put(`/profile/changePassword/${testUser.username}`)
-      .send({
-        currentPassword: 'WrongPassword',
-        newPassword: 'NewPass2!',
-        repeatPassword: 'NewPass2!',
-      });
+    const response = await sendRequest(testUser.username, {
+      currentPassword: 'WrongPassword',
+      newPassword: 'NewPass2!',
+      repeatPassword: 'NewPass2!',
+    });
 
     expect(response.status).toBe(409);
-    expect(response.body).toHaveProperty('error', 'Contraseña actual errónea');
+    expect(response.body).toEqual({ error: 'Contraseña actual errónea' });
   });
 
   it('should return 409 if the new password format is invalid', async () => {
-    const response = await request(app)
-      .put(`/profile/changePassword/${testUser.username}`)
-      .send({
-        currentPassword: 'OldPass1',
-        newPassword: 'weak',
-        repeatPassword: 'weak',
-      });
+    const response = await sendRequest(testUser.username, {
+      currentPassword: 'OldPass1',
+      newPassword: 'weak',
+      repeatPassword: 'weak',
+    });
 
     expect(response.status).toBe(409);
-    expect(response.body).toHaveProperty('error', 'Formato inválido');
+    expect(response.body).toEqual({ error: 'Formato inválido' });
   });
 
   it('should return 409 if the new and repeated passwords do not match', async () => {
-    const response = await request(app)
-      .put(`/profile/changePassword/${testUser.username}`)
-      .send({
-        currentPassword: 'OldPass1',
-        newPassword: 'NewPass2!',
-        repeatPassword: 'DifferentPass!',
-      });
+    const response = await sendRequest(testUser.username, {
+      currentPassword: 'OldPass1',
+      newPassword: 'NewPass2!',
+      repeatPassword: 'DifferentPass!',
+    });
 
     expect(response.status).toBe(409);
-    expect(response.body).toHaveProperty('error', 'Las contraseñas deben ser iguales');
+    expect(response.body).toEqual({ error: 'Las contraseñas deben ser iguales' });
   });
 
-  it('should return 500 if required fields are missing', async () => {
-    const responseWithoutNewPassword = await request(app)
-      .put(`/profile/changePassword/${testUser.username}`)
-      .send({
-        currentPassword: 'OldPass1',
-        repeatPassword: 'NewPass2!',
-      });
-    expect(responseWithoutNewPassword.status).toBe(500);
-    expect(responseWithoutNewPassword.body).toHaveProperty('error', 'Missing required field: newPassword');
+  describe('should return 500 if required fields are missing', () => {
+    const requiredFields = ['newPassword', 'repeatPassword', 'currentPassword'];
 
-    const responseWithoutRepeatPassword = await request(app)
-      .put(`/profile/changePassword/${testUser.username}`)
-      .send({
+    it.each(requiredFields)('missing %s', async (field) => {
+      const payload = {
         currentPassword: 'OldPass1',
         newPassword: 'NewPass2!',
-      });
-    expect(responseWithoutRepeatPassword.status).toBe(500);
-    expect(responseWithoutRepeatPassword.body).toHaveProperty('error', 'Missing required field: repeatPassword');
-
-    const responseWithoutCurrentPassword = await request(app)
-      .put(`/profile/changePassword/${testUser.username}`)
-      .send({
-        newPassword: 'NewPass2!',
         repeatPassword: 'NewPass2!',
-      });
-    expect(responseWithoutCurrentPassword.status).toBe(500);
-    expect(responseWithoutCurrentPassword.body).toHaveProperty('error', 'Missing required field: currentPassword');
+      };
+      delete payload[field];
+
+      const response = await sendRequest(testUser.username, payload);
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ error: `Missing required field: ${field}` });
+    });
   });
 });
