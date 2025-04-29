@@ -94,15 +94,13 @@ const Profile = () => {
             </Grid>
           </Grid>
         )}
-        <Grid container justifyContent="center" className="profile-button">
-          <Grid item xs={12} sm={8} md={6}>
-            <LargeButton marginRight={2} width="30%" onClick={enterHistory}>{t("history")}</LargeButton>
-            <LargeButton width="30%" onClick={exitProfile}>{t("exit")}</LargeButton>
-          </Grid>
-          <Grid item xs={12} sm={8} md={6}>
-            <LargeButton onClick={goToEditProfile}>{t("edit-profile-button")}</LargeButton>
-          </Grid>
-        </Grid>
+        <div id="button-container">
+          <LargeButton marginRight={2} onClick={enterHistory}>{t("history")}</LargeButton>
+          <LargeButton onClick={goToEditProfile}>{t("edit-profile-button")}</LargeButton>
+        </div>
+        <div id="cancel-button-container">
+          <LargeButton onClick={exitProfile}>{t("exit")}</LargeButton>
+        </div>
       </Container>
     </div>
   );
