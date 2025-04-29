@@ -111,6 +111,9 @@ const GameMode = () => {
           onClose={() => setShowHelp(false)}
           aria-labelledby="help-modal-title"
           aria-describedby="help-modal-description"
+          sx={{
+            maxHeight: "100%"
+          }}
         >
           <Box
             sx={{
@@ -119,8 +122,11 @@ const GameMode = () => {
               left: '50%',
               transform: 'translate(-50%, -50%)',
               width: '80%',
+              height: "90%",
               maxWidth: '600px',
               bgcolor: 'background.paper',
+              maxHeight: '90vh',
+              overflowY: 'auto',
               boxShadow: 24,
               p: 4,
               borderRadius: '10px',
