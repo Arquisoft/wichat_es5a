@@ -34,15 +34,6 @@
   color: #333;
 }
 
-.profile-button {
-  margin-top: 2rem;
-}
-
-.profile-button button {
-  width: 30%;
-  max-width: 40rem;
-}
-
 .edit-buttons {
   background-color: #00735C !important;
   color: white !important;
@@ -51,4 +42,12 @@
 
 #cancel-button {
   color: #00735C 
+}
+
+#button-container, #cancel-button-container {
+  width: 100%;
+  display: flex !important;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center;
+  flex-wrap: wrap;
 }
