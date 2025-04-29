@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { AppBar, Tabs, Tab, Tooltip } from '@mui/material';
-import { Login, Logout, AccountCircle, PersonAdd, BarChart, SportsEsports, People } from '@mui/icons-material';
+import { Login, Logout,  PersonAdd } from '@mui/icons-material';
 import IconWichat from "./logo.jpg";
 import Internationalization from '../Internationalization/Internationalization';
 import { useTranslation } from "react-i18next";
@@ -61,7 +61,7 @@ const NavigationBar = () => {
             <Tab id='play' label={t("play")} data-testid="play-tab" iconPosition="start" onClick={play} />
           )}
           {token && (
-            <Tab id="ranking" label={t("ranking")} data-testid="ranking-tab" iconPosition="start" onClick={showCredits} />
+            <Tab id="ranking" label={t("ranking")} data-testid="ranking-tab" iconPosition="start" onClick={showRanking} />
           )}
           {token && (
             <Tab id="history" label={t("history")} data-testid="history-tab" iconPosition="start"onClick={showHistory} />
