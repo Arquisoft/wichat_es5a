@@ -71,13 +71,34 @@ image::Carga4.png["Carga 4"]
 link:../../gatling/Resultados/Prueba_1800_usuarios/index.html[Ver resultados de rendimiento segundo esquema]
 
 === Monitorización
-También hemos realizado monitorización de la aplicación usando las herramientas de Prometheus y Grafana para observar el comportamiento en tiempo real de la aplicación para poder asegurarse de que esta funcione correctamente y detectar sus problemas rápidamente y mejorar su rendimiento.
+También hemos realizado monitorización de la aplicación usando las herramientas de Prometheus y Grafana para observar el comportamiento en tiempo real de la aplicación y asegurarnos de que funcione correctamente, detectando problemas rápidamente y mejorando su rendimiento.
 
-Monitorizar una aplicación nos sirve para tener:
-* Buena disponibilidad
-* Mejor rendimiento 
-* Detección temprana de errores
-* Controlar el recorrido de los usuarios
-* En caso de fallo, generación de alertas
+Monitorizar una aplicación nos sirve para:
+* Garantizar buena disponibilidad.
+* Mejorar el rendimiento.
+* Detectar errores de forma temprana.
+* Controlar el recorrido de los usuarios.
+* Generar alertas en caso de fallo.
 
 Al final, el objetivo es anticiparse a los problemas y mejorar continuamente la calidad y eficiencia de la aplicación.
+
+En las gráficas obtenidas, hemos analizado tres métricas clave:
+
+* **Tasa de Solicitudes por Minuto (Rate)**: Esta métrica muestra la cantidad de solicitudes procesadas por minuto. Una tasa constante indica estabilidad en el sistema, mientras que picos o caídas pueden reflejar eventos específicos, como un aumento en los usuarios concurrentes o problemas en el backend.
+
+* **Peticiones fallidas por Minuto (Errors)**: Representa la cantidad de solicitudes fallidas. Un aumento en los errores puede indicar saturación del backend, problemas de conectividad con otros servicios o errores en la lógica de negocio.
+
+* **Duración de las Solicitudes (Duration)**: Muestra el tiempo promedio que tarda el sistema en procesar una solicitud. Un aumento en esta métrica puede ser un signo de saturación o problemas de rendimiento en el backend. Picos en la duración podrían coincidir con un aumento en la carga o errores en otros servicios.
+
+image::Grafana.png["Monitorización"]
+
+En esta imagen podemos observar:
+
+*  **Una fluctuación en el número de peticiones **. Esto tiene sentido ya que el número de peticiones no es un valor fijo, sino que depende del afluente de usuarios y sus acciones en la aplicación. En esta imagen, el número de peticiones ronda entre las 44 y 54 por minuto.
+
+*  **Un importante aumento en el número de peticiones fallidas **. Esto es síntoma de errores en algún punto de la aplicación. Aunque en la imagen se observa que inicialmente hay un número importante de errores (±8), este número se reduce posteriormente hasta llegar a 2 errores, pero aumenta drásticamente hacia el final del gráfico.
+
+
+*  **Estabilidad en el tiempo de respuestas **. Podemos ver que las tres gráficas mantienen una gran estabilidad con poca variación en el tiempo de respuesta. Como se observa en la gráfica, la mediana (B-series, línea verde) se mantiene prácticamente constante a lo largo del tiempo, lo que indica que la mayoría de las solicitudes son procesadas de forma consistente.
+
+La monitorización es una gran herramienta para observar el rendimiento de la aplicación en tiempo real y poder identificar errores y corregirlos. En nuestro caso, debido a una situación ajena a nuestro control (falta de tiempo por un fallo en la red eléctrica de la región), no hemos podido realizar mejoras para paliar los problemas encontrados.
