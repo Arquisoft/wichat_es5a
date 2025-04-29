@@ -21,17 +21,17 @@
 
 </div>
 
-This is a base project for the Software Architecture course in 2024/2025. It is a basic application composed of several components.
+Este es un proyecto base para el curso de Arquitectura de Software en 2024/2025. Es una aplicación básica compuesta por varios componentes:
 
-- **User service**. Express service that handles the insertion of new users in the system.
-- **Auth service**. Express service that handles the authentication of users.
-- **LLM service**. Express service that handles the communication with the LLM.
-- **Wiki service**. Express service that handles the questions generation.
-- **History service**. Express service that handles the history of the app.
-- **Gateway service**. Express service that is exposed to the public and serves as a proxy to the two previous ones.
-- **Webapp**. React web application that uses the gateway service to allow basic login and new user features.
+- **User service**. Servicio Express que gestiona la inserción de nuevos usuarios en el sistema.
+- **Auth service**. Servicio Express que gestiona la autenticación de los usuarios.
+- **LLM service**. Servicio Express que gestiona la comunicación con el modelo de lenguaje (LLM).
+- **Wiki service**. Servicio Express que gestiona la generación de preguntas.
+- **History service**. Servicio Express que gestiona el historial de la aplicación.
+- **Gateway service**. Servicio Express que está expuesto al público y actúa como un proxy para los dos servicios anteriores.
+- **Webapp**. Aplicación web en React que utiliza el servicio gateway para permitir funciones básicas de inicio de sesión y registro de nuevos usuarios.
 
-Both the user and auth service share a Mongo database that is accessed with mongoose.
+Tanto el servicio de usuarios como el de autenticación comparten una base de datos Mongo que se accede mediante Mongoose..
 
 ## Características del Juego 🎮
 
@@ -43,7 +43,7 @@ Both the user and auth service share a Mongo database that is accessed with mong
 
 ## Guía para Empezar 🚀
 
-1. **Accede al Juego**: Haz clic en el enlace [Acceder a wichat](http://48.209.10.166).
+1. **Accede al Juego**: Haz clic en el enlace [Acceder a wichat](http://48.209.10.166:8080/login).
 2. **Regístrate o Inicia Sesión**:
    - Si eres nuevo, regístrate con un nombre de usuario, correo electrónico y contraseña.
    - Si ya tienes una cuenta, inicia sesión con tus credenciales.
@@ -57,5 +57,5 @@ Both the user and auth service share a Mongo database that is accessed with mong
 
 ## Enlaces Útiles 🔗
 
-- **Juego**: [Acceder a wichat](http://48.209.10.166)
+- **Juego**: [Acceder a wichat](http://48.209.10.166:8080/login)
 - **Documentación**: [Documentación del Proyecto](https://arquisoft.github.io/wichat_es5a/)
