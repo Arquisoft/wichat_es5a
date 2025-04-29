@@ -3,62 +3,15 @@ ifndef::imagesdir[:imagesdir: ../images]
 [[section-context-and-scope]]
 == Contexto y alcance
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-Context and scope - as the name suggests - delimits your system (i.e. your scope) from all its communication partners
-(neighboring systems and users, i.e. the context of your system). It thereby specifies the external interfaces.
-
-If necessary, differentiate the business context (domain specific inputs and outputs) from the technical context (channels, protocols, hardware).
-
-.Motivation
-The domain interfaces and technical interfaces to communication partners are among your system's most critical aspects. Make sure that you completely understand them.
-
-.Form
-Various options:
-
-* Context diagrams
-* Lists of communication partners and their interfaces.
-
-
-.Further Information
-
-See https://docs.arc42.org/section-3/[Context and Scope] in the arc42 documentation.
-
-****
-endif::arc42help[]
-
 En este capítulo se describe el ámbito de WIChat.
 Se ven los sistemas de los que depende la aplicación y los usuarios que la usan.
 
 === Contexto de negocio
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-Specification of *all* communication partners (users, IT-systems, ...) with explanations of domain specific inputs and outputs or interfaces.
-Optionally you can add domain specific formats or communication protocols.
-
-.Motivation
-All stakeholders should understand which data are exchanged with the environment of the system.
-
-.Form
-All kinds of diagrams that show the system as a black box and specify the domain interfaces to communication partners.
-
-Alternatively (or additionally) you can use a table.
-The title of the table is the name of your system, the three columns contain the name of the communication partner, the inputs, and the outputs.
-
-****
-endif::arc42help[]
-
 [plantuml, "Contexto de negocio WIChat", png]
 ----
 left to right direction
 frame "Contexto de negocio WIChat" {
-    database "MongoDB" {
-    }
     [Gemini_API]
     [WikiData_API]
     
@@ -66,8 +19,6 @@ frame "Contexto de negocio WIChat" {
     }
     
     Usuario ..> WIChat : Accede
-    WIChat ..> MongoDB : Guarda datos
-    MongoDB ..> WIChat : Devuelve datos
     WIChat ..> Gemini_API : Solicita pistas
     WIChat ..> WikiData_API : Consigue datos
 }
@@ -79,9 +30,6 @@ Los usuarios deben de registrarse antes de acceder al juego.
 En el juego los usuarios responderán preguntas y aprenderán de ellas.
 También pueden consultar sus datos históricos en la aplicación.
 
-.MongoDB
-Todos los datos relevantes a la aplicación se guardarán en una base de datos MongoDB.
-
 .Gemini
 Los usuarios pueden interactuar con el LLM "Gemini" a través de WIChat para pedir pistas y asistencia para responder preguntas.
 
@@ -91,57 +39,45 @@ De esta se sacan los enunciados de las preguntas, las respuestas correctas e inc
 
 === Contexto técnico
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-Technical interfaces (channels and transmission media) linking your system to its environment. In addition a mapping of domain specific input/output to the channels, i.e. an explanation which I/O uses which channel.
-
-.Motivation
-Many stakeholders make architectural decision based on the technical interfaces between the system and its context. Especially infrastructure or hardware designers decide these technical interfaces.
-
-.Form
-E.g. UML deployment diagram describing channels to neighboring systems,
-together with a mapping table showing the relationships between channels and input/output.
-
-****
-endif::arc42help[]
-
 [plantuml, "Contexto técnico WIChat", png]
 ----
 frame "Azure_Cloud" {
     package "WIChat" {
-         [WIChat_API]
-         [Gateway_service]
+         package "Gateway Service"{
+               [Gateway_service]
+               [OpenApi]
+         }
          [Wiki_service]
          [History_service]
+         [Llm_service]
+         [WebApp]
          package "Users" {
               [Auth_service]
               [User_service]
          }
-    }
-    package "Base de datos" {
-        [User_data]
-        [Question_data]
+         package "Base de datos" {
+              [Data]
+        }
     }
 }
 [WikiData_API]
 [Gemini_API]
 () "Usuario"
 () "Usuario_API"
-Usuario ..> Gateway_service : HTTPS
+Usuario ..> WebApp : HTTP
+WebApp ..> Gateway_service
 Gateway_service --> Wiki_service
 Gateway_service --> Auth_service
 Gateway_service --> User_service
 Gateway_service --> History_service
-Gateway_service --> WIChat_API
+Gateway_service --> Llm_service
 Wiki_service ..> WikiData_API : SPARQL
-Wiki_service ..> Gemini_API : Google Cloud
-Auth_service ..> User_data : Mongoose
-User_service ..> User_data  : Mongoose
-Wiki_service ..> Question_data : Mongoose
-History_service ..> Question_data : Mongoose
-Usuario_API ..> WIChat_API : HTTPS
+Llm_service ..> Gemini_API : Google Cloud
+Auth_service ..> Data : Mongoose
+User_service ..> Data  : Mongoose
+Wiki_service ..> Data : Mongoose
+History_service ..> Data : Mongoose
+Usuario_API ..> OpenApi : HTTP
 ----
 
 La arquitectura de WIChat es una estructura basada en microservicios:
@@ -156,9 +92,16 @@ Las preguntas generadas son guardadas en base de datos para el historial de los 
 
 .Gateway service
 El gateway se encarga de recibir las peticiones y redirigirlas al servicio correspondiente.
+Además será el que tenga la OpenApi con la que el usuario que quiera acceder a esta(representado como Usuario_API) pueda visualizar los datos relacionados a la aplicación, como los usuarios y las preguntas generadas.
 
 .History service
 Es el servicio que se encarga con todo lo relacionado con el historial de partidas de la aplicación
 
-.WIChat API
-Ofrece datos sobre los usuarios de la aplicación y las preguntas generadas.
+.WebApp
+Donde se encuentra todo el front-end de la aplicación. Se encargará de pedirle servicios al gateway para que el usuario pueda interactuar con las distintas características de la aplicación.
+
+.Llm service
+Es el servicio que se encarga de hacer llamadas a la Api de Gemini.
+
+.MongoDB
+Todos los datos de la aplicación se guardarán en una base de datos hecha con MongoDB.

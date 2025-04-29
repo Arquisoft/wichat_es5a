@@ -17,39 +17,10 @@ Las siguientes tecnologías han sido usadas a lo largo del desarrollo de nuestra
 * **Node.js:** Es una plataforma que nos permite ejecutar JavaScript en el servidor. Usamos Node.js debido a que viene incluido con NPM, es decir, con un gestor de paquetes que facilita la instalación y gestión de bibliotecas y módulos para nuestra aplicación ya que cuenta con una gran cantidad de módulos para cualquier cosa. También lo usamos debido a que nos permite crear servidores web rápidos que pueden manejar un gran número de conexiones simultáneas.
 * **Express:** Es un framework de JavaScript que se utiliza para desarrollar aplicaciones web y Apis en Node.js. Lo usamos debido a que es uno de los frameworks más populares para construir aplicaciones del lado del servidor debido a su simplicidad, flexibilidad y alto rendimiento.
 * **Azure_Cloud:** Para desplegar la aplicación usamos una máquina virtual hosteada en Azure_Cloud, ya que además de que todos los miembros del equipo de desarrollo tienen una cuenta, cuenta con ventajas como la escalabilidad, alta disponibilidad y fiabilidad. 
+* **Gatling:** Hemos elegido Gatling para realizar las pruebas de carga debido a que se puede elegir entre java y scala a la hora de realizar los programas, nosotros hemos escogido scala, además de por proporcionar vistas claras y concisas en formato html y por disponer de un recorder con el que poder grabar las acciones que queremos que realicen los distintos usuarios de la aplicación.
 
 === Herramientas de apoyo
 
 * **Visual Studio Code:** Es el IDE que hemos usado los miembros del equipo por defecto ya que es un entorno con el que estamos familiarizados y que además contiene todos los mecanismos que necesitamos para trabajar con el proyecto y entre nosotros en el repositorio remoto.
 * **Draw.io:** A la hora de crear diagramas como los de bloques nos hemos decantado por esta herramienta online, debido a su facilidad de uso y varios tipos de plantillas para crear diagramas así como que es totalmente gratuita.
 * **PlantUML:** También para los diagramas hemos usado esta herramienta. Es totalmente gratuita y funciona escribiendo el diagrama UML en formato de texto y generándolo después en formato gráfico.
-
-
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-A short summary and explanation of the fundamental decisions and solution strategies, that shape system architecture. It includes
-
-* technology decisions
-* decisions about the top-level decomposition of the system, e.g. usage of an architectural pattern or design pattern
-* decisions on how to achieve key quality goals
-* relevant organizational decisions, e.g. selecting a development process or delegating certain tasks to third parties.
-
-.Motivation
-These decisions form the cornerstones for your architecture. They are the foundation for many other detailed decisions or implementation rules.
-
-.Form
-Keep the explanations of such key decisions short.
-
-Motivate what was decided and why it was decided that way,
-based upon problem statement, quality goals and key constraints.
-Refer to details in the following sections.
-
-
-.Further Information
-
-See https://docs.arc42.org/section-4/[Solution Strategy] in the arc42 documentation.
-
-****
-endif::arc42help[]

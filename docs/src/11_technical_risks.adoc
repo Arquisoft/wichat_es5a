@@ -3,29 +3,6 @@ ifndef::imagesdir[:imagesdir: ../images]
 [[section-technical-risks]]
 == Riesgos y Deuda Técnica
 
-
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-A list of identified technical risks or technical debts, ordered by priority
-
-.Motivation
-“Risk management is project management for grown-ups” (Tim Lister, Atlantic Systems Guild.) 
-
-This should be your motto for systematic detection and evaluation of risks and technical debts in the architecture, which will be needed by management stakeholders (e.g. project managers, product owners) as part of the overall risk analysis and measurement planning.
-
-.Form
-List of risks and/or technical debts, probably including suggested measures to minimize, mitigate or avoid risks or reduce technical debts.
-
-
-.Further Information
-
-See https://docs.arc42.org/section-11/[Risks and Technical Debt] in the arc42 documentation.
-
-****
-endif::arc42help[]
-
 === Riesgos
 
 A continuación se expresan algunos riesgos encontrados que suponen un peligro al desarrollo del proyecto y pueden retrasarlo o mermar su calidad.
@@ -40,6 +17,7 @@ A continuación se expresan algunos riesgos encontrados que suponen un peligro a
 |Uso ineficiente del control de versiones|Aunque GitHub no es una tecnología nueva, contiene muchas funciones complejas y nuevas que aunque resultan útiles, pueden causar confusión.|Informarse de las posibilidades que ofrece GitHub y promover un buen uso de este.
 |Fechas de entregas|Debido a las estrictas fechas de entrega, puede llevar a prisa en las entregas y atajos poco recomendables.|Llevar un registro constante del trabajo realizado y promover el trabajo constante semana a semana.
 |Abandono de miembros del equipo|Alguno de los miembros del grupo puede abandonar el proyecto, perjudicando el ritmo del desarrollo y dejando tareas desasignadas.|Minimizar el "factor del autobús", revisando el trabajo de otros compañeros y asignando el trabajo a varios compañeros.
+|Problemas con el hardware o software del equipo|Cuestiones como apagones, corrupción de los datos de un programa o inabilitación del uso de un ordenador portátil son cosas que le podrían pasar a cualquier miembro del equipo|Haciendo que los demás tengan que repartirse sus tareas o si nadie puede, la anulación de la tarea en sí ayuda a paliar estos efectos.
 |===
 
 === Deuda Técnica
@@ -56,4 +34,12 @@ Atajos o compromisos que se han tomado para acortar el tiempo de desarrollo o ba
 |Abandono de un miembro del equipo
 |Un miembro del equipo abandonó el proyecto entre el segundo y tercer sprint, es decir, antes de la entrega de la aplicación 1.0. Esto supuso un contratiempo para el equipo que se pudo recomponer pero que perdió todos los archivos de los que disponía el compañero y además nos tuvimos que readministrar las tareas de este último, las cuales si que se iban dejando un poco más de lado.
 
+|Apagón masivo
+|Hubo un apagón el día en el que el equipo quería dejar el repositorio totalmente listo para la entrega del proyecto al solicitante, esto impidió el avance del equipo durante un buen rato y llevo a la desmoralización de la plantilla.
+
+|Uso de tecnologías nuevas
+|Muchas de las tecnologías que se han usado, como por ejemplo Gatling para las pruebas de carga y el lenguaje scala, son tecnologías nuevas con documentaciones extensas y muchas versiones, las cuales nos ha costado adaptarnos en un principio. Muchas de estas tecnologías han provocado cambios luego en las tecnologías utilizadas por el equipo de desarrollo.
+
+|Ordenadores portátiles inhabilitados
+|A dos miembros del grupo se les estropeó el ordenador en dos momentos del desarrollo distintos. El equipo subo solucionarlo bastante rápido y los días que los compañeros estuvieron sin sus dispositivos tampoco fueron muchos.
 |===

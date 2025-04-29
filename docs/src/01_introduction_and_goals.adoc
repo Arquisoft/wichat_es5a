@@ -3,19 +3,6 @@ ifndef::imagesdir[:imagesdir: ../images]
 [[section-introduction-and-goals]]
 == Introducción y Metas
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-Describes the relevant requirements and the driving forces that software architects and development team must consider. 
-These include
-
-* underlying business goals, 
-* essential features, 
-* essential functional requirements, 
-* quality goals for the architecture and
-* relevant stakeholders and their expectations
-****
-endif::arc42help[]
 
 WIChat es una aplicación basada en el popular concurso "Saber y Ganar" y una versión actualizada de la aplicación WIQ creada por HappySw.
 El objetivo de este proyecto es añadir funcionalidad y modernizar la aplicación WIQ para mejor la experiencia de usuario cumpliendo con varios objetivos:
@@ -26,32 +13,6 @@ El objetivo de este proyecto es añadir funcionalidad y modernizar la aplicació
 * Replicar al máximo posible el formato de un concurso de preguntas en WIChat.
 
 === Vista general de los requisitos
-
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-Short description of the functional requirements, driving forces, extract (or abstract)
-of requirements. Link to (hopefully existing) requirements documents
-(with version number and information where to find it).
-
-.Motivation
-From the point of view of the end users a system is created or modified to
-improve support of a business activity and/or improve the quality.
-
-.Form
-Short textual description, probably in tabular use-case format.
-If requirements documents exist this overview should refer to these documents.
-
-Keep these excerpts as short as possible. Balance readability of this document with potential redundancy w.r.t to requirements documents.
-
-
-.Further Information
-
-See https://docs.arc42.org/section-1/[Introduction and Goals] in the arc42 documentation.
-
-****
-endif::arc42help[]
 
 La función principal de WIChat es presentar a los usuarios una serie de preguntas que tienen que tratar de responder correctamente, similar al concurso de preguntas "Saber y Ganar".
 
@@ -64,21 +25,26 @@ Los usuarios pueden interactuar con un LLM que le brinde pistas y ayude al usuar
 . El sistema permitirá a los usuarios no registrados registrarse en la aplicación.
 .. El registro pedirá obligatoriamente a los usuarios:
 ... Un nombre de usuario.
-... Una constraseña.
-.. Si el registro es exitoso, se guardará la información del usuario en la base de datos.
+... Un correo.
+... Una contraseña.
+... La confirmación de esa contraseña.
+.. Si el registro es exitoso, se guardará la información del usuario en la base de datos y se le redirigirá a la pantalla principal.
 .. Si el registro NO es exitoso, notificará el fallo al usuario.
 . El sistema permitirá a los usuarios registrados autentificarse en la aplicación.
 .. La autenticación pedirá obligatoriamente a los usuarios:
 ... Un nombre de usuario.
 ... Una contraseña.
-.. Si la autenticación es exitosa, se rederegirá al usuario registrado a la pantalla principal.
+.. Si la autenticación es exitosa, se rederigirá al usuario registrado a la pantalla principal.
 .. Si la autenticación NO es exitosa, notificará el fallo al usuario.
 . Los usuarios registrados podrán jugar concursos en los que responderán preguntas.
 .. El usuario podrá elegir la temática y dificultad del concurso.
 ... Las temáticas son variadas y contarán con categorías como banderas, ciudades, etc...
-... Habrá tres niveles de dificultad que alteren la cantidad de preguntas a contestar, fácil, medio y difícil.
+... Habrá cuatro niveles de dificultad que alteren la cantidad de preguntas a contestar y el tiempo para responder la pregunta, fácil, medio, difícil y supervivencia.
+... En el modo supervivencia si el usuario falla una pregunta, se acabará el juego automáticamente. Cada 5 preguntas se restará el tiempo que tiene el usuario para responder a la pregunta.
 .. Los concursos tiene un límite de tiempo indicado por un temporizador.
-... Si el usuario se queda sin tiempo, se pasa a la siguiente pregunta del concurso.
+... Si el usuario se queda sin tiempo, se pasa a la siguiente pregunta del concurso, siempre que no esté en el modo supervivencia.
+.. El usuario puede acumular rachas de puntuación.
+... Si el usuario responde varias preguntas consecutivas, se creará una racha que hará que el usuario gane más puntos por pregunta acertada.
 .. Las preguntas y respuestas se deben generar automáticamente con información conseguida de WikiData.
 ... Las preguntas deben incluir una imagen, un enunciado y varias respuestas incorrectas.
 ... Los datos de la pregunta deben ser guardados en base de datos.
@@ -92,6 +58,7 @@ Los usuarios pueden interactuar con un LLM que le brinde pistas y ayude al usuar
 .. Número de concursos jugados.
 .. Preguntas acertadas y falladas en cada concurso.
 .. Tiempo de juego de cada concurso.
+.. Puntuación de cada concurso.
 . El sistema ofrecerá una API que permita obtener información sobre:
 .. Los usuarios registrados en la aplicación. Se puede obtener la siguiente información:
 ... Su nombre de usuario.
@@ -107,28 +74,6 @@ La aplicación, debido a su enfoque para todos los públicos, debe tener un espe
 
 === Metas de calidad
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-The top three (max five) quality goals for the architecture whose fulfillment is of highest importance to the major stakeholders. 
-We really mean quality goals for the architecture. Don't confuse them with project goals.
-They are not necessarily identical.
-
-Consider this overview of potential topics (based upon the ISO 25010 standard):
-
-image::01_2_iso-25010-topics-EN.drawio.png["Categories of Quality Requirements"]
-
-.Motivation
-You should know the quality goals of your most important stakeholders, since they will influence fundamental architectural decisions. 
-Make sure to be very concrete about these qualities, avoid buzzwords.
-If you as an architect do not know how the quality of your work will be judged...
-
-.Form
-A table with quality goals and concrete scenarios, ordered by priorities
-****
-endif::arc42help[]
-
 [options="header",cols="1,2"]
 |===
 |Atributo de calidad|Motivación
@@ -137,6 +82,7 @@ endif::arc42help[]
 |Rendimiento|El tiempo de respuesta de la aplicación debe ser corto para ofrecer una experiencia de juego fluida y disfrutable
 |Interoperabilidad|WIChat tendrá una API con la que se puede obtener información relevante a los usuarios y las preguntas generadas. El sistema obtendrá información de WikiData y se comunicará con un LLM.
 |Modificabilidad|El sistema debe ser fácil de cambiar y de añadir nuevas funcionalidades para facilitar futuras actualizaciones.
+|Escalabilidad|El sistema tiene que ser escalable para que así, en un futuro, más usuarios puedan disfrutar al mismo tiempo de la app.
 |===
 
 Sabiendo los atributos de calidad más relevantes, podemos definir unos requisitos no funcionales adecuados.
@@ -146,36 +92,14 @@ Sabiendo los atributos de calidad más relevantes, podemos definir unos requisit
 . El tiempo de aprendizaje de un nuevo usuario debe ser menor a 1 hora.
 . El sistema será compatible con Windows, iOS y Linux.
 . La aplicación deberá funcionar en navegadores web estándar, asegurando la compatibilidad con versiones recientes de Chrome, Firefox, Safari y Edge.
-. El sistema debe ser capaz de operar adecuadamente con hasta 1000 usuarios con sesiones concurrentes.
-. El tiempo para iniciar o reiniciar el sistema no podrá ser mayor a 1 minuto.
+. El sistema debe ser capaz de operar adecuadamente con bastantes usuarios de forma concurrente.
+. El tiempo para iniciar o reiniciar el sistema por si surgiese algún error no puede ser más de 30 minutos.
 . El sistema debe emplear Wikidata para construir las preguntas.
 . El sistema debe emplear un LLM para formular pistas para el usuario.
 . El tiempo en generar las preguntas de un concurso no debe ser mayor a 20 segundos.
 
 
 === Stakeholders
-
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-Explicit overview of stakeholders of the system, i.e. all person, roles or organizations that
-
-* should know the architecture
-* have to be convinced of the architecture
-* have to work with the architecture or with code
-* need the documentation of the architecture for their work
-* have to come up with decisions about the system or its development
-
-.Motivation
-You should know all parties involved in development of the system or affected by the system.
-Otherwise, you may get nasty surprises later in the development process.
-These stakeholders determine the extent and the level of detail of your work and its results.
-
-.Form
-Table with role names, person names, and their expectations with respect to the architecture and its documentation.
-****
-endif::arc42help[]
 
 [options="header",cols="1,2"]
 |===
