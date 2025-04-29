@@ -2,7 +2,7 @@
 FROM prom/prometheus:latest
 
 # Copy Prometheus configuration
-COPY . .
+COPY prometheus.yml /etc/prometheus/prometheus.yml
 
 # Expose the port
 EXPOSE 9090
