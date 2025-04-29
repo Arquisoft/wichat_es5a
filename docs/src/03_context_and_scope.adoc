@@ -44,7 +44,7 @@ De esta se sacan los enunciados de las preguntas, las respuestas correctas e inc
 frame "Azure_Cloud" {
     package "WIChat" {
          package "Gateway Service"{
-               [Gateway_Service]
+               [Gateway_service]
                [OpenApi]
          }
          [Wiki_service]

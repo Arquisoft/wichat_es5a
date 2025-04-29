@@ -38,3 +38,7 @@ El sistema debe contar con un conjunto completo de pruebas unitarias e integraci
 Se deben realizar pruebas de aceptación (end-to-end).
 * Pruebas de carga: 
 El sistema debe someterse a pruebas de carga.
+* Monitorización de la aplicación
+
+*Pruebas de Usabilidad
+El sistema debe probarse con usuarios reales en su fase de desarrollo de manera continua.
