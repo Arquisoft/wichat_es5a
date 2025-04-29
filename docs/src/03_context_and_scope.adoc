@@ -75,7 +75,6 @@ Wiki_service ..> WikiData_API : SPARQL
 Llm_service ..> Gemini_API : Google Cloud
 Auth_service ..> Data : Mongoose
 User_service ..> Data  : Mongoose
-Wiki_service ..> Data : Mongoose
 History_service ..> Data : Mongoose
 Usuario_API ..> OpenApi : HTTP
 ----
