@@ -272,6 +272,12 @@ describe('User Service', () => {
 describe('PUT /profile/changePassword/:username', () => {
   let testUser;
   const endpoint = (username) => `/profile/changePassword/${username}`;
+  const sendRequest = (username, body) => request(app).put(endpoint(username)).send(body);
+  const correctPasswordPayload = {
+    currentPassword: 'OldPass1',
+    newPassword: 'NewPass2!',
+    repeatPassword: 'NewPass2!',
+  };
 
   beforeEach(async () => {
     await User.deleteMany();
@@ -283,78 +289,46 @@ describe('PUT /profile/changePassword/:username', () => {
     await testUser.save();
   });
 
-  const sendRequest = (username, body) => request(app).put(endpoint(username)).send(body);
-
-  it('should successfully change the password', async () => {
-    const response = await sendRequest(testUser.username, {
-      currentPassword: 'OldPass1',
-      newPassword: 'NewPass2!',
-      repeatPassword: 'NewPass2!',
-    });
-
+  it('should change password successfully and return success message', async () => {
+    const response = await sendRequest(testUser.username, correctPasswordPayload);
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ message: 'Contraseña modificada exitosamente.', modifiedCount: 1 });
 
     const updatedUser = await User.findOne({ username: testUser.username });
-    expect(await bcrypt.compare('NewPass2!', updatedUser.password)).toBe(true);
-    expect(await bcrypt.compare('OldPass1', updatedUser.password)).toBe(false);
+    expect(await bcrypt.compare(correctPasswordPayload.newPassword, updatedUser.password)).toBe(true);
+    expect(await bcrypt.compare(correctPasswordPayload.currentPassword, updatedUser.password)).toBe(false);
   });
 
-  it('should return 404 if the user is not found', async () => {
-    const response = await sendRequest('nonexistentuser', {
-      currentPassword: 'OldPass1',
-      newPassword: 'NewPass2!',
-      repeatPassword: 'NewPass2!',
-    });
-
+  it('should return 404 for non-existent user', async () => {
+    const response = await sendRequest('nonexistentuser', correctPasswordPayload);
     expect(response.status).toBe(404);
     expect(response.body).toEqual({ error: 'Usuario no encontrado' });
   });
 
-  it('should return 409 if the current password is incorrect', async () => {
-    const response = await sendRequest(testUser.username, {
-      currentPassword: 'WrongPassword',
-      newPassword: 'NewPass2!',
-      repeatPassword: 'NewPass2!',
-    });
-
+  it('should return 409 for incorrect current password', async () => {
+    const response = await sendRequest(testUser.username, { ...correctPasswordPayload, currentPassword: 'WrongPassword' });
     expect(response.status).toBe(409);
     expect(response.body).toEqual({ error: 'Contraseña actual errónea' });
   });
 
-  it('should return 409 if the new password format is invalid', async () => {
-    const response = await sendRequest(testUser.username, {
-      currentPassword: 'OldPass1',
-      newPassword: 'weak',
-      repeatPassword: 'weak',
-    });
-
+  it('should return 409 for invalid new password format', async () => {
+    const response = await sendRequest(testUser.username, { ...correctPasswordPayload, newPassword: 'weak', repeatPassword: 'weak' });
     expect(response.status).toBe(409);
     expect(response.body).toEqual({ error: 'Formato inválido' });
   });
 
-  it('should return 409 if the new and repeated passwords do not match', async () => {
-    const response = await sendRequest(testUser.username, {
-      currentPassword: 'OldPass1',
-      newPassword: 'NewPass2!',
-      repeatPassword: 'DifferentPass!',
-    });
-
+  it('should return 409 for non-matching new and repeated passwords', async () => {
+    const response = await sendRequest(testUser.username, { ...correctPasswordPayload, repeatPassword: 'DifferentPass!' });
     expect(response.status).toBe(409);
     expect(response.body).toEqual({ error: 'Las contraseñas deben ser iguales' });
   });
 
-  describe('should return 500 if required fields are missing', () => {
+  describe('should return 500 for missing required fields', () => {
     const requiredFields = ['newPassword', 'repeatPassword', 'currentPassword'];
 
-    it.each(requiredFields)('missing %s', async (field) => {
-      const payload = {
-        currentPassword: 'OldPass1',
-        newPassword: 'NewPass2!',
-        repeatPassword: 'NewPass2!',
-      };
+    it.each(requiredFields)('when %s is missing', async (field) => {
+      const payload = { ...correctPasswordPayload };
       delete payload[field];
-
       const response = await sendRequest(testUser.username, payload);
       expect(response.status).toBe(500);
       expect(response.body).toEqual({ error: `Missing required field: ${field}` });
