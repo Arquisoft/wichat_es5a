@@ -541,7 +541,7 @@ paths:
                     description: Error message.
                     example: Usuario no encontrado
         '409':
-          description: Conflict. One of the following issues occurred:
+          description: Conflict. One of the following issues occurred
           content:
             application/json:
               schema:
@@ -580,7 +580,7 @@ paths:
           required: true
           schema:
             type: string
-          description: Bearer token for authentication. Format: `Bearer <token>`.
+          description: Bearer token for authentication. Format -> `Bearer <token>`.
           example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJzdHVkZW50IiwiaWF0IjoxNjE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
       requestBody:
         required: true
