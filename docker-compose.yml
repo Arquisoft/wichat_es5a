@@ -112,13 +112,14 @@ services:
     ports:
       - "8080:8080"
   prometheus:
-    image: prom/prometheus
+    image: ghcr.io/arquisoft/wichat_es5a/prometheus:latest
     container_name: prometheus-wichat_es5a
     profiles: ["dev", "prod"]
     networks:
       - mynetwork
     volumes:
       - ./gatewayservice/monitoring/prometheus:/etc/prometheus
+      - ./gatewayservice/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"
