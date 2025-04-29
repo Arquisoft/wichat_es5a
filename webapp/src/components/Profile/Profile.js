@@ -95,12 +95,14 @@ const Profile = () => {
           </Grid>
         )}
         <Grid container justifyContent="center" className="profile-button">
-          <Grid item xs={12} sm={8} md={6}>
-            <LargeButton marginRight={2} width="30%" onClick={enterHistory}>{t("history")}</LargeButton>
-            <LargeButton width="30%" onClick={exitProfile}>{t("exit")}</LargeButton>
+          <Grid item xs={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <LargeButton width="100%" onClick={enterHistory}>{t("history")}</LargeButton>
           </Grid>
-          <Grid item xs={12} sm={8} md={6}>
-            <LargeButton onClick={goToEditProfile}>{t("edit-profile-button")}</LargeButton>
+          <Grid item xs={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <LargeButton width="100%" onClick={exitProfile}>{t("exit")}</LargeButton>
+          </Grid>
+          <Grid item xs={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <LargeButton width="100%" onClick={goToEditProfile}>{t("edit-profile-button")}</LargeButton>
           </Grid>
         </Grid>
       </Container>
