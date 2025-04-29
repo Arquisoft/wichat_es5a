@@ -1005,7 +1005,7 @@ De esta se sacan los enunciados de las preguntas, las respuestas correctas e inc
 <h3 id="_contexto_técnico">3.2. Contexto técnico</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="1135" height="740">
+<img src="./images/Contexto%20técnico%20WIChat.png" alt="Contexto técnico WIChat" width="1136" height="740">
 </div>
 </div>
 <div class="paragraph">
@@ -1469,10 +1469,6 @@ Además será el que tenga la OpenApi con la que el usuario que quiera acceder a
 <td class="tableblock halign-left valign-top"><p class="tableblock">Perfil</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Cada usuario tendrá un perfil, donde podrá cambiar sus datos personales así como ir a su historial.</p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ranking</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Habrá un ranking global en la aplicación donde se registrarán a los mejores usuarios, es decir, aquellos que mejores puntos hayan obtenido. Solo hay uno en la aplicación.</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -1888,10 +1884,20 @@ El sistema debe probarse con usuarios reales en su fase de desarrollo de manera 
 <p>Para la realización de test End to End hemos usado el framework de Cucumber. Los test E2E son pruebas automatizadas que validan el funcionamiento de una aplicación desde el punto de vista del usuario final. Su objetivo es comprobar que todos los componentes del sistema como el front, back, base de datos y demás, funcionen juntos como se espera.</p>
 </div>
 <div class="paragraph">
-<p>Nosotros hemos implementado 3 features a los test, siendo estas:
-* <strong>Game:</strong>Simulará al jugador jugando juegos en distintas dificultades e interactuando con el LLM mientras juega.
-* <strong>Login-form:</strong>Simulará el formulario de registro y los posibles errores que puede cometer el usuario al meter datos incorrectos o no estar registrado.
-* <strong>Register-form:</strong>Simulará el formulario de identificación de usuario y los posibles errores que puede cometer el usuario al meter datos incorrectos.</p>
+<p>Nosotros hemos implementado 3 features a los test, siendo estas:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Game:</strong>Simulará al jugador jugando juegos en distintas dificultades e interactuando con el LLM mientras juega.</p>
+</li>
+<li>
+<p><strong>Login-form:</strong>Simulará el formulario de registro y los posibles errores que puede cometer el usuario al meter datos incorrectos o no estar registrado.</p>
+</li>
+<li>
+<p><strong>Register-form:</strong>Simulará el formulario de identificación de usuario y los posibles errores que puede cometer el usuario al meter datos incorrectos.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
@@ -1923,9 +1929,6 @@ El sistema debe probarse con usuarios reales en su fase de desarrollo de manera 
 <img src="./images/Carga2.png" alt="Carga 2">
 </div>
 </div>
-<div class="paragraph">
-<p><a href="../../gatling/Resultados/Prueba_120_usuarios/index.html">Ver resultados de rendimiento primer esquema</a></p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="_1800_usuarios_en_60_segundos">12.4.2. 1800 usuarios en 60 segundos</h4>
@@ -1947,9 +1950,6 @@ El sistema debe probarse con usuarios reales en su fase de desarrollo de manera 
 <div class="content">
 <img src="./images/Carga4.png" alt="Carga 4">
 </div>
-</div>
-<div class="paragraph">
-<p><a href="../../gatling/Resultados/Prueba_1800_usuarios/index.html">Ver resultados de rendimiento segundo esquema</a></p>
 </div>
 </div>
 </div>
