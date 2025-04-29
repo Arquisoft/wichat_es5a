@@ -8,4 +8,4 @@ COPY . .
 EXPOSE 9090
 
 # Start Prometheus
-CMD ["--config.file=/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]
+CMD ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]
