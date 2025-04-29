@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { AppBar, Tabs, Tab, Tooltip } from '@mui/material';
-import { Login, Logout, AccountCircle, PersonAdd, BarChart, SportsEsports, People } from '@mui/icons-material';
+import { Login, Logout,  PersonAdd } from '@mui/icons-material';
 import IconWichat from "./logo.jpg";
 import Internationalization from '../Internationalization/Internationalization';
 import { useTranslation } from "react-i18next";
@@ -23,6 +23,10 @@ const NavigationBar = () => {
 
   const showHistory = () => {
     navigate("/history");
+  };
+
+  const showRanking = () => {
+    navigate("/ranking");
   };
 
   const showCredits = () => {
@@ -49,21 +53,24 @@ const NavigationBar = () => {
   return (
     <div id="navbar">
       <AppBar id="appbar" position="absolute">
-        <Tabs id="tabsContainer" aria-label="navigation tabs" variant="fullWidth" value={false}>
+        <Tabs id="tabs-container" aria-label="navigation tabs" variant="fullWidth" value={false}>
           <Tab id="logo" aria-label="Logo" data-testid="logo-tab" icon={<Tooltip title="Home"><img src={IconWichat} alt="Icono" draggable="false"/></Tooltip>} onClick={showHome}/>
           <Tab id="wichat" label={t("title")} data-testid="wichat-tab" onClick={showHome} />
           <div style={{ flex: 5 }} />
           {token && (
-            <Tab id='play' label={t("play")} data-testid="play-tab" icon={<SportsEsports/>} iconPosition="start" onClick={play} />
+            <Tab id='play' label={t("play")} data-testid="play-tab" iconPosition="start" onClick={play} />
           )}
           {token && (
-            <Tab id='profile' label={t("profile")} data-testid="profile-tab" icon={<AccountCircle/>} iconPosition="start" onClick={showProfile} />
+            <Tab id="ranking" label={t("ranking")} data-testid="ranking-tab" iconPosition="start" onClick={showRanking} />
           )}
           {token && (
-            <Tab id="history" label={t("history")} data-testid="history-tab" icon={<BarChart/>} iconPosition="start"onClick={showHistory} />
+            <Tab id="history" label={t("history")} data-testid="history-tab" iconPosition="start"onClick={showHistory} />
           )}
           {token && (
-            <Tab id="credits" label={t("credits")} data-testid="credits-tab" icon={<People/>} iconPosition="start" onClick={showCredits} />
+            <Tab id="credits" label={t("credits")} data-testid="credits-tab" iconPosition="start" onClick={showCredits} />
+          )}
+          {token && (
+            <Tab id='profile' label={t("profile")} data-testid="profile-tab" iconPosition="start" onClick={showProfile} />
           )}
           <Internationalization/>
           {token && (

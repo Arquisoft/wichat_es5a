@@ -9,13 +9,23 @@
     font-weight: bold;
 }
 
-#play, #profile, #credits, #history, #logout, #language-button, #login, #signup {
+#play, #ranking, #profile, #credits, #history, #logout, #language-button, #login, #signup {
     color: white;
     font-size: 1em;
     font-weight: bold;
 }
 
-#play, #profile, #credits, #history, #language-button {
+#play {
+    white-space: nowrap;
+    padding-inline: 0.5em;
+}
+
+#ranking {
+    white-space: nowrap;
+    padding-inline: 3em;
+}
+
+#history {
     white-space: nowrap;
     padding-inline: 2em;
 }
@@ -32,4 +42,8 @@
 .language-tab {
     display: grid;
     grid-template-columns: 3em 1fr;
+}
+
+#tabs-container {
+    grid-template-columns: repeat(7, 1fr) !important;
 }

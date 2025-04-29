@@ -20,6 +20,7 @@ describe('NavBar component', () => {
         { tab: 'wichat-tab', expectedPath: '/home' },
         { tab: 'profile-tab', expectedPath: '/profile' },
         { tab: 'history-tab', expectedPath: '/history' },
+        { tab: 'ranking-tab', expectedPath: '/ranking' },
         { tab: 'credits-tab', expectedPath: '/credits' },
         { tab: 'logout-tab', expectedPath: '/login' },
     ];
