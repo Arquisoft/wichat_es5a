@@ -413,8 +413,8 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: header
-          name: Authorization
+        - name: Authorization
+          in: header
           required: true
           schema:
             type: string
@@ -459,6 +459,171 @@ paths:
                     type: string
                     description: Error message.
                     example: User not found
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: Internal server error
+  /profile/edit/:username:
+    put:
+      summary: Edit the profile of a specific user.
+      operationId: editUserProfile
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+          description: Username of the profile to edit.
+          example: student
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: >
+            Bearer token for authentication. Format: `Bearer <token>`.
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJzdHVkZW50IiwiaWF0IjoxNjE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Updated username of the user.
+                  example: newstudent
+                email:
+                  type: string
+                  description: New email of the user.
+                  example: newemail@example.com
+                
+      responses:
+        '200':
+          description: Profile updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the operation was successful.
+                    example: true
+        '400':
+          description: Bad request. Invalid input data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: Formato de email inválido.
+        '404':
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: Usuario no encontrado
+        '409':
+          description: Conflict. One of the following issues occurred:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: >
+                      Contraseña actual errónea
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: Error interno del servidor al actualizar el perfil.
+  /profile/changePassword/:username:
+    put:
+      summary: Change the password of a specific user.
+      operationId: changeUserPassword
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Username whose password will be changed.
+          example: student
+        - name: Authorization
+          in: header  
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication. Format: `Bearer <token>`.
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJzdHVkZW50IiwiaWF0IjoxNjE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currentPassword:
+                  type: string
+                  description: Current password of the user.
+                  example: oldpassword
+                newPassword:
+                  type: string
+                  description: New password for the user.
+                  example: newpassword123
+                repeatPassword:
+                  type: string
+                  description: Confirmation of the new password.
+                  example: newpassword123
+      responses:
+        '200':
+          description: Password changed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the operation was successful.
+                    example: true
+        '400':
+          description: Bad request. Invalid input data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: Current password is incorrect.
         '500':
           description: Internal server error.
           content:
