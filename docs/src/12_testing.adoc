@@ -74,6 +74,7 @@ link:../../gatling/Resultados/Prueba_1800_usuarios/index.html[Ver resultados de 
 También hemos realizado monitorización de la aplicación usando las herramientas de Prometheus y Grafana para observar el comportamiento en tiempo real de la aplicación y asegurarnos de que funcione correctamente, detectando problemas rápidamente y mejorando su rendimiento.
 
 Monitorizar una aplicación nos sirve para:
+
 * Garantizar buena disponibilidad.
 * Mejorar el rendimiento.
 * Detectar errores de forma temprana.
