@@ -119,7 +119,6 @@ services:
       - mynetwork
     volumes:
       - ./gatewayservice/monitoring/prometheus:/etc/prometheus
-      - ./gatewayservice/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"
