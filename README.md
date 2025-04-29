@@ -44,7 +44,7 @@ Tanto el servicio de usuarios como el de autenticación comparten una base de da
 
 ## Guía para Empezar 🚀
 
-1. **Accede al Juego**: Haz clic en el enlace [Acceder a wichat](http://48.209.10.166:8080/login).
+1. **Accede al Juego**: Haz clic en el enlace [Acceder a wichat](http://48.209.10.166/login).
 2. **Regístrate o Inicia Sesión**:
    - Si eres nuevo, regístrate con un nombre de usuario, correo electrónico y contraseña.
    - Si ya tienes una cuenta, inicia sesión con tus credenciales.
@@ -58,5 +58,5 @@ Tanto el servicio de usuarios como el de autenticación comparten una base de da
 
 ## Enlaces Útiles 🔗
 
-- **Juego**: [Acceder a wichat](http://48.209.10.166:8080/login)
+- **Juego**: [Acceder a wichat](http://48.209.10.166/login)
 - **Documentación**: [Documentación del Proyecto](https://arquisoft.github.io/wichat_es5a/)
