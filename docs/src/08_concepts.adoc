@@ -26,8 +26,6 @@ image::DiagramaDeClases.png[width=600,align="center"]
 |Perfil
 |Cada usuario tendrá un perfil, donde podrá cambiar sus datos personales así como ir a su historial.
 
-|Ranking
-|Habrá un ranking global en la aplicación donde se registrarán a los mejores usuarios, es decir, aquellos que mejores puntos hayan obtenido. Solo hay uno en la aplicación.
 |===
 
 
