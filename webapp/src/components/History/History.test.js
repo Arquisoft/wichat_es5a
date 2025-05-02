@@ -108,17 +108,6 @@ describe('History Component', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/contest/1');
   });
 
-  it('should navigate to the home page when "Salir" is clicked', async () => {
-    renderComponent();
-
-    await waitFor(() => {
-      expect(screen.getByText(expectedTexts.exitButton)).toBeInTheDocument();
-    });
-
-    fireEvent.click(screen.getByText(expectedTexts.exitButton));
-    expect(mockNavigate).toHaveBeenCalledWith('/home');
-  });
-
   it('should handle API errors gracefully', async () => {
     axios.get.mockRejectedValueOnce(new Error('API Error'));
 

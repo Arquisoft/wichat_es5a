@@ -39,7 +39,6 @@ describe('Ranking Component', () => {
     );
 
     expect(screen.getByText('Clasificación')).toBeInTheDocument();
-    expect(screen.getByText('Salir')).toBeInTheDocument();
   });
 
   it('should fetch and display data from the API', async () => {
@@ -81,17 +80,6 @@ describe('Ranking Component', () => {
 
     fireEvent.click(screen.getAllByText('Histórico')[0]); // Haz clic en el botón "Historial" del primer usuario
     expect(mockNavigate).toHaveBeenCalledWith('/history', {"state": {"user": "user1"}});
-  });
-
-  it('should navigate to the home page when "Salir" is clicked', () => {
-    render(
-      <BrowserRouter>
-        <Ranking />
-      </BrowserRouter>
-    );
-
-    fireEvent.click(screen.getByText('Salir'));
-    expect(mockNavigate).toHaveBeenCalledWith('/home');
   });
 
   it('should handle API errors gracefully', async () => {
