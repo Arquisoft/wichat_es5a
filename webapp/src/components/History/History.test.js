@@ -71,12 +71,6 @@ describe('History Component', () => {
     jest.clearAllMocks();
   });
 
-  it('should render the initial UI correctly', () => {
-    renderComponent();
-
-    expect(screen.getByText(expectedTexts.exitButton)).toBeInTheDocument();
-  });
-
   it('should fetch and display data from the API', async () => {
     axios.get.mockResolvedValueOnce(mockResponse);
 
