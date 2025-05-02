@@ -44,7 +44,7 @@
   color: #00735C 
 }
 
-#button-container, #cancel-button-container {
+#button-container {
   width: 100%;
   display: flex !important;
   justify-content: center; /* Centrado horizontal */

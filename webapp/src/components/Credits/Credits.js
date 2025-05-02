@@ -1,7 +1,5 @@
 import React from 'react';
 
-import LargeButton from '../ReactComponents/LargeButton';
-import { useNavigate } from 'react-router';
 import CustomH1 from '../ReactComponents/CustomH1';
 import Container from '@mui/material/Container';
 import NavBar from "../NavBar/NavBar";
@@ -9,21 +7,11 @@ import { useTranslation } from "react-i18next";
 
 const Credits = () => {
 
-  const navigate = useNavigate();
   const { t } = useTranslation();
-
-  const exitCredits = () => {
-    navigate('/home');
-  }
 
   return (
     <div>
       <NavBar/>
-      <Container>
-        <LargeButton onClick={exitCredits}>
-          {t("exit")}
-        </LargeButton>
-      </Container>
       <Container
       component="main"
       sx={{

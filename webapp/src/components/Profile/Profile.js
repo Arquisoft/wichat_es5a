@@ -48,10 +48,6 @@ const Profile = () => {
     });
   }
 
-  const exitProfile = () => {
-    navigate('/home');
-  }
-
   const goToEditProfile = () => {
     navigate(`/profile/edit/${profileData.username}`);
   }
@@ -60,11 +56,8 @@ const Profile = () => {
     return (
       <div>
         <NavBar />
-        <Container
-          component="main"
-        >
+        <Container component="main">
           <Typography color="error">{error}</Typography>
-          <LargeButton onClick={exitProfile}>{t("exit")}</LargeButton>
         </Container>
       </div>
     );
@@ -97,9 +90,6 @@ const Profile = () => {
         <div id="button-container">
           <LargeButton marginRight={2} onClick={enterHistory}>{t("history")}</LargeButton>
           <LargeButton onClick={goToEditProfile}>{t("edit-profile-button")}</LargeButton>
-        </div>
-        <div id="cancel-button-container">
-          <LargeButton onClick={exitProfile}>{t("exit")}</LargeButton>
         </div>
       </Container>
     </div>

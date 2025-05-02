@@ -6,8 +6,6 @@ import CustomH1 from '../ReactComponents/CustomH1';
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from 'react-markdown';
 import "./GameMode.css";
-import Container from '@mui/material/Container';
-import LargeButton from '../ReactComponents/LargeButton';
 
 const GameMode = () => {
   const navigate = useNavigate();
@@ -15,10 +13,6 @@ const GameMode = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
   const { t } = useTranslation();
-
-  const exitGameMode = () => {
-    navigate('/home');
-  }
 
   const gameModes = [
     { label: "cities", value: 'city' },
@@ -44,11 +38,6 @@ const GameMode = () => {
   return (
     <div>
       <NavBar />
-      <Container>
-        <LargeButton onClick={exitGameMode}>
-          {t("exit")}
-        </LargeButton>
-      </Container>
       <Box mt={4} textAlign="center" position="relative">
         { }
         <Button

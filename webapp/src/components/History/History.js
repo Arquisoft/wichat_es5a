@@ -26,13 +26,6 @@ const History = () => {
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-  const exitHistory = () => {
-    if (user === null)
-      navigate('/home');
-    else
-      navigate('/profile', { state: { user: user } });
-  };
-
   const enterContest = (id) => {
     navigate('/contest/' + id);
   };
@@ -156,11 +149,6 @@ const History = () => {
   return (
     <div>
       <NavBar />
-      <Container>
-        <LargeButton onClick={exitHistory}>
-          {t("exit")}
-        </LargeButton>
-      </Container>
       <Container
         component="main"
         sx={{
