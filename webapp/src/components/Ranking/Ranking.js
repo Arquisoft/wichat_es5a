@@ -18,10 +18,6 @@ const Ranking = () => {
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-    const exitRanking = () => {
-        navigate('/home');
-    }
-
     const enterHistory = (username) => {
         navigate('/history', {
             state: {
@@ -47,11 +43,6 @@ const Ranking = () => {
     return (
         <div>
             <NavBar />
-            <Container>
-                <LargeButton onClick={exitRanking}>
-                    {t("exit")}
-                </LargeButton>
-            </Container>
             <Container
                 component="main"
                 sx={{
